@@ -552,64 +552,43 @@
 <dd><p>Replaces the sequence <code class="docutils literal notranslate"><span class="pre">SequenceConstruct(x1,</span> <span class="pre">x2,</span> <span class="pre">...)</span></code> followed
 by <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">0)</span></code>, <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">1)</span></code>, …</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-c1a7969e83fcc96bf398b219e5c15e54af6c8e58.png" alt="digraph{
-  ranksep=0.25;
-  size=7;
-  nodesep=0.05;
-  orientation=portrait;
-
-  X1 [shape=box color=red label=&quot;X1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  X2 [shape=box color=red label=&quot;X2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
-
-  Y1 [shape=box color=green label=&quot;Y1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  Y2 [shape=box color=green label=&quot;Y2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
-
-
-  i0 [shape=box label=&quot;i0&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=0&quot; fontsize=10];
-  Constant -&gt; i0;
-
-  i1 [shape=box label=&quot;i1&quot; fontsize=10];
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=1&quot; fontsize=10];
-  Constant1 -&gt; i1;
-
-  seq [shape=box label=&quot;seq&quot; fontsize=10];
-  SequenceConstruct [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;SequenceConstruct&quot; fontsize=10];
-  X1 -&gt; SequenceConstruct;
-  X2 -&gt; SequenceConstruct;
-  SequenceConstruct -&gt; seq;
-
-  SequenceAt [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;SequenceAt&quot; fontsize=10];
-  seq -&gt; SequenceAt;
-  i0 -&gt; SequenceAt;
-  SequenceAt -&gt; Y1;
-
-  SequenceAt1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;SequenceAt&quot; fontsize=10];
-  seq -&gt; SequenceAt1;
-  i1 -&gt; SequenceAt1;
-  SequenceAt1 -&gt; Y2;
+<div class="graphviz"><img src="../../../_images/graphviz-15e26dc482d5cd98e5d2ca8df2885c47d1dc3c0b.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X1\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; i0&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; i1&quot;, fillcolor=&quot;#cccccc&quot;];
+  SequenceConstruct_4 [label=&quot;SequenceConstruct(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SequenceAt_5 [label=&quot;SequenceAt(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SequenceAt_6 [label=&quot;SequenceAt(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; SequenceConstruct_4 [label=&quot;FLOAT(a,b)&quot;];
+  I_1 -&gt; SequenceConstruct_4 [label=&quot;FLOAT(c,d)&quot;];
+  SequenceConstruct_4 -&gt; SequenceAt_5;
+  Constant_2 -&gt; SequenceAt_5 [label=&quot;INT64()&quot;];
+  SequenceConstruct_4 -&gt; SequenceAt_6;
+  Constant_3 -&gt; SequenceAt_6 [label=&quot;INT64()&quot;];
+  O_7 [label=&quot;Y1\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SequenceAt_5 -&gt; O_7;
+  O_8 [label=&quot;Y2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SequenceAt_6 -&gt; O_8;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ece1f6cd49e553d54b8638161d9d55fc33e3341a.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-  nodesep=0.05;
-
-  X1 [shape=box color=red label=&quot;X1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  X2 [shape=box color=red label=&quot;X2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
-
-  Y1 [shape=box color=green label=&quot;Y1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  Y2 [shape=box color=green label=&quot;Y2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
-
-
-  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  X1 -&gt; Identity;
-  Identity -&gt; Y1;
-
-  Identity1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  X2 -&gt; Identity1;
-  Identity1 -&gt; Y2;
+<div class="graphviz"><img src="../../../_images/graphviz-b6c160fcbed42813ad319e825054e6d5da02adf5.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X1\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_2 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Identity_3 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Identity_2 [label=&quot;FLOAT(a,b)&quot;];
+  I_1 -&gt; Identity_3 [label=&quot;FLOAT(c,d)&quot;];
+  O_4 [label=&quot;Y1\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_2 -&gt; O_4;
+  O_5 [label=&quot;Y2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_3 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_sequence.SequenceConstructAtPattern.apply">

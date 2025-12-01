@@ -553,34 +553,34 @@
 The objective is to save one allocation and let the next operator
 do the expansion by broadcasting one input.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-715a46a4a140a76e4339e937643f8bed8747781f.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-0501c0efe18aabb860adb6f5891a5cddff645606.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_140597859894832 [label=&quot;mul_25&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_140597859894912 [label=&quot;input66&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_140597859895152 [label=&quot;Constant() -&gt; init7_s3_2_1024_1024&quot;, fillcolor=&quot;#cccccc&quot;];
-  Expand_140597859895232 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_140597859895312 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_140597859894832 -&gt; Expand_140597859895232;
-  Constant_140597859895152 -&gt; Expand_140597859895232 [label=&quot;INT64(3)&quot;];
-  Expand_140597859895232 -&gt; Mul_140597859895312 [label=&quot;FLOAT(2,1024,1024)&quot;];
-  I_140597859894912 -&gt; Mul_140597859895312;
-  O_140597859895072 [label=&quot;MulMulMulPattern--mul_27&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_140597859895312 -&gt; O_140597859895072;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;mul_25\nFLOAT(2,1024,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;input66\nFLOAT(2,1024,1024)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init7_s3_2_1024_1024&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_3 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Expand_3 [label=&quot;FLOAT(2,1024,1)&quot;];
+  Constant_2 -&gt; Expand_3 [label=&quot;INT64(3)&quot;];
+  Expand_3 -&gt; Mul_4 [label=&quot;FLOAT(2,1024,1024)&quot;];
+  I_1 -&gt; Mul_4 [label=&quot;FLOAT(2,1024,1024)&quot;];
+  O_5 [label=&quot;MulMulMulPattern--mul_27\nFLOAT(2,1024,1024)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-861850f9fa72b441899ca5fd252b82752d87d4fa.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-298690f55a9fc253ee890a60181c74d182a92f21.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_127527856309568 [label=&quot;mul_25&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_127527856309488 [label=&quot;input66&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Mul_127527856309728 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_127527856309568 -&gt; Mul_127527856309728;
-  I_127527856309488 -&gt; Mul_127527856309728;
-  O_127527856309648 [label=&quot;MulMulMulPattern--mul_27&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_127527856309728 -&gt; O_127527856309648;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;mul_25\nFLOAT(2,1024,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;input66\nFLOAT(2,1024,1024)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Mul_2 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Mul_2 [label=&quot;FLOAT(2,1024,1)&quot;];
+  I_1 -&gt; Mul_2 [label=&quot;FLOAT(2,1024,1024)&quot;];
+  O_3 [label=&quot;MulMulMulPattern--mul_27\nFLOAT(2,1024,1024)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern.apply">
@@ -643,31 +643,31 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.</span></span><span class="sig-name descname"><span class="pre">ExpandPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#ExpandPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.ExpandPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Expand is really needed.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-eb69746dbadd83f0c95a70660dcefe9f7bb7c572.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-44e2518a5ada5b102590c9a3ec8f338b2e86aead.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_127224736433952 [label=&quot;init7_s4_32_2_10_8&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_127224736433792 [label=&quot;mul&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_127224736434032 [label=&quot;Constant() -&gt; init7_s4_32_2_10_8&quot;, fillcolor=&quot;#cccccc&quot;];
-  Expand_127224736434112 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_127224736433792 -&gt; Expand_127224736434112;
-  Constant_127224736434032 -&gt; Expand_127224736434112;
-  O_127224736433872 [label=&quot;expand&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Expand_127224736434112 -&gt; O_127224736433872;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;init7_s4_32_2_10_8\nINT64(4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;mul\nFLOAT(32,2,10,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init7_s4_32_2_10_8&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_3 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Expand_3 [label=&quot;FLOAT(32,2,10,8)&quot;];
+  Constant_2 -&gt; Expand_3 [label=&quot;INT64(4)&quot;];
+  O_4 [label=&quot;expand\nFLOAT(32,2,10,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-10a3fafaefabc0031d5b509bc41b73df999beb71.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-fcbc0bf37b21aadd9f22a279bf621fc664bdb846.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_133751133881904 [label=&quot;init7_s4_32_2_10_8&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_133751133881664 [label=&quot;mul&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Identity_133751133881984 [label=&quot;Identity(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_133751133881664 -&gt; Identity_133751133881984;
-  I_133751133881904 -&gt; Identity_133751133881984;
-  O_133751133881824 [label=&quot;expand&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Identity_133751133881984 -&gt; O_133751133881824;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;init7_s4_32_2_10_8\nINT64(4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;mul\nFLOAT(32,2,10,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_2 [label=&quot;Identity(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Identity_2 [label=&quot;FLOAT(32,2,10,8)&quot;];
+  I_0 -&gt; Identity_2 [label=&quot;INT64(4)&quot;];
+  O_3 [label=&quot;expand\nFLOAT(32,2,10,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ExpandPattern.apply">
@@ -731,6 +731,42 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Tries to move a node Expand forward in the graph.
 Expand + Exp can be changed into Exp + Expand.
 Then Exp applies on a tensor of a smaller or equal size.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-9812007b977211742627a2f3bb46a2dc176f59e6.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;p\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(1,5,7)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;shape\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; p&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_5 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Pow_6 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Expand_5 [label=&quot;FLOAT(1,5,7)&quot;];
+  Constant_3 -&gt; Expand_5 [label=&quot;INT64(3)&quot;];
+  Expand_5 -&gt; Pow_6 [label=&quot;FLOAT(3,5,7)&quot;];
+  Constant_4 -&gt; Pow_6 [label=&quot;INT64(1)&quot;];
+  O_7 [label=&quot;Z\nFLOAT(3,5,7)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Pow_6 -&gt; O_7;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-61e4b3ea3df622a52bfd0c0a3bbd214689893b01.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;p\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(1,5,7)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;shape\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Pow_3 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Pow_3 [label=&quot;FLOAT(1,5,7)&quot;];
+  I_0 -&gt; Pow_3 [label=&quot;INT64(1)&quot;];
+  Pow_3 -&gt; Expand_4 [label=&quot;FLOAT(1,5,7)&quot;];
+  I_2 -&gt; Expand_4 [label=&quot;INT64(3)&quot;];
+  O_5 [label=&quot;Z\nFLOAT(3,5,7)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_4 -&gt; O_5;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ExpandSwapPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#ExpandSwapPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.ExpandSwapPattern.apply" title="Link to this definition">¶</a></dt>
@@ -792,59 +828,40 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedConcatExpandPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#ShapeBasedConcatExpandPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedConcatExpandPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Rewrites Expand(X, concat(…)) if possible.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-da0233d2a2e184836b10b1eb00356229d92433fe.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 1]&quot; fontsize=10];
-  two [shape=box color=red label=&quot;two\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 2]&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2]&quot; fontsize=10];
-  Constant -&gt; two;
-
-  sh2 [shape=box label=&quot;sh2&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
-  shx -&gt; Concat;
-  two -&gt; Concat;
-  Concat -&gt; sh2;
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  X -&gt; Expand;
-  sh2 -&gt; Expand;
-  Expand -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-8fc2387532ae4042cc5743e9be6969380994f591.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;two\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; two&quot;, fillcolor=&quot;#cccccc&quot;];
+  Shape_3 [label=&quot;Shape(., end=1, start=0)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Concat_4 [label=&quot;Concat(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_5 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Shape_3 [label=&quot;FLOAT(a,1)&quot;];
+  Shape_3 -&gt; Concat_4 [label=&quot;INT64(1)&quot;];
+  Constant_2 -&gt; Concat_4 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; Expand_5 [label=&quot;FLOAT(a,1)&quot;];
+  Concat_4 -&gt; Expand_5 [label=&quot;INT64(2)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(a,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-2bd0413c4723175b043ced4d2052b4c9f0eb2165.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 1]&quot; fontsize=10];
-  two [shape=box color=red label=&quot;two\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 2]&quot; fontsize=10];
-
-
-  init7_12 [shape=box label=&quot;init7_12&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1]&quot; fontsize=10];
-  Constant -&gt; init7_12;
-
-  sh22 [shape=box label=&quot;sh22&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
-  init7_12 -&gt; Concat;
-  two -&gt; Concat;
-  Concat -&gt; sh22;
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  X -&gt; Expand;
-  sh22 -&gt; Expand;
-  Expand -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-8baf854097496f6447726e6a7425657209ed1985.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;two\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init7_12&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_3 [label=&quot;Concat(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 -&gt; Concat_3 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; Concat_3 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; Expand_4 [label=&quot;FLOAT(a,1)&quot;];
+  Concat_3 -&gt; Expand_4 [label=&quot;INT64(2)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(a,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedConcatExpandPattern.apply">
@@ -909,46 +926,37 @@ will automatically determine the position of the new nodes.</p></li>
 <a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern" title="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern</span></code></a>,
 but works only with MatMul.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-4613d32055b64124d3b6ac752adb1fefc4a0f0ff.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-  size=7;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[1, 'c', 'd']&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 'b', 'd']&quot; fontsize=10];
-
-
-  Ye [shape=box label=&quot;Ye&quot; fontsize=10];
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y -&gt; Expand;
-  exp -&gt; Expand;
-  Expand -&gt; Ye;
-
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  Ye -&gt; MatMul;
-  MatMul -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-7ab8a47185a9f654bb2f7233010cdca8658bab7f.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(1,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Shape_2 [label=&quot;Shape(., end=1, start=0)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Concat_3 [label=&quot;Concat(., [1, 1], axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  MatMul_5 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  I_0 -&gt; Shape_2 [label=&quot;FLOAT(1,c,d)&quot;];
+  Shape_2 -&gt; Concat_3 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; Expand_4 [label=&quot;FLOAT(1,c,d)&quot;];
+  Concat_3 -&gt; Expand_4 [label=&quot;INT64(3)&quot;];
+  I_1 -&gt; MatMul_5 [label=&quot;FLOAT(a,b,c)&quot;];
+  Expand_4 -&gt; MatMul_5 [label=&quot;FLOAT(?,?,?)&quot;];
+  O_6 [label=&quot;Z\nFLOAT(a,b,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-b39fd6e174435dae2c1ba983ae7ff24d6613d53e.png" alt="digraph{
-  orientation=portrait;
-  ranksep=0.25;
-  size=7;
-  nodesep=0.05;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[1, 'c', 'd']&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 'b', 'd']&quot; fontsize=10];
-
-
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  Y -&gt; MatMul;
-  MatMul -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-e8df91b15ece9133d2943d05c0a323df0b1eb67b.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(1,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  MatMul_2 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  I_1 -&gt; MatMul_2 [label=&quot;FLOAT(a,b,c)&quot;];
+  I_0 -&gt; MatMul_2 [label=&quot;FLOAT(1,c,d)&quot;];
+  O_3 [label=&quot;Z\nFLOAT(a,b,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastMatMulPattern.apply">
@@ -1014,54 +1022,6 @@ will automatically determine the position of the new nodes.</p></li>
 but it allows dynamic shapes as well. It does not look into the second
 argument of Expand, it just infers than an expand is not needed for
 a binary operator following just after.</p>
-<p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-0bc0eba69c463069a6bf79bb1a7c91fb472b7865.png" alt="digraph{
-  nodesep=0.05;
-  ranksep=0.25;
-  size=7;
-  orientation=portrait;
-
-  Xr [shape=box color=red label=&quot;Xr\nTensorProto.FLOAT\nshape=[1, 'd']&quot; fontsize=10];
-  Xc [shape=box color=red label=&quot;Xc\nTensorProto.FLOAT\nshape=['d', 1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'd']&quot; fontsize=10];
-
-
-  Xce [shape=box label=&quot;Xce&quot; fontsize=10];
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Xc -&gt; Expand;
-  full_shape -&gt; Expand;
-  Expand -&gt; Xce;
-
-  Xre [shape=box label=&quot;Xre&quot; fontsize=10];
-  Expand1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Xr -&gt; Expand1;
-  full_shape -&gt; Expand1;
-  Expand1 -&gt; Xre;
-
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  Xce -&gt; Add;
-  Xre -&gt; Add;
-  Add -&gt; Y;
-}" class="graphviz" /></div>
-<p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-5a5919d5728b3b3484c612a4222be0b257331105.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-
-  Xr [shape=box color=red label=&quot;Xr\nTensorProto.FLOAT\nshape=[1, 'd']&quot; fontsize=10];
-  Xc [shape=box color=red label=&quot;Xc\nTensorProto.FLOAT\nshape=['d', 1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'd']&quot; fontsize=10];
-
-
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  Xc -&gt; Add;
-  Xr -&gt; Add;
-  Add -&gt; Y;
-}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#ShapeBasedExpandBroadcastPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern.apply" title="Link to this definition">¶</a></dt>
@@ -1123,69 +1083,45 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedExpandCastWhereSwapPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#ShapeBasedExpandCastWhereSwapPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandCastWhereSwapPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Rewrites Where(Cast(X), X, cond).</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-2af21a7f4679d2cacf4c420bf9e90adb187e660b.png" alt="digraph{
-  orientation=portrait;
-  ranksep=0.25;
-  size=7;
-  nodesep=0.05;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['b', 'c']&quot; fontsize=10];
-  exp [shape=box color=red label=&quot;exp\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-  cst [shape=box color=red label=&quot;cst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['b', 'b', 'c']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-inf]&quot; fontsize=10];
-  Constant -&gt; cst;
-
-  Xe [shape=box label=&quot;Xe&quot; fontsize=10];
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  X -&gt; Expand;
-  exp -&gt; Expand;
-  Expand -&gt; Xe;
-
-  Xeb [shape=box label=&quot;Xeb&quot; fontsize=10];
-  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=9&quot; fontsize=10];
-  Xe -&gt; Cast;
-  Cast -&gt; Xeb;
-
-  Where [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Where&quot; fontsize=10];
-  Xeb -&gt; Where;
-  Xe -&gt; Where;
-  cst -&gt; Where;
-  Where -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-6167e6be23df5728c620881912806c39aa9ad7a8.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;exp\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;cst\nFLOAT(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; cst&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_5 [label=&quot;Cast(., to=BOOL)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Where_6 [label=&quot;Where(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Expand_4 [label=&quot;FLOAT(b,c)&quot;];
+  I_1 -&gt; Expand_4 [label=&quot;INT64(3)&quot;];
+  Expand_4 -&gt; Cast_5 [label=&quot;FLOAT(?,?,?)&quot;];
+  Cast_5 -&gt; Where_6 [label=&quot;BOOL(?,?,?)&quot;];
+  Expand_4 -&gt; Where_6 [label=&quot;FLOAT(?,?,?)&quot;];
+  Constant_3 -&gt; Where_6 [label=&quot;FLOAT(1)&quot;];
+  O_7 [label=&quot;Y\nFLOAT(b,b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Where_6 -&gt; O_7;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a2b516ef61918b3fcd53abd7e4eeea3c720126f3.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['b', 'c']&quot; fontsize=10];
-  exp [shape=box color=red label=&quot;exp\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-  cst [shape=box color=red label=&quot;cst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['b', 'b', 'c']&quot; fontsize=10];
-
-
-  ShapeBasedExpandCastWhereSwapPattern_Xeb [shape=box label=&quot;ShapeBasedExpandCastWhereSwapPattern_Xeb&quot; fontsize=10];
-  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=9&quot; fontsize=10];
-  X -&gt; Cast;
-  Cast -&gt; ShapeBasedExpandCastWhereSwapPattern_Xeb;
-
-  ShapeBasedExpandCastWhereSwapPattern_Y [shape=box label=&quot;ShapeBasedExpandCastWhereSwapPattern_Y&quot; fontsize=10];
-  Where [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Where&quot; fontsize=10];
-  ShapeBasedExpandCastWhereSwapPattern_Xeb -&gt; Where;
-  X -&gt; Where;
-  cst -&gt; Where;
-  Where -&gt; ShapeBasedExpandCastWhereSwapPattern_Y;
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  ShapeBasedExpandCastWhereSwapPattern_Y -&gt; Expand;
-  exp -&gt; Expand;
-  Expand -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-14461f63ac38d0a6cf82d878cfbc8972f66e9781.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;exp\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;cst\nFLOAT(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_3 [label=&quot;Cast(., to=BOOL)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Where_4 [label=&quot;Where(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_5 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_3 [label=&quot;FLOAT(b,c)&quot;];
+  Cast_3 -&gt; Where_4 [label=&quot;BOOL(b,c)&quot;];
+  I_0 -&gt; Where_4 [label=&quot;FLOAT(b,c)&quot;];
+  I_2 -&gt; Where_4 [label=&quot;FLOAT(1)&quot;];
+  Where_4 -&gt; Expand_5 [label=&quot;FLOAT(b,c)&quot;];
+  I_1 -&gt; Expand_5 [label=&quot;INT64(3)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(b,b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandCastWhereSwapPattern.apply">
@@ -1250,57 +1186,39 @@ will automatically determine the position of the new nodes.</p></li>
 for a binary operator. The code is similar to
 <a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern" title="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern</span></code></a></p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-d5e3029b3dbbf6cef77e6e814bc59ee1d45a3f5a.png" alt="digraph{
-  orientation=portrait;
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-
-  full_shape [shape=box color=red label=&quot;full_shape\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  Xc [shape=box color=red label=&quot;Xc\nTensorProto.FLOAT\nshape=['d', 1]&quot; fontsize=10];
-  one [shape=box color=red label=&quot;one\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'd']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[4.]&quot; fontsize=10];
-  Constant -&gt; one;
-
-  Xce [shape=box label=&quot;Xce&quot; fontsize=10];
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Xc -&gt; Expand;
-  full_shape -&gt; Expand;
-  Expand -&gt; Xce;
-
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  Xce -&gt; Add;
-  one -&gt; Add;
-  Add -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-08c4455e432e290ee8d8aa6065b96fcc4400a1f6.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;full_shape\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Xc\nFLOAT(d,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;one\nFLOAT(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_5 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Expand_4 [label=&quot;FLOAT(d,1)&quot;];
+  I_0 -&gt; Expand_4 [label=&quot;INT64(2)&quot;];
+  Expand_4 -&gt; Add_5 [label=&quot;FLOAT(?,?)&quot;];
+  Constant_3 -&gt; Add_5 [label=&quot;FLOAT(1)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(d,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-b0ea8e4baca8df5fd46e5b41afbdc114404111f9.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  full_shape [shape=box color=red label=&quot;full_shape\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  Xc [shape=box color=red label=&quot;Xc\nTensorProto.FLOAT\nshape=['d', 1]&quot; fontsize=10];
-  one [shape=box color=red label=&quot;one\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'd']&quot; fontsize=10];
-
-
-  ShapeBasedExpandSwapPattern_Y [shape=box label=&quot;ShapeBasedExpandSwapPattern_Y&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  Xc -&gt; Add;
-  one -&gt; Add;
-  Add -&gt; ShapeBasedExpandSwapPattern_Y;
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  ShapeBasedExpandSwapPattern_Y -&gt; Expand;
-  full_shape -&gt; Expand;
-  Expand -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-f0a41d58e2087ede93db358c1a7afe3e2004ce01.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;full_shape\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Xc\nFLOAT(d,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;one\nFLOAT(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(d,1)&quot;];
+  I_2 -&gt; Add_3 [label=&quot;FLOAT(1)&quot;];
+  Add_3 -&gt; Expand_4 [label=&quot;FLOAT(d,1)&quot;];
+  I_0 -&gt; Expand_4 [label=&quot;INT64(2)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(d,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandSwapPattern.apply">
@@ -1424,60 +1342,40 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.</span></span><span class="sig-name descname"><span class="pre">SwapExpandReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#SwapExpandReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.SwapExpandReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks if Expand + Reshape can be swapped.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-52806b2eea92474bd224dc3d6978393ff1bf8847.png" alt="digraph{
-  nodesep=0.05;
-  orientation=portrait;
-  ranksep=0.25;
-  size=7;
-
-  weight [shape=box color=red label=&quot;weight\nTensorProto.FLOAT\nshape=[1, 4, 1]&quot; fontsize=10];
-  stat [shape=box color=red label=&quot;stat\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 4]&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[[[2.]\n  [3.]\n  [4.]\n ...&quot; fontsize=10];
-  Constant -&gt; weight;
-
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 0  1 -1]&quot; fontsize=10];
-  Constant1 -&gt; stat;
-
-  resh [shape=box label=&quot;resh&quot; fontsize=10];
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  weight -&gt; Expand;
-  shape -&gt; Expand;
-  Expand -&gt; resh;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  resh -&gt; Reshape;
-  stat -&gt; Reshape;
-  Reshape -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-d35673291a6a644ec13bda327c121773217ee48a.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;weight\nFLOAT(1,4,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;stat\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;shape\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; weight&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; stat&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_5 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_6 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Constant_3 -&gt; Expand_5 [label=&quot;FLOAT(1,4,1)&quot;];
+  I_2 -&gt; Expand_5 [label=&quot;INT64(3)&quot;];
+  Expand_5 -&gt; Reshape_6 [label=&quot;FLOAT(?,4,?)&quot;];
+  Constant_4 -&gt; Reshape_6 [label=&quot;INT64(3)&quot;];
+  O_7 [label=&quot;Y\nFLOAT(a,1,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_6 -&gt; O_7;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-b0a0f8d573a668e96e5caa8dc32fd4c8f6386f31.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-
-  weight [shape=box color=red label=&quot;weight\nTensorProto.FLOAT\nshape=[1, 4, 1]&quot; fontsize=10];
-  stat [shape=box color=red label=&quot;stat\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 4]&quot; fontsize=10];
-
-
-  Y2 [shape=box label=&quot;Y2&quot; fontsize=10];
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  weight -&gt; Reshape;
-  stat -&gt; Reshape;
-  Reshape -&gt; Y2;
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y2 -&gt; Expand;
-  shape -&gt; Expand;
-  Expand -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-b263253f54ee79b0ccc142d1c35ac69a6a4e52d2.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;weight\nFLOAT(1,4,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;stat\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;shape\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Reshape_3 [label=&quot;FLOAT(1,4,1)&quot;];
+  I_1 -&gt; Reshape_3 [label=&quot;INT64(3)&quot;];
+  Reshape_3 -&gt; Expand_4 [label=&quot;FLOAT(?,?,?)&quot;];
+  I_2 -&gt; Expand_4 [label=&quot;INT64(3)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(a,1,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.SwapExpandReshapePattern.apply">

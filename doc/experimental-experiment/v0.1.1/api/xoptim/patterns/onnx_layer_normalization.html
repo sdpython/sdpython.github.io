@@ -551,34 +551,34 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">BatchNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#BatchNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a BatchNormalization is really needed.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-770e36130ae469d904a0220e8c171bd264735b48.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-01e207cfaccdea2fee898ff5d1e899dd963ad5da.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_132710328239744 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_132710328239904 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_132710328239984 [label=&quot;Constant() -&gt; B&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_132710328240064 [label=&quot;Constant() -&gt; input_mean&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_132710328240144 [label=&quot;Constant() -&gt; input_var&quot;, fillcolor=&quot;#cccccc&quot;];
-  BatchNormalization_132710328240224 [label=&quot;BatchNormalization(., ., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_132710328239744 -&gt; BatchNormalization_132710328240224;
-  Constant_132710328239904 -&gt; BatchNormalization_132710328240224 [label=&quot;FLOAT(16)&quot;];
-  Constant_132710328239984 -&gt; BatchNormalization_132710328240224 [label=&quot;FLOAT(16)&quot;];
-  Constant_132710328240064 -&gt; BatchNormalization_132710328240224 [label=&quot;FLOAT(16)&quot;];
-  Constant_132710328240144 -&gt; BatchNormalization_132710328240224 [label=&quot;FLOAT(16)&quot;];
-  O_132710328239664 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  BatchNormalization_132710328240224 -&gt; O_132710328239664;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(1024,16)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; B&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; input_mean&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; input_var&quot;, fillcolor=&quot;#cccccc&quot;];
+  BatchNormalization_5 [label=&quot;BatchNormalization(., ., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; BatchNormalization_5 [label=&quot;FLOAT(1024,16)&quot;];
+  Constant_1 -&gt; BatchNormalization_5 [label=&quot;FLOAT(16)&quot;];
+  Constant_2 -&gt; BatchNormalization_5 [label=&quot;FLOAT(16)&quot;];
+  Constant_3 -&gt; BatchNormalization_5 [label=&quot;FLOAT(16)&quot;];
+  Constant_4 -&gt; BatchNormalization_5 [label=&quot;FLOAT(16)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(1024,16)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  BatchNormalization_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-dfc5cf7851ba26c860ce7e09d7c61a92907cf1c8.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-10754bc0a68b3f3130009776ffbabbe501f48fe7.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_137291654955952 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Identity_137291654955872 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_137291654955952 -&gt; Identity_137291654955872;
-  O_137291654955712 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Identity_137291654955872 -&gt; O_137291654955712;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(1024,16)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_1 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Identity_1 [label=&quot;FLOAT(1024,16)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(1024,16)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationPattern.apply">
@@ -701,44 +701,44 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">CastLayerNormalizationCastPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#CastLayerNormalizationCastPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Cast is really needed around LayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-818f9ec272f3af84407ad9e112413ccd31518a09.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-bda4e9438d27167ef12dd3424258ebac4a9c6993.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_135059056297760 [label=&quot;scale&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_135059056297680 [label=&quot;bias&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_135059056297840 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_135059056298000 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_135059056298080 [label=&quot;Constant() -&gt; bias&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_135059056298160 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  LayerNormalization_135059056298240 [label=&quot;LayerNormalization(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_135059056298320 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_135059056297840 -&gt; Cast_135059056298160;
-  Cast_135059056298160 -&gt; LayerNormalization_135059056298240 [label=&quot;FLOAT(3,3)&quot;];
-  Constant_135059056298000 -&gt; LayerNormalization_135059056298240;
-  Constant_135059056298080 -&gt; LayerNormalization_135059056298240;
-  LayerNormalization_135059056298240 -&gt; Cast_135059056298320 [label=&quot;FLOAT(3,3)&quot;];
-  O_135059056297920 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Cast_135059056298320 -&gt; O_135059056297920;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;scale\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;bias\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT16(3,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; bias&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_5 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_6 [label=&quot;LayerNormalization(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_7 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Cast_5 [label=&quot;FLOAT16(3,3)&quot;];
+  Cast_5 -&gt; LayerNormalization_6 [label=&quot;FLOAT(3,3)&quot;];
+  Constant_3 -&gt; LayerNormalization_6 [label=&quot;FLOAT(3)&quot;];
+  Constant_4 -&gt; LayerNormalization_6 [label=&quot;FLOAT(3)&quot;];
+  LayerNormalization_6 -&gt; Cast_7 [label=&quot;FLOAT(3,3)&quot;];
+  O_8 [label=&quot;Y\nFLOAT16(3,3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_7 -&gt; O_8;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-fcb614637c235eb4dce15e7030dc2d9e6b314b44.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-3dc84866318f999698951b31e5bfc2c0e29dc332.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_128241212097776 [label=&quot;scale&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_128241212098176 [label=&quot;bias&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_128241212098256 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_128241212098416 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_128241212098496 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  LayerNormalization_128241212098576 [label=&quot;LayerNormalization(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_128241212097776 -&gt; Cast_128241212098416;
-  I_128241212098176 -&gt; Cast_128241212098496;
-  I_128241212098256 -&gt; LayerNormalization_128241212098576;
-  Cast_128241212098416 -&gt; LayerNormalization_128241212098576 [label=&quot;FLOAT16(3)&quot;];
-  Cast_128241212098496 -&gt; LayerNormalization_128241212098576 [label=&quot;FLOAT16(3)&quot;];
-  O_128241212098336 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  LayerNormalization_128241212098576 -&gt; O_128241212098336;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;scale\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;bias\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT16(3,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_3 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_4 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_5 [label=&quot;LayerNormalization(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_3 [label=&quot;FLOAT(3)&quot;];
+  I_1 -&gt; Cast_4 [label=&quot;FLOAT(3)&quot;];
+  I_2 -&gt; LayerNormalization_5 [label=&quot;FLOAT16(3,3)&quot;];
+  Cast_3 -&gt; LayerNormalization_5 [label=&quot;FLOAT16(3)&quot;];
+  Cast_4 -&gt; LayerNormalization_5 [label=&quot;FLOAT16(3)&quot;];
+  O_6 [label=&quot;Y\nFLOAT16(3,3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  LayerNormalization_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern.apply">
@@ -801,94 +801,51 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">LayerNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#LayerNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses nodes of a LayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-e4004b26abe902b525fb906e0fefe1534ef381ca.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-  nodesep=0.05;
-
-  add_1 [shape=box color=red label=&quot;add_1\nTensorProto.FLOAT16\nshape=[4, 512, 128]&quot; fontsize=10];
-
-  _onx_div0 [shape=box color=green label=&quot;_onx_div0\nTensorProto.FLOAT16\nshape=[4, 512, 128]&quot; fontsize=10];
-
-
-  init7_s1__1 [shape=box label=&quot;init7_s1__1&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1]&quot; fontsize=10];
-  Constant -&gt; init7_s1__1;
-
-  init10_s1_ [shape=box label=&quot;init10_s1_&quot; fontsize=10];
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2.]&quot; fontsize=10];
-  Constant1 -&gt; init10_s1_;
-
-  init10_s1_2 [shape=box label=&quot;init10_s1_2&quot; fontsize=10];
-  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0.]&quot; fontsize=10];
-  Constant12 -&gt; init10_s1_2;
-
-  _onx_reducemean0 [shape=box label=&quot;_onx_reducemean0&quot; fontsize=10];
-  ReduceMean [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceMean\nkeepdims=1&quot; fontsize=10];
-  add_1 -&gt; ReduceMean;
-  init7_s1__1 -&gt; ReduceMean;
-  ReduceMean -&gt; _onx_reducemean0;
-
-  _onx_sub0 [shape=box label=&quot;_onx_sub0&quot; fontsize=10];
-  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
-  add_1 -&gt; Sub;
-  _onx_reducemean0 -&gt; Sub;
-  Sub -&gt; _onx_sub0;
-
-  _onx_pow0 [shape=box label=&quot;_onx_pow0&quot; fontsize=10];
-  Pow [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Pow&quot; fontsize=10];
-  _onx_sub0 -&gt; Pow;
-  init10_s1_ -&gt; Pow;
-  Pow -&gt; _onx_pow0;
-
-  _onx_reducemean02 [shape=box label=&quot;_onx_reducemean02&quot; fontsize=10];
-  ReduceMean1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceMean\nkeepdims=1&quot; fontsize=10];
-  _onx_pow0 -&gt; ReduceMean1;
-  init7_s1__1 -&gt; ReduceMean1;
-  ReduceMean1 -&gt; _onx_reducemean02;
-
-  _onx_add0 [shape=box label=&quot;_onx_add0&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  _onx_reducemean02 -&gt; Add;
-  init10_s1_2 -&gt; Add;
-  Add -&gt; _onx_add0;
-
-  _onx_sqrt0 [shape=box label=&quot;_onx_sqrt0&quot; fontsize=10];
-  Sqrt [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sqrt&quot; fontsize=10];
-  _onx_add0 -&gt; Sqrt;
-  Sqrt -&gt; _onx_sqrt0;
-
-  Div [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Div&quot; fontsize=10];
-  _onx_sub0 -&gt; Div;
-  _onx_sqrt0 -&gt; Div;
-  Div -&gt; _onx_div0;
+<div class="graphviz"><img src="../../../_images/graphviz-8ab7a91054f5db6a5f44ab4c0d5b3d7cc3a74b9c.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;add_1\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; init7_s1_-1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init10_s1_&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; init10_s1_2&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceMean_4 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sub_5 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Pow_6 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceMean_7 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_8 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sqrt_9 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_10 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; ReduceMean_4 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_1 -&gt; ReduceMean_4 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; Sub_5 [label=&quot;FLOAT16(4,512,128)&quot;];
+  ReduceMean_4 -&gt; Sub_5 [label=&quot;FLOAT16(4,512,1)&quot;];
+  Sub_5 -&gt; Pow_6 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_2 -&gt; Pow_6 [label=&quot;FLOAT16(1)&quot;];
+  Pow_6 -&gt; ReduceMean_7 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_1 -&gt; ReduceMean_7 [label=&quot;INT64(1)&quot;];
+  ReduceMean_7 -&gt; Add_8 [label=&quot;FLOAT16(4,512,1)&quot;];
+  Constant_3 -&gt; Add_8 [label=&quot;FLOAT16(1)&quot;];
+  Add_8 -&gt; Sqrt_9 [label=&quot;FLOAT16(4,512,1)&quot;];
+  Sub_5 -&gt; Div_10 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Sqrt_9 -&gt; Div_10 [label=&quot;FLOAT16(4,512,1)&quot;];
+  O_11 [label=&quot;_onx_div0\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Div_10 -&gt; O_11;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ef1973a8659ec04710196dfded540bcbd42ef39b.png" alt="digraph{
-  ranksep=0.25;
-  size=7;
-  nodesep=0.05;
-  orientation=portrait;
-
-  add_1 [shape=box color=red label=&quot;add_1\nTensorProto.FLOAT16\nshape=[4, 512, 128]&quot; fontsize=10];
-
-  _onx_div0 [shape=box color=green label=&quot;_onx_div0\nTensorProto.FLOAT16\nshape=[4, 512, 128]&quot; fontsize=10];
-
-
-  p_model_albert_embeddings_layernorm_weight [shape=box label=&quot;p_model_albert_embeddings_layernorm_weight&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1. 1. 1. 1. 1. 1. 1. 1. ...&quot; fontsize=10];
-  Constant -&gt; p_model_albert_embeddings_layernorm_weight;
-
-  p_model_albert_embeddings_layernorm_bias [shape=box label=&quot;p_model_albert_embeddings_layernorm_bias&quot; fontsize=10];
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0. 0. 0. 0. 0. 0. 0. 0. ...&quot; fontsize=10];
-  Constant1 -&gt; p_model_albert_embeddings_layernorm_bias;
-
-  LayerNormalization [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;LayerNormalization\naxis=-1\nepsilon=0.0\nstash_type=1&quot; fontsize=10];
-  add_1 -&gt; LayerNormalization;
-  p_model_albert_embeddings_layernorm_weight -&gt; LayerNormalization;
-  p_model_albert_embeddings_layernorm_bias -&gt; LayerNormalization;
-  LayerNormalization -&gt; _onx_div0;
+<div class="graphviz"><img src="../../../_images/graphviz-3f81e25ad60b84fc207cefa3df8902464e0bbc57.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;add_1\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; p_model_albert_embeddings_layernorm_weight&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; p_model_albert_embeddings_layernorm_bias&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_3 [label=&quot;LayerNormalization(., ., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; LayerNormalization_3 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_1 -&gt; LayerNormalization_3 [label=&quot;FLOAT16(128)&quot;];
+  Constant_2 -&gt; LayerNormalization_3 [label=&quot;FLOAT16(128)&quot;];
+  O_4 [label=&quot;_onx_div0\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  LayerNormalization_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationPattern.apply">
@@ -951,60 +908,40 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">LayerNormalizationScalePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#LayerNormalizationScalePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fused LayerNormalization, scale, bias just after.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-090095808feed7b831dbf45cdea79815180c7ba5.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  nodesep=0.05;
-  size=7;
-
-  scale [shape=box color=red label=&quot;scale\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  s0 [shape=box color=red label=&quot;s0\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-0.1  -0.01 -0.05]&quot; fontsize=10];
-  Constant -&gt; s0;
-
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2. 3. 4.]&quot; fontsize=10];
-  Constant1 -&gt; scale;
-
-  norm [shape=box label=&quot;norm&quot; fontsize=10];
-  LayerNormalization [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;LayerNormalization\nepsilon=0.1&quot; fontsize=10];
-  X -&gt; LayerNormalization;
-  s0 -&gt; LayerNormalization;
-  LayerNormalization -&gt; norm;
-
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  norm -&gt; Mul;
-  scale -&gt; Mul;
-  Mul -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-c117fed3022350a3052ee359dc126d0b2f14b72a.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;scale\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;s0\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; s0&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_5 [label=&quot;LayerNormalization(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_6 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; LayerNormalization_5 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_3 -&gt; LayerNormalization_5 [label=&quot;FLOAT(3)&quot;];
+  LayerNormalization_5 -&gt; Mul_6 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_4 -&gt; Mul_6 [label=&quot;FLOAT(3)&quot;];
+  O_7 [label=&quot;Y\nFLOAT(a,3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_6 -&gt; O_7;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-81ee8e5bb285fcdb82d2a7d1953d6a71a480cbd5.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-  size=7;
-
-  scale [shape=box color=red label=&quot;scale\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  s0 [shape=box color=red label=&quot;s0\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-
-
-  LayerNormalizationScalePattern_s0 [shape=box label=&quot;LayerNormalizationScalePattern_s0&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  s0 -&gt; Mul;
-  scale -&gt; Mul;
-  Mul -&gt; LayerNormalizationScalePattern_s0;
-
-  LayerNormalization [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;LayerNormalization\nepsilon=0.1&quot; fontsize=10];
-  X -&gt; LayerNormalization;
-  LayerNormalizationScalePattern_s0 -&gt; LayerNormalization;
-  LayerNormalization -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-b43a2db145a21589c54a3679d4b1e31a53d3da5a.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;scale\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;s0\nFLOAT(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Mul_3 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_4 [label=&quot;LayerNormalization(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Mul_3 [label=&quot;FLOAT(3)&quot;];
+  I_0 -&gt; Mul_3 [label=&quot;FLOAT(3)&quot;];
+  I_1 -&gt; LayerNormalization_4 [label=&quot;FLOAT(a,b)&quot;];
+  Mul_3 -&gt; LayerNormalization_4 [label=&quot;FLOAT(3)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  LayerNormalization_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern.apply">
@@ -1067,110 +1004,59 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">RMSNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#RMSNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses the nodes equivalent to RMSNormalization(23).</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-76a9938fb6d51850522deafab8f4479e762ba70b.png" alt="digraph{
-  orientation=portrait;
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT16\nshape=['a', 'D']&quot; fontsize=10];
-  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT16\nshape=['a', 'D']&quot; fontsize=10];
-
-
-  exp [shape=box label=&quot;exp&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2.]&quot; fontsize=10];
-  Constant -&gt; exp;
-
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1]&quot; fontsize=10];
-  Constant1 -&gt; axis;
-
-  eps [shape=box label=&quot;eps&quot; fontsize=10];
-  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1.e-06]&quot; fontsize=10];
-  Constant12 -&gt; eps;
-
-  one [shape=box label=&quot;one&quot; fontsize=10];
-  Constant123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1.]&quot; fontsize=10];
-  Constant123 -&gt; one;
-
-  Xc [shape=box label=&quot;Xc&quot; fontsize=10];
-  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=1&quot; fontsize=10];
-  X -&gt; Cast;
-  Cast -&gt; Xc;
-
-  x2 [shape=box label=&quot;x2&quot; fontsize=10];
-  Pow [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Pow&quot; fontsize=10];
-  Xc -&gt; Pow;
-  exp -&gt; Pow;
-  Pow -&gt; x2;
-
-  xr [shape=box label=&quot;xr&quot; fontsize=10];
-  ReduceMean [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceMean&quot; fontsize=10];
-  x2 -&gt; ReduceMean;
-  axis -&gt; ReduceMean;
-  ReduceMean -&gt; xr;
-
-  xa [shape=box label=&quot;xa&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  xr -&gt; Add;
-  eps -&gt; Add;
-  Add -&gt; xa;
-
-  xq [shape=box label=&quot;xq&quot; fontsize=10];
-  Sqrt [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sqrt&quot; fontsize=10];
-  xa -&gt; Sqrt;
-  Sqrt -&gt; xq;
-
-  Z [shape=box label=&quot;Z&quot; fontsize=10];
-  Div [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Div&quot; fontsize=10];
-  one -&gt; Div;
-  xq -&gt; Div;
-  Div -&gt; Z;
-
-  Yc [shape=box label=&quot;Yc&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  Z -&gt; Mul;
-  Xc -&gt; Mul;
-  Mul -&gt; Yc;
-
-  Cast1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
-  Yc -&gt; Cast1;
-  Cast1 -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-c6c872ffae07d8943761d2a1ec77ca60e981c047.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT16(a,D)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;axis\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; exp&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; axis&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; eps&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_5 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_6 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Pow_7 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceMean_8 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_9 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sqrt_10 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_11 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_12 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_13 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_6 [label=&quot;FLOAT16(a,D)&quot;];
+  Cast_6 -&gt; Pow_7 [label=&quot;FLOAT(a,D)&quot;];
+  Constant_2 -&gt; Pow_7 [label=&quot;FLOAT16(1)&quot;];
+  Pow_7 -&gt; ReduceMean_8 [label=&quot;FLOAT(a,D)&quot;];
+  Constant_3 -&gt; ReduceMean_8 [label=&quot;INT64(1)&quot;];
+  ReduceMean_8 -&gt; Add_9 [label=&quot;FLOAT(a,1)&quot;];
+  Constant_4 -&gt; Add_9 [label=&quot;FLOAT(1)&quot;];
+  Add_9 -&gt; Sqrt_10 [label=&quot;FLOAT(a,1)&quot;];
+  Constant_5 -&gt; Div_11 [label=&quot;FLOAT(1)&quot;];
+  Sqrt_10 -&gt; Div_11 [label=&quot;FLOAT(a,1)&quot;];
+  Div_11 -&gt; Mul_12 [label=&quot;FLOAT(a,1)&quot;];
+  Cast_6 -&gt; Mul_12 [label=&quot;FLOAT(a,D)&quot;];
+  Mul_12 -&gt; Cast_13 [label=&quot;FLOAT(a,D)&quot;];
+  O_14 [label=&quot;Y\nFLOAT16(a,D)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_13 -&gt; O_14;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-e6aa433d3eb09daf9d813441bd7e1b2f677e2139.png" alt="digraph{
-  ranksep=0.25;
-  size=7;
-  orientation=portrait;
-  nodesep=0.05;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT16\nshape=['a', 'D']&quot; fontsize=10];
-  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT16\nshape=['a', 'D']&quot; fontsize=10];
-
-
-  shape_X [shape=box label=&quot;shape_X&quot; fontsize=10];
-  Shape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
-  X -&gt; Shape;
-  Shape -&gt; shape_X;
-
-  gather_shape_X [shape=box label=&quot;gather_shape_X&quot; fontsize=10];
-  Gather [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Gather&quot; fontsize=10];
-  shape_X -&gt; Gather;
-  axis -&gt; Gather;
-  Gather -&gt; gather_shape_X;
-
-  constantofshape_gather_shape_X [shape=box label=&quot;constantofshape_gather_shape_X&quot; fontsize=10];
-  ConstantOfShape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape\nvalue=[1.]&quot; fontsize=10];
-  gather_shape_X -&gt; ConstantOfShape;
-  ConstantOfShape -&gt; constantofshape_gather_shape_X;
-
-  RMSNormalization [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;RMSNormalization\naxis=-1\nepsilon=1e-06\nstash_type=1&quot; fontsize=10];
-  X -&gt; RMSNormalization;
-  constantofshape_gather_shape_X -&gt; RMSNormalization;
-  RMSNormalization -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-b5a2d5872658b94f7bcadef66ee1216de8a90e3e.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT16(a,D)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;axis\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Shape_2 [label=&quot;Shape(.)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Gather_3 [label=&quot;Gather(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ConstantOfShape_4 [label=&quot;ConstantOfShape(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  RMSNormalization_5 [label=&quot;RMSNormalization(., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Shape_2 [label=&quot;FLOAT16(a,D)&quot;];
+  Shape_2 -&gt; Gather_3 [label=&quot;INT64(2)&quot;];
+  I_1 -&gt; Gather_3 [label=&quot;INT64(1)&quot;];
+  Gather_3 -&gt; ConstantOfShape_4 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; RMSNormalization_5 [label=&quot;FLOAT16(a,D)&quot;];
+  ConstantOfShape_4 -&gt; RMSNormalization_5 [label=&quot;FLOAT16(?)&quot;];
+  O_6 [label=&quot;Y\nFLOAT16(a,D)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  RMSNormalization_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern.apply">

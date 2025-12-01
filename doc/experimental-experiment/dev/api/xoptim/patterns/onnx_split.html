@@ -551,70 +551,44 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_split.</span></span><span class="sig-name descname"><span class="pre">SlicesSplitPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_split.html#SlicesSplitPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_split.SlicesSplitPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Merges multiple parallel slices into a split.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-021adc719fe4eae7ed1a76b45399dbbc2db67541.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  ranksep=0.25;
-  nodesep=0.05;
-
-  transpose_1 [shape=box color=red label=&quot;transpose_1\nTensorProto.FLOAT16\nshape=[2, 2, 1024, 512]&quot; fontsize=10];
-
-  slice_11 [shape=box color=green label=&quot;slice_11\nTensorProto.FLOAT16\nshape=[2, 2, 1024, 256]&quot; fontsize=10];
-  slice_12 [shape=box color=green label=&quot;slice_12\nTensorProto.FLOAT16\nshape=[2, 2, 1024, 256]&quot; fontsize=10];
-
-
-  init7_s1_0 [shape=box label=&quot;init7_s1_0&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0]&quot; fontsize=10];
-  Constant -&gt; init7_s1_0;
-
-  init7_s1_256 [shape=box label=&quot;init7_s1_256&quot; fontsize=10];
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[256]&quot; fontsize=10];
-  Constant1 -&gt; init7_s1_256;
-
-  init7_s1_3 [shape=box label=&quot;init7_s1_3&quot; fontsize=10];
-  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[3]&quot; fontsize=10];
-  Constant12 -&gt; init7_s1_3;
-
-  init7_s1_9223372036854775807 [shape=box label=&quot;init7_s1_9223372036854775807&quot; fontsize=10];
-  Constant123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[9223372036854775807]&quot; fontsize=10];
-  Constant123 -&gt; init7_s1_9223372036854775807;
-
-  Slice [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Slice&quot; fontsize=10];
-  transpose_1 -&gt; Slice;
-  init7_s1_0 -&gt; Slice;
-  init7_s1_256 -&gt; Slice;
-  init7_s1_3 -&gt; Slice;
-  Slice -&gt; slice_11;
-
-  Slice1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Slice&quot; fontsize=10];
-  transpose_1 -&gt; Slice1;
-  init7_s1_256 -&gt; Slice1;
-  init7_s1_9223372036854775807 -&gt; Slice1;
-  init7_s1_3 -&gt; Slice1;
-  Slice1 -&gt; slice_12;
+<div class="graphviz"><img src="../../../_images/graphviz-b99ccfba6cf24b05d512ae73c6fd2954c1f27389.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;transpose_1\nFLOAT16(2,2,1024,512)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; init7_s1_0&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init7_s1_256&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; init7_s1_3&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; init7_s1_9223372036854775807&quot;, fillcolor=&quot;#cccccc&quot;];
+  Slice_5 [label=&quot;Slice(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Slice_6 [label=&quot;Slice(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Slice_5 [label=&quot;FLOAT16(2,2,1024,512)&quot;];
+  Constant_1 -&gt; Slice_5 [label=&quot;INT64(1)&quot;];
+  Constant_2 -&gt; Slice_5 [label=&quot;INT64(1)&quot;];
+  Constant_3 -&gt; Slice_5 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; Slice_6 [label=&quot;FLOAT16(2,2,1024,512)&quot;];
+  Constant_2 -&gt; Slice_6 [label=&quot;INT64(1)&quot;];
+  Constant_4 -&gt; Slice_6 [label=&quot;INT64(1)&quot;];
+  Constant_3 -&gt; Slice_6 [label=&quot;INT64(1)&quot;];
+  O_7 [label=&quot;slice_11\nFLOAT16(2,2,1024,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Slice_5 -&gt; O_7;
+  O_8 [label=&quot;slice_12\nFLOAT16(2,2,1024,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Slice_6 -&gt; O_8;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-1125633d4cbc5b8732b1e79114fde773c086463b.png" alt="digraph{
-  ranksep=0.25;
-  size=7;
-  orientation=portrait;
-  nodesep=0.05;
-
-  transpose_1 [shape=box color=red label=&quot;transpose_1\nTensorProto.FLOAT16\nshape=[2, 2, 1024, 512]&quot; fontsize=10];
-
-  slice_11 [shape=box color=green label=&quot;slice_11\nTensorProto.FLOAT16\nshape=[2, 2, 1024, 256]&quot; fontsize=10];
-  slice_12 [shape=box color=green label=&quot;slice_12\nTensorProto.FLOAT16\nshape=[2, 2, 1024, 256]&quot; fontsize=10];
-
-
-  init7_s2_256_256 [shape=box label=&quot;init7_s2_256_256&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[256 256]&quot; fontsize=10];
-  Constant -&gt; init7_s2_256_256;
-
-  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=3&quot; fontsize=10];
-  transpose_1 -&gt; Split;
-  init7_s2_256_256 -&gt; Split;
-  Split -&gt; slice_11;
-  Split -&gt; slice_12;
+<div class="graphviz"><img src="../../../_images/graphviz-b48e515655b1f32e5dfb0519fefde4f0cfba7f39.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;transpose_1\nFLOAT16(2,2,1024,512)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; init7_s2_256_256&quot;, fillcolor=&quot;#cccccc&quot;];
+  Split_2 [label=&quot;Split(., ., axis=3)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Split_2 [label=&quot;FLOAT16(2,2,1024,512)&quot;];
+  Constant_1 -&gt; Split_2 [label=&quot;INT64(2)&quot;];
+  O_3 [label=&quot;slice_11\nFLOAT16(2,2,1024,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Split_2 -&gt; O_3;
+  O_4 [label=&quot;slice_12\nFLOAT16(2,2,1024,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Split_2 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_split.SlicesSplitPattern.apply">
@@ -677,44 +651,28 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_split.</span></span><span class="sig-name descname"><span class="pre">SplitConcatPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_split.html#SplitConcatPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_split.SplitConcatPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces Split + Concat into identity if this is equivalent.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-1f223a49e10848225a2a8a00be7a93556c47570d.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  ranksep=0.25;
-  nodesep=0.05;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-
-
-  s1 [shape=box label=&quot;s1&quot; fontsize=10];
-  s2 [shape=box label=&quot;s2&quot; fontsize=10];
-  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=-1\nnum_outputs=2&quot; fontsize=10];
-  X -&gt; Split;
-  Split -&gt; s1;
-  Split -&gt; s2;
-
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=-1&quot; fontsize=10];
-  s1 -&gt; Concat;
-  s2 -&gt; Concat;
-  Concat -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-ca916bd2dd8cbecbd0dde82c3a6052a2084c923b.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Split_1 [label=&quot;Split(., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_2 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Split_1 [label=&quot;FLOAT(a,b)&quot;];
+  Split_1 -&gt; Concat_2 [label=&quot;FLOAT(a,?)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-8156b2d07b1531d82f5aee019f2ba87e518d99a1.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-  nodesep=0.05;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-
-
-  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  X -&gt; Identity;
-  Identity -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-7884c60060b37ce8dead795f91cfffba263285bc.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_1 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Identity_1 [label=&quot;FLOAT(a,b)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_split.SplitConcatPattern.apply">

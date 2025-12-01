@@ -10,7 +10,7 @@
         <title>.xoptim.patterns_ml.tree_ensemble - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -553,6 +553,39 @@
 with one TreeEnsembleRegressor. All trees must have only one target
 (it can be extended to multiple) and is assigned a distinct
 dimension. The aggregation must be SUM.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-76dd5f3cb6b8530c6c954d80da40a2c06de40ae4.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Concat_1 [label=&quot;Concat(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sigmoid_2 [label=&quot;Sigmoid(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sigmoid_3 [label=&quot;Sigmoid(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  TreeEnsembleRegressor_4 [label=&quot;ai.onnx.ml.\nTreeEnsembleRegressor(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  TreeEnsembleRegressor_5 [label=&quot;ai.onnx.ml.\nTreeEnsembleRegressor(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sigmoid_2 -&gt; Concat_1;
+  Sigmoid_3 -&gt; Concat_1;
+  TreeEnsembleRegressor_4 -&gt; Sigmoid_2 [label=&quot;FLOAT(batch,1)&quot;];
+  TreeEnsembleRegressor_5 -&gt; Sigmoid_3 [label=&quot;FLOAT(batch,1)&quot;];
+  I_0 -&gt; TreeEnsembleRegressor_4 [label=&quot;FLOAT(batch,3)&quot;];
+  I_0 -&gt; TreeEnsembleRegressor_5 [label=&quot;FLOAT(batch,3)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(batch,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_1 -&gt; O_6;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-8d9488db55aef0c9461de89a961cb2f8a80789cc.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  TreeEnsembleRegressor_1 [label=&quot;ai.onnx.ml.\nTreeEnsembleRegressor(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sigmoid_2 [label=&quot;Sigmoid(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; TreeEnsembleRegressor_1 [label=&quot;FLOAT(batch,3)&quot;];
+  TreeEnsembleRegressor_1 -&gt; Sigmoid_2 [label=&quot;FLOAT(batch,2)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(batch,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Sigmoid_2 -&gt; O_3;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorConcatPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">trees_or_sigmoid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ml/tree_ensemble.html#TreeEnsembleRegressorConcatPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorConcatPattern.apply" title="Link to this definition">¶</a></dt>
@@ -613,6 +646,32 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ml.tree_ensemble.</span></span><span class="sig-name descname"><span class="pre">TreeEnsembleRegressorMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ml/tree_ensemble.html#TreeEnsembleRegressorMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces TreeEnsembleRegressor + Mul(., scalar) with TreeEnsembleRegressor.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-bdde09db4d1245b89eced42dd7dd98e905e56f66.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; cst&quot;, fillcolor=&quot;#cccccc&quot;];
+  TreeEnsembleRegressor_2 [label=&quot;ai.onnx.ml.\nTreeEnsembleRegressor(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_3 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; TreeEnsembleRegressor_2 [label=&quot;FLOAT(batch,3)&quot;];
+  TreeEnsembleRegressor_2 -&gt; Mul_3 [label=&quot;FLOAT(batch,1)&quot;];
+  Constant_1 -&gt; Mul_3 [label=&quot;FLOAT(1)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(batch,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_3 -&gt; O_4;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-a6868926a97351052c6bd9591bc7614fcdc888b4.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  TreeEnsembleRegressor_1 [label=&quot;ai.onnx.ml.\nTreeEnsembleRegressor(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; TreeEnsembleRegressor_1 [label=&quot;FLOAT(batch,3)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(batch,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  TreeEnsembleRegressor_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ml/tree_ensemble.html#TreeEnsembleRegressorMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.apply" title="Link to this definition">¶</a></dt>

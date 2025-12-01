@@ -10,7 +10,7 @@
         <title>.xoptim.patterns_ort.fused_conv - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -550,6 +550,38 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_conv.FusedConvPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_conv.</span></span><span class="sig-name descname"><span class="pre">FusedConvPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_conv.html#FusedConvPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_conv.FusedConvPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the Conv + Relu into FusedConv.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-d70e6d61cacda5792986e9e08cb6aee0cde6587a.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;W\nFLOAT(8,8,3,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;B\nFLOAT(8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Conv_3 [label=&quot;Conv(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Relu_4 [label=&quot;Relu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Conv_3 [label=&quot;FLOAT(1,8,6,6)&quot;];
+  I_0 -&gt; Conv_3 [label=&quot;FLOAT(8,8,3,3)&quot;];
+  I_2 -&gt; Conv_3 [label=&quot;FLOAT(8)&quot;];
+  Conv_3 -&gt; Relu_4 [label=&quot;FLOAT(1,8,6,6)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Relu_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-4447c592d63cf21202f66289982479894cb3dd76.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;W\nFLOAT(8,8,3,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;B\nFLOAT(8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  FusedConv_3 [label=&quot;com.microsoft.\nFusedConv(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; FusedConv_3 [label=&quot;FLOAT(1,8,6,6)&quot;];
+  I_0 -&gt; FusedConv_3 [label=&quot;FLOAT(8,8,3,3)&quot;];
+  I_2 -&gt; FusedConv_3 [label=&quot;FLOAT(8)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedConv_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_conv.FusedConvPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_act</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_conv.html#FusedConvPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_conv.FusedConvPattern.apply" title="Link to this definition">¶</a></dt>

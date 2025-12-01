@@ -10,7 +10,7 @@
         <title>.xoptim.patterns.onnx_sub - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -551,54 +551,6 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_sub.</span></span><span class="sig-name descname"><span class="pre">Sub1MulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_sub.html#Sub1MulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_sub.Sub1MulPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence <cite>(1 - X) x Y</cite>  by <cite>Y - X x Y</cite> to avoid the creation
 of a constant in the graph. <cite>x</cite> means element wise multiplication.</p>
-<p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-c60ef20070e95ea199632143621d3481ed793f66.png" alt="digraph{
-  ranksep=0.25;
-  size=7;
-  orientation=portrait;
-  nodesep=0.05;
-
-  sigmoid_1 [shape=box color=red label=&quot;sigmoid_1\nTensorProto.FLOAT\nshape=[2, 1024, 1024]&quot; fontsize=10];
-  input29 [shape=box color=red label=&quot;input29\nTensorProto.FLOAT\nshape=[2, 1024, 1024]&quot; fontsize=10];
-
-  mul_55 [shape=box color=green label=&quot;mul_55\nTensorProto.FLOAT\nshape=[2, 1024, 1024]&quot; fontsize=10];
-
-
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  input29 -&gt; Mul;
-  sub_1 -&gt; Mul;
-  Mul -&gt; mul_55;
-
-  sub_1 [shape=box label=&quot;sub_1&quot; fontsize=10];
-  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
-  fill -&gt; Sub;
-  sigmoid_1 -&gt; Sub;
-  Sub -&gt; sub_1;
-}" class="graphviz" /></div>
-<p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-dd47e1102ba3c02737227ccc3de8b4f847b3801c.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-
-  sigmoid_1 [shape=box color=red label=&quot;sigmoid_1\nTensorProto.FLOAT\nshape=[2, 1024, 1024]&quot; fontsize=10];
-  input29 [shape=box color=red label=&quot;input29\nTensorProto.FLOAT\nshape=[2, 1024, 1024]&quot; fontsize=10];
-
-  mul_55 [shape=box color=green label=&quot;mul_55\nTensorProto.FLOAT\nshape=[2, 1024, 1024]&quot; fontsize=10];
-
-
-  Sub1MulPattern__mul_55 [shape=box label=&quot;Sub1MulPattern__mul_55&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  input29 -&gt; Mul;
-  sigmoid_1 -&gt; Mul;
-  Mul -&gt; Sub1MulPattern__mul_55;
-
-  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
-  input29 -&gt; Sub;
-  Sub1MulPattern__mul_55 -&gt; Sub;
-  Sub -&gt; mul_55;
-}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_sub.Sub1MulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_sub.html#Sub1MulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_sub.Sub1MulPattern.apply" title="Link to this definition">¶</a></dt>

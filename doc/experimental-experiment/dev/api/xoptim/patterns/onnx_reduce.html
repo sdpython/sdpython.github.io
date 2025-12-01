@@ -551,84 +551,51 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reduce.</span></span><span class="sig-name descname"><span class="pre">ReduceSumNormalizePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reduce.html#ReduceSumNormalizePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Nodes equivalent to a reduction.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-f05c82d8d5905004427194ed92cf6ee5ab2a9455.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
-  size=7;
-  ranksep=0.25;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
-  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=-1&quot; fontsize=10];
-  Constant -&gt; axis;
-
-  xc [shape=box label=&quot;xc&quot; fontsize=10];
-  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=1&quot; fontsize=10];
-  X -&gt; Cast;
-  Cast -&gt; xc;
-
-  red [shape=box label=&quot;red&quot; fontsize=10];
-  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1&quot; fontsize=10];
-  xc -&gt; ReduceSum;
-  axis -&gt; ReduceSum;
-  ReduceSum -&gt; red;
-
-  mul [shape=box label=&quot;mul&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  red -&gt; Mul;
-  Y -&gt; Mul;
-  Mul -&gt; mul;
-
-  subc [shape=box label=&quot;subc&quot; fontsize=10];
-  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
-  xc -&gt; Sub;
-  mul -&gt; Sub;
-  Sub -&gt; subc;
-
-  Cast1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
-  subc -&gt; Cast1;
-  Cast1 -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-77be558b164e1cda00167357db072d7c0af7a281.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;axis\nINT64()&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; axis&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_4 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_5 [label=&quot;ReduceSum(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_6 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sub_7 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_8 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Cast_4 [label=&quot;FLOAT16(a,b)&quot;];
+  Cast_4 -&gt; ReduceSum_5 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_3 -&gt; ReduceSum_5 [label=&quot;INT64()&quot;];
+  ReduceSum_5 -&gt; Mul_6 [label=&quot;FLOAT(a,1)&quot;];
+  I_0 -&gt; Mul_6 [label=&quot;FLOAT(a,b)&quot;];
+  Cast_4 -&gt; Sub_7 [label=&quot;FLOAT(a,b)&quot;];
+  Mul_6 -&gt; Sub_7 [label=&quot;FLOAT(a,b)&quot;];
+  Sub_7 -&gt; Cast_8 [label=&quot;FLOAT(a,b)&quot;];
+  O_9 [label=&quot;Z\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_8 -&gt; O_9;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3b7c51a510b31b175a89d536a5aed8e6cea1ca10.png" alt="digraph{
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-  ranksep=0.25;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
-  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
-
-
-  ReduceSumNormalizePattern_red [shape=box label=&quot;ReduceSumNormalizePattern_red&quot; fontsize=10];
-  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1&quot; fontsize=10];
-  X -&gt; ReduceSum;
-  axis -&gt; ReduceSum;
-  ReduceSum -&gt; ReduceSumNormalizePattern_red;
-
-  ReduceSumNormalizePattern_Y [shape=box label=&quot;ReduceSumNormalizePattern_Y&quot; fontsize=10];
-  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
-  Y -&gt; Cast;
-  Cast -&gt; ReduceSumNormalizePattern_Y;
-
-  ReduceSumNormalizePattern_mul [shape=box label=&quot;ReduceSumNormalizePattern_mul&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  ReduceSumNormalizePattern_red -&gt; Mul;
-  ReduceSumNormalizePattern_Y -&gt; Mul;
-  Mul -&gt; ReduceSumNormalizePattern_mul;
-
-  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
-  X -&gt; Sub;
-  ReduceSumNormalizePattern_mul -&gt; Sub;
-  Sub -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-0e87ce02932646d7b28267f871d732c9c899aad3.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;axis\nINT64()&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  ReduceSum_3 [label=&quot;ReduceSum(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_4 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_5 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sub_6 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; ReduceSum_3 [label=&quot;FLOAT16(a,b)&quot;];
+  I_2 -&gt; ReduceSum_3 [label=&quot;INT64()&quot;];
+  I_0 -&gt; Cast_4 [label=&quot;FLOAT(a,b)&quot;];
+  ReduceSum_3 -&gt; Mul_5 [label=&quot;FLOAT16()&quot;];
+  Cast_4 -&gt; Mul_5 [label=&quot;FLOAT16(a,b)&quot;];
+  I_1 -&gt; Sub_6 [label=&quot;FLOAT16(a,b)&quot;];
+  Mul_5 -&gt; Sub_6 [label=&quot;FLOAT16()&quot;];
+  O_7 [label=&quot;Z\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Sub_6 -&gt; O_7;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern.apply">

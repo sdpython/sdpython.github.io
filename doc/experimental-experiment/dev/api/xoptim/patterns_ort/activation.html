@@ -10,7 +10,7 @@
         <title>.xoptim.patterns_ort.activation - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -554,6 +554,50 @@
 <span class="n">y</span> <span class="o">=</span> <span class="n">t</span> <span class="p">(</span> <span class="n">Erf</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-09fe02729097382e4dd358c3553905d6d81fa7ea.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;B\nFLOAT(8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; B&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; sq2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_5 [label=&quot;Constant() -&gt; half&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_6 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_7 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Erf_8 [label=&quot;Erf(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_9 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_10 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_11 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Add_6 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_2 -&gt; Add_6 [label=&quot;FLOAT(8)&quot;];
+  Add_6 -&gt; Div_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_3 -&gt; Div_7 [label=&quot;FLOAT(1)&quot;];
+  Div_7 -&gt; Erf_8 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Erf_8 -&gt; Add_9 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_4 -&gt; Add_9 [label=&quot;FLOAT(1)&quot;];
+  Add_6 -&gt; Mul_10 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Add_9 -&gt; Mul_10 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Mul_10 -&gt; Mul_11 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_5 -&gt; Mul_11 [label=&quot;FLOAT(1)&quot;];
+  O_12 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_11 -&gt; O_12;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-04448b099de84de8fe0ea97f0e9b40a1fad5fcd2.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;B\nFLOAT(8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  BiasGelu_2 [label=&quot;com.microsoft.\nBiasGelu(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; BiasGelu_2 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  I_0 -&gt; BiasGelu_2 [label=&quot;FLOAT(8)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  BiasGelu_2 -&gt; O_3;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.BiasGeluPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">div_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">erf_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_1_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">half_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#BiasGeluPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.BiasGeluPattern.apply" title="Link to this definition">¶</a></dt>
@@ -614,6 +658,34 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.BiasSoftmaxPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.activation.</span></span><span class="sig-name descname"><span class="pre">BiasSoftmaxPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#BiasSoftmaxPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.BiasSoftmaxPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces Softmax(Add(x,y), axis=-1) by BiasSoftmax(x,y,axis=-1)</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-40047575bc021ad7b53e3d399d974226493faddc.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(16,8,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(16,1,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_2 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Softmax_3 [label=&quot;Softmax(., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Add_2 [label=&quot;FLOAT(16,8,4,8)&quot;];
+  I_1 -&gt; Add_2 [label=&quot;FLOAT(16,1,4,8)&quot;];
+  Add_2 -&gt; Softmax_3 [label=&quot;FLOAT(16,8,4,8)&quot;];
+  O_4 [label=&quot;Z\nFLOAT(16,8,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Softmax_3 -&gt; O_4;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-b9239d346bb9f4c5a6f0f8712f157ce4f98ccd5b.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(16,8,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(16,1,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  BiasSoftmax_2 [label=&quot;com.microsoft.\nBiasSoftmax(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; BiasSoftmax_2 [label=&quot;FLOAT(16,8,4,8)&quot;];
+  I_1 -&gt; BiasSoftmax_2 [label=&quot;FLOAT(16,1,4,8)&quot;];
+  O_3 [label=&quot;Z\nFLOAT(16,8,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  BiasSoftmax_2 -&gt; O_3;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.BiasSoftmaxPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">softmax_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#BiasSoftmaxPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.BiasSoftmaxPattern.apply" title="Link to this definition">¶</a></dt>
@@ -674,6 +746,28 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.FastGeluPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.activation.</span></span><span class="sig-name descname"><span class="pre">FastGeluPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#FastGeluPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.FastGeluPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces Gelu by FastGelu.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-aa485316b7884fa36cdad8c77fe7694388bd91cd.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;linear_65\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Gelu_1 [label=&quot;Gelu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Gelu_1 [label=&quot;FLOAT16(4,512,16384)&quot;];
+  O_2 [label=&quot;mul_44\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gelu_1 -&gt; O_2;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-0ce6a52ef5237e4efb026fc5629f12d0d8c651b5.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;linear_65\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  FastGelu_1 [label=&quot;com.microsoft.\nFastGelu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; FastGelu_1 [label=&quot;FLOAT16(4,512,16384)&quot;];
+  O_2 [label=&quot;mul_44\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FastGelu_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.FastGeluPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gelu_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#FastGeluPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.FastGeluPattern.apply" title="Link to this definition">¶</a></dt>
@@ -734,6 +828,43 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.activation.</span></span><span class="sig-name descname"><span class="pre">GeluErfPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#GeluErfPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Detects the decomposed version of Gelu with Erf.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-e3fe6e5e34d6cb0d293639f0a4a2526fc402b78f.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; sq2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; half&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_4 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Erf_5 [label=&quot;Erf(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_6 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_7 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Div_4 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_1 -&gt; Div_4 [label=&quot;FLOAT(1)&quot;];
+  Div_4 -&gt; Erf_5 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Erf_5 -&gt; Add_6 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_2 -&gt; Add_6 [label=&quot;FLOAT(1)&quot;];
+  I_0 -&gt; Mul_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Add_6 -&gt; Mul_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_3 -&gt; Mul_8 [label=&quot;FLOAT(1)&quot;];
+  Mul_7 -&gt; Mul_8 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  O_9 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_8 -&gt; O_9;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-c1eb3b997cebd57ab59a9e19e25928aad6732464.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Gelu_1 [label=&quot;com.microsoft.\nGelu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Gelu_1 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gelu_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.apply_pattern">
 <span class="sig-name descname"><span class="pre">apply_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cst2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#GeluErfPattern.apply_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.apply_pattern" title="Link to this definition">¶</a></dt>
@@ -775,12 +906,85 @@ will automatically determine the position of the new nodes.</p></li>
 <p><img src="../../../_images/math/95f64dad5adda2b23d533eb3bebb2215545b245d.svg" alt="y = \frac{x}{2} \left(1 + \tanh\left(\sqrt{\frac{2}{\pi}}
 (x + 0.044715 * x^3)\right)\right)"/></p>
 </div></div>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-109130c32eff1897a3167980bcb1e4c59e5f30a7.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;linear_73\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; init10_s1_63&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init10_s_89&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; init10_s_90&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; init10_s_91&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_5 [label=&quot;Constant() -&gt; init10_s_88&quot;, fillcolor=&quot;#cccccc&quot;];
+  Pow_6 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_7 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_8 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_9 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Tanh_10 [label=&quot;Tanh(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_11 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_12 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_13 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Pow_6 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_1 -&gt; Pow_6 [label=&quot;FLOAT16(1)&quot;];
+  Pow_6 -&gt; Mul_7 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_2 -&gt; Mul_7 [label=&quot;FLOAT16()&quot;];
+  I_0 -&gt; Add_8 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Mul_7 -&gt; Add_8 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Add_8 -&gt; Mul_9 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_3 -&gt; Mul_9 [label=&quot;FLOAT16()&quot;];
+  Mul_9 -&gt; Tanh_10 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Tanh_10 -&gt; Add_11 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_4 -&gt; Add_11 [label=&quot;FLOAT16()&quot;];
+  I_0 -&gt; Mul_12 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_5 -&gt; Mul_12 [label=&quot;FLOAT16()&quot;];
+  Mul_12 -&gt; Mul_13 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Add_11 -&gt; Mul_13 [label=&quot;FLOAT16(4,512,128)&quot;];
+  O_14 [label=&quot;mul_52\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_13 -&gt; O_14;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-88b99cfda4e722b1e6ac226fa0edd6ff26e824e4.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;linear_73\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Gelu_1 [label=&quot;com.microsoft.\nGelu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Gelu_1 [label=&quot;FLOAT16(4,512,128)&quot;];
+  O_2 [label=&quot;mul_52\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gelu_1 -&gt; O_2;
+}" class="graphviz" /></div>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.QuickGeluPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.activation.</span></span><span class="sig-name descname"><span class="pre">QuickGeluPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#QuickGeluPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.QuickGeluPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces Mul(x, Sigmoid(x)) by QuickGelu(x, alpha=1)</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-97143cf1d1391f0b254fe0bee0b2a751ac2e2960.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Sigmoid_1 [label=&quot;Sigmoid(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_2 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Sigmoid_1 [label=&quot;FLOAT(1,8,6,6)&quot;];
+  I_0 -&gt; Mul_2 [label=&quot;FLOAT(1,8,6,6)&quot;];
+  Sigmoid_1 -&gt; Mul_2 [label=&quot;FLOAT(1,8,6,6)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_2 -&gt; O_3;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-bd349dfe0e045e753873120aed97abb1f5157015.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  QuickGelu_1 [label=&quot;com.microsoft.\nQuickGelu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; QuickGelu_1 [label=&quot;FLOAT(1,8,6,6)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(1,8,6,6)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  QuickGelu_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.activation.QuickGeluPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmoid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#QuickGeluPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.QuickGeluPattern.apply" title="Link to this definition">¶</a></dt>

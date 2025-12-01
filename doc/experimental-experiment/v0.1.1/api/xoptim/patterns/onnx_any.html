@@ -552,6 +552,28 @@
 <dd><p>Replaces operator such as
 Div(X, 1), Mul(X, 1), Add(X, 0), Sub(X, 0), Transpose(X, [0, 1, 2, …])
 by identity nodes.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-0f4852996c43b944ba6ffd5fdd15282965fbdff3.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;x3\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Transpose_1 [label=&quot;Transpose(., perm=[0, 1, 2])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_0 -&gt; Transpose_1 [label=&quot;FLOAT(a,b,c)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_1 -&gt; O_2;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-001558a4277df0546f0baf6d5e9e8c5067c763d1.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;x3\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_1 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Identity_1 [label=&quot;FLOAT(a,b,c)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_any.IdentityPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_any.html#IdentityPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_any.IdentityPattern.apply" title="Link to this definition">¶</a></dt>
@@ -614,48 +636,36 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Checks there is no duplicated node doing the same than another
 one beside and taking a model input as input.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-597a736c8ed1b7ef41d20e8c1ccb7ac6aa44bf81.png" alt="digraph{
-  nodesep=0.05;
-  orientation=portrait;
-  size=7;
-  ranksep=0.25;
-
-  xy1 [shape=box color=red label=&quot;xy1\nTensorProto.FLOAT16\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-  xy1 [shape=box color=green label=&quot;xy1\nTensorProto.FLOAT16\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  xy2 [shape=box color=green label=&quot;xy2\nTensorProto.FLOAT16\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
-  X -&gt; Cast;
-  Cast -&gt; xy1;
-
-  Cast1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
-  X -&gt; Cast1;
-  Cast1 -&gt; xy2;
+<div class="graphviz"><img src="../../../_images/graphviz-d1421e79d7e9d2f499c02e1b96c308ab55f40592.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;xy1\nFLOAT16(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_3 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Cast_2 [label=&quot;FLOAT(a,2,3,4)&quot;];
+  I_1 -&gt; Cast_3 [label=&quot;FLOAT(a,2,3,4)&quot;];
+  O_4 [label=&quot;xy1\nFLOAT16(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_2 -&gt; O_4;
+  O_5 [label=&quot;xy2\nFLOAT16(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_3 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-aefa0fec5a389e921160516423027c88ecf48647.png" alt="digraph{
-  orientation=portrait;
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-
-  xy1 [shape=box color=red label=&quot;xy1\nTensorProto.FLOAT16\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-  xy1 [shape=box color=green label=&quot;xy1\nTensorProto.FLOAT16\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  xy2 [shape=box color=green label=&quot;xy2\nTensorProto.FLOAT16\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
-  X -&gt; Cast;
-  Cast -&gt; xy1;
-
-  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  xy1 -&gt; Identity;
-  Identity -&gt; xy2;
+<div class="graphviz"><img src="../../../_images/graphviz-a6727acdd0fbb88081002478544ee5bb45f0d2e4.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;xy1\nFLOAT16(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Identity_3 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Cast_2 [label=&quot;FLOAT(a,2,3,4)&quot;];
+  Cast_2 -&gt; Identity_3 [label=&quot;FLOAT16(a,2,3,4)&quot;];
+  O_4 [label=&quot;xy1\nFLOAT16(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_2 -&gt; O_4;
+  O_5 [label=&quot;xy2\nFLOAT16(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_3 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_any.SameChildrenFromInputPattern.match">
@@ -697,53 +707,41 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_any.</span></span><span class="sig-name descname"><span class="pre">SameChildrenPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_any.html#SameChildrenPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks there is no duplicated node doing the same than another one beside.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a39ba8f790899ff138fa8eaa71af8f3d2ef0c9e6.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-  orientation=portrait;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
-  y1 [shape=box color=red label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-  y2 [shape=box color=green label=&quot;y2\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  y1 [shape=box color=green label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y -&gt; Expand;
-  sh1 -&gt; Expand;
-  Expand -&gt; y1;
-
-  Expand1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y -&gt; Expand1;
-  sh1 -&gt; Expand1;
-  Expand1 -&gt; y2;
+<div class="graphviz"><img src="../../../_images/graphviz-e6f384e13af3bd524f1118a53fb2d5a5548004dc.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,1,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;sh1\nINT64(4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;y1\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Expand_3 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_4 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Expand_3 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  I_1 -&gt; Expand_3 [label=&quot;INT64(4)&quot;];
+  I_0 -&gt; Expand_4 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  I_1 -&gt; Expand_4 [label=&quot;INT64(4)&quot;];
+  O_5 [label=&quot;y2\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_4 -&gt; O_5;
+  O_6 [label=&quot;y1\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_3 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-fcfcc341b5d6afa8d02d879f890367b558ddcea3.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
-  y1 [shape=box color=red label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-  y2 [shape=box color=green label=&quot;y2\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  y1 [shape=box color=green label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y -&gt; Expand;
-  sh1 -&gt; Expand;
-  Expand -&gt; y1;
-
-  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  y1 -&gt; Identity;
-  Identity -&gt; y2;
+<div class="graphviz"><img src="../../../_images/graphviz-51c39943de7b0366b8cace0aeeab5c9189bbc918.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,1,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;sh1\nINT64(4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;y1\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Expand_3 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Identity_4 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Expand_3 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  I_1 -&gt; Expand_3 [label=&quot;INT64(4)&quot;];
+  Expand_3 -&gt; Identity_4 [label=&quot;FLOAT(a,2,3,4)&quot;];
+  O_5 [label=&quot;y2\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_4 -&gt; O_5;
+  O_6 [label=&quot;y1\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_3 -&gt; O_6;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern.apply">
@@ -793,43 +791,30 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>If a slice leads to the same shape and the step is 1 then it is identity.
 In some cases, just known the same is enough to replace them.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-8fd0d7169d2b133c80eb4187c0959c4a07e821ef.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-  size=7;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a']&quot; fontsize=10];
-
-
-  zero [shape=box label=&quot;zero&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0]&quot; fontsize=10];
-  Constant -&gt; zero;
-
-  Slice [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Slice&quot; fontsize=10];
-  X -&gt; Slice;
-  zero -&gt; Slice;
-  N -&gt; Slice;
-  zero -&gt; Slice;
-  Slice -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-d58e2a0695ec3c79a7697232710df2c5e940bee9.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Shape_1 [label=&quot;Shape(., end=1, start=0)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; zero&quot;, fillcolor=&quot;#cccccc&quot;];
+  Slice_3 [label=&quot;Slice(., [0], ., [0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Shape_1 [label=&quot;FLOAT(a)&quot;];
+  I_0 -&gt; Slice_3 [label=&quot;FLOAT(a)&quot;];
+  Shape_1 -&gt; Slice_3 [label=&quot;INT64(1)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Slice_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a5d0a419cf0906c1cf4f99cb0df75620375a2c4f.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-  nodesep=0.05;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a']&quot; fontsize=10];
-
-
-  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  X -&gt; Identity;
-  Identity -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-9d2d0cc70d5b58fedb7450dc05a22ab8de652336.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_1 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Identity_1 [label=&quot;FLOAT(a)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedIdentityPattern.apply">
@@ -895,55 +880,6 @@ will automatically determine the position of the new nodes.</p></li>
 checks it is exactly the same.
 This one assumes it is exactly the same in some cases such
 expand (X, sh1) = expand(X, sh2) if the output shapes are the same.</p>
-<p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a10cf7a62fc60d7318d3128065952c1fcb20e4a8.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  orientation=portrait;
-  ranksep=0.25;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
-  y1 [shape=box color=red label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-  y2 [shape=box color=green label=&quot;y2\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  y1 [shape=box color=green label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y -&gt; Expand;
-  sh1 -&gt; Expand;
-  Expand -&gt; y1;
-
-  Expand1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y -&gt; Expand1;
-  sh2 -&gt; Expand1;
-  Expand1 -&gt; y2;
-}" class="graphviz" /></div>
-<p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-0892b2ac245e1c5b944e7d54d8e943b826958f80.png" alt="digraph{
-  nodesep=0.05;
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
-  y1 [shape=box color=red label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-  y2 [shape=box color=green label=&quot;y2\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  y1 [shape=box color=green label=&quot;y1\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  Y -&gt; Expand;
-  sh1 -&gt; Expand;
-  Expand -&gt; y1;
-
-  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  y1 -&gt; Identity;
-  Identity -&gt; y2;
-}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedSameChildrenPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_any.html#ShapeBasedSameChildrenPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedSameChildrenPattern.apply" title="Link to this definition">¶</a></dt>
@@ -992,53 +928,35 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Tries to move computation nodes before any transpose or reshape.
 That works for unary operator or equivalent to that.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-03aded2360d59ce7cf4a4f8a345208276abd54fc.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
-  size=7;
-  ranksep=0.25;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
-  cst [shape=box color=red label=&quot;cst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'c', 'b', 'd']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2.]&quot; fontsize=10];
-  Constant -&gt; cst;
-
-  xt [shape=box label=&quot;xt&quot; fontsize=10];
-  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[0, 2, 1, 3]&quot; fontsize=10];
-  X -&gt; Transpose;
-  Transpose -&gt; xt;
-
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  xt -&gt; Mul;
-  cst -&gt; Mul;
-  Mul -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-d3638297d20580c46b03a7083a160188f520f591.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;cst\nFLOAT(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; cst&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_3 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Transpose_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Transpose_3 -&gt; Mul_4 [label=&quot;FLOAT(a,c,b,d)&quot;];
+  Constant_2 -&gt; Mul_4 [label=&quot;FLOAT(1)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(a,c,b,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-08c3115360ba2f5f0964dde9ef4e132b5cda09e5.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
-  cst [shape=box color=red label=&quot;cst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'c', 'b', 'd']&quot; fontsize=10];
-
-
-  SwapUnaryPattern__xt [shape=box label=&quot;SwapUnaryPattern__xt&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  X -&gt; Mul;
-  cst -&gt; Mul;
-  Mul -&gt; SwapUnaryPattern__xt;
-
-  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[0, 2, 1, 3]&quot; fontsize=10];
-  SwapUnaryPattern__xt -&gt; Transpose;
-  Transpose -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-9dd0f1fe9d5dccf769f3295ce0d267a1afb01370.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;cst\nFLOAT(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Mul_2 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_3 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_0 -&gt; Mul_2 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_1 -&gt; Mul_2 [label=&quot;FLOAT(1)&quot;];
+  Mul_2 -&gt; Transpose_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(a,c,b,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_any.SwapUnaryPattern.apply">

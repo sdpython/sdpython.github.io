@@ -10,7 +10,7 @@
         <title>.xoptim.patterns.onnx_transpose - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -612,33 +612,33 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_transpose.</span></span><span class="sig-name descname"><span class="pre">TransposeGatherPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_transpose.html#TransposeGatherPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_transpose.TransposeGatherPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Removes one unnecessary transpose followed by Gather with only one index.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-c3fbf00c2514e9ed0184aab93669a581a9dd624f.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-25102370408f0403d6c7f0c01a8f61bb8f8d3b68.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_130676584368384 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_130676584368464 [label=&quot;ind&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_130676584368624 [label=&quot;Constant() -&gt; ind&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_130676584368704 [label=&quot;Transpose(., perm=[1, 0, 2, 3])&quot;, fillcolor=&quot;#cccccc&quot;];
-  Gather_130676584368784 [label=&quot;Gather(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_130676584368384 -&gt; Transpose_130676584368704;
-  Transpose_130676584368704 -&gt; Gather_130676584368784 [label=&quot;FLOAT(b,a,16,80)&quot;];
-  Constant_130676584368624 -&gt; Gather_130676584368784;
-  O_130676584368544 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Gather_130676584368784 -&gt; O_130676584368544;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b,16,80)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;ind\nINT64()&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; ind&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_3 [label=&quot;Transpose(., perm=[1, 0, 2, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Gather_4 [label=&quot;Gather(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Transpose_3 [label=&quot;FLOAT(a,b,16,80)&quot;];
+  Transpose_3 -&gt; Gather_4 [label=&quot;FLOAT(b,a,16,80)&quot;];
+  Constant_2 -&gt; Gather_4 [label=&quot;INT64()&quot;];
+  O_5 [label=&quot;Y\nFLOAT(a,16,80)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gather_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-41bb5d6c26ca8e0088c50f27859105e21cef4125.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-66287973cbc8dc9c0aed03595a51a9088a14138f.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_123535317206016 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_123535317205776 [label=&quot;ind&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Gather_123535317206256 [label=&quot;Gather(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_123535317206016 -&gt; Gather_123535317206256;
-  I_123535317205776 -&gt; Gather_123535317206256;
-  O_123535317206096 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Gather_123535317206256 -&gt; O_123535317206096;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b,16,80)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;ind\nINT64()&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Gather_2 [label=&quot;Gather(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Gather_2 [label=&quot;FLOAT(a,b,16,80)&quot;];
+  I_1 -&gt; Gather_2 [label=&quot;INT64()&quot;];
+  O_3 [label=&quot;Y\nFLOAT(a,16,80)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gather_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_transpose.TransposeGatherPattern.apply">
@@ -714,44 +714,44 @@ will automatically determine the position of the new nodes.</p></li>
 </pre></div>
 </div>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a7a30227b875687a208b3ba2e7f0773c3f11e07b.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-563652846568b441c4794a47bafd0ae907a12d9f.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_124317117794640 [label=&quot;xts&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_124317117794960 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_124317117795200 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_124317117795280 [label=&quot;Transpose(., perm=[0, 2, 3, 1])&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_124317117795360 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_124317117795440 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_124317117794960 -&gt; Transpose_124317117795280;
-  Transpose_124317117795280 -&gt; Reshape_124317117795360 [label=&quot;FLOAT(32,28,26,256)&quot;];
-  Constant_124317117795200 -&gt; Reshape_124317117795360 [label=&quot;INT64(6)&quot;];
-  Reshape_124317117795360 -&gt; Transpose_124317117795440;
-  O_124317117795040 [label=&quot;xts&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_124317117795360 -&gt; O_124317117795040;
-  O_124317117795120 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_124317117795440 -&gt; O_124317117795120;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(32,256,28,26)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_3 [label=&quot;Transpose(., perm=[0, 2, 3, 1])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Transpose_5 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_1 -&gt; Transpose_3 [label=&quot;FLOAT(32,256,28,26)&quot;];
+  Transpose_3 -&gt; Reshape_4 [label=&quot;FLOAT(32,28,26,256)&quot;];
+  Constant_2 -&gt; Reshape_4 [label=&quot;INT64(6)&quot;];
+  Reshape_4 -&gt; Transpose_5 [label=&quot;FLOAT(32,2,14,2,13,256)&quot;];
+  O_6 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_4 -&gt; O_6;
+  O_7 [label=&quot;Y\nFLOAT(32,2,2,14,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_5 -&gt; O_7;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ace444d859b03a048376a615bf20c4a741df134d.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-ea6b5906b7d62e98a61765b3ba4bc5884d81f857.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_139646069934496 [label=&quot;xts&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_139646069934816 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_139646069935056 [label=&quot;Constant() -&gt; init7_s6_&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_139646069935136 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_139646069935216 [label=&quot;Transpose(., perm=[0, 2, 3, 4, 5, 1])&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_139646069935296 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_139646069934816 -&gt; Reshape_139646069935136;
-  Constant_139646069935056 -&gt; Reshape_139646069935136 [label=&quot;INT64(6)&quot;];
-  Reshape_139646069935136 -&gt; Transpose_139646069935216 [label=&quot;FLOAT(32,256,2,14,2,13)&quot;];
-  Transpose_139646069935216 -&gt; Transpose_139646069935296;
-  O_139646069934896 [label=&quot;xts&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_139646069935216 -&gt; O_139646069934896;
-  O_139646069934976 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_139646069935296 -&gt; O_139646069934976;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(32,256,28,26)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init7_s6_&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Transpose_4 [label=&quot;Transpose(., perm=[0, 2, 3, 4, 5, 1])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Transpose_5 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_1 -&gt; Reshape_3 [label=&quot;FLOAT(32,256,28,26)&quot;];
+  Constant_2 -&gt; Reshape_3 [label=&quot;INT64(6)&quot;];
+  Reshape_3 -&gt; Transpose_4 [label=&quot;FLOAT(32,256,2,14,2,13)&quot;];
+  Transpose_4 -&gt; Transpose_5 [label=&quot;FLOAT(32,2,14,2,13,256)&quot;];
+  O_6 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_4 -&gt; O_6;
+  O_7 [label=&quot;Y\nFLOAT(32,2,2,14,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_5 -&gt; O_7;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_transpose.TransposeReshapeTransposePattern.apply">
@@ -814,28 +814,28 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_transpose.</span></span><span class="sig-name descname"><span class="pre">TransposeTransposePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_transpose.html#TransposeTransposePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_transpose.TransposeTransposePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Removes two consecutive transpose if the second one put the tensor in origin shape.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-117d1e1d877484d4e6d89f1dc096a802a54fcd0d.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-5c3e4471cc46c806ae43ea3c51c2c54bd2634cbd.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_125880633739200 [label=&quot;xs&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Transpose_125880633739440 [label=&quot;Transpose(., perm=[1, 0, 3, 2])&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_125880633739520 [label=&quot;Transpose(., perm=[0, 1, 3, 2])&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_125880633739200 -&gt; Transpose_125880633739440;
-  Transpose_125880633739440 -&gt; Transpose_125880633739520 [label=&quot;FLOAT(1,1,128,32)&quot;];
-  O_125880633739360 [label=&quot;xm1&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_125880633739520 -&gt; O_125880633739360;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;xs\nFLOAT(1,1,32,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Transpose_1 [label=&quot;Transpose(., perm=[1, 0, 3, 2])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Transpose_2 [label=&quot;Transpose(., perm=[0, 1, 3, 2])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_0 -&gt; Transpose_1 [label=&quot;FLOAT(1,1,32,128)&quot;];
+  Transpose_1 -&gt; Transpose_2 [label=&quot;FLOAT(1,1,128,32)&quot;];
+  O_3 [label=&quot;xm1\nFLOAT(1,1,32,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-6bf4a6ed94364ee059b65a737b79aa789541a36a.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-324832f74451ae7992d39b7813dab27995a42790.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_140300182472240 [label=&quot;xs&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Transpose_140300182472160 [label=&quot;Transpose(., perm=[1, 0, 2, 3])&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_140300182472240 -&gt; Transpose_140300182472160;
-  O_140300182472080 [label=&quot;xm1&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_140300182472160 -&gt; O_140300182472080;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;xs\nFLOAT(1,1,32,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Transpose_1 [label=&quot;Transpose(., perm=[1, 0, 2, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_0 -&gt; Transpose_1 [label=&quot;FLOAT(1,1,32,128)&quot;];
+  O_2 [label=&quot;xm1\nFLOAT(1,1,32,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_transpose.TransposeTransposePattern.apply">

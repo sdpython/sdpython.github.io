@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns_ml.tree_ensemble - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -552,6 +552,209 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">TreeEnsembleRegressorMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces TreeEnsembleRegressor + Mul(., scalar) with TreeEnsembleRegressor.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">            oh.make_opsetid(&quot;ai.onnx.ml&quot;, 4),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 3))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;cst&quot;],</span>
+<span class="sd">                value=onh.from_array(</span>
+<span class="sd">                    np.array([0.4000000059604645], dtype=np.float32), name=&quot;value&quot;</span>
+<span class="sd">                ),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;TreeEnsembleRegressor&quot;,</span>
+<span class="sd">                [&quot;X&quot;],</span>
+<span class="sd">                [&quot;Ym&quot;],</span>
+<span class="sd">                domain=&quot;ai.onnx.ml&quot;,</span>
+<span class="sd">                aggregate_function=&quot;SUM&quot;,</span>
+<span class="sd">                n_targets=1,</span>
+<span class="sd">                nodes_falsenodeids=[4, 3, 0, 0, 0, 2, 0, 4, 0, 0],</span>
+<span class="sd">                nodes_featureids=[0, 2, 0, 0, 0, 0, 0, 2, 0, 0],</span>
+<span class="sd">                nodes_hitrates=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],</span>
+<span class="sd">                nodes_missing_value_tracks_true=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                nodes_modes=[</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                ],</span>
+<span class="sd">                nodes_nodeids=[0, 1, 2, 3, 4, 0, 1, 2, 3, 4],</span>
+<span class="sd">                nodes_treeids=[0, 0, 0, 0, 0, 1, 1, 1, 1, 1],</span>
+<span class="sd">                nodes_truenodeids=[1, 2, 0, 0, 0, 1, 0, 3, 0, 0],</span>
+<span class="sd">                nodes_values=[</span>
+<span class="sd">                    0.26645058393478394,</span>
+<span class="sd">                    0.6214364767074585,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.7208403944969177,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.5592705607414246,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                ],</span>
+<span class="sd">                post_transform=&quot;NONE&quot;,</span>
+<span class="sd">                target_ids=[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                target_nodeids=[2, 3, 4, 1, 3, 4],</span>
+<span class="sd">                target_treeids=[0, 0, 0, 1, 1, 1],</span>
+<span class="sd">                target_weights_as_tensor=onh.from_array(</span>
+<span class="sd">                    np.array([1.0, 2.0, 4.0, 8.0, 16.0, 32.0], dtype=np.float32),</span>
+<span class="sd">                    name=&quot;target_weights_as_tensor&quot;,</span>
+<span class="sd">                ),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;Ym&quot;, &quot;cst&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 1))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">            oh.make_opsetid(&quot;ai.onnx.ml&quot;, 4),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 3))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;TreeEnsembleRegressor&quot;,</span>
+<span class="sd">                [&quot;X&quot;],</span>
+<span class="sd">                [&quot;Y&quot;],</span>
+<span class="sd">                domain=&quot;ai.onnx.ml&quot;,</span>
+<span class="sd">                target_weights_as_tensor=onh.from_array(</span>
+<span class="sd">                    np.array(</span>
+<span class="sd">                        [</span>
+<span class="sd">                            0.4000000059604645,</span>
+<span class="sd">                            0.800000011920929,</span>
+<span class="sd">                            1.600000023841858,</span>
+<span class="sd">                            3.200000047683716,</span>
+<span class="sd">                            6.400000095367432,</span>
+<span class="sd">                            12.800000190734863,</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        dtype=np.float32,</span>
+<span class="sd">                    ),</span>
+<span class="sd">                    name=&quot;target_weights_as_tensor&quot;,</span>
+<span class="sd">                ),</span>
+<span class="sd">                aggregate_function=&quot;SUM&quot;,</span>
+<span class="sd">                n_targets=1,</span>
+<span class="sd">                nodes_falsenodeids=[4, 3, 0, 0, 0, 2, 0, 4, 0, 0],</span>
+<span class="sd">                nodes_featureids=[0, 2, 0, 0, 0, 0, 0, 2, 0, 0],</span>
+<span class="sd">                nodes_hitrates=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],</span>
+<span class="sd">                nodes_missing_value_tracks_true=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                nodes_modes=[</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                ],</span>
+<span class="sd">                nodes_nodeids=[0, 1, 2, 3, 4, 0, 1, 2, 3, 4],</span>
+<span class="sd">                nodes_treeids=[0, 0, 0, 0, 0, 1, 1, 1, 1, 1],</span>
+<span class="sd">                nodes_truenodeids=[1, 2, 0, 0, 0, 1, 0, 3, 0, 0],</span>
+<span class="sd">                nodes_values=[</span>
+<span class="sd">                    0.26645058393478394,</span>
+<span class="sd">                    0.6214364767074585,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.7208403944969177,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.5592705607414246,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                ],</span>
+<span class="sd">                post_transform=&quot;NONE&quot;,</span>
+<span class="sd">                target_ids=[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                target_nodeids=[2, 3, 4, 1, 3, 4],</span>
+<span class="sd">                target_treeids=[0, 0, 0, 1, 1, 1],</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 1))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TreeEnsembleRegressorMulPattern.match">
@@ -621,6 +824,314 @@
 <span class="sd">    with one TreeEnsembleRegressor. All trees must have only one target</span>
 <span class="sd">    (it can be extended to multiple) and is assigned a distinct</span>
 <span class="sd">    dimension. The aggregation must be SUM.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">            oh.make_opsetid(&quot;ai.onnx.ml&quot;, 4),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 3))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Concat&quot;, [&quot;Ys1&quot;, &quot;Ys2&quot;], [&quot;Y&quot;], axis=1))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Sigmoid&quot;, [&quot;Ym1&quot;], [&quot;Ys1&quot;]))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Sigmoid&quot;, [&quot;Ym2&quot;], [&quot;Ys2&quot;]))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;TreeEnsembleRegressor&quot;,</span>
+<span class="sd">                [&quot;X&quot;],</span>
+<span class="sd">                [&quot;Ym1&quot;],</span>
+<span class="sd">                domain=&quot;ai.onnx.ml&quot;,</span>
+<span class="sd">                aggregate_function=&quot;SUM&quot;,</span>
+<span class="sd">                n_targets=1,</span>
+<span class="sd">                nodes_falsenodeids=[4, 3, 0, 0, 0, 2, 0, 4, 0, 0],</span>
+<span class="sd">                nodes_featureids=[0, 2, 0, 0, 0, 0, 0, 2, 0, 0],</span>
+<span class="sd">                nodes_hitrates=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],</span>
+<span class="sd">                nodes_missing_value_tracks_true=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                nodes_modes=[</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                ],</span>
+<span class="sd">                nodes_nodeids=[0, 1, 2, 3, 4, 0, 1, 2, 3, 4],</span>
+<span class="sd">                nodes_treeids=[0, 0, 0, 0, 0, 1, 1, 1, 1, 1],</span>
+<span class="sd">                nodes_truenodeids=[1, 2, 0, 0, 0, 1, 0, 3, 0, 0],</span>
+<span class="sd">                nodes_values=[</span>
+<span class="sd">                    0.26645058393478394,</span>
+<span class="sd">                    0.6214364767074585,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.7208403944969177,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.5592705607414246,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                ],</span>
+<span class="sd">                post_transform=&quot;NONE&quot;,</span>
+<span class="sd">                target_ids=[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                target_nodeids=[2, 3, 4, 1, 3, 4],</span>
+<span class="sd">                target_treeids=[0, 0, 0, 1, 1, 1],</span>
+<span class="sd">                target_weights=[1.0, 2.0, 4.0, 8.0, 16.0, 32.0],</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;TreeEnsembleRegressor&quot;,</span>
+<span class="sd">                [&quot;X&quot;],</span>
+<span class="sd">                [&quot;Ym2&quot;],</span>
+<span class="sd">                domain=&quot;ai.onnx.ml&quot;,</span>
+<span class="sd">                aggregate_function=&quot;SUM&quot;,</span>
+<span class="sd">                n_targets=1,</span>
+<span class="sd">                nodes_falsenodeids=[4, 3, 0, 0, 0, 2, 0, 4, 0, 0],</span>
+<span class="sd">                nodes_featureids=[0, 2, 0, 0, 0, 0, 0, 2, 0, 0],</span>
+<span class="sd">                nodes_hitrates=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],</span>
+<span class="sd">                nodes_missing_value_tracks_true=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                nodes_modes=[</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                ],</span>
+<span class="sd">                nodes_nodeids=[0, 1, 2, 3, 4, 0, 1, 2, 3, 4],</span>
+<span class="sd">                nodes_treeids=[0, 0, 0, 0, 0, 1, 1, 1, 1, 1],</span>
+<span class="sd">                nodes_truenodeids=[1, 2, 0, 0, 0, 1, 0, 3, 0, 0],</span>
+<span class="sd">                nodes_values=[</span>
+<span class="sd">                    0.26645058393478394,</span>
+<span class="sd">                    0.6214364767074585,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.7208403944969177,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    -0.5592705607414246,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                    0.0,</span>
+<span class="sd">                ],</span>
+<span class="sd">                post_transform=&quot;NONE&quot;,</span>
+<span class="sd">                target_ids=[0, 0, 0, 0, 0, 0],</span>
+<span class="sd">                target_nodeids=[2, 3, 4, 1, 3, 4],</span>
+<span class="sd">                target_treeids=[0, 0, 0, 1, 1, 1],</span>
+<span class="sd">                target_weights=[1.0, 2.0, 4.0, 8.0, 16.0, 32.0],</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 2))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">            oh.make_opsetid(&quot;ai.onnx.ml&quot;, 4),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 3))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;TreeEnsembleRegressor&quot;,</span>
+<span class="sd">                [&quot;X&quot;],</span>
+<span class="sd">                [&quot;TreeEnsembleRegressorConcatPattern_Y&quot;],</span>
+<span class="sd">                domain=&quot;ai.onnx.ml&quot;,</span>
+<span class="sd">                aggregate_function=&quot;SUM&quot;,</span>
+<span class="sd">                n_targets=2,</span>
+<span class="sd">                nodes_falsenodeids=[4, 3, 0, 0, 0, 2, 0, 4, 0, 0, 4, 3, 0, 0, 0, 2, 0, 4, 0, 0],</span>
+<span class="sd">                nodes_featureids=[0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0],</span>
+<span class="sd">                nodes_hitrates_as_tensor=onh.from_array(</span>
+<span class="sd">                    np.array(</span>
+<span class="sd">                        [</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                            1.0,</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        dtype=np.float32,</span>
+<span class="sd">                    ),</span>
+<span class="sd">                    name=&quot;nodes_hitrates_as_tensor&quot;,</span>
+<span class="sd">                ),</span>
+<span class="sd">                nodes_missing_value_tracks_true=[</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                    0,</span>
+<span class="sd">                ],</span>
+<span class="sd">                nodes_modes=[</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;BRANCH_LEQ&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                    &quot;LEAF&quot;,</span>
+<span class="sd">                ],</span>
+<span class="sd">                nodes_nodeids=[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4],</span>
+<span class="sd">                nodes_treeids=[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3],</span>
+<span class="sd">                nodes_truenodeids=[1, 2, 0, 0, 0, 1, 0, 3, 0, 0, 1, 2, 0, 0, 0, 1, 0, 3, 0, 0],</span>
+<span class="sd">                nodes_values_as_tensor=onh.from_array(</span>
+<span class="sd">                    np.array(</span>
+<span class="sd">                        [</span>
+<span class="sd">                            0.26645058393478394,</span>
+<span class="sd">                            0.6214364767074585,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            -0.7208403944969177,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            -0.5592705607414246,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            0.26645058393478394,</span>
+<span class="sd">                            0.6214364767074585,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            -0.7208403944969177,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            -0.5592705607414246,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                            0.0,</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        dtype=np.float32,</span>
+<span class="sd">                    ),</span>
+<span class="sd">                    name=&quot;nodes_values_as_tensor&quot;,</span>
+<span class="sd">                ),</span>
+<span class="sd">                post_transform=&quot;NONE&quot;,</span>
+<span class="sd">                target_ids=[0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],</span>
+<span class="sd">                target_nodeids=[2, 3, 4, 1, 3, 4, 2, 3, 4, 1, 3, 4],</span>
+<span class="sd">                target_treeids=[0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3],</span>
+<span class="sd">                target_weights_as_tensor=onh.from_array(</span>
+<span class="sd">                    np.array(</span>
+<span class="sd">                        [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0],</span>
+<span class="sd">                        dtype=np.float32,</span>
+<span class="sd">                    ),</span>
+<span class="sd">                    name=&quot;target_weights_as_tensor&quot;,</span>
+<span class="sd">                ),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(&quot;Sigmoid&quot;, [&quot;TreeEnsembleRegressorConcatPattern_Y&quot;], [&quot;Y&quot;])</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;batch&quot;, 2))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TreeEnsembleRegressorConcatPattern.match">

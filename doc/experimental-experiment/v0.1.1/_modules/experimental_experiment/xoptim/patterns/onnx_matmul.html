@@ -557,6 +557,154 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces the sequence MatMul, Add into Gemm.</span>
 <span class="sd">    By default, no reshape is allowed this happens only it is two dimensions.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;B&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;d&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, 3))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X2&quot;, onnx.TensorProto.FLOAT, shape=(3, &quot;d&quot;)))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;MatMul&quot;, [&quot;X1&quot;, &quot;X2&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Add&quot;, [&quot;Y&quot;, &quot;B&quot;], [&quot;Z&quot;]))</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Z&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;d&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;B&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;d&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, 3))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X2&quot;, onnx.TensorProto.FLOAT, shape=(3, &quot;d&quot;)))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;init7_s2_-1_3&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([-1, 3], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;init7_s1_-1&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([-1], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(&quot;Reshape&quot;, [&quot;X1&quot;, &quot;init7_s2_-1_3&quot;], [&quot;MatMulAddPattern--X1&quot;])</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Shape&quot;, [&quot;B&quot;], [&quot;MatMulAddPattern--X12&quot;], start=-1))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Concat&quot;,</span>
+<span class="sd">                [&quot;init7_s1_-1&quot;, &quot;MatMulAddPattern--X12&quot;],</span>
+<span class="sd">                [&quot;MatMulAddPattern--X13&quot;],</span>
+<span class="sd">                axis=0,</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Reshape&quot;, [&quot;B&quot;, &quot;MatMulAddPattern--X13&quot;], [&quot;MatMulAddPattern--X14&quot;]</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(&quot;Shape&quot;, [&quot;X1&quot;], [&quot;MatMulAddPattern--X16&quot;], end=-1, start=0)</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Concat&quot;,</span>
+<span class="sd">                [&quot;MatMulAddPattern--X16&quot;, &quot;init7_s1_-1&quot;],</span>
+<span class="sd">                [&quot;MatMulAddPattern--X17&quot;],</span>
+<span class="sd">                axis=0,</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Gemm&quot;,</span>
+<span class="sd">                [&quot;MatMulAddPattern--X1&quot;, &quot;X2&quot;, &quot;MatMulAddPattern--X14&quot;],</span>
+<span class="sd">                [&quot;MatMulAddPattern--X15&quot;],</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Reshape&quot;, [&quot;MatMulAddPattern--X15&quot;, &quot;MatMulAddPattern--X17&quot;], [&quot;Z&quot;]</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Z&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;d&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">allow_reshape</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
@@ -878,7 +1026,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
@@ -922,7 +1070,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GemmTransposePattern.match">
@@ -984,6 +1132,133 @@
 <span class="sd">    It can be 3 or 2 out of 3.</span>
 <span class="sd">    It is similar to</span>
 <span class="sd">    :class:`experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern`.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;div_5&quot;, onnx.TensorProto.FLOAT, shape=(13, 4, 7, 7))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;transpose_23&quot;, onnx.TensorProto.FLOAT, shape=(52, 7, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;init7_s4_13_4_7_8&quot;, onnx.TensorProto.INT64, shape=(4,))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;init7_s3_52_7_7&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([52, 7, 7], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;init7_s4_13_4_7_8&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([13, 4, 7, 8], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Reshape&quot;, [&quot;div_5&quot;, &quot;init7_s3_52_7_7&quot;], [&quot;view_83&quot;]))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;MatMul&quot;, [&quot;view_83&quot;, &quot;transpose_23&quot;], [&quot;bmm_11&quot;]))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(&quot;Reshape&quot;, [&quot;bmm_11&quot;, &quot;init7_s4_13_4_7_8&quot;], [&quot;view_85&quot;])</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;view_85&quot;, onnx.TensorProto.FLOAT, shape=(13, 4, 7, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;div_5&quot;, onnx.TensorProto.FLOAT, shape=(13, 4, 7, 7))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;transpose_23&quot;, onnx.TensorProto.FLOAT, shape=(52, 7, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;init7_s4_13_4_7_8&quot;, onnx.TensorProto.INT64, shape=(4,))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Reshape&quot;,</span>
+<span class="sd">                [&quot;transpose_23&quot;, &quot;init7_s4_13_4_7_8&quot;],</span>
+<span class="sd">                [&quot;MatMulReshape2Of3PatternL_view_83&quot;],</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;MatMul&quot;, [&quot;div_5&quot;, &quot;MatMulReshape2Of3PatternL_view_83&quot;], [&quot;view_85&quot;]</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;view_85&quot;, onnx.TensorProto.FLOAT, shape=(13, 4, 7, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">same_size</span><span class="p">(</span>
@@ -1423,7 +1698,7 @@
 <span class="sd">        :script: DOT-SECTION</span>
 <span class="sd">        :process:</span>
 
-<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
 <span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
@@ -1487,7 +1762,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
@@ -1495,7 +1770,7 @@
 <span class="sd">        :script: DOT-SECTION</span>
 <span class="sd">        :process:</span>
 
-<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
 <span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
@@ -1532,7 +1807,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ReshapeMatMulReshapePattern.match">
@@ -1686,7 +1961,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
@@ -1725,7 +2000,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TransposeMatMulPattern.match">
@@ -1918,7 +2193,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
@@ -1985,7 +2260,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">check_transpose_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
@@ -2185,7 +2460,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
@@ -2244,7 +2519,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SwitchReshapeActivationPattern.match">
@@ -2356,7 +2631,7 @@
 <span class="sd">        :script: DOT-SECTION</span>
 <span class="sd">        :process:</span>
 
-<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
 <span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
@@ -2394,7 +2669,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
@@ -2402,7 +2677,7 @@
 <span class="sd">        :script: DOT-SECTION</span>
 <span class="sd">        :process:</span>
 
-<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
 <span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
@@ -2457,7 +2732,7 @@
 <span class="sd">        )</span>
 <span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
-<span class="sd">        print(to_dot(model))</span>
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ShapeBasedMatMulToMulPattern.match">

@@ -550,6 +550,44 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_mul.</span></span><span class="sig-name descname"><span class="pre">MulMulMulScalarPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_mul.html#MulMulMulScalarPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence {Div | Mul} and {Div | Mul} + {Div | Mul} with {Div | Mul} Mul.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-5bea06ce4877b46421c3c8fc09ab298ea2d67736.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; cst1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; cst2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_5 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_6 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_5 -&gt; Mul_4 [label=&quot;FLOAT(a,b)&quot;];
+  Div_6 -&gt; Mul_4 [label=&quot;FLOAT(a,b)&quot;];
+  I_1 -&gt; Div_5 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_2 -&gt; Div_5 [label=&quot;FLOAT(1)&quot;];
+  I_0 -&gt; Div_6 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_3 -&gt; Div_6 [label=&quot;FLOAT(1)&quot;];
+  O_7 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_4 -&gt; O_7;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-25bdc33cff825292200698b7483d966620a96dc8.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init1_s1_&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_3 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_4 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Mul_3 [label=&quot;FLOAT(a,b)&quot;];
+  I_0 -&gt; Mul_3 [label=&quot;FLOAT(a,b)&quot;];
+  Mul_3 -&gt; Div_4 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_2 -&gt; Div_4 [label=&quot;FLOAT(1)&quot;];
+  O_5 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Div_4 -&gt; O_5;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_mul.html#MulMulMulScalarPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern.apply" title="Link to this definition">¶</a></dt>
@@ -613,54 +651,38 @@ will automatically determine the position of the new nodes.</p></li>
 or two addtions if the broadcasting reduces one operator to
 a an insignificant number.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3adbcd7a720c50e2eed62f10131b529c09c3887e.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-
-  F [shape=box color=green label=&quot;F\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  Z -&gt; Add;
-  xy -&gt; Add;
-  Add -&gt; F;
-
-  xy [shape=box label=&quot;xy&quot; fontsize=10];
-  Add1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  X -&gt; Add1;
-  Y -&gt; Add1;
-  Add1 -&gt; xy;
+<div class="graphviz"><img src="../../../_images/graphviz-652368808912cbd453842d5a726d208abdf6a581.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,1,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;Z\nFLOAT(a,1,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_4 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Add_3 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  Add_4 -&gt; Add_3 [label=&quot;FLOAT(a,2,3,4)&quot;];
+  I_1 -&gt; Add_4 [label=&quot;FLOAT(a,2,3,4)&quot;];
+  I_0 -&gt; Add_4 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  O_5 [label=&quot;F\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_3 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a5551f3e19f0b60e3da8b9daa6c66850d328d22f.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  nodesep=0.05;
-  size=7;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
-
-  F [shape=box color=green label=&quot;F\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
-
-
-  add_Y [shape=box label=&quot;add_Y&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  Y -&gt; Add;
-  Z -&gt; Add;
-  Add -&gt; add_Y;
-
-  Add1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  add_Y -&gt; Add1;
-  X -&gt; Add1;
-  Add1 -&gt; F;
+<div class="graphviz"><img src="../../../_images/graphviz-3f53c0678629196b858cbe1d8a159956912a82f8.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,1,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;Z\nFLOAT(a,1,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_4 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Add_3 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  I_2 -&gt; Add_3 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  Add_3 -&gt; Add_4 [label=&quot;FLOAT(a,1,3,4)&quot;];
+  I_1 -&gt; Add_4 [label=&quot;FLOAT(a,2,3,4)&quot;];
+  O_5 [label=&quot;F\nFLOAT(a,2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_mul.SwitchOrderBinaryPattern.BroadcastType">

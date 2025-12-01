@@ -10,7 +10,7 @@
         <title>.xoptim.patterns_ort.fused_matmul - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -610,6 +610,34 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">FusedMatMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#FusedMatMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Transpose, Matmul into FusedMatMul.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-f371cc2ee1e3fa2235ab66cb043e18c468f830d5.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,32,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(2,2,64,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Transpose_2 [label=&quot;Transpose(., perm=[0, 1, 3, 2])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  MatMul_3 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  I_0 -&gt; Transpose_2 [label=&quot;FLOAT(2,2,32,128)&quot;];
+  I_1 -&gt; MatMul_3 [label=&quot;FLOAT(2,2,64,128)&quot;];
+  Transpose_2 -&gt; MatMul_3 [label=&quot;FLOAT(2,2,128,32)&quot;];
+  O_4 [label=&quot;Z\nFLOAT(2,2,64,32)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_3 -&gt; O_4;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-207095ca2935212394e29cfb9cc3d76ff41b385d.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,32,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(2,2,64,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  FusedMatMul_2 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,64,128)&quot;];
+  I_0 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,32,128)&quot;];
+  O_3 [label=&quot;Z\nFLOAT(2,2,64,32)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_2 -&gt; O_3;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_before_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_before_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#FusedMatMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulPattern.apply" title="Link to this definition">¶</a></dt>
@@ -671,6 +699,34 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">FusedMatMulTransposePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#FusedMatMulTransposePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulTransposePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence (Fused)Matmul(A,B) + Transpose
 into FusedMatMul(B.T, A.T).</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-942aa6d7698f5bc476db20fd76bc64caf73f7970.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,6,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(2,2,5,6)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  FusedMatMul_2 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_3 [label=&quot;Transpose(., perm=[0, 1, 3, 2])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_0 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,6,3)&quot;];
+  I_1 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,5,6)&quot;];
+  FusedMatMul_2 -&gt; Transpose_3;
+  O_4 [label=&quot;Z\nFLOAT(2,2,UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_3 -&gt; O_4;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-8986635f8d00b1bb9cc052068361b779cad0260f.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,6,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(2,2,5,6)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  FusedMatMul_2 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,5,6)&quot;];
+  I_0 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,6,3)&quot;];
+  O_3 [label=&quot;Z\nFLOAT(2,2,UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_2 -&gt; O_3;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulTransposePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#FusedMatMulTransposePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulTransposePattern.apply" title="Link to this definition">¶</a></dt>
@@ -731,6 +787,42 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulx2Pattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">FusedMatMulx2Pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#FusedMatMulx2Pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulx2Pattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Div by a scalar consumed by two FusedMatMul.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-8b893a3a9cd25b059e634f429c64a2c70f03cedf.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; deux&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_2 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  FusedMatMul_3 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  FusedMatMul_4 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Div_2 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  Constant_1 -&gt; Div_2 [label=&quot;FLOAT(1)&quot;];
+  Div_2 -&gt; FusedMatMul_3 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  I_0 -&gt; FusedMatMul_3 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  I_0 -&gt; FusedMatMul_4 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  Div_2 -&gt; FusedMatMul_4 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  O_5 [label=&quot;x2\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_4 -&gt; O_5;
+  O_6 [label=&quot;x1\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_3 -&gt; O_6;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-2a140ee820774b8c71e49ba0dd9faae20799ce74.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  FusedMatMul_1 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  FusedMatMul_2 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; FusedMatMul_1 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  I_0 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  O_3 [label=&quot;x2\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_2 -&gt; O_3;
+  O_4 [label=&quot;x1\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_1 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulx2Pattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">div_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">mnodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#FusedMatMulx2Pattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulx2Pattern.apply" title="Link to this definition">¶</a></dt>
@@ -791,6 +883,40 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.ReshapeGemmPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">ReshapeGemmPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#ReshapeGemmPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.ReshapeGemmPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Reshape(-1, …) + Gemm into FusedMatMul().</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3039fc74972ae481c06460a03f8c526d1df54e1e.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;B\nFLOAT(4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;A\nFLOAT(a,b,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Gemm_4 [label=&quot;Gemm(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Reshape_3 [label=&quot;FLOAT(a,b,8)&quot;];
+  Constant_2 -&gt; Reshape_3 [label=&quot;INT64(2)&quot;];
+  Reshape_3 -&gt; Gemm_4 [label=&quot;FLOAT(?,8)&quot;];
+  I_0 -&gt; Gemm_4 [label=&quot;FLOAT(4,8)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(f,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gemm_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-1a3fa5a22b0c4ab8202088b2cdb1700d7469d179.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;B\nFLOAT(4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;A\nFLOAT(a,b,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init7_s2_-1_4&quot;, fillcolor=&quot;#cccccc&quot;];
+  FusedMatMul_3 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_1 -&gt; FusedMatMul_3 [label=&quot;FLOAT(a,b,8)&quot;];
+  I_0 -&gt; FusedMatMul_3 [label=&quot;FLOAT(4,8)&quot;];
+  FusedMatMul_3 -&gt; Reshape_4;
+  Constant_2 -&gt; Reshape_4 [label=&quot;INT64(2)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(f,g)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_4 -&gt; O_5;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.ReshapeGemmPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gemm_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#ReshapeGemmPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.ReshapeGemmPattern.apply" title="Link to this definition">¶</a></dt>
@@ -852,6 +978,36 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">TransposeFusedMatMulBPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#TransposeFusedMatMulBPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.TransposeFusedMatMulBPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Transpose(B, [0, 2, 3, 1] + (Fused)Matmul(A,B)
 into Transpose(A, [0, 2, 1, 3]) + FusedMatMul(A, B, transB=1).</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-80e11c8e27b7f559fdc1754aef1338a9f054a323.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;B\nFLOAT(i,j,k,l)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;A\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Transpose_2 [label=&quot;Transpose(., perm=[0, 2, 3, 1])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  MatMul_3 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  I_0 -&gt; Transpose_2 [label=&quot;FLOAT(i,j,k,l)&quot;];
+  I_1 -&gt; MatMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Transpose_2 -&gt; MatMul_3 [label=&quot;FLOAT(i,k,l,j)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(m,n,o,p)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_3 -&gt; O_4;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3fbc00dbec3df499aa37516b5861f3026621f6bc.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;B\nFLOAT(i,j,k,l)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;A\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Transpose_2 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  FusedMatMul_3 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Transpose_2 [label=&quot;FLOAT(i,j,k,l)&quot;];
+  I_1 -&gt; FusedMatMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Transpose_2 -&gt; FusedMatMul_3 [label=&quot;FLOAT(i,k,j,l)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(m,n,o,p)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.TransposeFusedMatMulBPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#TransposeFusedMatMulBPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.TransposeFusedMatMulBPattern.apply" title="Link to this definition">¶</a></dt>

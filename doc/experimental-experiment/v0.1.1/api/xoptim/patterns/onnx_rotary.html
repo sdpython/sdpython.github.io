@@ -566,6 +566,60 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Pattern</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">constructed</span> <span class="n">without</span> <span class="n">the</span> <span class="n">matched</span> <span class="n">nodes</span><span class="o">.</span>
 </pre></div>
 </div>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-800775c064c80fd02d447f5b860064485bbd5ea2.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;d1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;N\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;d2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; zero&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_5 [label=&quot;Constant() -&gt; a012&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_6 [label=&quot;Constant() -&gt; a123&quot;, fillcolor=&quot;#cccccc&quot;];
+  Squeeze_7 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Squeeze_8 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Range_9 [label=&quot;Range(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Range_10 [label=&quot;Range(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_11 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Unsqueeze_12 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Mul_13 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_14 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Squeeze_7 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; Squeeze_8 [label=&quot;INT64(1)&quot;];
+  Constant_3 -&gt; Range_9 [label=&quot;INT64()&quot;];
+  Squeeze_7 -&gt; Range_9 [label=&quot;INT64()&quot;];
+  Constant_4 -&gt; Range_9 [label=&quot;INT64()&quot;];
+  Constant_3 -&gt; Range_10 [label=&quot;INT64()&quot;];
+  Squeeze_8 -&gt; Range_10 [label=&quot;INT64()&quot;];
+  Constant_4 -&gt; Range_10 [label=&quot;INT64()&quot;];
+  Range_9 -&gt; Unsqueeze_11 [label=&quot;INT64(?)&quot;];
+  Constant_5 -&gt; Unsqueeze_11 [label=&quot;INT64(3)&quot;];
+  Range_10 -&gt; Unsqueeze_12 [label=&quot;INT64(?)&quot;];
+  Constant_6 -&gt; Unsqueeze_12 [label=&quot;INT64(3)&quot;];
+  Unsqueeze_12 -&gt; Mul_13 [label=&quot;INT64(?,1,1,1)&quot;];
+  I_1 -&gt; Mul_13 [label=&quot;INT64(1)&quot;];
+  Unsqueeze_11 -&gt; Add_14 [label=&quot;INT64(1,1,1,?)&quot;];
+  Mul_13 -&gt; Add_14 [label=&quot;INT64(?,1,1,1)&quot;];
+  O_15 [label=&quot;yyc\nINT64(c,1,1,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_14 -&gt; O_15;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-fb7608f73cfd0f7e2b8e5a96598689349c33551b.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;d1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;N\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;d2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  CausalMaskMulAdd_3 [label=&quot;intermediate.\nCausalMaskMulAdd(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; CausalMaskMulAdd_3 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; CausalMaskMulAdd_3 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; CausalMaskMulAdd_3 [label=&quot;INT64(1)&quot;];
+  O_4 [label=&quot;yyc\nINT64(c,1,1,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  CausalMaskMulAdd_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.FunctionCausalMaskMulAddPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.graph_builder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_squeeze1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_squeeze2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">range1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">range2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_unsqueeze1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_unsqueeze2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#FunctionCausalMaskMulAddPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.FunctionCausalMaskMulAddPattern.apply" title="Link to this definition">¶</a></dt>
@@ -642,6 +696,67 @@ will automatically determine the position of the new nodes.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Pattern</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">constructed</span> <span class="n">without</span> <span class="n">the</span> <span class="n">matched</span> <span class="n">nodes</span><span class="o">.</span>
 </pre></div>
 </div>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-df1d1310e48e6174f81c8a6f9e54c730fdee2693.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;d1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;initi\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;d2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; zero&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_5 [label=&quot;Constant() -&gt; a012&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_6 [label=&quot;Constant() -&gt; a013&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_7 [label=&quot;Constant() -&gt; initi&quot;, fillcolor=&quot;#cccccc&quot;];
+  Squeeze_8 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Squeeze_9 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Range_10 [label=&quot;Range(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Range_11 [label=&quot;Range(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_12 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Unsqueeze_13 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Sub_14 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Greater_15 [label=&quot;Greater(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Squeeze_8 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; Squeeze_9 [label=&quot;INT64(1)&quot;];
+  Constant_3 -&gt; Range_10 [label=&quot;INT64()&quot;];
+  Squeeze_9 -&gt; Range_10;
+  Constant_4 -&gt; Range_10 [label=&quot;INT64()&quot;];
+  Squeeze_8 -&gt; Range_11 [label=&quot;INT64()&quot;];
+  Squeeze_9 -&gt; Range_11;
+  Constant_4 -&gt; Range_11 [label=&quot;INT64()&quot;];
+  Range_10 -&gt; Unsqueeze_12 [label=&quot;INT64(?)&quot;];
+  Constant_5 -&gt; Unsqueeze_12 [label=&quot;INT64(3)&quot;];
+  Range_11 -&gt; Unsqueeze_13 [label=&quot;INT64(?)&quot;];
+  Constant_6 -&gt; Unsqueeze_13 [label=&quot;INT64(3)&quot;];
+  Unsqueeze_13 -&gt; Sub_14 [label=&quot;INT64(1,1,?,1)&quot;];
+  Constant_7 -&gt; Sub_14 [label=&quot;INT64(1)&quot;];
+  Unsqueeze_12 -&gt; Greater_15 [label=&quot;INT64(1,1,1,?)&quot;];
+  Sub_14 -&gt; Greater_15 [label=&quot;INT64(1,1,?,1)&quot;];
+  O_16 [label=&quot;nd2\nINT64()&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Squeeze_9 -&gt; O_16;
+  O_17 [label=&quot;yc\nBOOL(1,1,b-a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Greater_15 -&gt; O_17;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-ea647a576ad593ab4abff5be002cf71ba7ef47a1.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;d1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;initi\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;d2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Squeeze_3 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  ShiftedCausalMask_4 [label=&quot;intermediate.\nShiftedCausalMask(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Squeeze_3 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; ShiftedCausalMask_4 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; ShiftedCausalMask_4 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; ShiftedCausalMask_4 [label=&quot;INT64(1)&quot;];
+  O_5 [label=&quot;nd2\nINT64()&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Squeeze_3 -&gt; O_5;
+  O_6 [label=&quot;yc\nBOOL(1,1,b-a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ShiftedCausalMask_4 -&gt; O_6;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.FunctionCausalMaskPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.graph_builder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_squeeze1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_squeeze2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">range1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">range2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_unsqueeze1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rg_unsqueeze2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">less_or_equal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#FunctionCausalMaskPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.FunctionCausalMaskPattern.apply" title="Link to this definition">¶</a></dt>
@@ -718,6 +833,56 @@ will automatically determine the position of the new nodes.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Pattern</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">constructed</span> <span class="n">without</span> <span class="n">the</span> <span class="n">matched</span> <span class="n">nodes</span><span class="o">.</span>
 </pre></div>
 </div>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-39e8647ff4708971d2d66488556a17e8c0ce8369.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;weights\nFLOAT(1,1,a)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;dim1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;dim2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Squeeze_3 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Squeeze_4 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Range_5 [label=&quot;Range(., ., 1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_6 [label=&quot;Unsqueeze(., [0, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Cast_7 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_8 [label=&quot;Reshape(., [0, -1, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Mul_9 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cos_10 [label=&quot;Cos(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sin_11 [label=&quot;Sin(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Squeeze_3 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; Squeeze_4 [label=&quot;INT64(1)&quot;];
+  Squeeze_3 -&gt; Range_5 [label=&quot;INT64()&quot;];
+  Squeeze_4 -&gt; Range_5 [label=&quot;INT64()&quot;];
+  Range_5 -&gt; Unsqueeze_6 [label=&quot;INT64(?)&quot;];
+  Unsqueeze_6 -&gt; Cast_7 [label=&quot;INT64(1,1,?)&quot;];
+  Cast_7 -&gt; Reshape_8 [label=&quot;FLOAT(1,1,?)&quot;];
+  I_0 -&gt; Mul_9 [label=&quot;FLOAT(1,1,a)&quot;];
+  Reshape_8 -&gt; Mul_9 [label=&quot;FLOAT(1,?,1)&quot;];
+  Mul_9 -&gt; Cos_10 [label=&quot;FLOAT(1,?,a)&quot;];
+  Mul_9 -&gt; Sin_11 [label=&quot;FLOAT(1,?,a)&quot;];
+  O_12 [label=&quot;_onx_sin_mul_weights\nFLOAT(1,dim2-dim1,a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Sin_11 -&gt; O_12;
+  O_13 [label=&quot;_onx_cos_mul_weights\nFLOAT(1,dim2-dim1,a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cos_10 -&gt; O_13;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-def7a119b4256c0b970be33ce1757043d2597745.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;weights\nFLOAT(1,1,a)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;dim1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;dim2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  CosSinCacheWithRange_3 [label=&quot;intermediate.\nCosSinCacheWithRange(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; CosSinCacheWithRange_3 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; CosSinCacheWithRange_3 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; CosSinCacheWithRange_3 [label=&quot;FLOAT(1,1,a)&quot;];
+  O_4 [label=&quot;_onx_sin_mul_weights\nFLOAT(1,dim2-dim1,a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  CosSinCacheWithRange_3 -&gt; O_4;
+  O_5 [label=&quot;_onx_cos_mul_weights\nFLOAT(1,dim2-dim1,a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  CosSinCacheWithRange_3 -&gt; O_5;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.FunctionCosSinCachePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.graph_builder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_squeeze1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_squeeze2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsq_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cos_cast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sin_cast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#FunctionCosSinCachePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.FunctionCosSinCachePattern.apply" title="Link to this definition">¶</a></dt>
@@ -794,6 +959,48 @@ will automatically determine the position of the new nodes.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Pattern</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">constructed</span> <span class="n">without</span> <span class="n">the</span> <span class="n">matched</span> <span class="n">nodes</span><span class="o">.</span>
 </pre></div>
 </div>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-5dfb8841b954dacfe70c3b3a76af421ba2767153.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;m2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;m1\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Split_3 [label=&quot;Split(., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Neg_4 [label=&quot;Neg(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_5 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_6 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_7 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_8 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Split_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Split_3 -&gt; Neg_4 [label=&quot;FLOAT(a,b,c,?)&quot;];
+  Neg_4 -&gt; Concat_5 [label=&quot;FLOAT(a,b,c,?)&quot;];
+  Split_3 -&gt; Concat_5 [label=&quot;FLOAT(a,b,c,?)&quot;];
+  Concat_5 -&gt; Mul_6 [label=&quot;FLOAT(a,b,c,?)&quot;];
+  I_2 -&gt; Mul_6 [label=&quot;FLOAT(c,d)&quot;];
+  I_1 -&gt; Mul_7 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_0 -&gt; Mul_7 [label=&quot;FLOAT(c,d)&quot;];
+  Mul_6 -&gt; Add_8 [label=&quot;FLOAT(a,b,c,?)&quot;];
+  Mul_7 -&gt; Add_8 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  O_9 [label=&quot;Y\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_8 -&gt; O_9;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-6754fa471c6e0f668f4450fee52ef1f935ee3552.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;m2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;m1\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  HalfRotaryEmbedding_3 [label=&quot;intermediate.\nHalfRotaryEmbedding(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; HalfRotaryEmbedding_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_0 -&gt; HalfRotaryEmbedding_3 [label=&quot;FLOAT(c,d)&quot;];
+  I_2 -&gt; HalfRotaryEmbedding_3 [label=&quot;FLOAT(c,d)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  HalfRotaryEmbedding_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.FunctionHalfRotaryEmbeddingPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.graph_builder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">neg_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul1_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul2_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#FunctionHalfRotaryEmbeddingPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.FunctionHalfRotaryEmbeddingPattern.apply" title="Link to this definition">¶</a></dt>
@@ -859,106 +1066,78 @@ will automatically determine the position of the new nodes.</p></li>
 <img alt="../../../_images/onnx_rotary-1.png" class="plot-directive" src="../../../_images/onnx_rotary-1.png" />
 </figure>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-5bfcd478af4e82e89597469f251d07b633e7f1fa.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
-  split [shape=box color=red label=&quot;split\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  x1 [shape=box color=red label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  nx1 [shape=box color=red label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  x2 [shape=box color=red label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
-  zero [shape=box color=green label=&quot;zero\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
-  x1 [shape=box color=green label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  nx1 [shape=box color=green label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  x2 [shape=box color=green label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[3 8]&quot; fontsize=10];
-  Constant -&gt; shape;
-
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[8 8]&quot; fontsize=10];
-  Constant1 -&gt; split;
-
-  ConstantOfShape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape&quot; fontsize=10];
-  shape -&gt; ConstantOfShape;
-  ConstantOfShape -&gt; zero;
-
-  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=1&quot; fontsize=10];
-  X -&gt; Split;
-  split -&gt; Split;
-  Split -&gt; x1;
-  Split -&gt; x2;
-
-  Neg [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Neg&quot; fontsize=10];
-  x1 -&gt; Neg;
-  Neg -&gt; nx1;
-
-  c1 [shape=box label=&quot;c1&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=1&quot; fontsize=10];
-  nx1 -&gt; Concat;
-  zero -&gt; Concat;
-  Concat -&gt; c1;
-
-  ConstantOfShape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape&quot; fontsize=10];
-  shape -&gt; ConstantOfShape1;
-  ConstantOfShape1 -&gt; zero;
-
-  c2 [shape=box label=&quot;c2&quot; fontsize=10];
-  Concat1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=1&quot; fontsize=10];
-  zero -&gt; Concat1;
-  x2 -&gt; Concat1;
-  Concat1 -&gt; c2;
-
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  c1 -&gt; Add;
-  c2 -&gt; Add;
-  Add -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-60fff67f9b9d1f30282d95aaffe0ab028db8ea63.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,16)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;split\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;x1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;shape\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_4 [label=&quot;nx1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_5 [label=&quot;x2\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_6 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_7 [label=&quot;Constant() -&gt; split&quot;, fillcolor=&quot;#cccccc&quot;];
+  ConstantOfShape_8 [label=&quot;ConstantOfShape(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Split_9 [label=&quot;Split(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Neg_10 [label=&quot;Neg(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_11 [label=&quot;Concat(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ConstantOfShape_12 [label=&quot;ConstantOfShape(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_13 [label=&quot;Concat(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_14 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_6 -&gt; ConstantOfShape_8 [label=&quot;INT64(2)&quot;];
+  I_0 -&gt; Split_9 [label=&quot;FLOAT(a,16)&quot;];
+  Constant_7 -&gt; Split_9 [label=&quot;INT64(2)&quot;];
+  Split_9 -&gt; Neg_10 [label=&quot;FLOAT(a,8)&quot;];
+  Neg_10 -&gt; Concat_11 [label=&quot;FLOAT(a,8)&quot;];
+  ConstantOfShape_12 -&gt; Concat_11;
+  Constant_6 -&gt; ConstantOfShape_12 [label=&quot;INT64(2)&quot;];
+  ConstantOfShape_12 -&gt; Concat_13;
+  Split_9 -&gt; Concat_13 [label=&quot;FLOAT(a,8)&quot;];
+  Concat_11 -&gt; Add_14 [label=&quot;FLOAT(3,16)&quot;];
+  Concat_13 -&gt; Add_14 [label=&quot;FLOAT(3,16)&quot;];
+  O_15 [label=&quot;Y\nFLOAT(3,16)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_14 -&gt; O_15;
+  O_16 [label=&quot;zero\nFLOAT(3,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ConstantOfShape_12 -&gt; O_16;
+  O_17 [label=&quot;x1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Split_9 -&gt; O_17;
+  O_18 [label=&quot;nx1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Neg_10 -&gt; O_18;
+  O_19 [label=&quot;x2\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Split_9 -&gt; O_19;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-b92c8ad94b164788c279523a64e82f084b1e2538.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
-  split [shape=box color=red label=&quot;split\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  x1 [shape=box color=red label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  nx1 [shape=box color=red label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  x2 [shape=box color=red label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
-  zero [shape=box color=green label=&quot;zero\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
-  x1 [shape=box color=green label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  nx1 [shape=box color=green label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-  x2 [shape=box color=green label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
-
-
-  ConstantOfShape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape&quot; fontsize=10];
-  shape -&gt; ConstantOfShape;
-  ConstantOfShape -&gt; zero;
-
-  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=1&quot; fontsize=10];
-  X -&gt; Split;
-  split -&gt; Split;
-  Split -&gt; x1;
-  Split -&gt; x2;
-
-  Neg [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Neg&quot; fontsize=10];
-  x1 -&gt; Neg;
-  Neg -&gt; nx1;
-
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=1&quot; fontsize=10];
-  nx1 -&gt; Concat;
-  x2 -&gt; Concat;
-  Concat -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-22c5e5dfabb69c71bd93d4c6c40e462a6bf204b4.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,16)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;split\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;x1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;shape\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_4 [label=&quot;nx1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_5 [label=&quot;x2\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  ConstantOfShape_6 [label=&quot;ConstantOfShape(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Split_7 [label=&quot;Split(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Neg_8 [label=&quot;Neg(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_9 [label=&quot;Concat(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_3 -&gt; ConstantOfShape_6 [label=&quot;INT64(2)&quot;];
+  I_0 -&gt; Split_7 [label=&quot;FLOAT(a,16)&quot;];
+  I_1 -&gt; Split_7 [label=&quot;INT64(2)&quot;];
+  Split_7 -&gt; Neg_8 [label=&quot;FLOAT(a,8)&quot;];
+  Neg_8 -&gt; Concat_9 [label=&quot;FLOAT(a,8)&quot;];
+  Split_7 -&gt; Concat_9 [label=&quot;FLOAT(a,8)&quot;];
+  O_10 [label=&quot;Y\nFLOAT(a,16)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_9 -&gt; O_10;
+  O_11 [label=&quot;zero\nFLOAT(3,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ConstantOfShape_6 -&gt; O_11;
+  O_12 [label=&quot;x1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Split_7 -&gt; O_12;
+  O_13 [label=&quot;nx1\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Neg_8 -&gt; O_13;
+  O_14 [label=&quot;x2\nFLOAT(a,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Split_7 -&gt; O_14;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryConcatPartPattern.match">
@@ -1000,117 +1179,64 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_rotary.</span></span><span class="sig-name descname"><span class="pre">RotaryEmbeddingPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#RotaryEmbeddingPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses nodes matching RotaryEmbedding(23).</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-04103e6ba7324aa6d7ed47d13dd825200893af35.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  ranksep=0.25;
-  orientation=portrait;
-
-  m2 [shape=box color=red label=&quot;m2\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 'c', 'd']&quot; fontsize=10];
-  m1 [shape=box color=red label=&quot;m1\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
-
-
-  split [shape=box label=&quot;split&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[4 6]&quot; fontsize=10];
-  Constant -&gt; split;
-
-  m2x2 [shape=box label=&quot;m2x2&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=-1&quot; fontsize=10];
-  m2 -&gt; Concat;
-  m2 -&gt; Concat;
-  Concat -&gt; m2x2;
-
-  m1x2 [shape=box label=&quot;m1x2&quot; fontsize=10];
-  Concat1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=-1&quot; fontsize=10];
-  m1 -&gt; Concat1;
-  m1 -&gt; Concat1;
-  Concat1 -&gt; m1x2;
-
-  Xh1 [shape=box label=&quot;Xh1&quot; fontsize=10];
-  Xh2 [shape=box label=&quot;Xh2&quot; fontsize=10];
-  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=-1&quot; fontsize=10];
-  X -&gt; Split;
-  split -&gt; Split;
-  Split -&gt; Xh1;
-  Split -&gt; Xh2;
-
-  Yh [shape=box label=&quot;Yh&quot; fontsize=10];
-  HalfRotaryEmbedding [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;HalfRotaryEmbedding&quot; fontsize=10];
-  Xh1 -&gt; HalfRotaryEmbedding;
-  m2x2 -&gt; HalfRotaryEmbedding;
-  m1x2 -&gt; HalfRotaryEmbedding;
-  HalfRotaryEmbedding -&gt; Yh;
-
-  Concat12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=-1&quot; fontsize=10];
-  Yh -&gt; Concat12;
-  Xh2 -&gt; Concat12;
-  Concat12 -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-9f9c3b2024ffd9c8f1ae80cd4d046d8296d7ae01.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;m2\nFLOAT(1,1,c,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,2,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;m1\nFLOAT(1,1,c,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; split&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_4 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_5 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Split_6 [label=&quot;Split(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  HalfRotaryEmbedding_7 [label=&quot;intermediate.\nHalfRotaryEmbedding(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_8 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Concat_4 [label=&quot;FLOAT(1,1,c,e)&quot;];
+  I_2 -&gt; Concat_5 [label=&quot;FLOAT(1,1,c,e)&quot;];
+  I_1 -&gt; Split_6 [label=&quot;FLOAT(a,2,c,d)&quot;];
+  Constant_3 -&gt; Split_6 [label=&quot;INT64(2)&quot;];
+  Split_6 -&gt; HalfRotaryEmbedding_7 [label=&quot;FLOAT(a,2,c,?)&quot;];
+  Concat_4 -&gt; HalfRotaryEmbedding_7 [label=&quot;FLOAT(1,1,c,?)&quot;];
+  Concat_5 -&gt; HalfRotaryEmbedding_7 [label=&quot;FLOAT(1,1,c,?)&quot;];
+  HalfRotaryEmbedding_7 -&gt; Concat_8;
+  Split_6 -&gt; Concat_8 [label=&quot;FLOAT(a,2,c,?)&quot;];
+  O_9 [label=&quot;Y\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_8 -&gt; O_9;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ea34929c9c6bbe09894d578bc4dea448a169a378.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  ranksep=0.25;
-  orientation=portrait;
-
-  m2 [shape=box color=red label=&quot;m2\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 'c', 'd']&quot; fontsize=10];
-  m1 [shape=box color=red label=&quot;m1\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
-
-
-  init7_s2_1_1 [shape=box label=&quot;init7_s2_1_1&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1 1]&quot; fontsize=10];
-  Constant -&gt; init7_s2_1_1;
-
-  init7_s1_1 [shape=box label=&quot;init7_s1_1&quot; fontsize=10];
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1]&quot; fontsize=10];
-  Constant1 -&gt; init7_s1_1;
-
-  RotaryEmbeddingPattern__Xh1__dim [shape=box label=&quot;RotaryEmbeddingPattern__Xh1__dim&quot; fontsize=10];
-  Shape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape\nend=1\nstart=0&quot; fontsize=10];
-  X -&gt; Shape;
-  Shape -&gt; RotaryEmbeddingPattern__Xh1__dim;
-
-  RotaryEmbeddingPattern__Xh1____Shape [shape=box label=&quot;RotaryEmbeddingPattern__Xh1____Shape&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
-  RotaryEmbeddingPattern__Xh1__dim -&gt; Concat;
-  init7_s2_1_1 -&gt; Concat;
-  Concat -&gt; RotaryEmbeddingPattern__Xh1____Shape;
-
-  RotaryEmbeddingPattern__m2x2 [shape=box label=&quot;RotaryEmbeddingPattern__m2x2&quot; fontsize=10];
-  Squeeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
-  m2 -&gt; Squeeze;
-  init7_s1_1 -&gt; Squeeze;
-  Squeeze -&gt; RotaryEmbeddingPattern__m2x2;
-
-  RotaryEmbeddingPattern__m1x2 [shape=box label=&quot;RotaryEmbeddingPattern__m1x2&quot; fontsize=10];
-  Squeeze1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
-  m1 -&gt; Squeeze1;
-  init7_s1_1 -&gt; Squeeze1;
-  Squeeze1 -&gt; RotaryEmbeddingPattern__m1x2;
-
-  RotaryEmbeddingPattern__m2x22 [shape=box label=&quot;RotaryEmbeddingPattern__m2x22&quot; fontsize=10];
-  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  RotaryEmbeddingPattern__m2x2 -&gt; Expand;
-  RotaryEmbeddingPattern__Xh1____Shape -&gt; Expand;
-  Expand -&gt; RotaryEmbeddingPattern__m2x22;
-
-  RotaryEmbeddingPattern__m1x22 [shape=box label=&quot;RotaryEmbeddingPattern__m1x22&quot; fontsize=10];
-  Expand1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
-  RotaryEmbeddingPattern__m1x2 -&gt; Expand1;
-  RotaryEmbeddingPattern__Xh1____Shape -&gt; Expand1;
-  Expand1 -&gt; RotaryEmbeddingPattern__m1x22;
-
-  RotaryEmbedding [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;RotaryEmbedding\nnum_heads=2\nrotary_embedding_dim=4&quot; fontsize=10];
-  X -&gt; RotaryEmbedding;
-  RotaryEmbeddingPattern__m2x22 -&gt; RotaryEmbedding;
-  RotaryEmbeddingPattern__m1x22 -&gt; RotaryEmbedding;
-  RotaryEmbedding -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-3b3cd1edd3b01b4147f8d0e4f74b159585498e55.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;m2\nFLOAT(1,1,c,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,2,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;m1\nFLOAT(1,1,c,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; init7_s2_1_1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; init7_s1_1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Shape_5 [label=&quot;Shape(., end=1, start=0)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Concat_6 [label=&quot;Concat(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Squeeze_7 [label=&quot;Squeeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Squeeze_8 [label=&quot;Squeeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Expand_9 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_10 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  RotaryEmbedding_11 [label=&quot;RotaryEmbedding(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Shape_5 [label=&quot;FLOAT(a,2,c,d)&quot;];
+  Shape_5 -&gt; Concat_6 [label=&quot;INT64(1)&quot;];
+  Constant_3 -&gt; Concat_6 [label=&quot;INT64(2)&quot;];
+  I_0 -&gt; Squeeze_7 [label=&quot;FLOAT(1,1,c,e)&quot;];
+  Constant_4 -&gt; Squeeze_7 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; Squeeze_8 [label=&quot;FLOAT(1,1,c,e)&quot;];
+  Constant_4 -&gt; Squeeze_8 [label=&quot;INT64(1)&quot;];
+  Squeeze_7 -&gt; Expand_9 [label=&quot;FLOAT(1,c,e)&quot;];
+  Concat_6 -&gt; Expand_9 [label=&quot;INT64(3)&quot;];
+  Squeeze_8 -&gt; Expand_10 [label=&quot;FLOAT(1,c,e)&quot;];
+  Concat_6 -&gt; Expand_10 [label=&quot;INT64(3)&quot;];
+  I_1 -&gt; RotaryEmbedding_11 [label=&quot;FLOAT(a,2,c,d)&quot;];
+  Expand_9 -&gt; RotaryEmbedding_11 [label=&quot;FLOAT(?,?,?)&quot;];
+  Expand_10 -&gt; RotaryEmbedding_11 [label=&quot;FLOAT(?,?,?)&quot;];
+  O_12 [label=&quot;Y\nFLOAT(a,2,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  RotaryEmbedding_11 -&gt; O_12;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern.apply">

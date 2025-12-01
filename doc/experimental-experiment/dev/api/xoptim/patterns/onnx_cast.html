@@ -10,7 +10,7 @@
         <title>.xoptim.patterns.onnx_cast - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -552,36 +552,36 @@
 <dd><p>Moves two cast operators beyond a binary operator
 The cast must cast from a float type to another float type.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-191abcb5e647f1bfc250a8d055298cdd32aa0b0a.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-7e8b9f4352104d6f0cd1a96b3eab435d1fdc2ced.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_137323647124480 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_137323647124240 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_137323647124640 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_137323647124720 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_137323647124800 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_137323647124240 -&gt; Cast_137323647124640;
-  I_137323647124480 -&gt; Cast_137323647124720;
-  Cast_137323647124640 -&gt; Add_137323647124800 [label=&quot;FLOAT16(a,4)&quot;];
-  Cast_137323647124720 -&gt; Add_137323647124800 [label=&quot;FLOAT16(a,4)&quot;];
-  O_137323647124560 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Add_137323647124800 -&gt; O_137323647124560;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_3 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_4 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Cast_2 [label=&quot;FLOAT(a,4)&quot;];
+  I_0 -&gt; Cast_3 [label=&quot;FLOAT(a,4)&quot;];
+  Cast_2 -&gt; Add_4 [label=&quot;FLOAT16(a,4)&quot;];
+  Cast_3 -&gt; Add_4 [label=&quot;FLOAT16(a,4)&quot;];
+  O_5 [label=&quot;Z\nFLOAT16(a,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-d0dd007011b71ef7efaaec44d32a5be8f3c78e03.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-8ec5b861c8a77bf9c77f149030da0ab8e5c87de8.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_131965152216384 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_131965152216224 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Add_131965152216624 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_131965152216704 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_131965152216224 -&gt; Add_131965152216624;
-  I_131965152216384 -&gt; Add_131965152216624;
-  Add_131965152216624 -&gt; Cast_131965152216704 [label=&quot;FLOAT(a,4)&quot;];
-  O_131965152216544 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Cast_131965152216704 -&gt; O_131965152216544;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_2 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_3 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Add_2 [label=&quot;FLOAT(a,4)&quot;];
+  I_0 -&gt; Add_2 [label=&quot;FLOAT(a,4)&quot;];
+  Add_2 -&gt; Cast_3 [label=&quot;FLOAT(a,4)&quot;];
+  O_4 [label=&quot;Z\nFLOAT16(a,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_cast.CastCastBinaryPattern.apply">
@@ -644,28 +644,28 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_cast.</span></span><span class="sig-name descname"><span class="pre">CastCastPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_cast.html#CastCastPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_cast.CastCastPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that two consecutive cast can be avoided.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-f117b5446bfd9fe459108589f5916a9ea9558b72.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-175ad24c7ccf950de7803b70c71e425f08e3d4d6.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_127204394861248 [label=&quot;x1&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_127204394861728 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_127204394861808 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_127204394861248 -&gt; Cast_127204394861728;
-  Cast_127204394861728 -&gt; Cast_127204394861808 [label=&quot;FLOAT(b,c)&quot;];
-  O_127204394861488 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Cast_127204394861808 -&gt; O_127204394861488;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;x1\nFLOAT16(b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_1 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_1 [label=&quot;FLOAT16(b,c)&quot;];
+  Cast_1 -&gt; Cast_2 [label=&quot;FLOAT(b,c)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3e4971c28aaf76156295ec8a88c33a360ba5fc08.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-de8dd155369360d89668e434ba06521005202e6b.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_134520445912304 [label=&quot;x1&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_134520445912064 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_134520445912304 -&gt; Cast_134520445912064;
-  O_134520445912464 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Cast_134520445912064 -&gt; O_134520445912464;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;x1\nFLOAT16(b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_1 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_1 [label=&quot;FLOAT16(b,c)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_cast.CastCastPattern.apply">
@@ -728,36 +728,36 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_cast.</span></span><span class="sig-name descname"><span class="pre">CastOpCastPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_cast.html#CastOpCastPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_cast.CastOpCastPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Removes two cast surrounding another operator.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-8a3e79c01442c6ca523a16f899bdbb228b6ea2d0.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-a137664af31f84f9f2d1e7f28cbd44cde0968324.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_139309442729120 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_139309442728880 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_139309442729280 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_139309442729360 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_139309442729440 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_139309442729120 -&gt; Cast_139309442729280;
-  I_139309442728880 -&gt; Add_139309442729360;
-  Cast_139309442729280 -&gt; Add_139309442729360 [label=&quot;FLOAT(a,b)&quot;];
-  Add_139309442729360 -&gt; Cast_139309442729440 [label=&quot;FLOAT(a,b)&quot;];
-  O_139309442729200 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Cast_139309442729440 -&gt; O_139309442729200;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_4 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_2 [label=&quot;FLOAT16(a,b)&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(a,b)&quot;];
+  Cast_2 -&gt; Add_3 [label=&quot;FLOAT(a,b)&quot;];
+  Add_3 -&gt; Cast_4 [label=&quot;FLOAT(a,b)&quot;];
+  O_5 [label=&quot;Z\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-4136e9d194384478d8617ea333d9e64264e06d55.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-256f8737665fba810b5635d853d2b2ce976ffe42.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_135351731782736 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_135351731782576 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_135351731782976 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_135351731783056 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_135351731782576 -&gt; Cast_135351731782976;
-  Cast_135351731782976 -&gt; Add_135351731783056 [label=&quot;FLOAT16(a,b)&quot;];
-  I_135351731782736 -&gt; Add_135351731783056;
-  O_135351731782896 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Add_135351731783056 -&gt; O_135351731782896;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Cast_2 [label=&quot;FLOAT(a,b)&quot;];
+  Cast_2 -&gt; Add_3 [label=&quot;FLOAT16(a,b)&quot;];
+  I_0 -&gt; Add_3 [label=&quot;FLOAT16(a,b)&quot;];
+  O_4 [label=&quot;Z\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_cast.CastOpCastPattern.apply">
@@ -819,6 +819,28 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_cast.CastPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_cast.</span></span><span class="sig-name descname"><span class="pre">CastPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_cast.html#CastPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_cast.CastPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Cast is really needed.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-cc9ff721667d2cbc69928d306e9753867dc2b907.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;_onx_mul045\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_1 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_1 [label=&quot;FLOAT16(4,512,16384)&quot;];
+  O_2 [label=&quot;mul_34\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_1 -&gt; O_2;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-6b963581a471be8ebcc37b4020cfa8af69858482.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;_onx_mul045\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_1 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Identity_1 [label=&quot;FLOAT16(4,512,16384)&quot;];
+  O_2 [label=&quot;mul_34\nFLOAT16(4,512,16384)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_cast.CastPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_cast.html#CastPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_cast.CastPattern.apply" title="Link to this definition">¶</a></dt>
@@ -881,36 +903,36 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Changes the computation type to make it faster if one of the inputs
 was just casted before.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-7268a914b8b81467c1d1d9ace4536b268d440ec0.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-21c6316b6806157ca01f3ac72ed960a1cec7f57d.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_133252551853296 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_133252551853136 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_133252551853536 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_133252551853616 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_133252551853296 -&gt; Cast_133252551853536;
-  I_133252551853136 -&gt; Add_133252551853616;
-  Cast_133252551853536 -&gt; Add_133252551853616 [label=&quot;FLOAT(a,b)&quot;];
-  O_133252551853456 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Add_133252551853616 -&gt; O_133252551853456;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_2 [label=&quot;FLOAT16(a,b)&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(a,b)&quot;];
+  Cast_2 -&gt; Add_3 [label=&quot;FLOAT(a,b)&quot;];
+  O_4 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ae8f10d1c97ec0de56303ce54add106b68acf60b.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-4028672bde7ac16a09763dc68b159e6dc6e4cfb0.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_129243852097552 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  I_129243852097632 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Cast_129243852097792 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_129243852097872 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_129243852097952 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_129243852097632 -&gt; Cast_129243852097792;
-  Cast_129243852097792 -&gt; Add_129243852097872 [label=&quot;FLOAT16(a,b)&quot;];
-  I_129243852097552 -&gt; Add_129243852097872;
-  Add_129243852097872 -&gt; Cast_129243852097952 [label=&quot;FLOAT16(a,b)&quot;];
-  O_129243852097712 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Cast_129243852097952 -&gt; O_129243852097712;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT16(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Cast_2 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_4 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Cast_2 [label=&quot;FLOAT(a,b)&quot;];
+  Cast_2 -&gt; Add_3 [label=&quot;FLOAT16(a,b)&quot;];
+  I_0 -&gt; Add_3 [label=&quot;FLOAT16(a,b)&quot;];
+  Add_3 -&gt; Cast_4 [label=&quot;FLOAT16(a,b)&quot;];
+  O_5 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_cast.ComputationCastOpCastPattern.apply">

@@ -10,7 +10,7 @@
         <title>.xoptim.patterns.onnx_dropout - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -551,30 +551,30 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_dropout.</span></span><span class="sig-name descname"><span class="pre">DropoutPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_dropout.html#DropoutPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_dropout.DropoutPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Cast is really needed.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-f890326d4afbaa0f24110142a751b68b42d41d9b.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-4dbfbaf3a2a08485ba2519aea09fea115c27911f.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_134291809207456 [label=&quot;_onx_add02&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Constant_134291809207696 [label=&quot;Constant() -&gt; init10_s_3&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_134291809207776 [label=&quot;Constant() -&gt; init9_s_&quot;, fillcolor=&quot;#cccccc&quot;];
-  Dropout_134291809207856 [label=&quot;Dropout(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_134291809207456 -&gt; Dropout_134291809207856;
-  Constant_134291809207696 -&gt; Dropout_134291809207856 [label=&quot;FLOAT16()&quot;];
-  Constant_134291809207776 -&gt; Dropout_134291809207856 [label=&quot;BOOL()&quot;];
-  O_134291809207536 [label=&quot;dropout&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Dropout_134291809207856 -&gt; O_134291809207536;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;_onx_add02\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; init10_s_3&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init9_s_&quot;, fillcolor=&quot;#cccccc&quot;];
+  Dropout_3 [label=&quot;Dropout(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Dropout_3 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Constant_1 -&gt; Dropout_3 [label=&quot;FLOAT16()&quot;];
+  Constant_2 -&gt; Dropout_3 [label=&quot;BOOL()&quot;];
+  O_4 [label=&quot;dropout\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Dropout_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-fdc6dea8a558db234baf1b56da782d140f167411.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-2619805635719f33167c747c53f86bfcbb4b484a.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=6];
-  I_128386855453936 [label=&quot;_onx_add02&quot;, fillcolor=&quot;#eeeeaa&quot;];
-  Identity_128386855454016 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_128386855453936 -&gt; Identity_128386855454016;
-  O_128386855453856 [label=&quot;dropout&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Identity_128386855454016 -&gt; O_128386855453856;
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;_onx_add02\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_1 [label=&quot;Identity(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Identity_1 [label=&quot;FLOAT16(4,512,128)&quot;];
+  O_2 [label=&quot;dropout\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_dropout.DropoutPattern.apply">

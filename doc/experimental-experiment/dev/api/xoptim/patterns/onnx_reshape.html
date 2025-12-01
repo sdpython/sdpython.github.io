@@ -551,6 +551,53 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ConcatReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ConcatReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ConcatReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Tries to reduce the number of nodes in the sequence Concat + Reshape
 by replacing one of the dimension by -1.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-d54cda03e7d8da4aa48ba7cab9086ebbd0596459.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;I1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;D1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;I2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Shape_4 [label=&quot;Shape(., end=3, start=2)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Shape_5 [label=&quot;Shape(., end=4, start=3)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Constant_6 [label=&quot;Constant() -&gt; I1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_7 [label=&quot;Constant() -&gt; I2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_8 [label=&quot;Concat(., ., ., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_9 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_2 -&gt; Shape_4 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_2 -&gt; Shape_5 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Constant_6 -&gt; Concat_8 [label=&quot;INT64(1)&quot;];
+  Constant_7 -&gt; Concat_8 [label=&quot;INT64(1)&quot;];
+  Shape_5 -&gt; Concat_8 [label=&quot;INT64(1)&quot;];
+  Shape_4 -&gt; Concat_8 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; Reshape_9 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Concat_8 -&gt; Reshape_9 [label=&quot;INT64(4)&quot;];
+  O_10 [label=&quot;Y\nFLOAT(a,b,d,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_9 -&gt; O_10;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-5b8b5789fe333cd6508fd5219fbb4dce7e510b12.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;I1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;D1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;I2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; init7_s1_-1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_5 [label=&quot;Concat(., ., ., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_6 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
+  I_3 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
+  Constant_4 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; Reshape_6 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Concat_5 -&gt; Reshape_6 [label=&quot;INT64(4)&quot;];
+  O_7 [label=&quot;Y\nFLOAT(a,b,d,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_6 -&gt; O_7;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ConcatReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ConcatReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ConcatReshapePattern.apply" title="Link to this definition">¶</a></dt>
@@ -613,46 +660,30 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Replaces the sequence Reduce* Reshape if reshape is only
 introduces to deal with a dimension kept because keepdims=1.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-134ee9a3ff8610fe3418aa0e60a7ea1748165ed8.png" alt="digraph{
-  nodesep=0.05;
-  orientation=portrait;
-  size=7;
-  ranksep=0.25;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[3, 2]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
-
-
-  shape [shape=box label=&quot;shape&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[3]&quot; fontsize=10];
-  Constant -&gt; shape;
-
-  xr [shape=box label=&quot;xr&quot; fontsize=10];
-  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\naxes=[1]\nkeepdims=1&quot; fontsize=10];
-  X -&gt; ReduceSum;
-  ReduceSum -&gt; xr;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  xr -&gt; Reshape;
-  shape -&gt; Reshape;
-  Reshape -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-c6da45eda04b28365e8b7f385a422cdab7fece3e.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(3,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_1 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_2 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; ReduceSum_2 [label=&quot;FLOAT(3,2)&quot;];
+  ReduceSum_2 -&gt; Reshape_3 [label=&quot;FLOAT(3,1)&quot;];
+  Constant_1 -&gt; Reshape_3 [label=&quot;INT64(1)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-75c522df5650cc9a4292945985054896d8e5850b.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  ranksep=0.25;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[3, 2]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
-
-
-  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\naxes=[1]\nkeepdims=0&quot; fontsize=10];
-  X -&gt; ReduceSum;
-  ReduceSum -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-2348ea78eb79eeaf7cdd176411d745c6ac2b68be.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(3,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  ReduceSum_1 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; ReduceSum_1 [label=&quot;FLOAT(3,2)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ReduceSum_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReduceReshapePattern.apply">
@@ -716,79 +747,53 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Replaces the reshapes around element-wise operators.
 It can be 3 or 2 out of 3.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-e5a19f079b95b8a6bd9e13499c08cb02f0f3dbf2.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-  nodesep=0.05;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-
-  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-
-
-  shape1 [shape=box label=&quot;shape1&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1  8]&quot; fontsize=10];
-  Constant -&gt; shape1;
-
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 3 -1]&quot; fontsize=10];
-  Constant1 -&gt; shape2;
-
-  shape3 [shape=box label=&quot;shape3&quot; fontsize=10];
-  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2 3 4]&quot; fontsize=10];
-  Constant12 -&gt; shape3;
-
-  xr [shape=box label=&quot;xr&quot; fontsize=10];
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  shape1 -&gt; Reshape;
-  Reshape -&gt; xr;
-
-  yr [shape=box label=&quot;yr&quot; fontsize=10];
-  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  Y -&gt; Reshape1;
-  shape2 -&gt; Reshape1;
-  Reshape1 -&gt; yr;
-
-  Reshape12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  xrr -&gt; Reshape12;
-  shape3 -&gt; Reshape12;
-  Reshape12 -&gt; Z;
-
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  xr -&gt; Mul;
-  yr -&gt; Mul;
-  Mul -&gt; xrr;
+<div class="graphviz"><img src="../../../_images/graphviz-09031a280db5152ced9bcb73ebebba4af0afe068.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;shape2\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;Z\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; shape1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_5 [label=&quot;Constant() -&gt; shape2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_6 [label=&quot;Constant() -&gt; shape3&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_7 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_8 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_9 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Mul_10 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Reshape_7 [label=&quot;FLOAT(2,3,4)&quot;];
+  Constant_4 -&gt; Reshape_7 [label=&quot;INT64(2)&quot;];
+  I_0 -&gt; Reshape_8 [label=&quot;FLOAT(2,3,4)&quot;];
+  Constant_5 -&gt; Reshape_8 [label=&quot;INT64(2)&quot;];
+  Mul_10 -&gt; Reshape_9;
+  Constant_6 -&gt; Reshape_9 [label=&quot;INT64(3)&quot;];
+  Reshape_7 -&gt; Mul_10 [label=&quot;FLOAT(3,8)&quot;];
+  Reshape_8 -&gt; Mul_10 [label=&quot;FLOAT(3,8)&quot;];
+  O_11 [label=&quot;xrr\nFLOAT(3,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_10 -&gt; O_11;
+  O_12 [label=&quot;Z\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_9 -&gt; O_12;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-41691009c38b73d28cc02ed756dd5440c9c56f8c.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-  orientation=portrait;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-
-  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
-
-
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  X -&gt; Mul;
-  Y -&gt; Mul;
-  Mul -&gt; Z;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  Z -&gt; Reshape;
-  shape2 -&gt; Reshape;
-  Reshape -&gt; xrr;
+<div class="graphviz"><img src="../../../_images/graphviz-a870edfcabcc8da4e201a885dc1bbb66822ac5f9.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;shape2\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;Z\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_5 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_2 -&gt; Mul_4 [label=&quot;FLOAT(2,3,4)&quot;];
+  I_0 -&gt; Mul_4 [label=&quot;FLOAT(2,3,4)&quot;];
+  Mul_4 -&gt; Reshape_5 [label=&quot;FLOAT(2,3,4)&quot;];
+  I_1 -&gt; Reshape_5 [label=&quot;INT64(2)&quot;];
+  O_6 [label=&quot;xrr\nFLOAT(3,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_5 -&gt; O_6;
+  O_7 [label=&quot;Z\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_4 -&gt; O_7;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern.apply">
@@ -912,67 +917,41 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Moves two reshape operators beyond a binary operator
 if it is possible.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a18e8bc047ce021c1a9f681ce7ad5a6e0d86665a.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  orientation=portrait;
-  nodesep=0.05;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
-  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['b', 8]&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1  8]&quot; fontsize=10];
-  Constant -&gt; sh1;
-
-  sh2 [shape=box label=&quot;sh2&quot; fontsize=10];
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1  8]&quot; fontsize=10];
-  Constant1 -&gt; sh2;
-
-  xc [shape=box label=&quot;xc&quot; fontsize=10];
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  sh1 -&gt; Reshape;
-  Reshape -&gt; xc;
-
-  yc [shape=box label=&quot;yc&quot; fontsize=10];
-  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  Y -&gt; Reshape1;
-  sh2 -&gt; Reshape1;
-  Reshape1 -&gt; yc;
-
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  xc -&gt; Add;
-  yc -&gt; Add;
-  Add -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-9a45e2610fef4cdb19741568ade68e04446355e3.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;sh1\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; sh1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; sh2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_5 [label=&quot;Reshape(., [-1, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_6 [label=&quot;Reshape(., [1, -1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Add_7 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Reshape_5 [label=&quot;FLOAT(a,4)&quot;];
+  I_0 -&gt; Reshape_6 [label=&quot;FLOAT(a,4)&quot;];
+  Reshape_5 -&gt; Add_7 [label=&quot;FLOAT(?,8)&quot;];
+  Reshape_6 -&gt; Add_7 [label=&quot;FLOAT(?,8)&quot;];
+  O_8 [label=&quot;Z\nFLOAT(b,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_7 -&gt; O_8;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3efafc33477587721bf72282ee20e08472b3414b.png" alt="digraph{
-  nodesep=0.05;
-  orientation=portrait;
-  size=7;
-  ranksep=0.25;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
-  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['b', 8]&quot; fontsize=10];
-
-
-  add_X [shape=box label=&quot;add_X&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  X -&gt; Add;
-  Y -&gt; Add;
-  Add -&gt; add_X;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  add_X -&gt; Reshape;
-  sh1 -&gt; Reshape;
-  Reshape -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-4630c82075ddc5ffcc545c8ac19c617e16de0a56.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;sh1\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_2 -&gt; Add_3 [label=&quot;FLOAT(a,4)&quot;];
+  I_0 -&gt; Add_3 [label=&quot;FLOAT(a,4)&quot;];
+  Add_3 -&gt; Reshape_4 [label=&quot;FLOAT(a,4)&quot;];
+  I_1 -&gt; Reshape_4 [label=&quot;INT64(2)&quot;];
+  O_5 [label=&quot;Z\nFLOAT(b,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern.apply">
@@ -1034,88 +1013,6 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ReshapeReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReshapeReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Reshape, Reshape by Reshape.</p>
-<p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-557225e30da6a56197a04e27a059b4db67156adc.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
-  ranksep=0.25;
-  size=7;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'e', 'f', 'g']&quot; fontsize=10];
-
-
-  shape0 [shape=box label=&quot;shape0&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 0  1 -1  0]&quot; fontsize=10];
-  Constant -&gt; shape0;
-
-  Xs [shape=box label=&quot;Xs&quot; fontsize=10];
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  shape -&gt; Reshape;
-  Reshape -&gt; Xs;
-
-  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  Xs -&gt; Reshape1;
-  shape0 -&gt; Reshape1;
-  Reshape1 -&gt; Y;
-}" class="graphviz" /></div>
-<p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3ecbf83912ff7e792fdb16d70803282ba14e0ad8.png" alt="digraph{
-  nodesep=0.05;
-  size=7;
-  ranksep=0.25;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'e', 'f', 'g']&quot; fontsize=10];
-
-
-  init7_s1_0 [shape=box label=&quot;init7_s1_0&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0]&quot; fontsize=10];
-  Constant -&gt; init7_s1_0;
-
-  init7_s1_3 [shape=box label=&quot;init7_s1_3&quot; fontsize=10];
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[3]&quot; fontsize=10];
-  Constant1 -&gt; init7_s1_3;
-
-  init7_s1_1 [shape=box label=&quot;init7_s1_1&quot; fontsize=10];
-  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1]&quot; fontsize=10];
-  Constant12 -&gt; init7_s1_1;
-
-  init7_s1__1 [shape=box label=&quot;init7_s1__1&quot; fontsize=10];
-  Constant123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1]&quot; fontsize=10];
-  Constant123 -&gt; init7_s1__1;
-
-  Xs__dim0 [shape=box label=&quot;Xs__dim0&quot; fontsize=10];
-  Gather [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Gather\naxis=0&quot; fontsize=10];
-  shape -&gt; Gather;
-  init7_s1_0 -&gt; Gather;
-  Gather -&gt; Xs__dim0;
-
-  Xs__dim3 [shape=box label=&quot;Xs__dim3&quot; fontsize=10];
-  Gather1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Gather\naxis=0&quot; fontsize=10];
-  shape -&gt; Gather1;
-  init7_s1_3 -&gt; Gather1;
-  Gather1 -&gt; Xs__dim3;
-
-  Xs__concat [shape=box label=&quot;Xs__concat&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
-  Xs__dim0 -&gt; Concat;
-  init7_s1_1 -&gt; Concat;
-  init7_s1__1 -&gt; Concat;
-  Xs__dim3 -&gt; Concat;
-  Concat -&gt; Xs__concat;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  Xs__concat -&gt; Reshape;
-  Reshape -&gt; Y;
-}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReshapeReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern.apply" title="Link to this definition">¶</a></dt>
@@ -1178,44 +1075,6 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Tries to reduce the number of nodes in the sequence Concat + Reshape
 by replacing one of the dimension by -1 or 0.
 The pattern tries to align shape information to infer a static shape.</p>
-<p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-4f427bcc532e01f9f8394fa5f17da8824225df71.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
-  size=7;
-  ranksep=0.25;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
-
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  d -&gt; Reshape;
-  Reshape -&gt; Y;
-}" class="graphviz" /></div>
-<p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-a119b5252c4ae76406e0d300c31c86c81d146384.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  orientation=portrait;
-  ranksep=0.25;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
-
-
-  init7_s2_6__1 [shape=box label=&quot;init7_s2_6__1&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 6 -1]&quot; fontsize=10];
-  Constant -&gt; init7_s2_6__1;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  init7_s2_6__1 -&gt; Reshape;
-  Reshape -&gt; Y;
-}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedEditDistanceReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapeBasedEditDistanceReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedEditDistanceReshapePattern.apply" title="Link to this definition">¶</a></dt>
@@ -1277,44 +1136,6 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedReshapeIsSqueezePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapeBasedReshapeIsSqueezePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedReshapeIsSqueezePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces a replaces by a squeeze or unsqueeze pattern if possible.
 It is only available for opset &lt; 18.</p>
-<p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-dd32e8ef61f03c9eb8759f30e861f096172be6dd.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  ranksep=0.25;
-  nodesep=0.05;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[1, 2, 3, 'd', 1]&quot; fontsize=10];
-
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  d -&gt; Reshape;
-  Reshape -&gt; Y;
-}" class="graphviz" /></div>
-<p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-4d920f2b2b0d5309e5d98d0780541633bd86fde7.png" alt="digraph{
-  size=7;
-  orientation=portrait;
-  ranksep=0.25;
-  nodesep=0.05;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[1, 2, 3, 'd', 1]&quot; fontsize=10];
-
-
-  init7_s2_0_4 [shape=box label=&quot;init7_s2_0_4&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0 4]&quot; fontsize=10];
-  Constant -&gt; init7_s2_0_4;
-
-  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
-  X -&gt; Unsqueeze;
-  init7_s2_0_4 -&gt; Unsqueeze;
-  Unsqueeze -&gt; Y;
-}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedReshapeIsSqueezePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapeBasedReshapeIsSqueezePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedReshapeIsSqueezePattern.apply" title="Link to this definition">¶</a></dt>
@@ -1376,43 +1197,31 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ShapedBasedReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapedBasedReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapedBasedReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Reshape is really needed based on the input shape.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-8b5d8c77dfda3193b3b9a0e735b12d632a1ef9b7.png" alt="digraph{
-  nodesep=0.05;
-  ranksep=0.25;
-  size=7;
-  orientation=portrait;
-
-  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-
-  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 0  0 -1]&quot; fontsize=10];
-  Constant -&gt; shape2;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  shape2 -&gt; Reshape;
-  Reshape -&gt; xrr;
+<div class="graphviz"><img src="../../../_images/graphviz-269d256786fd6dd68e693c7be6ccaecfe02536de.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;shape2\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; shape2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_1 -&gt; Reshape_3 [label=&quot;FLOAT(a,b,c)&quot;];
+  Constant_2 -&gt; Reshape_3 [label=&quot;INT64(3)&quot;];
+  O_4 [label=&quot;xrr\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-1420b7eb5e06ccce6549d13d3a694c27ca997b68.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  nodesep=0.05;
-  size=7;
-
-  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-
-  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
-
-
-  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
-  X -&gt; Identity;
-  shape2 -&gt; Identity;
-  Identity -&gt; xrr;
+<div class="graphviz"><img src="../../../_images/graphviz-54c9d08a0673b63b6d1bcec57998ce779375c94c.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;shape2\nINT64(3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Identity_2 [label=&quot;Identity(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Identity_2 [label=&quot;FLOAT(a,b,c)&quot;];
+  I_0 -&gt; Identity_2 [label=&quot;INT64(3)&quot;];
+  O_3 [label=&quot;xrr\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Identity_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ShapedBasedReshapePattern.match">
@@ -1455,59 +1264,40 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Tries to reduce the number of nodes in the sequence Concat + Reshape
 by replacing one of the dimension by -1.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-9f3dcdc27eb4a5c0e656fc52d6c34042d791ed82.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  orientation=portrait;
-  nodesep=0.05;
-
-  I1 [shape=box color=red label=&quot;I1\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[6]&quot; fontsize=10];
-  Constant -&gt; I1;
-
-  d [shape=box label=&quot;d&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
-  I1 -&gt; Concat;
-  D2 -&gt; Concat;
-  Concat -&gt; d;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  d -&gt; Reshape;
-  Reshape -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-35d08b5101d87d5182ab181db5be425b8dec5a83.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;I1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(2,3,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; I1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Shape_3 [label=&quot;Shape(., end=3, start=2)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Concat_4 [label=&quot;Concat(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_5 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_1 -&gt; Shape_3 [label=&quot;FLOAT(2,3,d)&quot;];
+  Constant_2 -&gt; Concat_4 [label=&quot;INT64(1)&quot;];
+  Shape_3 -&gt; Concat_4 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; Reshape_5 [label=&quot;FLOAT(2,3,d)&quot;];
+  Concat_4 -&gt; Reshape_5 [label=&quot;INT64(2)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(6,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-c890810098f985c93b393ffc14eac574431690c9.png" alt="digraph{
-  nodesep=0.05;
-  ranksep=0.25;
-  size=7;
-  orientation=portrait;
-
-  I1 [shape=box color=red label=&quot;I1\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
-
-
-  init7_s1__1 [shape=box label=&quot;init7_s1__1&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1]&quot; fontsize=10];
-  Constant -&gt; init7_s1__1;
-
-  d__concat [shape=box label=&quot;d__concat&quot; fontsize=10];
-  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
-  I1 -&gt; Concat;
-  init7_s1__1 -&gt; Concat;
-  Concat -&gt; d__concat;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  X -&gt; Reshape;
-  d__concat -&gt; Reshape;
-  Reshape -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-155876b236c9359e22ae03ac2af50c419d134d19.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;I1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(2,3,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; init7_s1_-1&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_3 [label=&quot;Concat(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; Concat_3 [label=&quot;INT64(1)&quot;];
+  Constant_2 -&gt; Concat_3 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; Reshape_4 [label=&quot;FLOAT(2,3,d)&quot;];
+  Concat_3 -&gt; Reshape_4 [label=&quot;INT64(2)&quot;];
+  O_5 [label=&quot;Y\nFLOAT(6,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_4 -&gt; O_5;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.StaticConcatReshapePattern.apply">
