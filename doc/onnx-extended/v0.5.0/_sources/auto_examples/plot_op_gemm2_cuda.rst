@@ -326,7 +326,7 @@ Benchmark function
             y = np.random.randn(size, size).astype(dtype)
             z = np.random.randn(size, size).astype(dtype)
             feeds = dict(X=x, Y=y, Z=z)
-            bind, cuda_feeds = move_inputs(sess, feeds)
+            bind, _cuda_feeds = move_inputs(sess, feeds)
 
             begin = time.perf_counter()
             for _i in range(script_args.warmup):
@@ -387,7 +387,7 @@ Not Fused.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 11.46it/s]    100%|██████████| 3/3 [00:00<00:00, 11.44it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 14.60it/s]    100%|██████████| 3/3 [00:00<00:00, 14.57it/s]
 
 
 
@@ -414,7 +414,7 @@ Fused.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 17.91it/s]    100%|██████████| 3/3 [00:00<00:00, 17.87it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 18.81it/s]    100%|██████████| 3/3 [00:00<00:00, 18.76it/s]
 
 
 
@@ -445,11 +445,11 @@ Data
  .. code-block:: none
 
          warmup      time       std       min       max  repeat  size      label
-    0  0.002362  0.000249  0.000031  0.000213  0.000285       5   256  Not Fused
-    1  0.002367  0.000270  0.000027  0.000239  0.000309       5   512  Not Fused
-    2  0.004879  0.000587  0.000014  0.000566  0.000603       5  1024  Not Fused
-    3  0.004550  0.000168  0.000006  0.000163  0.000179       5   256      Fused
-    4  0.006429  0.000304  0.000116  0.000243  0.000536       5   512      Fused
+    0  0.006725  0.000226  0.000016  0.000216  0.000259       5   256  Not Fused
+    1  0.003144  0.000779  0.000060  0.000675  0.000829       5   512  Not Fused
+    2  0.015179  0.004192  0.000172  0.003959  0.004380       5  1024  Not Fused
+    3  0.003893  0.000249  0.000005  0.000242  0.000258       5   256      Fused
+    4  0.004008  0.000709  0.000028  0.000674  0.000751       5   512      Fused
 
 
 
@@ -491,9 +491,9 @@ Pivot.
 
     label     Fused  Not Fused     ratio
     size                                
-    256    0.000168   0.000249  0.675043
-    512    0.000304   0.000270  1.128154
-    1024   0.000537   0.000587  0.914766
+    256    0.000249   0.000226  1.100825
+    512    0.000709   0.000779  0.909991
+    1024   0.004288   0.004192  1.022874
 
 
 
@@ -505,7 +505,7 @@ It seems the fused operator is 33% faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.770 seconds)
+   **Total running time of the script:** (0 minutes 0.831 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_gemm2_cuda.py:

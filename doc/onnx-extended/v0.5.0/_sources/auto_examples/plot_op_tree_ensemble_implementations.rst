@@ -259,7 +259,7 @@ Training a model
     building tree 1 of 1
     Xb.shape=(2048, 512)
     yb.shape=(2048,)
-    measured sparsity=0.9900913238525391
+    measured sparsity=0.9900569915771484
 
 
 
@@ -588,7 +588,7 @@ Implementations
     run 'ort' - shape=(2048, 512)
     run 'custom' - shape=(2048, 512)
     run 'cusopt' - shape=(2048, 512)
-    run 'sparse' - shape=(20836,)
+    run 'sparse' - shape=(20908,)
     /home/xadupre/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:347: UserWarning: Unable to find environment variable 'TEST_LLC_EXE'.
       warnings.warn(
     done.
@@ -665,10 +665,10 @@ Benchmark implementations
     run 'sparse'
     done.
         average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time    name  disc_mean  disc_max  err_mean   err_max
-    0  0.002700   0.000452  0.002317  0.003928      10      10  0.026999            64     0.012677     ort   0.000000  0.000000  0.002675  0.002869
-    1  0.003128   0.000939  0.002388  0.005043      10      10  0.031284            64     0.036783  custom   0.001098  0.001465  0.001580  0.001831
-    2  0.002140   0.000135  0.001965  0.002367      10      10  0.021403            64     0.006499  cusopt   0.000010  0.000244  0.002672  0.003052
-    3  0.009600   0.000452  0.008955  0.010342      10      10  0.096004            64     0.028273  sparse   0.000010  0.000244  0.002672  0.003052
+    0  0.003764   0.000370  0.002927  0.004286      10      10  0.037641            64     0.014413     ort   0.000000  0.000000  0.000666  0.001160
+    1  0.004803   0.003076  0.002967  0.013306      10      10  0.048026            64     0.071352  custom   0.000607  0.000854  0.001272  0.002014
+    2  0.002653   0.000330  0.002135  0.003275      10      10  0.026531            64     0.006963  cusopt   0.000068  0.000366  0.000604  0.001221
+    3  0.010727   0.000318  0.010245  0.011340      10      10  0.107271            64     0.032723  sparse   0.000068  0.000366  0.000604  0.001221
 
 
 
@@ -717,7 +717,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.665 seconds)
+   **Total running time of the script:** (0 minutes 11.016 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_tree_ensemble_implementations.py:

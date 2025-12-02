@@ -528,7 +528,7 @@ Benchmark
                 np.float32 if itype == TensorProto.FLOAT else np.float16
             )
             feeds = dict(shape=shape, indices=indices, updates=updates)
-            bind, cuda_feeds = move_inputs(sess, feeds)
+            bind, _cuda_feeds = move_inputs(sess, feeds)
 
             begin = time.perf_counter()
             for _i in range(script_args.warmup):
@@ -592,7 +592,7 @@ Not Fused.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 18.58it/s]    100%|██████████| 3/3 [00:00<00:00, 18.53it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 25.92it/s]    100%|██████████| 3/3 [00:00<00:00, 25.82it/s]
 
 
 
@@ -621,7 +621,7 @@ Fused.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 21.93it/s]    100%|██████████| 3/3 [00:00<00:00, 21.84it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 28.30it/s]    100%|██████████| 3/3 [00:00<00:00, 28.20it/s]
 
 
 
@@ -652,11 +652,11 @@ Data
  .. code-block:: none
 
          warmup      time       std       min       max  repeat  size             label
-    0  0.003432  0.001122  0.000021  0.001096  0.001160       5   256  Atomic/Not Fused
-    1  0.005995  0.001997  0.000018  0.001985  0.002032       5   512  Atomic/Not Fused
-    2  0.019626  0.003961  0.000026  0.003926  0.003993       5  1024  Atomic/Not Fused
-    3  0.003219  0.001119  0.000055  0.001057  0.001223       5   256   No Atomic/Fused
-    4  0.006072  0.002051  0.000175  0.001937  0.002396       5   512   No Atomic/Fused
+    0  0.003626  0.001008  0.000005  0.001001  0.001015       5   256  Atomic/Not Fused
+    1  0.007218  0.002136  0.000182  0.001898  0.002321       5   512  Atomic/Not Fused
+    2  0.013296  0.003834  0.000168  0.003692  0.004146       5  1024  Atomic/Not Fused
+    3  0.004629  0.001222  0.000189  0.001059  0.001482       5   256   No Atomic/Fused
+    4  0.006603  0.002210  0.000162  0.001994  0.002357       5   512   No Atomic/Fused
 
 
 
@@ -700,9 +700,9 @@ Pivot.
     Speed up compare to the onnx standaed.
     label  Atomic/Not Fused  No Atomic/Fused     ratio
     size                                              
-    256            0.001122         0.001119  1.003006
-    512            0.001997         0.002051  0.973857
-    1024           0.003961         0.002383  1.662192
+    256            0.001008         0.001222  0.824916
+    512            0.002136         0.002210  0.966572
+    1024           0.003834         0.002357  1.626397
 
 
 
@@ -716,7 +716,7 @@ the computation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.623 seconds)
+   **Total running time of the script:** (0 minutes 0.607 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_scatternd_cuda.py:

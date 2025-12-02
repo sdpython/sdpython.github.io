@@ -195,10 +195,10 @@ Models
  .. code-block:: none
 
     X float32 (64, 32)
-    [[ 0.7783   0.3904  -2.078   -0.4753 ]
-     [ 0.3113   0.49     0.03867  0.869  ]
-     [-0.1342  -0.07654 -1.763    0.8047 ]
-     [ 1.229    1.312   -0.3147  -0.7603 ]]
+    [[ 0.3281  0.875  -0.9487  1.313 ]
+     [ 0.897  -1.573  -0.4395  0.962 ]
+     [ 0.3486  0.4731 -0.6636 -0.2272]
+     [ 1.588  -0.995   0.8267 -0.4075]]
 
 
 
@@ -234,10 +234,10 @@ Same model but using the fused op.
     input: name='X' type=dtype('float32') shape=['a', 'b']
     Transpose2DCastFP16[onnx_extended.ortops.optim.cuda](X) -> Y
     output: name='Y' type=dtype('float16') shape=['b', 'a']
-    [[ 0.7783   0.3904  -2.078   -0.4753 ]
-     [ 0.3113   0.49     0.03867  0.869  ]
-     [-0.1342  -0.07654 -1.763    0.8047 ]
-     [ 1.229    1.312   -0.3147  -0.7603 ]]
+    [[ 0.3281  0.875  -0.9487  1.313 ]
+     [ 0.897  -1.573  -0.4395  0.962 ]
+     [ 0.3486  0.4731 -0.6636 -0.2272]
+     [ 1.588  -0.995   0.8267 -0.4075]]
 
 
 
@@ -290,7 +290,7 @@ Benchmark
                 np.float16 if itype == TensorProto.FLOAT else np.float32
             )
             feeds = dict(X=X)
-            bind, cuda_feeds = move_inputs(sess, feeds)
+            bind, _cuda_feeds = move_inputs(sess, feeds)
 
             begin = time.perf_counter()
             for _i in range(script_args.warmup):
@@ -352,7 +352,7 @@ Not Fused.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 28.16it/s]    100%|██████████| 3/3 [00:00<00:00, 28.03it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 48.38it/s]
 
 
 
@@ -379,7 +379,7 @@ Fused.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 50.74it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 47.99it/s]
 
 
 
@@ -409,12 +409,12 @@ Data
 
  .. code-block:: none
 
-         warmup      time       std       min       max  repeat  size      label
-    0  0.001769  0.000394  0.000036  0.000348  0.000440       5   256  Not Fused
-    1  0.006707  0.000147  0.000005  0.000141  0.000156       5   512  Not Fused
-    2  0.001694  0.000180  0.000046  0.000140  0.000249       5  1024  Not Fused
-    3  0.000665  0.000114  0.000004  0.000111  0.000121       5   256      Fused
-    4  0.000702  0.000127  0.000017  0.000116  0.000161       5   512      Fused
+         warmup      time           std       min       max  repeat  size      label
+    0  0.001098  0.000085  9.773647e-07  0.000084  0.000087       5   256  Not Fused
+    1  0.005780  0.000179  2.317862e-05  0.000147  0.000215       5   512  Not Fused
+    2  0.009751  0.000219  1.838491e-05  0.000203  0.000249       5  1024  Not Fused
+    3  0.001122  0.000121  1.970974e-06  0.000118  0.000123       5   256      Fused
+    4  0.000962  0.000096  1.370513e-06  0.000094  0.000098       5   512      Fused
 
 
 
@@ -459,9 +459,9 @@ Pivot.
 
     label     Fused  Not Fused     ratio
     size                                
-    256    0.000114   0.000394  3.440091
-    512    0.000127   0.000147  1.158230
-    1024   0.000123   0.000180  1.469552
+    256    0.000121   0.000085  0.707888
+    512    0.000096   0.000179  1.870782
+    1024   0.000334   0.000219  0.654139
 
 
 
@@ -473,7 +473,7 @@ It seems worth it to combine both operators.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.659 seconds)
+   **Total running time of the script:** (0 minutes 0.518 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_transpose_2d_cast_cuda.py:

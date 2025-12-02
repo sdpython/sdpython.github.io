@@ -152,7 +152,7 @@ Device properties
 
  .. code-block:: none
 
-    {'clockRate': 2010000,
+    {'clockRate': 0,
      'computeMode': 0,
      'concurrentKernels': 1,
      'isMultiGpuBoard': 0,
@@ -440,7 +440,7 @@ Let's cache the matrices involved.
 
  .. code-block:: none
 
-      0%|          | 0/36 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]    t=1 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]     t=1 dim=[32, 32, 32]:   6%|▌         | 2/36 [00:00<00:03,  9.68it/s]    t=10 dim=[32, 32, 32]:   6%|▌         | 2/36 [00:00<00:03,  9.68it/s]    t=16 dim=[32, 32, 32]:   6%|▌         | 2/36 [00:00<00:03,  9.68it/s]    t=17 dim=[64, 64, 64]:   6%|▌         | 2/36 [00:00<00:03,  9.68it/s]    t=1 dim=[64, 64, 64]:   6%|▌         | 2/36 [00:00<00:03,  9.68it/s]     t=10 dim=[64, 64, 64]:   6%|▌         | 2/36 [00:00<00:03,  9.68it/s]    t=16 dim=[64, 64, 64]:   6%|▌         | 2/36 [00:00<00:03,  9.68it/s]    t=16 dim=[64, 64, 64]:  22%|██▏       | 8/36 [00:00<00:01, 27.99it/s]    t=17 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:01, 27.99it/s]    t=1 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:01, 27.99it/s]     t=10 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:01, 27.99it/s]    t=16 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:01, 27.99it/s]    t=17 dim=[256, 256, 256]:  22%|██▏       | 8/36 [00:00<00:01, 27.99it/s]    t=17 dim=[256, 256, 256]:  36%|███▌      | 13/36 [00:00<00:00, 33.38it/s]    t=1 dim=[256, 256, 256]:  36%|███▌      | 13/36 [00:00<00:00, 33.38it/s]     t=10 dim=[256, 256, 256]:  36%|███▌      | 13/36 [00:00<00:00, 33.38it/s]    t=16 dim=[256, 256, 256]:  36%|███▌      | 13/36 [00:00<00:00, 33.38it/s]    t=17 dim=[400, 400, 400]:  36%|███▌      | 13/36 [00:00<00:00, 33.38it/s]    t=17 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 35.17it/s]    t=1 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 35.17it/s]     t=10 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 35.17it/s]    t=16 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 35.17it/s]    t=17 dim=[512, 512, 512]:  47%|████▋     | 17/36 [00:00<00:00, 35.17it/s]    t=17 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.78it/s]    t=1 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.78it/s]     t=10 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.78it/s]    t=16 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.78it/s]    t=17 dim=[1024, 1024, 1024]:  58%|█████▊    | 21/36 [00:00<00:00, 33.78it/s]    t=17 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:00<00:00, 29.23it/s]    t=1 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:00<00:00, 29.23it/s]     t=10 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:00<00:00, 29.23it/s]    t=16 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:00<00:00, 29.23it/s]    t=17 dim=[2048, 2048, 2048]:  69%|██████▉   | 25/36 [00:01<00:00, 29.23it/s]    t=17 dim=[2048, 2048, 2048]:  81%|████████  | 29/36 [00:01<00:00, 15.50it/s]    t=1 dim=[2048, 2048, 2048]:  81%|████████  | 29/36 [00:01<00:00, 15.50it/s]     t=10 dim=[2048, 2048, 2048]:  81%|████████  | 29/36 [00:01<00:00, 15.50it/s]    t=16 dim=[2048, 2048, 2048]:  81%|████████  | 29/36 [00:01<00:00, 15.50it/s]    t=16 dim=[2048, 2048, 2048]:  89%|████████▉ | 32/36 [00:02<00:00,  9.00it/s]    t=17 dim=[4096, 4096, 4096]:  89%|████████▉ | 32/36 [00:02<00:00,  9.00it/s]    t=1 dim=[4096, 4096, 4096]:  89%|████████▉ | 32/36 [00:03<00:00,  9.00it/s]     t=1 dim=[4096, 4096, 4096]:  94%|█████████▍| 34/36 [00:04<00:00,  3.14it/s]    t=10 dim=[4096, 4096, 4096]:  94%|█████████▍| 34/36 [00:04<00:00,  3.14it/s]    t=16 dim=[4096, 4096, 4096]:  94%|█████████▍| 34/36 [00:05<00:00,  3.14it/s]    t=16 dim=[4096, 4096, 4096]: 100%|██████████| 36/36 [00:06<00:00,  2.01it/s]    t=16 dim=[4096, 4096, 4096]: 100%|██████████| 36/36 [00:06<00:00,  5.34it/s]
+      0%|          | 0/36 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]    t=1 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]     t=1 dim=[32, 32, 32]:   6%|▌         | 2/36 [00:00<00:02, 12.83it/s]    t=10 dim=[32, 32, 32]:   6%|▌         | 2/36 [00:00<00:02, 12.83it/s]    t=16 dim=[32, 32, 32]:   6%|▌         | 2/36 [00:00<00:02, 12.83it/s]    t=17 dim=[64, 64, 64]:   6%|▌         | 2/36 [00:00<00:02, 12.83it/s]    t=1 dim=[64, 64, 64]:   6%|▌         | 2/36 [00:00<00:02, 12.83it/s]     t=1 dim=[64, 64, 64]:  17%|█▋        | 6/36 [00:00<00:01, 24.78it/s]    t=10 dim=[64, 64, 64]:  17%|█▋        | 6/36 [00:00<00:01, 24.78it/s]    t=16 dim=[64, 64, 64]:  17%|█▋        | 6/36 [00:00<00:01, 24.78it/s]    t=17 dim=[128, 128, 128]:  17%|█▋        | 6/36 [00:00<00:01, 24.78it/s]    t=1 dim=[128, 128, 128]:  17%|█▋        | 6/36 [00:00<00:01, 24.78it/s]     t=10 dim=[128, 128, 128]:  17%|█▋        | 6/36 [00:00<00:01, 24.78it/s]    t=16 dim=[128, 128, 128]:  17%|█▋        | 6/36 [00:00<00:01, 24.78it/s]    t=16 dim=[128, 128, 128]:  33%|███▎      | 12/36 [00:00<00:00, 36.93it/s]    t=17 dim=[256, 256, 256]:  33%|███▎      | 12/36 [00:00<00:00, 36.93it/s]    t=1 dim=[256, 256, 256]:  33%|███▎      | 12/36 [00:00<00:00, 36.93it/s]     t=10 dim=[256, 256, 256]:  33%|███▎      | 12/36 [00:00<00:00, 36.93it/s]    t=16 dim=[256, 256, 256]:  33%|███▎      | 12/36 [00:00<00:00, 36.93it/s]    t=17 dim=[400, 400, 400]:  33%|███▎      | 12/36 [00:00<00:00, 36.93it/s]    t=17 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 36.86it/s]    t=1 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 36.86it/s]     t=10 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 36.86it/s]    t=16 dim=[400, 400, 400]:  47%|████▋     | 17/36 [00:00<00:00, 36.86it/s]    t=17 dim=[512, 512, 512]:  47%|████▋     | 17/36 [00:00<00:00, 36.86it/s]    t=17 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.91it/s]    t=1 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.91it/s]     t=10 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.91it/s]    t=16 dim=[512, 512, 512]:  58%|█████▊    | 21/36 [00:00<00:00, 33.91it/s]    t=17 dim=[1024, 1024, 1024]:  58%|█████▊    | 21/36 [00:00<00:00, 33.91it/s]    t=17 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:00<00:00, 26.56it/s]    t=1 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:00<00:00, 26.56it/s]     t=10 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:00<00:00, 26.56it/s]    t=16 dim=[1024, 1024, 1024]:  69%|██████▉   | 25/36 [00:01<00:00, 26.56it/s]    t=16 dim=[1024, 1024, 1024]:  78%|███████▊  | 28/36 [00:01<00:00, 20.52it/s]    t=17 dim=[2048, 2048, 2048]:  78%|███████▊  | 28/36 [00:01<00:00, 20.52it/s]    t=1 dim=[2048, 2048, 2048]:  78%|███████▊  | 28/36 [00:01<00:00, 20.52it/s]     t=10 dim=[2048, 2048, 2048]:  78%|███████▊  | 28/36 [00:01<00:00, 20.52it/s]    t=10 dim=[2048, 2048, 2048]:  86%|████████▌ | 31/36 [00:01<00:00,  9.64it/s]    t=16 dim=[2048, 2048, 2048]:  86%|████████▌ | 31/36 [00:01<00:00,  9.64it/s]    t=17 dim=[4096, 4096, 4096]:  86%|████████▌ | 31/36 [00:02<00:00,  9.64it/s]    t=17 dim=[4096, 4096, 4096]:  92%|█████████▏| 33/36 [00:03<00:00,  4.64it/s]    t=1 dim=[4096, 4096, 4096]:  92%|█████████▏| 33/36 [00:03<00:00,  4.64it/s]     t=10 dim=[4096, 4096, 4096]:  92%|█████████▏| 33/36 [00:04<00:00,  4.64it/s]    t=10 dim=[4096, 4096, 4096]:  97%|█████████▋| 35/36 [00:05<00:00,  2.64it/s]    t=16 dim=[4096, 4096, 4096]:  97%|█████████▋| 35/36 [00:05<00:00,  2.64it/s]    t=16 dim=[4096, 4096, 4096]: 100%|██████████| 36/36 [00:06<00:00,  2.07it/s]    t=16 dim=[4096, 4096, 4096]: 100%|██████████| 36/36 [00:06<00:00,  5.79it/s]
     36 matrices were created.
 
 
@@ -629,7 +629,7 @@ Let's run the benchmark
 
  .. code-block:: none
 
-      0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 109/432 [00:02<00:07, 41.19it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 109/432 [00:02<00:07, 41.19it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 109/432 [00:02<00:07, 41.19it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 109/432 [00:02<00:07, 41.19it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 109/432 [00:04<00:07, 41.19it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 109/432 [00:04<00:07, 41.19it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▋       | 114/432 [00:04<00:14, 22.63it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  26%|██▋       | 114/432 [00:04<00:14, 22.63it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  26%|██▋       | 114/432 [00:05<00:14, 22.63it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 116/432 [00:05<00:21, 14.64it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 116/432 [00:05<00:21, 14.64it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 116/432 [00:05<00:21, 14.64it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 118/432 [00:06<00:23, 13.42it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 118/432 [00:06<00:23, 13.42it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 118/432 [00:06<00:23, 13.42it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  27%|██▋       | 118/432 [00:06<00:23, 13.42it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 121/432 [00:06<00:22, 13.64it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 121/432 [00:06<00:22, 13.64it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 121/432 [00:06<00:22, 13.64it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  28%|██▊       | 121/432 [00:06<00:22, 13.64it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▊       | 124/432 [00:06<00:22, 13.85it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▊       | 124/432 [00:06<00:22, 13.85it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▊       | 124/432 [00:06<00:22, 13.85it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▊       | 124/432 [00:06<00:22, 13.85it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▉       | 127/432 [00:06<00:23, 13.25it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▉       | 127/432 [00:06<00:23, 13.25it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▉       | 127/432 [00:07<00:23, 13.25it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  30%|██▉       | 129/432 [00:07<00:22, 13.57it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|██▉       | 129/432 [00:07<00:22, 13.57it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|██▉       | 129/432 [00:07<00:22, 13.57it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|███       | 131/432 [00:08<00:40,  7.36it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|███       | 131/432 [00:08<00:40,  7.36it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  30%|███       | 131/432 [00:08<00:40,  7.36it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 133/432 [00:09<00:58,  5.11it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 133/432 [00:09<00:58,  5.11it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 134/432 [00:11<01:58,  2.51it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 134/432 [00:11<01:58,  2.51it/s]    t=1 e=InferenceSession p=CPUE dim=[32, 32, 32]:  31%|███       | 134/432 [00:11<01:58,  2.51it/s]          t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:  31%|███       | 134/432 [00:11<01:58,  2.51it/s]    t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:11<01:03,  4.63it/s]    t=1 e=InferenceSession p=CPUE dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:11<01:03,  4.63it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:11<01:03,  4.63it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:11<01:03,  4.63it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  34%|███▍      | 149/432 [00:11<00:32,  8.84it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  34%|███▍      | 149/432 [00:11<00:32,  8.84it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  34%|███▍      | 149/432 [00:11<00:32,  8.84it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]       t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]          t=1 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  36%|███▌      | 155/432 [00:11<00:29,  9.46it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  46%|████▌     | 197/432 [00:12<00:06, 37.53it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  46%|████▌     | 197/432 [00:12<00:06, 37.53it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  46%|████▌     | 197/432 [00:12<00:06, 37.53it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  46%|████▌     | 197/432 [00:12<00:06, 37.53it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  46%|████▌     | 197/432 [00:12<00:06, 37.53it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  49%|████▉     | 212/432 [00:12<00:06, 32.84it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  49%|████▉     | 212/432 [00:12<00:06, 32.84it/s]            t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  49%|████▉     | 212/432 [00:13<00:06, 32.84it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  49%|████▉     | 212/432 [00:14<00:06, 32.84it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  49%|████▉     | 212/432 [00:14<00:06, 32.84it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  49%|████▉     | 212/432 [00:15<00:06, 32.84it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  49%|████▉     | 212/432 [00:15<00:06, 32.84it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  49%|████▉     | 212/432 [00:15<00:06, 32.84it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  52%|█████▏    | 223/432 [00:17<00:23,  8.73it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  53%|█████▎    | 231/432 [00:17<00:22,  9.02it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  53%|█████▎    | 231/432 [00:17<00:22,  9.02it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  53%|█████▎    | 231/432 [00:17<00:22,  9.02it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  53%|█████▎    | 231/432 [00:17<00:22,  9.02it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  53%|█████▎    | 231/432 [00:17<00:22,  9.02it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  53%|█████▎    | 231/432 [00:18<00:22,  9.02it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  53%|█████▎    | 231/432 [00:18<00:22,  9.02it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  55%|█████▍    | 237/432 [00:18<00:20,  9.59it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  55%|█████▍    | 237/432 [00:18<00:20,  9.59it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  55%|█████▍    | 237/432 [00:18<00:20,  9.59it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  55%|█████▍    | 237/432 [00:18<00:20,  9.59it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  55%|█████▍    | 237/432 [00:18<00:20,  9.59it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  55%|█████▍    | 237/432 [00:19<00:20,  9.59it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  56%|█████▌    | 242/432 [00:20<00:32,  5.82it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  56%|█████▌    | 242/432 [00:20<00:32,  5.82it/s]    t=10 e=InferenceSession p=CPUE dim=[32, 32, 32]:  56%|█████▌    | 242/432 [00:20<00:32,  5.82it/s]          t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  56%|█████▌    | 242/432 [00:20<00:32,  5.82it/s]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  56%|█████▌    | 242/432 [00:20<00:32,  5.82it/s]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  58%|█████▊    | 251/432 [00:20<00:22,  7.98it/s]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  58%|█████▊    | 251/432 [00:20<00:22,  7.98it/s]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  58%|█████▊    | 251/432 [00:20<00:22,  7.98it/s]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  59%|█████▉    | 257/432 [00:21<00:17,  9.83it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  59%|█████▉    | 257/432 [00:21<00:17,  9.83it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  59%|█████▉    | 257/432 [00:21<00:17,  9.83it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]       t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  61%|██████    | 263/432 [00:21<00:17,  9.56it/s]          t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  69%|██████▉   | 299/432 [00:21<00:04, 27.52it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  69%|██████▉   | 299/432 [00:21<00:04, 27.52it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  69%|██████▉   | 299/432 [00:21<00:04, 27.52it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  69%|██████▉   | 299/432 [00:21<00:04, 27.52it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  69%|██████▉   | 299/432 [00:22<00:04, 27.52it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  72%|███████▏  | 311/432 [00:22<00:04, 27.59it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  72%|███████▏  | 311/432 [00:22<00:04, 27.59it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  72%|███████▏  | 311/432 [00:22<00:04, 27.59it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  72%|███████▏  | 311/432 [00:22<00:04, 27.59it/s]             t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  75%|███████▌  | 326/432 [00:22<00:02, 35.69it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 336/432 [00:22<00:02, 34.27it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  78%|███████▊  | 336/432 [00:22<00:02, 34.27it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  78%|███████▊  | 336/432 [00:22<00:02, 34.27it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  78%|███████▊  | 336/432 [00:22<00:02, 34.27it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  78%|███████▊  | 336/432 [00:22<00:02, 34.27it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  78%|███████▊  | 336/432 [00:22<00:02, 34.27it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  80%|███████▉  | 344/432 [00:22<00:02, 36.28it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  80%|███████▉  | 344/432 [00:22<00:02, 36.28it/s]    t=16 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  80%|███████▉  | 344/432 [00:22<00:02, 36.28it/s]    t=16 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  80%|███████▉  | 344/432 [00:23<00:02, 36.28it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  80%|███████▉  | 344/432 [00:23<00:02, 36.28it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  80%|███████▉  | 344/432 [00:24<00:02, 36.28it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=InferenceSession p=CPUE dim=[32, 32, 32]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]          t=16 e=InferenceSession p=CPUE dim=[64, 64, 64]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=InferenceSession p=CPUE dim=[128, 128, 128]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=InferenceSession p=CPUE dim=[256, 256, 256]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=InferenceSession p=CPUE dim=[400, 400, 400]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=InferenceSession p=CPUE dim=[512, 512, 512]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]       t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]          t=16 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  81%|████████▏ | 351/432 [00:24<00:04, 17.02it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]: 100%|██████████| 432/432 [00:24<00:00, 17.83it/s]
+      0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 109/432 [00:02<00:08, 36.66it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 109/432 [00:02<00:08, 36.66it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 109/432 [00:03<00:08, 36.66it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 109/432 [00:03<00:08, 36.66it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 109/432 [00:05<00:08, 36.66it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 113/432 [00:05<00:18, 17.30it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 113/432 [00:05<00:18, 17.30it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  26%|██▌       | 113/432 [00:05<00:18, 17.30it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 115/432 [00:08<00:31, 10.15it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 115/432 [00:08<00:31, 10.15it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 116/432 [00:08<00:31, 10.00it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 116/432 [00:08<00:31, 10.00it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 116/432 [00:08<00:31, 10.00it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 118/432 [00:08<00:33,  9.24it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 118/432 [00:08<00:33,  9.24it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 118/432 [00:08<00:33,  9.24it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  27%|██▋       | 118/432 [00:08<00:33,  9.24it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 121/432 [00:08<00:32,  9.60it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 121/432 [00:08<00:32,  9.60it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 121/432 [00:08<00:32,  9.60it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  28%|██▊       | 121/432 [00:08<00:32,  9.60it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▊       | 124/432 [00:09<00:30, 10.06it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▊       | 124/432 [00:09<00:30, 10.06it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▊       | 124/432 [00:09<00:30, 10.06it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▊       | 124/432 [00:09<00:30, 10.06it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▉       | 127/432 [00:09<00:29, 10.22it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▉       | 127/432 [00:09<00:29, 10.22it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  29%|██▉       | 127/432 [00:09<00:29, 10.22it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  30%|██▉       | 129/432 [00:09<00:27, 10.94it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|██▉       | 129/432 [00:09<00:27, 10.94it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|██▉       | 129/432 [00:10<00:27, 10.94it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|███       | 131/432 [00:10<00:48,  6.15it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  30%|███       | 131/432 [00:10<00:48,  6.15it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  30%|███       | 131/432 [00:10<00:48,  6.15it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 133/432 [00:12<01:42,  2.91it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 133/432 [00:12<01:42,  2.91it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 134/432 [00:14<02:45,  1.80it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  31%|███       | 134/432 [00:14<02:45,  1.80it/s]    t=1 e=InferenceSession p=CPUE dim=[32, 32, 32]:  31%|███       | 134/432 [00:14<02:45,  1.80it/s]          t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:  31%|███       | 134/432 [00:14<02:45,  1.80it/s]    t=1 e=InferenceSession p=CPUE dim=[128, 128, 128]:  31%|███       | 134/432 [00:14<02:45,  1.80it/s]    t=1 e=InferenceSession p=CPUE dim=[128, 128, 128]:  33%|███▎      | 143/432 [00:14<01:04,  4.47it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  33%|███▎      | 143/432 [00:14<01:04,  4.47it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  33%|███▎      | 143/432 [00:14<01:04,  4.47it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  33%|███▎      | 143/432 [00:14<01:04,  4.47it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  35%|███▌      | 152/432 [00:14<00:35,  7.90it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  35%|███▌      | 152/432 [00:14<00:35,  7.90it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]       t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]          t=1 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  36%|███▌      | 156/432 [00:15<00:33,  8.31it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  46%|████▋     | 200/432 [00:16<00:08, 26.22it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  46%|████▋     | 200/432 [00:16<00:08, 26.22it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  46%|████▋     | 200/432 [00:16<00:08, 26.22it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  46%|████▋     | 200/432 [00:16<00:08, 26.22it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  46%|████▋     | 200/432 [00:16<00:08, 26.22it/s]            t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 217/432 [00:18<00:13, 16.21it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 217/432 [00:18<00:13, 16.21it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 217/432 [00:18<00:13, 16.21it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  50%|█████     | 217/432 [00:18<00:13, 16.21it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  50%|█████     | 217/432 [00:19<00:13, 16.21it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  51%|█████     | 221/432 [00:19<00:20, 10.11it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  51%|█████     | 221/432 [00:19<00:20, 10.11it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  51%|█████     | 221/432 [00:19<00:20, 10.11it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  51%|█████     | 221/432 [00:21<00:20, 10.11it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 224/432 [00:21<00:29,  7.02it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 224/432 [00:21<00:29,  7.02it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 224/432 [00:21<00:29,  7.02it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 226/432 [00:22<00:30,  6.77it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 226/432 [00:22<00:30,  6.77it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 226/432 [00:22<00:30,  6.77it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  52%|█████▏    | 226/432 [00:22<00:30,  6.77it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  53%|█████▎    | 229/432 [00:22<00:27,  7.39it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  53%|█████▎    | 229/432 [00:22<00:27,  7.39it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  53%|█████▎    | 229/432 [00:22<00:27,  7.39it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  53%|█████▎    | 229/432 [00:22<00:27,  7.39it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  54%|█████▎    | 232/432 [00:22<00:24,  8.23it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  54%|█████▎    | 232/432 [00:22<00:24,  8.23it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  54%|█████▎    | 232/432 [00:22<00:24,  8.23it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  54%|█████▎    | 232/432 [00:22<00:24,  8.23it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  54%|█████▍    | 235/432 [00:22<00:21,  9.03it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  54%|█████▍    | 235/432 [00:22<00:21,  9.03it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  54%|█████▍    | 235/432 [00:22<00:21,  9.03it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  54%|█████▍    | 235/432 [00:22<00:21,  9.03it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  55%|█████▌    | 238/432 [00:23<00:22,  8.61it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  55%|█████▌    | 238/432 [00:23<00:22,  8.61it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  55%|█████▌    | 238/432 [00:23<00:22,  8.61it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  56%|█████▌    | 240/432 [00:23<00:21,  8.87it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  56%|█████▌    | 240/432 [00:23<00:21,  8.87it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  56%|█████▌    | 240/432 [00:24<00:21,  8.87it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  56%|█████▌    | 242/432 [00:25<01:00,  3.16it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  56%|█████▌    | 242/432 [00:25<01:00,  3.16it/s]    t=10 e=InferenceSession p=CPUE dim=[32, 32, 32]:  56%|█████▌    | 242/432 [00:25<01:00,  3.16it/s]          t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  56%|█████▌    | 242/432 [00:25<01:00,  3.16it/s]    t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  57%|█████▋    | 248/432 [00:25<00:33,  5.48it/s]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  57%|█████▋    | 248/432 [00:25<00:33,  5.48it/s]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  57%|█████▋    | 248/432 [00:25<00:33,  5.48it/s]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  59%|█████▉    | 254/432 [00:25<00:20,  8.53it/s]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  59%|█████▉    | 254/432 [00:25<00:20,  8.53it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  59%|█████▉    | 254/432 [00:25<00:20,  8.53it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  60%|██████    | 260/432 [00:25<00:14, 12.12it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  60%|██████    | 260/432 [00:25<00:14, 12.12it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]       t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  61%|██████    | 264/432 [00:26<00:15, 11.01it/s]          t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  69%|██████▉   | 299/432 [00:26<00:03, 41.16it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  69%|██████▉   | 299/432 [00:26<00:03, 41.16it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  69%|██████▉   | 299/432 [00:26<00:03, 41.16it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  69%|██████▉   | 299/432 [00:26<00:03, 41.16it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  72%|███████▏  | 310/432 [00:26<00:03, 38.23it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  72%|███████▏  | 310/432 [00:26<00:03, 38.23it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  72%|███████▏  | 310/432 [00:26<00:03, 38.23it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  72%|███████▏  | 310/432 [00:26<00:03, 38.23it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  72%|███████▏  | 310/432 [00:26<00:03, 38.23it/s]             t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  75%|███████▌  | 326/432 [00:27<00:02, 37.96it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  75%|███████▌  | 326/432 [00:27<00:02, 37.96it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  75%|███████▌  | 326/432 [00:27<00:02, 37.96it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  75%|███████▌  | 326/432 [00:27<00:02, 37.96it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  75%|███████▌  | 326/432 [00:27<00:02, 37.96it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  75%|███████▌  | 326/432 [00:27<00:02, 37.96it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  77%|███████▋  | 333/432 [00:27<00:02, 33.72it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  77%|███████▋  | 333/432 [00:27<00:02, 33.72it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  77%|███████▋  | 333/432 [00:27<00:02, 33.72it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  77%|███████▋  | 333/432 [00:27<00:02, 33.72it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  77%|███████▋  | 333/432 [00:27<00:02, 33.72it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  78%|███████▊  | 339/432 [00:27<00:02, 35.94it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  78%|███████▊  | 339/432 [00:27<00:02, 35.94it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  78%|███████▊  | 339/432 [00:27<00:02, 35.94it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  78%|███████▊  | 339/432 [00:27<00:02, 35.94it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  78%|███████▊  | 339/432 [00:27<00:02, 35.94it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  80%|███████▉  | 345/432 [00:27<00:02, 34.40it/s]    t=16 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  80%|███████▉  | 345/432 [00:27<00:02, 34.40it/s]    t=16 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  80%|███████▉  | 345/432 [00:28<00:02, 34.40it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  80%|███████▉  | 345/432 [00:28<00:02, 34.40it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]    t=16 e=InferenceSession p=CPUE dim=[32, 32, 32]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]          t=16 e=InferenceSession p=CPUE dim=[64, 64, 64]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]    t=16 e=InferenceSession p=CPUE dim=[128, 128, 128]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]    t=16 e=InferenceSession p=CPUE dim=[256, 256, 256]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]    t=16 e=InferenceSession p=CPUE dim=[400, 400, 400]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]    t=16 e=InferenceSession p=CPUE dim=[512, 512, 512]:  81%|████████  | 350/432 [00:29<00:05, 14.05it/s]    t=16 e=InferenceSession p=CPUE dim=[512, 512, 512]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]       t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]          t=16 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  85%|████████▌ | 368/432 [00:29<00:02, 24.93it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]: 100%|██████████| 432/432 [00:29<00:00, 14.75it/s]
 
 
 
@@ -662,15 +662,15 @@ Results
  .. code-block:: none
 
                                 0                1                 2                 3                    4
-    average              0.004011          0.00019          0.002152          0.000265             0.002059
-    deviation            0.001099         0.000091          0.000328          0.000084             0.000416
-    min_exec             0.002369         0.000082          0.001789          0.000147             0.001666
-    max_exec             0.007216         0.000622          0.003158          0.000519             0.003847
+    average              0.004284         0.000218          0.003237          0.000359             0.003582
+    deviation            0.001197         0.000086          0.001074          0.000231             0.001022
+    min_exec             0.002859          0.00013          0.002243          0.000111              0.00234
+    max_exec             0.007414         0.000513          0.006657          0.001083             0.006392
     repeat                     40               40                40                40                   40
     number                     16               16                16                16                   16
-    ttime                0.160447         0.007616            0.0861          0.010616             0.082369
+    ttime                0.171342         0.008714          0.129467          0.014368             0.143288
     context_size               64               64                64                64                   64
-    warmup_time          0.008832         0.000344          0.002842          0.000689             0.002214
+    warmup_time          0.006633         0.000826           0.00327           0.00092             0.011075
     engine                    ort              ort               ort               ort                  ort
     stype                     f32              f32               f32               f32                  f32
     type                      f32              f32               f32               f32                  f32
@@ -732,15 +732,15 @@ Results
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.004011</td>
-          <td>0.001099</td>
-          <td>0.002369</td>
-          <td>0.007216</td>
+          <td>0.004284</td>
+          <td>0.001197</td>
+          <td>0.002859</td>
+          <td>0.007414</td>
           <td>40</td>
           <td>16</td>
-          <td>0.160447</td>
+          <td>0.171342</td>
           <td>64</td>
-          <td>0.008832</td>
+          <td>0.006633</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -756,15 +756,15 @@ Results
         </tr>
         <tr>
           <th>1</th>
-          <td>0.000190</td>
-          <td>0.000091</td>
-          <td>0.000082</td>
-          <td>0.000622</td>
+          <td>0.000218</td>
+          <td>0.000086</td>
+          <td>0.000130</td>
+          <td>0.000513</td>
           <td>40</td>
           <td>16</td>
-          <td>0.007616</td>
+          <td>0.008714</td>
           <td>64</td>
-          <td>0.000344</td>
+          <td>0.000826</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -780,15 +780,15 @@ Results
         </tr>
         <tr>
           <th>2</th>
-          <td>0.002152</td>
-          <td>0.000328</td>
-          <td>0.001789</td>
-          <td>0.003158</td>
+          <td>0.003237</td>
+          <td>0.001074</td>
+          <td>0.002243</td>
+          <td>0.006657</td>
           <td>40</td>
           <td>16</td>
-          <td>0.086100</td>
+          <td>0.129467</td>
           <td>64</td>
-          <td>0.002842</td>
+          <td>0.003270</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -804,15 +804,15 @@ Results
         </tr>
         <tr>
           <th>3</th>
-          <td>0.000265</td>
-          <td>0.000084</td>
-          <td>0.000147</td>
-          <td>0.000519</td>
+          <td>0.000359</td>
+          <td>0.000231</td>
+          <td>0.000111</td>
+          <td>0.001083</td>
           <td>40</td>
           <td>16</td>
-          <td>0.010616</td>
+          <td>0.014368</td>
           <td>64</td>
-          <td>0.000689</td>
+          <td>0.000920</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -828,15 +828,15 @@ Results
         </tr>
         <tr>
           <th>4</th>
-          <td>0.002059</td>
-          <td>0.000416</td>
-          <td>0.001666</td>
-          <td>0.003847</td>
+          <td>0.003582</td>
+          <td>0.001022</td>
+          <td>0.002340</td>
+          <td>0.006392</td>
           <td>40</td>
           <td>16</td>
-          <td>0.082369</td>
+          <td>0.143288</td>
           <td>64</td>
-          <td>0.002214</td>
+          <td>0.011075</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -876,15 +876,15 @@ Results
         </tr>
         <tr>
           <th>62</th>
-          <td>0.000426</td>
-          <td>0.000022</td>
-          <td>0.000384</td>
-          <td>0.000454</td>
+          <td>0.000646</td>
+          <td>0.000063</td>
+          <td>0.000568</td>
+          <td>0.000771</td>
           <td>10</td>
           <td>4</td>
-          <td>0.004259</td>
+          <td>0.006459</td>
           <td>64</td>
-          <td>0.000643</td>
+          <td>0.000910</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -900,15 +900,15 @@ Results
         </tr>
         <tr>
           <th>63</th>
-          <td>0.000573</td>
-          <td>0.000026</td>
-          <td>0.000532</td>
-          <td>0.000619</td>
+          <td>0.000859</td>
+          <td>0.000052</td>
+          <td>0.000806</td>
+          <td>0.000964</td>
           <td>10</td>
           <td>4</td>
-          <td>0.005731</td>
+          <td>0.008587</td>
           <td>64</td>
-          <td>0.000787</td>
+          <td>0.001146</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -924,15 +924,15 @@ Results
         </tr>
         <tr>
           <th>64</th>
-          <td>0.001699</td>
-          <td>0.000035</td>
-          <td>0.001634</td>
-          <td>0.001763</td>
+          <td>0.002694</td>
+          <td>0.000044</td>
+          <td>0.002630</td>
+          <td>0.002762</td>
           <td>10</td>
           <td>4</td>
-          <td>0.016995</td>
+          <td>0.026942</td>
           <td>64</td>
-          <td>0.001940</td>
+          <td>0.002916</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -948,15 +948,15 @@ Results
         </tr>
         <tr>
           <th>65</th>
-          <td>0.005344</td>
-          <td>0.000929</td>
-          <td>0.003960</td>
-          <td>0.006689</td>
+          <td>0.004652</td>
+          <td>0.000374</td>
+          <td>0.004110</td>
+          <td>0.005224</td>
           <td>10</td>
           <td>4</td>
-          <td>0.053443</td>
+          <td>0.046516</td>
           <td>64</td>
-          <td>0.007061</td>
+          <td>0.004976</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -972,15 +972,15 @@ Results
         </tr>
         <tr>
           <th>66</th>
-          <td>0.018310</td>
-          <td>0.001369</td>
-          <td>0.016200</td>
-          <td>0.020547</td>
+          <td>0.019647</td>
+          <td>0.002207</td>
+          <td>0.017782</td>
+          <td>0.025373</td>
           <td>10</td>
           <td>4</td>
-          <td>0.183100</td>
+          <td>0.196467</td>
           <td>64</td>
-          <td>0.021815</td>
+          <td>0.019961</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -1171,15 +1171,15 @@ Summary
     domain             ORT                 ORT                 ORT       EXT       ORT       EXT       ORT
     engine              np       ort        np       ort       ort       ort       ort       ort       ort
     cost                                                                                                  
-    131072        0.000164  0.000037  0.000021  0.000054  0.000182  0.002009  0.000175  0.004011  0.000190
-    1048576       0.000817  0.000061  0.000024  0.000028  0.000167  0.002119  0.000181  0.002152  0.000265
-    8388608       0.015380  0.000097  0.000077  0.000048  0.000204  0.002143  0.000217  0.002059  0.000191
-    67108864      0.056728  0.000408  0.003479  0.000277  0.000247  0.002299  0.000232  0.002304  0.000267
-    256000000          NaN  0.000930       NaN  0.000680  0.000426  0.002437  0.000287  0.002419  0.000448
-    536870912          NaN  0.001910       NaN  0.001312  0.000573  0.002477  0.000450  0.002790  0.000652
-    4294967296         NaN  0.012090       NaN  0.009346  0.001699  0.003304  0.001080  0.003914  0.001863
-    34359738368        NaN       NaN       NaN       NaN  0.005344  0.006279  0.004491  0.010718  0.007260
-    274877906944       NaN       NaN       NaN       NaN  0.018310  0.019633  0.018144  0.049290  0.043423
+    131072        0.000162  0.000050  0.000019  0.000006  0.000190  0.002619  0.000190  0.004284  0.000218
+    1048576       0.001023  0.000085  0.000023  0.000016  0.000209  0.002412  0.000173  0.003237  0.000359
+    8388608       0.006002  0.000072  0.000075  0.000050  0.000177  0.002483  0.000165  0.003582  0.000217
+    67108864      0.051379  0.000239  0.003390  0.000174  0.000321  0.002375  0.000231  0.002692  0.000418
+    256000000          NaN  0.000672       NaN  0.000557  0.000646  0.002533  0.000347  0.002796  0.000515
+    536870912          NaN  0.001379       NaN  0.001264  0.000859  0.002539  0.000402  0.003196  0.000672
+    4294967296         NaN  0.009027       NaN  0.008214  0.002694  0.003418  0.001071  0.004703  0.001814
+    34359738368        NaN       NaN       NaN       NaN  0.004652  0.006537  0.003540  0.012180  0.008623
+    274877906944       NaN       NaN       NaN       NaN  0.019647  0.025574  0.022123  0.047018  0.043274
 
 
 .. raw:: html
@@ -1260,87 +1260,87 @@ Summary
       <tbody>
         <tr>
           <th>131072</th>
-          <td>0.000164</td>
-          <td>0.000037</td>
-          <td>0.000021</td>
-          <td>0.000054</td>
-          <td>0.000182</td>
-          <td>0.002009</td>
-          <td>0.000175</td>
-          <td>0.004011</td>
+          <td>0.000162</td>
+          <td>0.000050</td>
+          <td>0.000019</td>
+          <td>0.000006</td>
           <td>0.000190</td>
+          <td>0.002619</td>
+          <td>0.000190</td>
+          <td>0.004284</td>
+          <td>0.000218</td>
         </tr>
         <tr>
           <th>1048576</th>
-          <td>0.000817</td>
-          <td>0.000061</td>
-          <td>0.000024</td>
-          <td>0.000028</td>
-          <td>0.000167</td>
-          <td>0.002119</td>
-          <td>0.000181</td>
-          <td>0.002152</td>
-          <td>0.000265</td>
+          <td>0.001023</td>
+          <td>0.000085</td>
+          <td>0.000023</td>
+          <td>0.000016</td>
+          <td>0.000209</td>
+          <td>0.002412</td>
+          <td>0.000173</td>
+          <td>0.003237</td>
+          <td>0.000359</td>
         </tr>
         <tr>
           <th>8388608</th>
-          <td>0.015380</td>
-          <td>0.000097</td>
-          <td>0.000077</td>
-          <td>0.000048</td>
-          <td>0.000204</td>
-          <td>0.002143</td>
+          <td>0.006002</td>
+          <td>0.000072</td>
+          <td>0.000075</td>
+          <td>0.000050</td>
+          <td>0.000177</td>
+          <td>0.002483</td>
+          <td>0.000165</td>
+          <td>0.003582</td>
           <td>0.000217</td>
-          <td>0.002059</td>
-          <td>0.000191</td>
         </tr>
         <tr>
           <th>67108864</th>
-          <td>0.056728</td>
-          <td>0.000408</td>
-          <td>0.003479</td>
-          <td>0.000277</td>
-          <td>0.000247</td>
-          <td>0.002299</td>
-          <td>0.000232</td>
-          <td>0.002304</td>
-          <td>0.000267</td>
+          <td>0.051379</td>
+          <td>0.000239</td>
+          <td>0.003390</td>
+          <td>0.000174</td>
+          <td>0.000321</td>
+          <td>0.002375</td>
+          <td>0.000231</td>
+          <td>0.002692</td>
+          <td>0.000418</td>
         </tr>
         <tr>
           <th>256000000</th>
           <td>NaN</td>
-          <td>0.000930</td>
+          <td>0.000672</td>
           <td>NaN</td>
-          <td>0.000680</td>
-          <td>0.000426</td>
-          <td>0.002437</td>
-          <td>0.000287</td>
-          <td>0.002419</td>
-          <td>0.000448</td>
+          <td>0.000557</td>
+          <td>0.000646</td>
+          <td>0.002533</td>
+          <td>0.000347</td>
+          <td>0.002796</td>
+          <td>0.000515</td>
         </tr>
         <tr>
           <th>536870912</th>
           <td>NaN</td>
-          <td>0.001910</td>
+          <td>0.001379</td>
           <td>NaN</td>
-          <td>0.001312</td>
-          <td>0.000573</td>
-          <td>0.002477</td>
-          <td>0.000450</td>
-          <td>0.002790</td>
-          <td>0.000652</td>
+          <td>0.001264</td>
+          <td>0.000859</td>
+          <td>0.002539</td>
+          <td>0.000402</td>
+          <td>0.003196</td>
+          <td>0.000672</td>
         </tr>
         <tr>
           <th>4294967296</th>
           <td>NaN</td>
-          <td>0.012090</td>
+          <td>0.009027</td>
           <td>NaN</td>
-          <td>0.009346</td>
-          <td>0.001699</td>
-          <td>0.003304</td>
-          <td>0.001080</td>
-          <td>0.003914</td>
-          <td>0.001863</td>
+          <td>0.008214</td>
+          <td>0.002694</td>
+          <td>0.003418</td>
+          <td>0.001071</td>
+          <td>0.004703</td>
+          <td>0.001814</td>
         </tr>
         <tr>
           <th>34359738368</th>
@@ -1348,11 +1348,11 @@ Summary
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.005344</td>
-          <td>0.006279</td>
-          <td>0.004491</td>
-          <td>0.010718</td>
-          <td>0.007260</td>
+          <td>0.004652</td>
+          <td>0.006537</td>
+          <td>0.003540</td>
+          <td>0.012180</td>
+          <td>0.008623</td>
         </tr>
         <tr>
           <th>274877906944</th>
@@ -1360,11 +1360,11 @@ Summary
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.018310</td>
-          <td>0.019633</td>
-          <td>0.018144</td>
-          <td>0.049290</td>
-          <td>0.043423</td>
+          <td>0.019647</td>
+          <td>0.025574</td>
+          <td>0.022123</td>
+          <td>0.047018</td>
+          <td>0.043274</td>
         </tr>
       </tbody>
     </table>
@@ -1404,15 +1404,15 @@ With the dimensions.
     domain                            ORT                 ORT                 ORT       EXT       ORT       EXT       ORT
     engine                             np       ort        np       ort       ort       ort       ort       ort       ort
     cost_s                                                                                                               
-    1048576-64x64x64             0.000817  0.000061  0.000024  0.000028  0.000167  0.002119  0.000181  0.002152  0.000265
-    131072-32x32x32              0.000164  0.000037  0.000021  0.000054  0.000182  0.002009  0.000175  0.004011  0.000190
-    256000000-400x400x400             NaN  0.000930       NaN  0.000680  0.000426  0.002437  0.000287  0.002419  0.000448
-    274877906944-4096x4096x4096       NaN       NaN       NaN       NaN  0.018310  0.019633  0.018144  0.049290  0.043423
-    34359738368-2048x2048x2048        NaN       NaN       NaN       NaN  0.005344  0.006279  0.004491  0.010718  0.007260
-    4294967296-1024x1024x1024         NaN  0.012090       NaN  0.009346  0.001699  0.003304  0.001080  0.003914  0.001863
-    536870912-512x512x512             NaN  0.001910       NaN  0.001312  0.000573  0.002477  0.000450  0.002790  0.000652
-    67108864-256x256x256         0.056728  0.000408  0.003479  0.000277  0.000247  0.002299  0.000232  0.002304  0.000267
-    8388608-128x128x128          0.015380  0.000097  0.000077  0.000048  0.000204  0.002143  0.000217  0.002059  0.000191
+    1048576-64x64x64             0.001023  0.000085  0.000023  0.000016  0.000209  0.002412  0.000173  0.003237  0.000359
+    131072-32x32x32              0.000162  0.000050  0.000019  0.000006  0.000190  0.002619  0.000190  0.004284  0.000218
+    256000000-400x400x400             NaN  0.000672       NaN  0.000557  0.000646  0.002533  0.000347  0.002796  0.000515
+    274877906944-4096x4096x4096       NaN       NaN       NaN       NaN  0.019647  0.025574  0.022123  0.047018  0.043274
+    34359738368-2048x2048x2048        NaN       NaN       NaN       NaN  0.004652  0.006537  0.003540  0.012180  0.008623
+    4294967296-1024x1024x1024         NaN  0.009027       NaN  0.008214  0.002694  0.003418  0.001071  0.004703  0.001814
+    536870912-512x512x512             NaN  0.001379       NaN  0.001264  0.000859  0.002539  0.000402  0.003196  0.000672
+    67108864-256x256x256         0.051379  0.000239  0.003390  0.000174  0.000321  0.002375  0.000231  0.002692  0.000418
+    8388608-128x128x128          0.006002  0.000072  0.000075  0.000050  0.000177  0.002483  0.000165  0.003582  0.000217
 
 
 
@@ -1462,7 +1462,7 @@ plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 32.966 seconds)
+   **Total running time of the script:** (0 minutes 37.354 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_gemm_ort.py:

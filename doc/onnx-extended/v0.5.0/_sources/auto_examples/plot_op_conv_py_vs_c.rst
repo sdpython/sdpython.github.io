@@ -144,9 +144,9 @@ Time measurement
 
  .. code-block:: none
 
-    ReferenceEvaluator: 0.00017072672399808653s
-    CReferenceEvaluator: 1.6088258000308996e-05s
-    speedup is 10.61188377230198
+    ReferenceEvaluator: 0.00015875375799078028s
+    CReferenceEvaluator: 1.689988998987246e-05s
+    speedup is 9.393774639119906
 
 
 
@@ -177,8 +177,8 @@ Let's add :epkg:`onnxruntime` as well.
 
  .. code-block:: none
 
-    InferenceSession: 1.26557519997732e-05s
-    speedup is 13.490049741899657
+    InferenceSession: 2.3017788000288417e-05s
+    speedup is 6.897003221542881
 
 
 
@@ -220,7 +220,7 @@ Plotting
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     50%|█████     | 2/4 [00:00<00:00, 15.98it/s]    100%|██████████| 4/4 [00:00<00:00, 12.76it/s]    100%|██████████| 4/4 [00:00<00:00, 13.15it/s]
+      0%|          | 0/4 [00:00<?, ?it/s]     50%|█████     | 2/4 [00:00<00:00, 13.76it/s]    100%|██████████| 4/4 [00:00<00:00, 10.98it/s]    100%|██████████| 4/4 [00:00<00:00, 11.31it/s]
 
 
 .. raw:: html
@@ -253,26 +253,26 @@ Plotting
         <tr>
           <th>0</th>
           <td>16</td>
-          <td>0.000100</td>
-          <td>0.000011</td>
+          <td>0.000115</td>
+          <td>0.000012</td>
         </tr>
         <tr>
           <th>1</th>
           <td>32</td>
-          <td>0.000122</td>
-          <td>0.000012</td>
+          <td>0.000145</td>
+          <td>0.000013</td>
         </tr>
         <tr>
           <th>2</th>
           <td>48</td>
-          <td>0.000150</td>
-          <td>0.000014</td>
+          <td>0.000165</td>
+          <td>0.000019</td>
         </tr>
         <tr>
           <th>3</th>
           <td>64</td>
-          <td>0.000173</td>
-          <td>0.000016</td>
+          <td>0.000206</td>
+          <td>0.000020</td>
         </tr>
       </tbody>
     </table>
@@ -317,7 +317,7 @@ Finally.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.677 seconds)
+   **Total running time of the script:** (0 minutes 1.150 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_conv_py_vs_c.py:

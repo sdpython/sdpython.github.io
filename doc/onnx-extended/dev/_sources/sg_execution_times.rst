@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:40.482** total execution time for 19 files **from all galleries**:
+**02:44.678** total execution time for 19 files **from all galleries**:
 
 .. container::
 
@@ -33,7 +33,16 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_onnx2_time.py` (``examples/plot_onnx2_time.py``)
-     - 01:40.482
+     - 01:34.708
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``examples/plot_bench_gemm_ort.py``)
+     - 00:37.354
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_einsum.py` (``examples/plot_op_einsum.py``)
+     - 00:21.601
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py` (``examples/plot_op_tree_ensemble_implementations.py``)
+     - 00:11.016
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``examples/plot_bench_cpu.py``)
      - 00:00.000
@@ -44,9 +53,6 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py` (``examples/plot_bench_gemm_f8.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``examples/plot_bench_gemm_ort.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_sparse_access.py` (``examples/plot_bench_sparse_access.py``)
      - 00:00.000
      - 0.0
@@ -54,9 +60,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_conv_py_vs_c.py` (``examples/plot_op_conv_py_vs_c.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_einsum.py` (``examples/plot_op_einsum.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_gemm2_cuda.py` (``examples/plot_op_gemm2_cuda.py``)
@@ -75,9 +78,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_transpose_2d_cast_cuda.py` (``examples/plot_op_transpose_2d_cast_cuda.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py` (``examples/plot_op_tree_ensemble_implementations.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_optim.py` (``examples/plot_op_tree_ensemble_optim.py``)

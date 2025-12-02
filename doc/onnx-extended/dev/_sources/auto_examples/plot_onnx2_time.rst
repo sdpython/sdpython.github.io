@@ -23,7 +23,10 @@
 Measures loading, saving time for an onnx model in python
 =========================================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-39
+The script creates an ONNX model and measures the time to load and save it
+with onnx and onnx2. This only compares the python bindings.
+
+.. GENERATED FROM PYTHON SOURCE LINES 10-64
 
 .. code-block:: Python
 
@@ -31,32 +34,55 @@ Measures loading, saving time for an onnx model in python
     import os
     import time
     import numpy as np
+    import pandas
     import onnx
     import onnx_extended.onnx2 as onnx2
 
 
-    onnx_file = (
-        "dump_test/microsoft_Phi-4-mini-reasoning-onnx-dynamo-ir/"
-        "microsoft_Phi-4-mini-reasoning-onnx-dynamo-ir.onnx"
+    model_id = (
+        "microsoft/Phi-3.5-mini-instruct"  # "microsoft/Phi-4-mini-reasoning", (too big)
     )
-    if not os.path.exists(onnx_file):
+    model_idf = model_id.replace("/", "_")
+    exporter = "custom"  # or onnx-dynamo to use torch.onnx.export
+    optimization = "default"  # or ir for onnx-dynamo
+    data = []
+    onnx_files_ = [
+        f"dump_test/{model_idf}/"
+        f"onnx-dynamo/ir/{model_idf}-{exporter}-{optimization}.onnx",
+        f"dump_test/{model_idf}/{exporter}/{optimization}/"
+        f"{model_idf}-{exporter}-{optimization}.onnx",
+    ]
+    onnx_files = [f for f in onnx_files_ if os.path.exists(f)]
+    if not onnx_files:
+        print("Creates the model, starts with importing transformers...")
+        import torch  # noqa: F401
+        import transformers  # noqa: F401
+
+        print("Imports onnx-diagnostic...")
         from onnx_diagnostic.torch_models.validate import validate_model
 
-        print("Creates the model...")
+        print("Starts creating the model...")
 
         validate_model(
-            "microsoft/Phi-4-mini-reasoning",
+            model_id,
             do_run=True,
             verbose=2,
-            exporter="onnx-dynamo",
+            exporter=exporter,
             do_same=True,
             patch=True,
             rewrite=True,
-            optimization="ir",
+            optimization=optimization,
             dump_folder="dump_test",
+            model_options=dict(num_hidden_layers=2),
         )
 
         print("done.")
+
+    onnx_files = [f for f in onnx_files_ if os.path.exists(f)]
+    assert onnx_files, f"Unable to find a file in {onnx_files}"
+    onnx_file = onnx_files[0]
+    onnx_data = onnx_file + ".data"
+
 
 
 
@@ -66,47 +92,78 @@ Measures loading, saving time for an onnx model in python
 
  .. code-block:: none
 
-    Creates the model...
-    [validate_model] dump into 'microsoft_Phi-4-mini-reasoning-onnx-dynamo-ir'
-    [validate_model] validate model id 'microsoft/Phi-4-mini-reasoning'
+    Creates the model, starts with importing transformers...
+    Imports onnx-diagnostic...
+    Starts creating the model...
+    [validate_model] dump into 'microsoft_Phi-3.5-mini-instruct/custom/default'
+    [validate_model] validate model id 'microsoft/Phi-3.5-mini-instruct'
+    [validate_model] patch=True
+    [validate_model] model_options={'num_hidden_layers': 2}
     [validate_model] get dummy inputs with input_options=None...
     [validate_model] rewrite=True, patch_kwargs={'patch_transformers': True, 'patch_diffusers': True, 'patch': True}, stop_if_static=1
-    [validate_model] exporter='onnx-dynamo', optimization='ir'
-    [validate_model] dump_folder='dump_test/microsoft_Phi-4-mini-reasoning-onnx-dynamo-ir'
+    [validate_model] exporter='custom', optimization='default'
+    [validate_model] dump_folder='dump_test/microsoft_Phi-3.5-mini-instruct/custom/default'
     [validate_model] output_names=None
-    [get_untrained_model_with_inputs] model_id='microsoft/Phi-4-mini-reasoning'
-    [get_untrained_model_with_inputs] use preinstalled 'microsoft/Phi-4-mini-reasoning'
-    [get_untrained_model_with_inputs] architectures=['Phi3ForCausalLM']
+    [get_untrained_model_with_inputs] model_id='microsoft/Phi-3.5-mini-instruct', subfolder=None
+    [get_untrained_model_with_inputs] use preinstalled 'microsoft/Phi-3.5-mini-instruct'
+    Unrecognized keys in `rope_parameters` for 'rope_type'='longrope': {'partial_rotary_factor'}
+    This model has set a `original_max_position_embeddings` field, to be used together with `max_position_embeddings` to determine a scaling factor. Please set the `factor` field of `rope_parameters`with this ratio instead -- we recommend the use of this field over `original_max_position_embeddings`, as it is compatible with most model architectures.
+    [get_untrained_model_with_inputs] architecture='Phi3ForCausalLM'
     [get_untrained_model_with_inputs] cls='Phi3Config'
     [get_untrained_model_with_inputs] task='text-generation'
+    [get_untrained_model_with_inputs] -- updated config
+    {'head_dim': '+96'}
+    [get_untrained_model_with_inputs] --
     [get_untrained_model_with_inputs] default config._attn_implementation=None
-    [get_untrained_model_with_inputs] use fct=<function get_inputs at 0x737cbd9eb880>
+    [get_untrained_model_with_inputs] package_source=transformers from /home/xadupre/github/transformers/src/transformers/__init__.py
+    [get_untrained_model_with_inputs] instantiate model_id 'microsoft/Phi-3.5-mini-instruct', subfolder=None
+    [get_untrained_model_with_inputs] -- done(2) in 3.474399272818118e-05s
+    [get_untrained_model_with_inputs] instantiate_specific_model <class 'transformers.models.phi3.modeling_phi3.Phi3ForCausalLM'>
+    [get_untrained_model_with_inputs] -- done(3) in 7.451399869751185e-05s (model is <class 'NoneType'>)
+    [get_untrained_model_with_inputs] instantiate_specific_model(2) <class 'transformers.models.phi3.modeling_phi3.Phi3ForCausalLM'>
+    [get_untrained_model_with_inputs] -- done(4) in 3.720340361993294s (model is <class 'transformers.models.phi3.modeling_phi3.Phi3ForCausalLM'>)
+    [get_untrained_model_with_inputs] use fct=<function get_inputs at 0x7361da6a1a80>
     [validate_model] --
     [validate_model] task=text-generation
-    [validate_model] size=989.51953125 Mb
-    [validate_model] n_weights=259.396608 millions parameters
+    [validate_model] size=1615.55859375 Mb
+    [validate_model] n_weights=423.508992 millions parameters
     [validate_model] +INPUT input_ids=T7s2x3
     [validate_model] +INPUT attention_mask=T7s2x33
     [validate_model] +INPUT position_ids=T7s2x3
-    [validate_model] +INPUT past_key_values=DynamicCache(key_cache=#2[T1s2x8x30x128,T1s2x8x30x128], value_cache=#2[T1s2x8x30x128,T1s2x8x30x128])
-    [validate_model] +SHAPE input_ids={0:Dim(batch),1:DYN(seq_length)}
-    [validate_model] +SHAPE attention_mask={0:Dim(batch),1:DYN(cache+seq)}
-    [validate_model] +SHAPE position_ids={0:Dim(batch),1:DYN(cache+seq)}
-    [validate_model] +SHAPE past_key_values=#2[#2[{0:Dim(batch),2:DYN(cache_length)},{0:Dim(batch),2:DYN(cache_length)}],#2[{0:Dim(batch),2:DYN(cache_length)},{0:Dim(batch),2:DYN(cache_length)}]]
+    [validate_model] +INPUT past_key_values=DynamicCache(key_cache=#2[T1s2x32x30x96,T1s2x32x30x96], value_cache=#2[T1s2x32x30x96,T1s2x32x30x96])
+    [validate_model] +SHAPE input_ids={0:DYN(batch),1:DYN(seq_length)}
+    [validate_model] +SHAPE attention_mask={0:DYN(batch),1:DYN(cache+seq)}
+    [validate_model] +SHAPE position_ids={0:DYN(batch),1:DYN(seq_length)}
+    [validate_model] +SHAPE past_key_values=#4[{0:DYN(batch),2:DYN(cache_length)},{0:DYN(batch),2:DYN(cache_length)},{0:DYN(batch),2:DYN(cache_length)},{0:DYN(batch),2:DYN(cache_length)}]
+    [validate_model] second_input_keys=['inputs_prompt', 'inputs2', 'inputs_empty_cache', 'inputs_batch1']
     [validate_model] --
     [validate_model] -- run the model inputs='inputs'...
-    [validate_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x8x30x128,T1s2x8x30x128], value_cache=#2[T1s2x8x30x128,T1s2x8x30x128]))
-    [validate_model] done ([run])
+    [validate_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x96,T1s2x32x30x96], value_cache=#2[T1s2x32x30x96,T1s2x32x30x96]))
+    [validate_model] done ([run]) - CausalLMOutputWithPast(logits:T1s2x3x32064,past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x96,T1s2x32x33x96], value_cache=#2[T1s2x32x33x96,T1s2x32x33x96]))
+    [validate_model] -- run the model inputs='inputs_prompt'...
+    [validate_model] inputs_prompt=dict(input_ids:T7s1x11)
+    [validate_model] done ([run2_prompt]) - CausalLMOutputWithPast(logits:T1s1x11x32064,past_key_values:DynamicCache(key_cache=#2[T1s1x32x11x96,T1s1x32x11x96], value_cache=#2[T1s1x32x11x96,T1s1x32x11x96]))
     [validate_model] -- run the model inputs='inputs2'...
-    [validate_model] inputs2=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#2[T1s3x8x31x128,T1s3x8x31x128], value_cache=#2[T1s3x8x31x128,T1s3x8x31x128]))
-    [validate_model] done ([run2])
-    [validate_model] -- export the model with 'onnx-dynamo', optimization='ir'
+    [validate_model] inputs2=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#2[T1s3x32x31x96,T1s3x32x31x96], value_cache=#2[T1s3x32x31x96,T1s3x32x31x96]))
+    [validate_model] done ([run22]) - CausalLMOutputWithPast(logits:T1s3x4x32064,past_key_values:DynamicCache(key_cache=#2[T1s3x32x35x96,T1s3x32x35x96], value_cache=#2[T1s3x32x35x96,T1s3x32x35x96]))
+    [validate_model] -- run the model inputs='inputs_empty_cache'...
+    [validate_model] inputs_empty_cache=dict(input_ids:T7s2x3,attention_mask:T7s2x3,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x0x96,T1s2x32x0x96], value_cache=#2[T1s2x32x0x96,T1s2x32x0x96]))
+    [validate_model] done ([run2_empty_cache]) - CausalLMOutputWithPast(logits:T1s2x3x32064,past_key_values:DynamicCache(key_cache=#2[T1s2x32x3x96,T1s2x32x3x96], value_cache=#2[T1s2x32x3x96,T1s2x32x3x96]))
+    [validate_model] -- run the model inputs='inputs_batch1'...
+    [validate_model] inputs_batch1=dict(input_ids:T7s1x3,attention_mask:T7s1x33,position_ids:T7s1x3,past_key_values:DynamicCache(key_cache=#2[T1s1x32x30x96,T1s1x32x30x96], value_cache=#2[T1s1x32x30x96,T1s1x32x30x96]))
+    [validate_model] done ([run2_batch1]) - CausalLMOutputWithPast(logits:T1s1x3x32064,past_key_values:DynamicCache(key_cache=#2[T1s1x32x33x96,T1s1x32x33x96], value_cache=#2[T1s1x32x33x96,T1s1x32x33x96]))
+    [validate_model] -- export the model with 'custom', optimization='default'
     [validate_model] applies patches before exporting stop_if_static=1
+    [torch_export_patches] patch_sympy=True
+                         . patch_torch=True
+                         . patch_transformers=True
+                         . patch_diffusers=True
+                         . catch_constraints=True
+                         . stop_if_static=1
+                         . patch=True
+                         . custom_patches=None
+    [torch_export_patches] dump_rewriting='dump_test/microsoft_Phi-3.5-mini-instruct/custom/default/rewrite'
     [torch_export_patches] replace torch.jit.isinstance, torch._dynamo.mark_static_address
-    [_fix_registration] DynamicCache is unregistered and registered first
-    [unregister_cache_serialization] unregistered DynamicCache
-    [register_class_serialization] ---------- register DynamicCache
-    [_fix_registration] DynamicCache done.
     [_fix_registration] BaseModelOutput is unregistered and registered first
     [unregister_cache_serialization] unregistered BaseModelOutput
     [register_class_serialization] ---------- register BaseModelOutput
@@ -115,29 +172,34 @@ Measures loading, saving time for an onnx model in python
     [unregister_cache_serialization] unregistered UNet2DConditionOutput
     [register_class_serialization] ---------- register UNet2DConditionOutput
     [_fix_registration] UNet2DConditionOutput done.
-    [register_class_serialization] already registered DynamicCache
+    [register_class_serialization] ---------- register DynamicCache
     [register_class_serialization] ---------- register HybridCache
-    [register_class_serialization] ---------- register MambaCache
     [register_class_serialization] ---------- register EncoderDecoderCache
     [register_class_serialization] ---------- register SlidingWindowCache
     [register_class_serialization] ---------- register StaticCache
-    [register_class_serialization] already registered UNet2DConditionOutput
+    [register_class_serialization] ---------- register MambaCache
     [register_class_serialization] already registered BaseModelOutput
-    [torch_export_patches] sympy.__version__='1.13.3'
+    [register_class_serialization] already registered UNet2DConditionOutput
+    [torch_export_patches] sympy.__version__='1.14.0'
     [torch_export_patches] patch sympy
-    [torch_export_patches] torch.__version__='2.9.0.dev20250727+cu126'
+    [torch_export_patches] torch.__version__='2.10.0.dev20251123+cu130'
     [torch_export_patches] stop_if_static=1
     [torch_export_patches] patch pytorch
     [torch_export_patches] modifies shape constraints
     [torch_export_patches] assert when a dynamic dimension turns static
     [torch_export_patches] replaces ShapeEnv._set_replacement
     [torch_export_patches] replaces ShapeEnv._log_guard
-    [torch_export_patches] transformers.__version__='4.55.0.dev0'
+    [torch_export_patches] transformers.__version__='5.0.0.dev0'
+    [torch_export_patches] patches transformers.masking_utils.eager_mask
+    [torch_export_patches] patches transformers.masking_utils.eager_mask in ALL_MASK_ATTENTION_FUNCTIONS
+    [torch_export_patches] patches transformers.integrations.sdpa_attention.sdpa_attention_forward
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_AttentionMaskConverter: 
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_DynamicLayer: lazy_initialization
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Gemma2RotaryEmbedding: forward
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Gemma3Model: get_placeholder_mask
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Gemma3RotaryEmbedding: forward
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GemmaRotaryEmbedding: forward
-    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_IdeficsAttention: forward
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_IdeficsEmbedding: forward
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_LlamaRotaryEmbedding: forward
@@ -146,303 +208,28 @@ Measures loading, saving time for an onnx model in python
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Phi3RotaryEmbedding: forward
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Phi4MultimodalRotaryEmbedding: forward
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_PhiRotaryEmbedding: forward
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen2_5_VLForConditionalGeneration: prepare_inputs_for_generation
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen2_5_VLVisionAttention: forward
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen2_5_VisionTransformerPretrainedModel: get_window_index, forward, rot_pos_emb
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen3MoeSparseMoeBlock: forward, _forward_expert_loop
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_SamMaskDecoder: forward
     [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_SmolLM3RotaryEmbedding: forward
+    [patch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_VisionAttention: forward
     [patch_module_or_classes] function: transformers.models.bart.modeling_bart.eager_attention_forward
     [patch_module_or_classes] function: transformers.models.marian.modeling_marian.eager_attention_forward
-    [patch_module_or_classes] function: transformers.cache_utils.parse_processor_args
-    [torch_export_patches] patches transformers.masking_utils._vmap_for_bhqkv
-    [torch_export_patches] patches transformers.masking_utils.eager_mask
     [torch_export_patches] done patching
     [validate_model] run patched model...
-    [validate_model] patched inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x8x30x128,T1s2x8x30x128], value_cache=#2[T1s2x8x30x128,T1s2x8x30x128]))
+    [validate_model] patched inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x96,T1s2x32x30x96], value_cache=#2[T1s2x32x30x96,T1s2x32x30x96]))
     [validate_model] done (patched run)
-    [validate_model] patched discrepancies=abs=0, rel=0
-    [call_torch_export_onnx] exporter='onnx-dynamo', optimization='ir'
-    [call_torch_export_onnx] args=()
-    [call_torch_export_onnx] kwargs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x8x30x128,T1s2x8x30x128], value_cache=#2[T1s2x8x30x128,T1s2x8x30x128]))
-    [call_torch_export_onnx] dynamic_shapes=dict(input_ids:{0:Dim(batch),1:DYN(seq_length)},attention_mask:{0:Dim(batch),1:DYN(cache+seq)},position_ids:{0:Dim(batch),1:DYN(cache+seq)},past_key_values:#2[#2[{0:Dim(batch),2:DYN(cache_length)},{0:Dim(batch),2:DYN(cache_length)}],#2[{0:Dim(batch),2:DYN(cache_length)},{0:Dim(batch),2:DYN(cache_length)}]])
-    [call_torch_export_onnx] export...
-    [call_torch_export_onnx] export_export_kwargs=dict(dynamo:bool,dynamic_shapes:dict(input_ids:{0:Dim(batch),1:DYN(seq_length)},attention_mask:{0:Dim(batch),1:DYN(cache+seq)},position_ids:{0:Dim(batch),1:DYN(cache+seq)},past_key_values:#2[#2[{0:Dim(batch),2:DYN(cache_length)},{0:Dim(batch),2:DYN(cache_length)}],#2[{0:Dim(batch),2:DYN(cache_length)},{0:Dim(batch),2:DYN(cache_length)}]]))
-    [torch.onnx] Obtain model graph for `Phi3ForCausalLM([...]` with `torch.export.export(..., strict=False)`...
-    [_catch_produce_guards_and_solve_constraints] ERROR: produce_guards_and_solve_constraints failed, use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping
-    fake_mode=<torch._subclasses.fake_tensor.FakeTensorMode object at 0x737c6caaed20>
-    dynamic_shapes={'input_ids': {0: Dim('batch', min=1, max=1024), 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}, 'attention_mask': {0: Dim('batch', min=1, max=1024), 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}, 'position_ids': {0: Dim('batch', min=1, max=1024), 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}, 'past_key_values': [[{0: Dim('batch', min=1, max=1024), 2: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}, {0: Dim('batch', min=1, max=1024), 2: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}], [{0: Dim('batch', min=1, max=1024), 2: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}, {0: Dim('batch', min=1, max=1024), 2: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}]]}
-    equalities_inputs=EqualityConstraint(warn_only=False, source_pairs=[(TensorPropertySource(base=LocalSource(local_name='attention_mask', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=LocalSource(local_name='position_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='key_cache', index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='value_cache', index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0))], derived_equalities=[], phantom_symbols=[], relaxed_sources={TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='value_cache', index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='key_cache', index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2), TensorPropertySource(base=LocalSource(local_name='attention_mask', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=LocalSource(local_name='position_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2)}, _parents={TensorPropertySource(base=LocalSource(local_name='attention_mask', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=LocalSource(local_name='position_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='key_cache', index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='past_key_values', is_input=False, dynamism=None, is_derefed_cell_contents=False), index='value_cache', index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=LocalSource(local_name='input_ids', is_input=False, dynamism=None, is_derefed_cell_contents=False), prop=<TensorProperty.SIZE: 0>, idx=0)}, _defs={})
-    original_signature=(input_ids: Optional[torch.LongTensor] = None, attention_mask: Optional[torch.Tensor] = None, position_ids: Optional[torch.LongTensor] = None, past_key_values: Optional[transformers.cache_utils.Cache] = None, inputs_embeds: Optional[torch.FloatTensor] = None, labels: Optional[torch.LongTensor] = None, use_cache: Optional[bool] = None, cache_position: Optional[torch.LongTensor] = None, logits_to_keep: Union[int, torch.Tensor] = 0, **kwargs: Unpack[transformers.utils.generic.TransformersKwargs]) -> transformers.modeling_outputs.CausalLMOutputWithPast
-    _is_torch_jit_trace=False
-    exc=produce_guards_and_solve_constraints() got an unexpected keyword argument '_is_torch_jit_trace'
-    gm=<lambda>(
-      (true_graph_0): <lambda>()
-      (false_graph_0): <lambda>()
-    )
-
-
-
-    def forward(self, arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1, arg8_1, arg9_1, arg10_1, arg11_1, arg12_1, arg13_1, arg14_1, arg15_1, arg16_1, arg17_1, arg18_1, arg19_1, arg20_1, arg21_1, arg22_1):
-        embedding = torch.ops.aten.embedding.default(arg14_1, arg16_1, 199999)
-        sym_size_int = torch.ops.aten.sym_size.int(arg19_1, 2)
-        sym_size_int_1 = torch.ops.aten.sym_size.int(arg16_1, 1)
-        add = sym_size_int + sym_size_int_1
-        arange = torch.ops.aten.arange.start(sym_size_int, add, device = device(type='cpu'), pin_memory = False);  add = None
-        to = torch.ops.aten.to.device(arg17_1, device(type='cpu'), torch.bool);  arg17_1 = None
-        sym_size_int_2 = torch.ops.aten.sym_size.int(arange, 0)
-        add_1 = sym_size_int_2 + sym_size_int;  sym_size_int = None
-        arange_1 = torch.ops.aten.arange.default(add_1, device = device(type='cpu'), pin_memory = False);  add_1 = None
-        add_ = torch.ops.aten.add_.Tensor(arange_1, 0)
-        sym_size_int_4 = torch.ops.aten.sym_size.int(arg16_1, 0);  arg16_1 = None
-        arange_2 = torch.ops.aten.arange.default(sym_size_int_4, device = device(type='cpu'), pin_memory = False)
-        arange_3 = torch.ops.aten.arange.default(1, device = device(type='cpu'), pin_memory = False)
-        sym_size_int_5 = torch.ops.aten.sym_size.int(arange_2, 0)
-        sym_size_int_6 = torch.ops.aten.sym_size.int(arange_1, 0);  arange_1 = None
-        reshape = torch.ops.aten.reshape.default(arange_2, [-1, 1, 1, 1]);  arange_2 = None
-        reshape_1 = torch.ops.aten.reshape.default(arange_3, [1, -1, 1, 1]);  arange_3 = None
-        reshape_2 = torch.ops.aten.reshape.default(arange, [1, 1, -1, 1]);  arange = None
-        reshape_3 = torch.ops.aten.reshape.default(add_, [1, 1, 1, -1]);  add_ = None
-        expand = torch.ops.aten.expand.default(reshape, [sym_size_int_5, 1, sym_size_int_2, sym_size_int_6]);  reshape = None
-        expand_1 = torch.ops.aten.expand.default(reshape_1, [sym_size_int_5, 1, sym_size_int_2, sym_size_int_6]);  reshape_1 = expand_1 = None
-        expand_2 = torch.ops.aten.expand.default(reshape_2, [sym_size_int_5, 1, sym_size_int_2, sym_size_int_6]);  reshape_2 = None
-        expand_3 = torch.ops.aten.expand.default(reshape_3, [sym_size_int_5, 1, sym_size_int_2, sym_size_int_6]);  reshape_3 = sym_size_int_5 = sym_size_int_2 = sym_size_int_6 = None
-        new_ones = torch.ops.aten.new_ones.default(expand_2, [], dtype = torch.bool, pin_memory = False)
-        new_ones_1 = torch.ops.aten.new_ones.default(expand_2, [], dtype = torch.bool, pin_memory = False)
-        sub_1 = torch.ops.aten.sub.Tensor(expand_2, 262144)
-        gt_5 = torch.ops.aten.gt.Tensor(expand_3, sub_1);  sub_1 = None
-        and_1 = torch.ops.aten.__and__.Tensor(new_ones_1, gt_5);  new_ones_1 = gt_5 = None
-        le = torch.ops.aten.le.Tensor(expand_3, expand_2);  expand_2 = None
-        and_2 = torch.ops.aten.__and__.Tensor(and_1, le);  and_1 = le = None
-        and_3 = torch.ops.aten.__and__.Tensor(new_ones, and_2);  new_ones = and_2 = None
-        index = torch.ops.aten.index.Tensor(to, [expand, expand_3]);  to = expand = expand_3 = None
-        and_4 = torch.ops.aten.__and__.Tensor(and_3, index);  and_3 = index = None
-        _set_grad_enabled = torch._C._set_grad_enabled(False);  _set_grad_enabled = None
-        max_1 = torch.ops.aten.max.default(arg18_1)
-        add_3 = torch.ops.aten.add.Tensor(max_1, 1);  max_1 = None
-        _tensor_constant0 = self._tensor_constant0
-        lift_fresh_copy = torch.ops.aten.lift_fresh_copy.default(_tensor_constant0);  _tensor_constant0 = None
-        detach_ = torch.ops.aten.detach_.default(lift_fresh_copy);  lift_fresh_copy = None
-        arange_4 = torch.ops.aten.arange.start_step(0, 96, 2, dtype = torch.int64, device = device(type='cpu'), pin_memory = False)
-        to_1 = torch.ops.aten.to.dtype(arange_4, torch.float32);  arange_4 = None
-        div = torch.ops.aten.div.Tensor(to_1, 96);  to_1 = None
-        pow_1 = torch.ops.aten.pow.Scalar(10000.0, div);  div = None
-        mul = torch.ops.aten.mul.Tensor(detach_, pow_1);  detach_ = pow_1 = None
-        reciprocal = torch.ops.aten.reciprocal.default(mul);  mul = None
-        mul_1 = torch.ops.aten.mul.Tensor(reciprocal, 1.0);  reciprocal = None
-        _tensor_constant1 = self._tensor_constant1
-        to_2 = torch.ops.aten.to.dtype_layout(_tensor_constant1, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  _tensor_constant1 = None
-        gt_6 = torch.ops.aten.gt.Scalar(add_3, 4096);  add_3 = None
-        item = torch.ops.aten.item.default(gt_6);  gt_6 = None
-        true_graph_0 = self.true_graph_0
-        false_graph_0 = self.false_graph_0
-        cond = torch.ops.higher_order.cond(item, true_graph_0, false_graph_0, (mul_1, to_2));  item = true_graph_0 = false_graph_0 = mul_1 = to_2 = None
-        getitem = cond[0];  cond = None
-        unsqueeze = torch.ops.aten.unsqueeze.default(getitem, 0);  getitem = None
-        unsqueeze_1 = torch.ops.aten.unsqueeze.default(unsqueeze, 2);  unsqueeze = None
-        to_3 = torch.ops.aten.to.dtype(unsqueeze_1, torch.float32);  unsqueeze_1 = None
-        sym_size_int_7 = torch.ops.aten.sym_size.int(arg18_1, 0)
-        expand_4 = torch.ops.aten.expand.default(to_3, [sym_size_int_7, -1, 1]);  to_3 = sym_size_int_7 = None
-        to_4 = torch.ops.aten.to.dtype_layout(expand_4, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  expand_4 = None
-        unsqueeze_2 = torch.ops.aten.unsqueeze.default(arg18_1, 1);  arg18_1 = None
-        slice_1 = torch.ops.aten.slice.Tensor(unsqueeze_2, 2, 0, 9223372036854775807);  unsqueeze_2 = None
-        to_5 = torch.ops.aten.to.dtype(slice_1, torch.float32);  slice_1 = None
-        _enter_autocast = torch.amp.autocast_mode._enter_autocast('cpu', torch.bfloat16, False, False)
-        to_6 = torch.ops.aten.to.dtype(to_4, torch.float32);  to_4 = None
-        to_7 = torch.ops.aten.to.dtype(to_5, torch.float32);  to_5 = None
-        matmul = torch.ops.aten.matmul.default(to_6, to_7);  to_6 = to_7 = None
-        transpose = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
-        cat = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
-        cos = torch.ops.aten.cos.default(cat)
-        mul_2 = torch.ops.aten.mul.Tensor(cos, 1.1902380714238083);  cos = None
-        sin = torch.ops.aten.sin.default(cat);  cat = None
-        mul_3 = torch.ops.aten.mul.Tensor(sin, 1.1902380714238083);  sin = None
-        _exit_autocast = torch.amp.autocast_mode._exit_autocast(_enter_autocast);  _enter_autocast = _exit_autocast = None
-        to_8 = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
-        to_9 = torch.ops.aten.to.dtype(mul_3, torch.float32);  mul_3 = None
-        _set_grad_enabled_1 = torch._C._set_grad_enabled(True);  _set_grad_enabled_1 = None
-        to_10 = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-        pow_2 = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
-        mean = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
-        add_4 = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
-        rsqrt = torch.ops.aten.rsqrt.default(add_4);  add_4 = None
-        mul_4 = torch.ops.aten.mul.Tensor(to_10, rsqrt);  rsqrt = None
-        to_11 = torch.ops.aten.to.dtype(mul_4, torch.float32);  mul_4 = None
-        mul_5 = torch.ops.aten.mul.Tensor(arg5_1, to_11);  arg5_1 = to_11 = None
-        linear = torch.ops.aten.linear.default(mul_5, arg2_1);  mul_5 = arg2_1 = None
-        slice_2 = torch.ops.aten.slice.Tensor(linear, 2, 0, 3072)
-        slice_3 = torch.ops.aten.slice.Tensor(linear, 2, 3072, 4096)
-        slice_4 = torch.ops.aten.slice.Tensor(linear, 2, 4096, 9223372036854775807);  linear = None
-        view = torch.ops.aten.view.default(slice_2, [sym_size_int_4, sym_size_int_1, -1, 128]);  slice_2 = None
-        transpose_1 = torch.ops.aten.transpose.int(view, 1, 2);  view = None
-        view_1 = torch.ops.aten.view.default(slice_3, [sym_size_int_4, sym_size_int_1, -1, 128]);  slice_3 = None
-        transpose_2 = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
-        view_2 = torch.ops.aten.view.default(slice_4, [sym_size_int_4, sym_size_int_1, -1, 128]);  slice_4 = None
-        transpose_3 = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-        unsqueeze_3 = torch.ops.aten.unsqueeze.default(to_8, 1)
-        unsqueeze_4 = torch.ops.aten.unsqueeze.default(to_9, 1)
-        slice_5 = torch.ops.aten.slice.Tensor(transpose_1, 3, 0, 96)
-        slice_6 = torch.ops.aten.slice.Tensor(transpose_1, 3, 96, 9223372036854775807);  transpose_1 = None
-        slice_7 = torch.ops.aten.slice.Tensor(transpose_2, 3, 0, 96)
-        slice_8 = torch.ops.aten.slice.Tensor(transpose_2, 3, 96, 9223372036854775807);  transpose_2 = None
-        mul_6 = torch.ops.aten.mul.Tensor(slice_5, unsqueeze_3)
-        slice_9 = torch.ops.aten.slice.Tensor(slice_5, 3, 0, 48)
-        slice_10 = torch.ops.aten.slice.Tensor(slice_5, 3, 48, 9223372036854775807);  slice_5 = None
-        neg = torch.ops.aten.neg.default(slice_10);  slice_10 = None
-        cat_1 = torch.ops.aten.cat.default([neg, slice_9], -1);  neg = slice_9 = None
-        mul_7 = torch.ops.aten.mul.Tensor(cat_1, unsqueeze_4);  cat_1 = None
-        add_5 = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
-        cat_2 = torch.ops.aten.cat.default([add_5, slice_6], -1);  add_5 = slice_6 = None
-        mul_8 = torch.ops.aten.mul.Tensor(slice_7, unsqueeze_3);  unsqueeze_3 = None
-        slice_11 = torch.ops.aten.slice.Tensor(slice_7, 3, 0, 48)
-        slice_12 = torch.ops.aten.slice.Tensor(slice_7, 3, 48, 9223372036854775807);  slice_7 = None
-        neg_1 = torch.ops.aten.neg.default(slice_12);  slice_12 = None
-        cat_3 = torch.ops.aten.cat.default([neg_1, slice_11], -1);  neg_1 = slice_11 = None
-        mul_9 = torch.ops.aten.mul.Tensor(cat_3, unsqueeze_4);  cat_3 = unsqueeze_4 = None
-        add_6 = torch.ops.aten.add.Tensor(mul_8, mul_9);  mul_8 = mul_9 = None
-        cat_4 = torch.ops.aten.cat.default([add_6, slice_8], -1);  add_6 = slice_8 = None
-        cat_5 = torch.ops.aten.cat.default([arg19_1, cat_4], -2);  cat_4 = None
-        cat_6 = torch.ops.aten.cat.default([arg21_1, transpose_3], -2);  transpose_3 = None
-        sym_size_int_9 = torch.ops.aten.sym_size.int(arg19_1, 0);  arg19_1 = None
-        unsqueeze_5 = torch.ops.aten.unsqueeze.default(cat_5, 2)
-        sym_size_int_10 = torch.ops.aten.sym_size.int(cat_5, 2)
-        slice_13 = torch.ops.aten.slice.Tensor(unsqueeze_5, 3, 0, 9223372036854775807);  unsqueeze_5 = None
-        expand_5 = torch.ops.aten.expand.default(slice_13, [sym_size_int_9, 8, 3, sym_size_int_10, 128]);  slice_13 = None
-        reshape_4 = torch.ops.aten.reshape.default(expand_5, [sym_size_int_9, 24, sym_size_int_10, 128]);  expand_5 = sym_size_int_9 = None
-        sym_size_int_11 = torch.ops.aten.sym_size.int(arg21_1, 0);  arg21_1 = None
-        unsqueeze_6 = torch.ops.aten.unsqueeze.default(cat_6, 2)
-        sym_size_int_12 = torch.ops.aten.sym_size.int(cat_6, 2)
-        slice_14 = torch.ops.aten.slice.Tensor(unsqueeze_6, 3, 0, 9223372036854775807);  unsqueeze_6 = None
-        expand_6 = torch.ops.aten.expand.default(slice_14, [sym_size_int_11, 8, 3, sym_size_int_12, 128]);  slice_14 = None
-        reshape_5 = torch.ops.aten.reshape.default(expand_6, [sym_size_int_11, 24, sym_size_int_12, 128]);  expand_6 = sym_size_int_11 = sym_size_int_12 = None
-        slice_15 = torch.ops.aten.slice.Tensor(and_4, 3, None, sym_size_int_10);  sym_size_int_10 = None
-        scaled_dot_product_attention = torch.ops.aten.scaled_dot_product_attention.default(cat_2, reshape_4, reshape_5, slice_15, scale = 0.08838834764831845);  cat_2 = reshape_4 = reshape_5 = slice_15 = None
-        transpose_4 = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
-        contiguous = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
-        reshape_6 = torch.ops.aten.reshape.default(contiguous, [sym_size_int_4, sym_size_int_1, -1]);  contiguous = None
-        linear_1 = torch.ops.aten.linear.default(reshape_6, arg1_1);  reshape_6 = arg1_1 = None
-        dropout = torch.ops.aten.dropout.default(linear_1, 0.0, False);  linear_1 = None
-        add_7 = torch.ops.aten.add.Tensor(to_10, dropout);  to_10 = dropout = None
-        to_12 = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
-        pow_3 = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
-        mean_1 = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
-        add_8 = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
-        rsqrt_1 = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
-        mul_28 = torch.ops.aten.mul.Tensor(to_12, rsqrt_1);  rsqrt_1 = None
-        to_13 = torch.ops.aten.to.dtype(mul_28, torch.float32);  mul_28 = None
-        mul_29 = torch.ops.aten.mul.Tensor(arg6_1, to_13);  arg6_1 = to_13 = None
-        linear_2 = torch.ops.aten.linear.default(mul_29, arg3_1);  mul_29 = arg3_1 = None
-        chunk = torch.ops.aten.chunk.default(linear_2, 2, -1);  linear_2 = None
-        getitem_1 = chunk[0]
-        getitem_2 = chunk[1];  chunk = None
-        silu = torch.ops.aten.silu.default(getitem_1);  getitem_1 = None
-        mul_30 = torch.ops.aten.mul.Tensor(getitem_2, silu);  getitem_2 = silu = None
-        linear_3 = torch.ops.aten.linear.default(mul_30, arg4_1);  mul_30 = arg4_1 = None
-        dropout_1 = torch.ops.aten.dropout.default(linear_3, 0.0, False);  linear_3 = None
-        add_9 = torch.ops.aten.add.Tensor(to_12, dropout_1);  to_12 = dropout_1 = None
-        to_14 = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
-        pow_4 = torch.ops.aten.pow.Tensor_Scalar(to_14, 2)
-        mean_2 = torch.ops.aten.mean.dim(pow_4, [-1], True);  pow_4 = None
-        add_10 = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
-        rsqrt_2 = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
-        mul_31 = torch.ops.aten.mul.Tensor(to_14, rsqrt_2);  rsqrt_2 = None
-        to_15 = torch.ops.aten.to.dtype(mul_31, torch.float32);  mul_31 = None
-        mul_32 = torch.ops.aten.mul.Tensor(arg11_1, to_15);  arg11_1 = to_15 = None
-        linear_4 = torch.ops.aten.linear.default(mul_32, arg8_1);  mul_32 = arg8_1 = None
-        slice_16 = torch.ops.aten.slice.Tensor(linear_4, 2, 0, 3072)
-        slice_17 = torch.ops.aten.slice.Tensor(linear_4, 2, 3072, 4096)
-        slice_18 = torch.ops.aten.slice.Tensor(linear_4, 2, 4096, 9223372036854775807);  linear_4 = None
-        view_3 = torch.ops.aten.view.default(slice_16, [sym_size_int_4, sym_size_int_1, -1, 128]);  slice_16 = None
-        transpose_5 = torch.ops.aten.transpose.int(view_3, 1, 2);  view_3 = None
-        view_4 = torch.ops.aten.view.default(slice_17, [sym_size_int_4, sym_size_int_1, -1, 128]);  slice_17 = None
-        transpose_6 = torch.ops.aten.transpose.int(view_4, 1, 2);  view_4 = None
-        view_5 = torch.ops.aten.view.default(slice_18, [sym_size_int_4, sym_size_int_1, -1, 128]);  slice_18 = None
-        transpose_7 = torch.ops.aten.transpose.int(view_5, 1, 2);  view_5 = None
-        unsqueeze_7 = torch.ops.aten.unsqueeze.default(to_8, 1);  to_8 = None
-        unsqueeze_8 = torch.ops.aten.unsqueeze.default(to_9, 1);  to_9 = None
-        slice_19 = torch.ops.aten.slice.Tensor(transpose_5, 3, 0, 96)
-        slice_20 = torch.ops.aten.slice.Tensor(transpose_5, 3, 96, 9223372036854775807);  transpose_5 = None
-        slice_21 = torch.ops.aten.slice.Tensor(transpose_6, 3, 0, 96)
-        slice_22 = torch.ops.aten.slice.Tensor(transpose_6, 3, 96, 9223372036854775807);  transpose_6 = None
-        mul_33 = torch.ops.aten.mul.Tensor(slice_19, unsqueeze_7)
-        slice_23 = torch.ops.aten.slice.Tensor(slice_19, 3, 0, 48)
-        slice_24 = torch.ops.aten.slice.Tensor(slice_19, 3, 48, 9223372036854775807);  slice_19 = None
-        neg_2 = torch.ops.aten.neg.default(slice_24);  slice_24 = None
-        cat_7 = torch.ops.aten.cat.default([neg_2, slice_23], -1);  neg_2 = slice_23 = None
-        mul_34 = torch.ops.aten.mul.Tensor(cat_7, unsqueeze_8);  cat_7 = None
-        add_11 = torch.ops.aten.add.Tensor(mul_33, mul_34);  mul_33 = mul_34 = None
-        cat_8 = torch.ops.aten.cat.default([add_11, slice_20], -1);  add_11 = slice_20 = None
-        mul_35 = torch.ops.aten.mul.Tensor(slice_21, unsqueeze_7);  unsqueeze_7 = None
-        slice_25 = torch.ops.aten.slice.Tensor(slice_21, 3, 0, 48)
-        slice_26 = torch.ops.aten.slice.Tensor(slice_21, 3, 48, 9223372036854775807);  slice_21 = None
-        neg_3 = torch.ops.aten.neg.default(slice_26);  slice_26 = None
-        cat_9 = torch.ops.aten.cat.default([neg_3, slice_25], -1);  neg_3 = slice_25 = None
-        mul_36 = torch.ops.aten.mul.Tensor(cat_9, unsqueeze_8);  cat_9 = unsqueeze_8 = None
-        add_12 = torch.ops.aten.add.Tensor(mul_35, mul_36);  mul_35 = mul_36 = None
-        cat_10 = torch.ops.aten.cat.default([add_12, slice_22], -1);  add_12 = slice_22 = None
-        cat_11 = torch.ops.aten.cat.default([arg20_1, cat_10], -2);  cat_10 = None
-        cat_12 = torch.ops.aten.cat.default([arg22_1, transpose_7], -2);  transpose_7 = None
-        sym_size_int_13 = torch.ops.aten.sym_size.int(arg20_1, 0);  arg20_1 = None
-        unsqueeze_9 = torch.ops.aten.unsqueeze.default(cat_11, 2)
-        sym_size_int_14 = torch.ops.aten.sym_size.int(cat_11, 2)
-        slice_27 = torch.ops.aten.slice.Tensor(unsqueeze_9, 3, 0, 9223372036854775807);  unsqueeze_9 = None
-        expand_7 = torch.ops.aten.expand.default(slice_27, [sym_size_int_13, 8, 3, sym_size_int_14, 128]);  slice_27 = None
-        reshape_7 = torch.ops.aten.reshape.default(expand_7, [sym_size_int_13, 24, sym_size_int_14, 128]);  expand_7 = sym_size_int_13 = None
-        sym_size_int_15 = torch.ops.aten.sym_size.int(arg22_1, 0);  arg22_1 = None
-        unsqueeze_10 = torch.ops.aten.unsqueeze.default(cat_12, 2)
-        sym_size_int_16 = torch.ops.aten.sym_size.int(cat_12, 2)
-        slice_28 = torch.ops.aten.slice.Tensor(unsqueeze_10, 3, 0, 9223372036854775807);  unsqueeze_10 = None
-        expand_8 = torch.ops.aten.expand.default(slice_28, [sym_size_int_15, 8, 3, sym_size_int_16, 128]);  slice_28 = None
-        reshape_8 = torch.ops.aten.reshape.default(expand_8, [sym_size_int_15, 24, sym_size_int_16, 128]);  expand_8 = sym_size_int_15 = sym_size_int_16 = None
-        slice_29 = torch.ops.aten.slice.Tensor(and_4, 3, None, sym_size_int_14);  and_4 = sym_size_int_14 = None
-        scaled_dot_product_attention_1 = torch.ops.aten.scaled_dot_product_attention.default(cat_8, reshape_7, reshape_8, slice_29, scale = 0.08838834764831845);  cat_8 = reshape_7 = reshape_8 = slice_29 = None
-        transpose_8 = torch.ops.aten.transpose.int(scaled_dot_product_attention_1, 1, 2);  scaled_dot_product_attention_1 = None
-        contiguous_1 = torch.ops.aten.contiguous.default(transpose_8);  transpose_8 = None
-        reshape_9 = torch.ops.aten.reshape.default(contiguous_1, [sym_size_int_4, sym_size_int_1, -1]);  contiguous_1 = sym_size_int_4 = sym_size_int_1 = None
-        linear_5 = torch.ops.aten.linear.default(reshape_9, arg7_1);  reshape_9 = arg7_1 = None
-        dropout_2 = torch.ops.aten.dropout.default(linear_5, 0.0, False);  linear_5 = None
-        add_13 = torch.ops.aten.add.Tensor(to_14, dropout_2);  to_14 = dropout_2 = None
-        to_16 = torch.ops.aten.to.dtype(add_13, torch.float32);  add_13 = None
-        pow_5 = torch.ops.aten.pow.Tensor_Scalar(to_16, 2)
-        mean_3 = torch.ops.aten.mean.dim(pow_5, [-1], True);  pow_5 = None
-        add_14 = torch.ops.aten.add.Tensor(mean_3, 1e-05);  mean_3 = None
-        rsqrt_3 = torch.ops.aten.rsqrt.default(add_14);  add_14 = None
-        mul_59 = torch.ops.aten.mul.Tensor(to_16, rsqrt_3);  rsqrt_3 = None
-        to_17 = torch.ops.aten.to.dtype(mul_59, torch.float32);  mul_59 = None
-        mul_60 = torch.ops.aten.mul.Tensor(arg12_1, to_17);  arg12_1 = to_17 = None
-        linear_6 = torch.ops.aten.linear.default(mul_60, arg9_1);  mul_60 = arg9_1 = None
-        chunk_1 = torch.ops.aten.chunk.default(linear_6, 2, -1);  linear_6 = None
-        getitem_3 = chunk_1[0]
-        getitem_4 = chunk_1[1];  chunk_1 = None
-        silu_1 = torch.ops.aten.silu.default(getitem_3);  getitem_3 = None
-        mul_61 = torch.ops.aten.mul.Tensor(getitem_4, silu_1);  getitem_4 = silu_1 = None
-        linear_7 = torch.ops.aten.linear.default(mul_61, arg10_1);  mul_61 = arg10_1 = None
-        dropout_3 = torch.ops.aten.dropout.default(linear_7, 0.0, False);  linear_7 = None
-        add_15 = torch.ops.aten.add.Tensor(to_16, dropout_3);  to_16 = dropout_3 = None
-        to_18 = torch.ops.aten.to.dtype(add_15, torch.float32);  add_15 = None
-        pow_6 = torch.ops.aten.pow.Tensor_Scalar(to_18, 2)
-        mean_4 = torch.ops.aten.mean.dim(pow_6, [-1], True);  pow_6 = None
-        add_16 = torch.ops.aten.add.Tensor(mean_4, 1e-05);  mean_4 = None
-        rsqrt_4 = torch.ops.aten.rsqrt.default(add_16);  add_16 = None
-        mul_62 = torch.ops.aten.mul.Tensor(to_18, rsqrt_4);  to_18 = rsqrt_4 = None
-        to_19 = torch.ops.aten.to.dtype(mul_62, torch.float32);  mul_62 = None
-        mul_63 = torch.ops.aten.mul.Tensor(arg13_1, to_19);  arg13_1 = to_19 = None
-        slice_30 = torch.ops.aten.slice.Tensor(mul_63, 1, 0, 9223372036854775807);  mul_63 = None
-        linear_8 = torch.ops.aten.linear.default(slice_30, arg14_1);  slice_30 = arg14_1 = None
-        return (linear_8, cat_5, cat_11, cat_6, cat_12)
-    
-    # To see more debug info, please use `graph_module.print_readable()`
-    [torch.onnx] Obtain model graph for `Phi3ForCausalLM([...]` with `torch.export.export(..., strict=False)`... ✅
-    [torch.onnx] Run decomposition...
-    [torch.onnx] Run decomposition... ✅
-    [torch.onnx] Translate the graph into ONNX...
-    [torch.onnx] Translate the graph into ONNX... ✅
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
-      warnings.warn(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: cache+seq will not be used, since it shares the same shape constraints with another axis: seq_length.
-      warnings.warn(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: cache_length will not be used, since it shares the same shape constraints with another axis: cache_length.
-      warnings.warn(
-    Applied 43 of general pattern rewrite rules.
-    [call_torch_export_onnx] done (export)
-    [call_torch_export_onnx] starts optimization='ir'...
-    [call_torch_export_onnx] done (optimization)
+    [validate_model] patched discrepancies=abs=0, rel=0, dev=0
+    [call_torch_export_custom] exporter='custom', optimization='default'
+    [call_torch_export_custom] args=()
+    [call_torch_export_custom] kwargs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x96,T1s2x32x30x96], value_cache=#2[T1s2x32x30x96,T1s2x32x30x96]))
+    [call_torch_export_custom] dynamic_shapes=dict(input_ids:{0:DYN(batch),1:DYN(seq_length)},attention_mask:{0:DYN(batch),1:DYN(cache+seq)},position_ids:{0:DYN(batch),1:DYN(seq_length)},past_key_values:#4[{0:DYN(batch),2:DYN(cache_length)},{0:DYN(batch),2:DYN(cache_length)},{0:DYN(batch),2:DYN(cache_length)},{0:DYN(batch),2:DYN(cache_length)}])
+    [call_torch_export_custom] export...
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py:221: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
+      return torch.compile(_cond_op_wrapper, backend=backend, fullgraph=True)(
+    [call_torch_export_custom] done (export)
     [torch_export_patches] remove patches
     [torch_export_patches] restored sympy functions
     [torch_export_patches] restored pytorch functions
@@ -450,11 +237,16 @@ Measures loading, saving time for an onnx model in python
     [torch_export_patches] restored ShapeEnv._log_guard
     [torch_export_patches] restored shape constraints
     [torch_export_patches] unpatches transformers
+    [torch_export_patches] restored transformers.masking_utils.eager_mask
+    [torch_export_patches] restored transformers.masking_utils.eager_mask in ALL_MASK_ATTENTION_FUNCTIONS
+    [torch_export_patches] restored transformers.integrations.sdpa_attention.sdpa_attention_forward
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_AttentionMaskConverter: 
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_DynamicLayer: lazy_initialization
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Gemma2RotaryEmbedding: forward
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Gemma3Model: get_placeholder_mask
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Gemma3RotaryEmbedding: forward
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GemmaRotaryEmbedding: forward
-    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_IdeficsAttention: forward
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_IdeficsEmbedding: forward
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_LlamaRotaryEmbedding: forward
@@ -463,51 +255,71 @@ Measures loading, saving time for an onnx model in python
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Phi3RotaryEmbedding: forward
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Phi4MultimodalRotaryEmbedding: forward
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_PhiRotaryEmbedding: forward
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen2_5_VLForConditionalGeneration: prepare_inputs_for_generation
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen2_5_VLVisionAttention: forward
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen2_5_VisionTransformerPretrainedModel: get_window_index, forward, rot_pos_emb
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_Qwen3MoeSparseMoeBlock: forward, _forward_expert_loop
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_SamMaskDecoder: forward
     [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_SmolLM3RotaryEmbedding: forward
+    [unpatch_module_or_classes] onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_VisionAttention: forward
     [unpatch_module_or_classes] function transformers.models.bart.modeling_bart.eager_attention_forward
     [unpatch_module_or_classes] function transformers.models.marian.modeling_marian.eager_attention_forward
-    [unpatch_module_or_classes] function transformers.cache_utils.parse_processor_args
-    [torch_export_patches] restored transformers.masking_utils._vmap_for_bhqkv
-    [torch_export_patches] restored transformers.masking_utils.eager_mask
-    [validate_model] dumps onnx program in 'dump_test/microsoft_Phi-4-mini-reasoning-onnx-dynamo-ir'...
-    [validate_model] done (dump onnx) in 2.781305350996263
-    [validate_model] dumps statistics in 'dump_test/microsoft_Phi-4-mini-reasoning-onnx-dynamo-ir'...
+    [validate_model] dumps onnx program in 'dump_test/microsoft_Phi-3.5-mini-instruct/custom/default'...
+    [validate_model] done (dump onnx) in 5.186274314997718
+    [validate_model] dumps statistics in 'dump_test/microsoft_Phi-3.5-mini-instruct/custom/default'...
     [validate_model] done (dump)
     [validate_onnx_model] verify onnx model with providers ['CPUExecutionProvider']..., flavour=None
+    [validate_onnx_model] runtime is onnxruntime
     [validate_onnx_model] done (ort_session) flavour=None
+    [validate_onnx_model] -- keys=[('inputs', 'run_expected', ''), ('inputs_prompt', 'run_expected2_prompt', '2_prompt'), ('inputs2', 'run_expected22', '22'), ('inputs_empty_cache', 'run_expected2_empty_cache', '2_empty_cache'), ('inputs_batch1', 'run_expected2_batch1', '2_batch1')]
     [validate_onnx_model] -- make_feeds for 'inputs'...
-    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x8x30x128,T1s2x8x30x128], value_cache=#2[T1s2x8x30x128,T1s2x8x30x128]))
-    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x8x30x128,past_key_values_key_cache_1:A1s2x8x30x128,past_key_values_value_cache_0:A1s2x8x30x128,past_key_values_value_cache_1:A1s2x8x30x128)
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x96,T1s2x32x30x96], value_cache=#2[T1s2x32x30x96,T1s2x32x30x96]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_0:A1s2x32x30x96,past_key_values_value_0:A1s2x32x30x96,past_key_values_key_1:A1s2x32x30x96,past_key_values_value_1:A1s2x32x30x96)
     [validate_onnx_model] done (make_feeds)
-    [validate_onnx_model] run session...
+    [validate_onnx_model] run session on inputs 'inputs'...
     [validate_onnx_model] done (run)
-    [validate_onnx_model] got=#5[A1s2x3x200064,A1s2x8x33x128,A1s2x8x33x128,A1s2x8x33x128,A1s2x8x33x128]
-    [validate_onnx_model] discrepancies=abs=3.606081008911133e-06, rel=0.0017793676259306645, n=1470720.0
+    [validate_onnx_model] got=#5[A1s2x3x32064,A1s2x32x33x96,A1s2x32x33x96,A1s2x32x33x96,A1s2x32x33x96]
+    [validate_onnx_model] discrepancies=abs=7.450580596923828e-06, rel=0.0032285076546217277, n=1003392.0, dev=0
     [validate_onnx_model] -- make_feeds for 'inputs2'...
-    [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#2[T1s3x8x31x128,T1s3x8x31x128], value_cache=#2[T1s3x8x31x128,T1s3x8x31x128]))
-    [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x8x31x128,past_key_values_key_cache_1:A1s3x8x31x128,past_key_values_value_cache_0:A1s3x8x31x128,past_key_values_value_cache_1:A1s3x8x31x128)
+    [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#2[T1s3x32x31x96,T1s3x32x31x96], value_cache=#2[T1s3x32x31x96,T1s3x32x31x96]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_0:A1s3x32x31x96,past_key_values_value_0:A1s3x32x31x96,past_key_values_key_1:A1s3x32x31x96,past_key_values_value_1:A1s3x32x31x96)
     [validate_onnx_model] done (make_feeds)
-    [validate_onnx_model] run session...
+    [validate_onnx_model] run session on inputs 'inputs22'...
     [validate_onnx_model] done (run)
-    [validate_onnx_model] got=#5[A1s3x4x200064,A1s3x8x35x128,A1s3x8x35x128,A1s3x8x35x128,A1s3x8x35x128]
-    [validate_onnx_model] discrepancies=abs=3.2782554626464844e-06, rel=0.00204118731285426, n=2830848.0
+    [validate_onnx_model] got=#5[A1s3x4x32064,A1s3x32x35x96,A1s3x32x35x96,A1s3x32x35x96,A1s3x32x35x96]
+    [validate_onnx_model] discrepancies=abs=7.152557373046875e-06, rel=0.0037974022675994357, n=1675008.0, dev=0
+    [validate_onnx_model] -- make_feeds for 'inputs_empty_cache'...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x3,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x0x96,T1s2x32x0x96], value_cache=#2[T1s2x32x0x96,T1s2x32x0x96]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x3,position_ids:A7s2x3,past_key_values_key_0:A1s2x32x0x96,past_key_values_value_0:A1s2x32x0x96,past_key_values_key_1:A1s2x32x0x96,past_key_values_value_1:A1s2x32x0x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session on inputs 'inputs2_empty_cache'...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#5[A1s2x3x32064,A1s2x32x3x96,A1s2x32x3x96,A1s2x32x3x96,A1s2x32x3x96]
+    [validate_onnx_model] discrepancies=abs=5.543231964111328e-06, rel=0.002622831859259997, n=266112.0, dev=0
+    [validate_onnx_model] -- make_feeds for 'inputs_batch1'...
+    [validate_onnx_model] inputs=dict(input_ids:T7s1x3,attention_mask:T7s1x33,position_ids:T7s1x3,past_key_values:DynamicCache(key_cache=#2[T1s1x32x30x96,T1s1x32x30x96], value_cache=#2[T1s1x32x30x96,T1s1x32x30x96]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s1x3,attention_mask:A7s1x33,position_ids:A7s1x3,past_key_values_key_0:A1s1x32x30x96,past_key_values_value_0:A1s1x32x30x96,past_key_values_key_1:A1s1x32x30x96,past_key_values_value_1:A1s1x32x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session on inputs 'inputs2_batch1'...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#5[A1s1x3x32064,A1s1x32x33x96,A1s1x32x33x96,A1s1x32x33x96,A1s1x32x33x96]
+    [validate_onnx_model] discrepancies=abs=8.106231689453125e-06, rel=0.0033585737972102896, n=501696.0, dev=0
     [validate_model] -- done (final)
     done.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-41
+.. GENERATED FROM PYTHON SOURCE LINES 65-66
 
 Let's load and save the model to get one unique file.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-48
+.. GENERATED FROM PYTHON SOURCE LINES 66-73
 
 .. code-block:: Python
 
 
-    full_name = "dump_test/microsoft_Phi-4-mini-reasoning.onnx"
+    full_name = onnx_file.replace(".onnx", ".single.onnx")
     if not os.path.exists(full_name):
         print("Loads the model and saves it as one unique file.")
         onx = onnx.load(onnx_file)
@@ -526,11 +338,11 @@ Let's load and save the model to get one unique file.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
+.. GENERATED FROM PYTHON SOURCE LINES 74-75
 
 Let's get the size.
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-55
+.. GENERATED FROM PYTHON SOURCE LINES 75-80
 
 .. code-block:: Python
 
@@ -547,30 +359,34 @@ Let's get the size.
 
  .. code-block:: none
 
-    model size 989.852 Mb
+    model size 1615.644 Mb
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
+.. GENERATED FROM PYTHON SOURCE LINES 81-83
 
 Measures the loading time
 +++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-70
+.. GENERATED FROM PYTHON SOURCE LINES 83-99
 
 .. code-block:: Python
 
 
 
-    def measure(f, N=3):
+    def measure(step_name, f, N=3):
         times = []
         for _ in range(N):
             begin = time.perf_counter()
             onx = f()
             end = time.perf_counter()
             times.append(end - begin)
-        return onx, {"avg": np.mean(times), "times": times}
+        res = {"avg": np.mean(times), "times": times}
+        data.append(
+            dict(name=step_name, avg=res["avg"], min=np.min(times), max=np.max(times))
+        )
+        return onx, res
 
 
 
@@ -580,17 +396,17 @@ Measures the loading time
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-72
+.. GENERATED FROM PYTHON SOURCE LINES 100-101
 
 Let's do it with onnx2.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-77
+.. GENERATED FROM PYTHON SOURCE LINES 101-106
 
 .. code-block:: Python
 
 
-    print("Load time with onnx2.")
-    onx2, times = measure(lambda: onnx2.load(full_name))
+    print("Loading time with onnx2.")
+    onx2, times = measure("load/onnx2", lambda: onnx2.load(full_name))
     print(times)
 
 
@@ -601,23 +417,23 @@ Let's do it with onnx2.
 
  .. code-block:: none
 
-    Load time with onnx2.
-    {'avg': np.float64(1.9109536773321452), 'times': [1.866385472996626, 2.2022045769990655, 1.664270982000744]}
+    Loading time with onnx2.
+    {'avg': np.float64(1.1038538143281282), 'times': [1.0385645759961335, 1.135520458992687, 1.137476407995564]}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-79
+.. GENERATED FROM PYTHON SOURCE LINES 107-108
 
 Then with onnx.
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-84
+.. GENERATED FROM PYTHON SOURCE LINES 108-113
 
 .. code-block:: Python
 
 
-    print("Load time with onnx.")
-    onx, times = measure(lambda: onnx.load(full_name))
+    print("Loading time with onnx.")
+    onx, times = measure("load/onnx", lambda: onnx.load(full_name))
     print(times)
 
 
@@ -628,26 +444,98 @@ Then with onnx.
 
  .. code-block:: none
 
-    Load time with onnx.
-    {'avg': np.float64(1.9776364249992184), 'times': [2.3620774800001527, 2.3361349849947146, 1.234696810002788]}
+    Loading time with onnx.
+    {'avg': np.float64(1.9148348373370634), 'times': [2.092022951997933, 2.1138423170050373, 1.5386392430082196]}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-89
+.. GENERATED FROM PYTHON SOURCE LINES 114-115
+
+Let's do it with onnx2 but the loading of the tensors is parallelized.
+
+.. GENERATED FROM PYTHON SOURCE LINES 115-125
+
+.. code-block:: Python
+
+
+    print(
+        f"Loading time with onnx2 and 4 threads, "
+        f"it has {len(onx2.graph.initializer)} initializers"
+    )
+    onx2, times = measure(
+        "load/onnx2/x4", lambda: onnx2.load(full_name, parallel=True, num_threads=4)
+    )
+    print(times)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Loading time with onnx2 and 4 threads, it has 33 initializers
+    {'avg': np.float64(0.8685526090024117), 'times': [0.7806786459987052, 0.9118052240082761, 0.9131739570002537]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 126-127
+
+It looks much faster.
+
+.. GENERATED FROM PYTHON SOURCE LINES 129-130
+
+Let's load it with :epkg:`onnxruntime`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 130-144
+
+.. code-block:: Python
+
+    import onnxruntime  # noqa: E402
+
+    so = onnxruntime.SessionOptions()
+    so.graph_optimization_level = onnxruntime.GraphOptimizationLevel.ORT_DISABLE_ALL
+    print("Loading time with onnxruntime")
+    _, times = measure(
+        "load/ort",
+        lambda: onnxruntime.InferenceSession(
+            full_name, so, providers=["CPUExecutionProvider"]
+        ),
+    )
+    print(times)
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Loading time with onnxruntime
+    {'avg': np.float64(4.154397659668272), 'times': [3.9705592630052706, 4.225885068997741, 4.266748647001805]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 145-149
 
 Measure the saving time
 +++++++++++++++++++++++
 
 Let's do it with onnx2.
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-94
+.. GENERATED FROM PYTHON SOURCE LINES 149-154
 
 .. code-block:: Python
 
 
-    print("Save time with onnx2.")
-    _, times = measure(lambda: onnx2.save(onx2, full_name))
+    print("Saving time with onnx2.")
+    _, times = measure("save/onnx2", lambda: onnx2.save(onx2, full_name))
     print(times)
 
 
@@ -658,24 +546,25 @@ Let's do it with onnx2.
 
  .. code-block:: none
 
-    Save time with onnx2.
-    {'avg': np.float64(4.362325190665918), 'times': [3.1312978290006868, 4.771354374999646, 5.184323367997422]}
+    Saving time with onnx2.
+    {'avg': np.float64(1.6232768139937737), 'times': [1.3154266479978105, 1.8069320149952546, 1.7474717789882561]}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-96
+.. GENERATED FROM PYTHON SOURCE LINES 155-156
 
 Then with onnx.
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-100
+.. GENERATED FROM PYTHON SOURCE LINES 156-161
 
 .. code-block:: Python
 
 
-    print("Save time with onnx.")
-    _, times = measure(lambda: onnx.save(onx, full_name))
+    print("Saving time with onnx.")
+    _, times = measure("save/onnx", lambda: onnx.save(onx, full_name))
     print(times)
+
 
 
 
@@ -684,8 +573,219 @@ Then with onnx.
 
  .. code-block:: none
 
-    Save time with onnx.
-    {'avg': np.float64(3.8619260056633116), 'times': [4.143729067996901, 3.8224597579974215, 3.6195891909956117]}
+    Saving time with onnx.
+    {'avg': np.float64(4.3116809633405255), 'times': [4.871311523005716, 3.9790690030058613, 4.084662364010001]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 162-166
+
+Measure the saving time with external weights
++++++++++++++++++++++++++++++++++++++++++++++
+
+Let's do it with onnx2.
+
+.. GENERATED FROM PYTHON SOURCE LINES 166-176
+
+.. code-block:: Python
+
+
+    full_name = onnx_file.replace(".onnx", ".ext.onnx")
+    full_weight = full_name.replace(".onnx", ".data")
+
+    print("Saving time with onnx2 and external weights.")
+    _, times = measure(
+        "save/onnx2/ext", lambda: onnx2.save(onx2, full_name, location=full_weight)
+    )
+    print(times)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Saving time with onnx2 and external weights.
+    {'avg': np.float64(1.3259307050029747), 'times': [0.8334925509989262, 1.216378823010018, 1.92792074099998]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 177-180
+
+Then with onnx. We can only do that once,
+the function modifies the model inplace to add information
+about external data. The second run does not follow the same steps.
+
+.. GENERATED FROM PYTHON SOURCE LINES 180-197
+
+.. code-block:: Python
+
+
+    print("Saving time with onnx and external weights.")
+    full_name_onnx = full_name.replace(".onnx", ".0.onnx")
+    full_weight_onnx = full_name.replace(".data", ".0.data")
+    _, times = measure(
+        "save/onnx/ext",
+        lambda: onnx.save(
+            onx,
+            full_name_onnx,
+            location=os.path.split(full_weight_onnx)[-1],
+            save_as_external_data=True,
+            all_tensors_to_one_file=True,
+        ),
+        N=1,
+    )
+    print(times)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Saving time with onnx and external weights.
+    {'avg': np.float64(2.8530850550014293), 'times': [2.8530850550014293]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 198-202
+
+Measure the load time with external weights
++++++++++++++++++++++++++++++++++++++++++++
+
+Let's do it with onnx2.
+
+.. GENERATED FROM PYTHON SOURCE LINES 202-207
+
+.. code-block:: Python
+
+
+    print("Loading time with onnx2 and external weights.")
+    _, times = measure("load/onnx2/ext", lambda: onnx2.load(onnx_file, location=onnx_data))
+    print(times)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Loading time with onnx2 and external weights.
+    {'avg': np.float64(1.3352852993363438), 'times': [1.2995337570027914, 1.638273634001962, 1.0680485070042778]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 208-209
+
+Same measure but parallelized.
+
+.. GENERATED FROM PYTHON SOURCE LINES 209-224
+
+.. code-block:: Python
+
+
+    print("Loading time with onnx2 parallelized and external weights.")
+    _, times = measure(
+        "load/onnx2/ext/x4",
+        lambda: onnx2.load(onnx_file, location=onnx_data, parallel=True, num_threads=4),
+    )
+    print(times)
+
+    # Let's do it with onnx2.
+
+    print("Saving time with onnx and external weights.")
+    _, times = measure("load/onnx/ext", lambda: onnx.load(onnx_file))
+    print(times)
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Loading time with onnx2 parallelized and external weights.
+    {'avg': np.float64(0.8714849230018444), 'times': [0.7977163220057264, 0.9801137879985617, 0.8366246590012452]}
+    Saving time with onnx and external weights.
+    {'avg': np.float64(1.790712857337591), 'times': [1.727862443003687, 1.8032280440093018, 1.841048084999784]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 225-227
+
+Plots
++++++
+
+.. GENERATED FROM PYTHON SOURCE LINES 227-231
+
+.. code-block:: Python
+
+
+    df = pandas.DataFrame(data).sort_values("name").set_index("name")
+    print(df)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+                            avg       min       max
+    name                                           
+    load/onnx          1.914835  1.538639  2.113842
+    load/onnx/ext      1.790713  1.727862  1.841048
+    load/onnx2         1.103854  1.038565  1.137476
+    load/onnx2/ext     1.335285  1.068049  1.638274
+    load/onnx2/ext/x4  0.871485  0.797716  0.980114
+    load/onnx2/x4      0.868553  0.780679  0.913174
+    load/ort           4.154398  3.970559  4.266749
+    save/onnx          4.311681  3.979069  4.871312
+    save/onnx/ext      2.853085  2.853085  2.853085
+    save/onnx2         1.623277  1.315427  1.806932
+    save/onnx2/ext     1.325931  0.833493  1.927921
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 232-233
+
+Visually.
+
+.. GENERATED FROM PYTHON SOURCE LINES 233-241
+
+.. code-block:: Python
+
+
+    ax = df[["avg"]].plot.barh(
+        title=f"size={size / 2**20:1.3f} Mb\n"
+        "onnx VS onnx2 for load/save (s)\nthe lower, "
+        "the better\next = external data\nx4 = 4 threads"
+    )
+    ax.figure.tight_layout()
+    ax.figure.savefig("plot_onnx2_time.png")
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_onnx2_time_001.png
+   :alt: size=1615.644 Mb onnx VS onnx2 for load/save (s) the lower, the better ext = external data x4 = 4 threads
+   :srcset: /auto_examples/images/sphx_glr_plot_onnx2_time_001.png
+   :class: sphx-glr-single-img
+
 
 
 
@@ -693,7 +793,7 @@ Then with onnx.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 40.482 seconds)
+   **Total running time of the script:** (1 minutes 34.708 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_onnx2_time.py:
