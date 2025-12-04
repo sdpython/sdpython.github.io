@@ -23,7 +23,7 @@ Gallery of examples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_logistic_decision_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_logistic_decision.py`
+  :doc:`/auto_examples/plot_logistic_decision`
 
 .. raw:: html
 
