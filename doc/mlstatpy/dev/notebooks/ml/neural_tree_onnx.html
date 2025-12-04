@@ -11,7 +11,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -440,7 +440,7 @@
 <p>La conversion d’un arbre de décision au format ONNX peut créer des différences entre le modèle original et le modèle converti (voir <a class="reference external" href="https://onnx.ai/sklearn-onnx/auto_tutorial/plot_ebegin_float_double.html">Issues when switching to float</a>. Le problème vient d’un changement de type, les seuils de décisions sont arrondis au float32 le plus proche de leur valeur en float64 (double). Qu’advient-il si l’arbre de décision est converti en réseau de neurones d’abord.</p>
 <p>L’approximation des seuils de décision ne change pas grand chose dans la majorité des cas. Cependant, il est possible que la comparaison d’une variable à un seuil de décision arrondi soit l’opposé de celle avec le seuil non arrondi. Dans ce cas, la décision suit un chemin différent dans l’arbre.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -451,7 +451,7 @@
 <h2>Jeu de données<a class="headerlink" href="#Jeu-de-données" title="Lien vers cette rubrique">¶</a></h2>
 <p>On construit un jeu de donnée aléatoire.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
@@ -464,7 +464,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">middle</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
@@ -479,7 +479,7 @@
 <section id="Caler-un-arbre-de-décision">
 <h3>Caler un arbre de décision<a class="headerlink" href="#Caler-un-arbre-de-décision" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
@@ -491,16 +491,16 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0.618779473874829, 0.38661000086182784)
+(0.6168207374163092, 0.35236821090506987)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span>
@@ -510,12 +510,12 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.38661000086182784
+0.35236821090506987
 </pre></div></div>
 </div>
 <p>La profondeur de l’arbre est insuffisante mais ce n’est pas ce qui nous intéresse ici.</p>
@@ -523,7 +523,7 @@
 <section id="Conversion-au-format-ONNX">
 <h3>Conversion au format ONNX<a class="headerlink" href="#Conversion-au-format-ONNX" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">skl2onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
@@ -533,7 +533,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="kn">import</span> <span class="n">InferenceSession</span>
@@ -549,16 +549,16 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-np.float64(1.4748302929273112)
+np.float64(1.7091389654766018)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">onnx_array_api.plotting.text_plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
@@ -574,8 +574,9 @@ np.float64(1.4748302929273112)
 <div class="highlight"><pre>
 opset: domain=&#39;ai.onnx.ml&#39; version=1
 opset: domain=&#39;&#39; version=21
+opset: domain=&#39;&#39; version=21
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 10]
-TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=255:[128,65,34...254,0,0], nodes_featureids=255:[8,4,5...8,0,0], nodes_hitrates=255:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=255:[0,0,0...0,0,0], nodes_modes=255:[b&#39;BRANCH_LEQ&#39;,b&#39;BRANCH_LEQ&#39;...b&#39;LEAF&#39;,b&#39;LEAF&#39;], nodes_nodeids=255:[0,1,2...252,253,254], nodes_treeids=255:[0,0,0...0,0,0], nodes_truenodeids=255:[1,2,3...253,0,0], nodes_values=255:[-0.002677354495972395,-0.16326862573623657...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=128:[0,0,0...0,0,0], target_nodeids=128:[7,8,10...251,253,254], target_treeids=128:[0,0,0...0,0,0], target_weights=128:[-0.7625784277915955,-0.5277675986289978...0.5070647597312927,0.7122518420219421]) -&gt; variable
+TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=255:[128,65,34...254,0,0], nodes_featureids=255:[3,4,0...4,0,0], nodes_hitrates=255:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=255:[0,0,0...0,0,0], nodes_modes=255:[b&#39;BRANCH_LEQ&#39;,b&#39;BRANCH_LEQ&#39;...b&#39;LEAF&#39;,b&#39;LEAF&#39;], nodes_nodeids=255:[0,1,2...252,253,254], nodes_treeids=255:[0,0,0...0,0,0], nodes_truenodeids=255:[1,2,3...253,0,0], nodes_values=255:[0.12306099385023117,-0.19721701741218567...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=128:[0,0,0...0,0,0], target_nodeids=128:[7,8,10...251,253,254], target_treeids=128:[0,0,0...0,0,0], target_weights=128:[-0.9612963795661926,-0.5883080959320068...0.49337825179100037,0.7387731075286865]) -&gt; variable
 output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 1]
 </pre></div></div>
 </div>
@@ -587,7 +588,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 <h3>Conversion en un réseau de neurones<a class="headerlink" href="#Conversion-en-un-réseau-de-neurones" title="Lien vers cette rubrique">¶</a></h3>
 <p>Un paramètre permet de faire varier la pente des fonctions sigmoïdes utilisées.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
@@ -615,11 +616,11 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-  0%|          | 0/18 [00:00&lt;?, ?it/s]100%|██████████| 18/18 [00:00&lt;00:00, 29.67it/s]
+100%|██████████| 18/18 [00:00&lt;00:00, 53.66it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -628,7 +629,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -659,117 +660,117 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     <tr>
       <th>0</th>
       <td>0.3</td>
-      <td>0.608627</td>
-      <td>0.184665</td>
+      <td>0.890666</td>
+      <td>0.212437</td>
     </tr>
     <tr>
       <th>1</th>
       <td>0.4</td>
-      <td>0.512055</td>
-      <td>0.134114</td>
+      <td>0.586997</td>
+      <td>0.141997</td>
     </tr>
     <tr>
       <th>2</th>
       <td>0.5</td>
-      <td>0.589569</td>
-      <td>0.127825</td>
+      <td>0.520952</td>
+      <td>0.129502</td>
     </tr>
     <tr>
       <th>3</th>
       <td>0.7</td>
-      <td>0.656907</td>
-      <td>0.129821</td>
+      <td>0.588261</td>
+      <td>0.127598</td>
     </tr>
     <tr>
       <th>4</th>
       <td>0.9</td>
-      <td>0.678652</td>
-      <td>0.126351</td>
+      <td>0.579515</td>
+      <td>0.123064</td>
     </tr>
     <tr>
       <th>5</th>
       <td>1.0</td>
-      <td>0.682859</td>
-      <td>0.122856</td>
+      <td>0.599704</td>
+      <td>0.119385</td>
     </tr>
     <tr>
       <th>6</th>
       <td>5.0</td>
-      <td>0.642153</td>
-      <td>0.017346</td>
+      <td>0.486386</td>
+      <td>0.021135</td>
     </tr>
     <tr>
       <th>7</th>
       <td>10.0</td>
-      <td>0.285482</td>
-      <td>0.004404</td>
+      <td>0.485185</td>
+      <td>0.005929</td>
     </tr>
     <tr>
       <th>8</th>
       <td>15.0</td>
-      <td>0.228076</td>
-      <td>0.001954</td>
+      <td>0.325395</td>
+      <td>0.002471</td>
     </tr>
     <tr>
       <th>9</th>
       <td>20.0</td>
-      <td>0.193608</td>
-      <td>0.000996</td>
+      <td>0.309316</td>
+      <td>0.001763</td>
     </tr>
     <tr>
       <th>10</th>
       <td>25.0</td>
-      <td>0.113368</td>
-      <td>0.000424</td>
+      <td>0.214692</td>
+      <td>0.000968</td>
     </tr>
     <tr>
       <th>11</th>
       <td>30.0</td>
-      <td>0.113368</td>
-      <td>0.000324</td>
+      <td>0.214629</td>
+      <td>0.000846</td>
     </tr>
     <tr>
       <th>12</th>
       <td>35.0</td>
-      <td>0.113368</td>
-      <td>0.000278</td>
+      <td>0.163406</td>
+      <td>0.000659</td>
     </tr>
     <tr>
       <th>13</th>
       <td>40.0</td>
-      <td>0.113367</td>
-      <td>0.000252</td>
+      <td>0.069112</td>
+      <td>0.000268</td>
     </tr>
     <tr>
       <th>14</th>
       <td>45.0</td>
-      <td>0.113361</td>
-      <td>0.000238</td>
+      <td>0.064403</td>
+      <td>0.000214</td>
     </tr>
     <tr>
       <th>15</th>
       <td>50.0</td>
-      <td>0.113318</td>
-      <td>0.000231</td>
+      <td>0.059307</td>
+      <td>0.000172</td>
     </tr>
     <tr>
       <th>16</th>
       <td>55.0</td>
-      <td>0.113074</td>
-      <td>0.000228</td>
+      <td>0.053915</td>
+      <td>0.000140</td>
     </tr>
     <tr>
       <th>17</th>
       <td>60.0</td>
-      <td>0.111955</td>
-      <td>0.000224</td>
+      <td>0.048336</td>
+      <td>0.000114</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Précision de la conversion</span><span class="se">\n</span><span class="s2">en réseau de neurones&quot;</span><span class="p">);</span>
@@ -785,7 +786,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 <p>L’erreur est meilleure mais il faudrait recommencer l’expérience plusieurs fois avant de pouvoir conclure afin d’obtenir un interval de confiance pour le même type de jeu de données. Ce sera pour une autre fois. Le résultat dépend du jeu de données et surtout de la proximité des seuils de décisions. Néanmoins, on calcule l’erreur sur l’ensemble de la base de test. Celle-ci a été tronquée pour aller plus vite.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expected</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_exp</span><span class="p">)</span>
@@ -795,12 +796,12 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(np.float64(0.19684418355179628), np.float64(0.0001876957464482374))
+(np.float64(0.14867156347163313), np.float64(0.00014171388788628532))
 </pre></div></div>
 </div>
 <p>On voit que l’erreur peut-être très grande. Elle reste néanmoins plus petite que l’erreur de conversion introduite par ONNX.</p>
@@ -809,7 +810,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 <h3>Conversion au format ONNX<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <p>On crée tout d’abord une classe qui suit l’API de scikit-learn et qui englobe l’arbre qui vient d’être créé qui sera ensuite convertit en ONNX.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mlstatpy.ml.neural_tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">NeuralTreeNetRegressor</span>
@@ -820,7 +821,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx2</span><span class="p">))</span>
@@ -834,13 +835,13 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 <div class="highlight"><pre>
 opset: domain=&#39;&#39; version=21
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 10]
-init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(10, 127)
-init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(127,)
-init: name=&#39;Mu_Mulcst&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([4.], dtype=float32)
-init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(127, 128)
-init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(128,)
-init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(128, 1)
-init: name=&#39;Ad_Addcst2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
+init: name=&#39;Ma_MatMulcst&#39; type=float32 shape=(10, 127)
+init: name=&#39;Ad_Addcst&#39; type=float32 shape=(127,)
+init: name=&#39;Mu_Mulcst&#39; type=float32 shape=(1,) -- array([4.], dtype=float32)
+init: name=&#39;Ma_MatMulcst1&#39; type=float32 shape=(127, 128)
+init: name=&#39;Ad_Addcst1&#39; type=float32 shape=(128,)
+init: name=&#39;Ma_MatMulcst2&#39; type=float32 shape=(128, 1)
+init: name=&#39;Ad_Addcst2&#39; type=float32 shape=(1,) -- array([0.], dtype=float32)
 MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
   Add(Ma_Y02, Ad_Addcst) -&gt; Ad_C02
     Mul(Ad_C02, Mu_Mulcst) -&gt; Mu_C01
@@ -856,7 +857,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">oinf2</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
@@ -870,12 +871,12 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-np.float64(1.4748302929273112)
+np.float64(1.7091389654766018)
 </pre></div></div>
 </div>
 <p>L’erreur est la même.</p>
@@ -884,7 +885,7 @@ np.float64(1.4748302929273112)
 <section id="Temps-de-calcul">
 <h2>Temps de calcul<a class="headerlink" href="#Temps-de-calcul" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_exp32</span> <span class="o">=</span> <span class="n">x_exp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -893,7 +894,7 @@ np.float64(1.4748302929273112)
 </div>
 <p>Tout d’abord le temps de calcul pour scikit-learn.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> tree.predict(x_exp32)
@@ -905,12 +906,12 @@ np.float64(1.4748302929273112)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-485 μs ± 15.9 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+312 μs ± 9.06 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Le temps de calcul pour l’arbre de décision au format ONNX.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf.run(None, {&#39;X&#39;: x_exp32})[0]
@@ -922,12 +923,12 @@ np.float64(1.4748302929273112)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-39.8 μs ± 4.37 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+35 μs ± 595 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div></div>
 </div>
 <p>Et le temps de calcul pour le réseau de neurones au format ONNX.m</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf2.run(None, {&#39;X&#39;: x_exp32})[0]
@@ -939,13 +940,13 @@ np.float64(1.4748302929273112)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.23 ms ± 57.6 μs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+1.18 ms ± 7.98 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Ce temps de calcul très long est attendu car le modèle contient une multiplication de matrice très grande et surtout que tous les seuils de l’arbre sont calculés pour chaque observation. Là où l’implémentation de l’arbre de décision calcule <em>d</em> seuils, la profondeur de l’arbre, la nouvelle implémentation calcule tous les seuils soit <img class="math" src="../../_images/math/1682d5137f90f59dfe3c374bc145e09fd8338436.svg" alt="2^d"/> pour chaque feuille. Il y a <img class="math" src="../../_images/math/1682d5137f90f59dfe3c374bc145e09fd8338436.svg" alt="2^d"/> feuilles. Même en étant sparse, on peut réduire les calculs à <img class="math" src="../../_images/math/737dcde232cf6ef3e1c0a36492a42743119ec6c2.svg" alt="d * 2^d"/> ce qui fait encore beaucoup de
 calculs inutiles.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">trees</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
@@ -965,7 +966,7 @@ calculs inutiles.</p>
 </div>
 <p>Cela dit, la plus grande matrice est creuse, elle peut être réduite considérablement.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">csr_matrix</span>
@@ -990,7 +991,7 @@ coef.shape=(129,), size dense=129, size sparse=128, ratio=0.9922480620155039
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">trees</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">coef</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -1004,11 +1005,11 @@ coef.shape=(129,), size dense=129, size sparse=128, ratio=0.9922480620155039
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-4.47 μs ± 236 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+2.87 μs ± 177 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csr</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
@@ -1021,12 +1022,12 @@ coef.shape=(129,), size dense=129, size sparse=128, ratio=0.9922480620155039
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-6.33 μs ± 289 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+3.53 μs ± 88.3 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <p>Ce serait beaucoup plus rapide avec une matrice sparse et d’autant plus rapide que l’arbre est profond. Le modèle ONNX se décompose comme suit.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx2</span><span class="p">))</span>
@@ -1040,13 +1041,13 @@ coef.shape=(129,), size dense=129, size sparse=128, ratio=0.9922480620155039
 <div class="highlight"><pre>
 opset: domain=&#39;&#39; version=21
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 10]
-init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(10, 127)
-init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(127,)
-init: name=&#39;Mu_Mulcst&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([4.], dtype=float32)
-init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(127, 128)
-init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(128,)
-init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(128, 1)
-init: name=&#39;Ad_Addcst2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
+init: name=&#39;Ma_MatMulcst&#39; type=float32 shape=(10, 127)
+init: name=&#39;Ad_Addcst&#39; type=float32 shape=(127,)
+init: name=&#39;Mu_Mulcst&#39; type=float32 shape=(1,) -- array([4.], dtype=float32)
+init: name=&#39;Ma_MatMulcst1&#39; type=float32 shape=(127, 128)
+init: name=&#39;Ad_Addcst1&#39; type=float32 shape=(128,)
+init: name=&#39;Ma_MatMulcst2&#39; type=float32 shape=(128, 1)
+init: name=&#39;Ad_Addcst2&#39; type=float32 shape=(1,) -- array([0.], dtype=float32)
 MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
   Add(Ma_Y02, Ad_Addcst) -&gt; Ad_C02
     Mul(Ad_C02, Mu_Mulcst) -&gt; Mu_C01
@@ -1063,7 +1064,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 <p>Voyons comment le temps de calcul se répartit.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="kn">import</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">SessionOptions</span>
@@ -1083,7 +1084,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">js_profile_to_dataframe</span><span class="p">(</span><span class="n">prof</span><span class="p">,</span> <span class="n">first_it_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1092,7 +1093,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1121,14 +1122,14 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
       <th>ts</th>
       <th>ph</th>
       <th>name</th>
-      <th>args_op_name</th>
-      <th>op_name</th>
       <th>args_thread_scheduling_stats</th>
       <th>args_output_size</th>
       <th>args_parameter_size</th>
       <th>args_activation_size</th>
       <th>args_node_index</th>
       <th>args_provider</th>
+      <th>args_op_name</th>
+      <th>op_name</th>
       <th>event_name</th>
       <th>iteration</th>
       <th>it==0</th>
@@ -1138,9 +1139,9 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     <tr>
       <th>0</th>
       <td>Session</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>511</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>458</td>
       <td>9</td>
       <td>X</td>
       <td>model_loading_array</td>
@@ -1159,10 +1160,10 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     <tr>
       <th>1</th>
       <td>Session</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>1851</td>
-      <td>2693</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>1365</td>
+      <td>529</td>
       <td>X</td>
       <td>session_initialization</td>
       <td>NaN</td>
@@ -1180,41 +1181,41 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     <tr>
       <th>2</th>
       <td>Node</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>0</td>
-      <td>8036</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>3437</td>
+      <td>2343</td>
       <td>X</td>
-      <td>Ma_MatMul/MatMulAddFusion/_fence_before</td>
-      <td>Gemm</td>
-      <td>Ma_MatMul/MatMulAddFusion/</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>fence_before</td>
-      <td>-1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Node</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>632</td>
-      <td>8043</td>
-      <td>X</td>
-      <td>Ma_MatMul/MatMulAddFusion/_kernel_time</td>
-      <td>Gemm</td>
-      <td>Ma_MatMul/MatMulAddFusion/</td>
+      <td>Ma_MatMul/MatMulAddFusion_kernel_time</td>
       <td>{'main_thread': {'thread_pool_name': 'session-...</td>
       <td>2540000</td>
       <td>508</td>
       <td>200000</td>
       <td>11</td>
       <td>CPUExecutionProvider</td>
+      <td>Gemm</td>
+      <td>Ma_MatMul/MatMulAddFusion</td>
+      <td>kernel_time</td>
+      <td>-1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Node</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>776</td>
+      <td>5808</td>
+      <td>X</td>
+      <td>Mu_Mul_kernel_time</td>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>2540000</td>
+      <td>4</td>
+      <td>2540000</td>
+      <td>2</td>
+      <td>CPUExecutionProvider</td>
+      <td>Mul</td>
+      <td>Mu_Mul</td>
       <td>kernel_time</td>
       <td>-1</td>
       <td>1</td>
@@ -1222,21 +1223,21 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     <tr>
       <th>4</th>
       <td>Node</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>0</td>
-      <td>8687</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>130</td>
+      <td>6604</td>
       <td>X</td>
-      <td>Ma_MatMul/MatMulAddFusion/_fence_after</td>
-      <td>Gemm</td>
-      <td>Ma_MatMul/MatMulAddFusion/</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>fence_after</td>
+      <td>Si_Sigmoid_kernel_time</td>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>2540000</td>
+      <td>0</td>
+      <td>2540000</td>
+      <td>3</td>
+      <td>CPUExecutionProvider</td>
+      <td>Sigmoid</td>
+      <td>Si_Sigmoid</td>
+      <td>kernel_time</td>
       <td>-1</td>
       <td>1</td>
     </tr>
@@ -1262,75 +1263,75 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
       <td>...</td>
     </tr>
     <tr>
-      <th>986</th>
+      <th>384</th>
       <td>Node</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>0</td>
-      <td>175317</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>52</td>
+      <td>134871</td>
       <td>X</td>
-      <td>Ma_MatMul2_fence_before</td>
-      <td>MatMul</td>
-      <td>Ma_MatMul2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>fence_before</td>
+      <td>Mu_Mul1_kernel_time</td>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>2560000</td>
+      <td>4</td>
+      <td>2560000</td>
+      <td>6</td>
+      <td>CPUExecutionProvider</td>
+      <td>Mul</td>
+      <td>Mu_Mul1</td>
+      <td>kernel_time</td>
       <td>41</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>987</th>
+      <th>385</th>
       <td>Node</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>77</td>
-      <td>175318</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>72</td>
+      <td>134943</td>
+      <td>X</td>
+      <td>Si_Sigmoid1_kernel_time</td>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>2560000</td>
+      <td>0</td>
+      <td>2560000</td>
+      <td>7</td>
+      <td>CPUExecutionProvider</td>
+      <td>Sigmoid</td>
+      <td>Si_Sigmoid1</td>
+      <td>kernel_time</td>
+      <td>41</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>386</th>
+      <td>Node</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>79</td>
+      <td>135022</td>
       <td>X</td>
       <td>Ma_MatMul2_kernel_time</td>
-      <td>MatMul</td>
-      <td>Ma_MatMul2</td>
       <td>{'main_thread': {'thread_pool_name': 'session-...</td>
       <td>20000</td>
       <td>0</td>
       <td>2560000</td>
       <td>8</td>
       <td>CPUExecutionProvider</td>
+      <td>MatMul</td>
+      <td>Ma_MatMul2</td>
       <td>kernel_time</td>
       <td>41</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>988</th>
-      <td>Node</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>0</td>
-      <td>175401</td>
-      <td>X</td>
-      <td>Ma_MatMul2_fence_after</td>
-      <td>MatMul</td>
-      <td>Ma_MatMul2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>fence_after</td>
-      <td>41</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>989</th>
+      <th>387</th>
       <td>Session</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>1448</td>
-      <td>173955</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>1508</td>
+      <td>133600</td>
       <td>X</td>
       <td>SequentialExecutor::Execute</td>
       <td>NaN</td>
@@ -1346,12 +1347,12 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
       <td>0</td>
     </tr>
     <tr>
-      <th>990</th>
+      <th>388</th>
       <td>Session</td>
-      <td>32438</td>
-      <td>32438</td>
-      <td>1458</td>
-      <td>173948</td>
+      <td>50840</td>
+      <td>50840</td>
+      <td>1523</td>
+      <td>133591</td>
       <td>X</td>
       <td>model_run</td>
       <td>NaN</td>
@@ -1368,11 +1369,11 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     </tr>
   </tbody>
 </table>
-<p>991 rows × 18 columns</p>
+<p>389 rows × 18 columns</p>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;args_provider&quot;</span><span class="p">])</span>
@@ -1380,7 +1381,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1389,7 +1390,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">args_provider</span> <span class="o">==</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1405,7 +1406,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1438,43 +1439,45 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
   </thead>
   <tbody>
     <tr>
-      <th rowspan="2" valign="top">Sigmoid</th>
-      <th>Si_Sigmoid1</th>
-      <td>5304</td>
-    </tr>
-    <tr>
-      <th>Si_Sigmoid</th>
-      <td>5461</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">Mul</th>
-      <th>Mu_Mul</th>
-      <td>8087</td>
-    </tr>
-    <tr>
+      <th>Mul</th>
       <th>Mu_Mul1</th>
-      <td>9945</td>
+      <td>6486</td>
+    </tr>
+    <tr>
+      <th>Sigmoid</th>
+      <th>Si_Sigmoid1</th>
+      <td>7064</td>
+    </tr>
+    <tr>
+      <th>Mul</th>
+      <th>Mu_Mul</th>
+      <td>7401</td>
+    </tr>
+    <tr>
+      <th>Sigmoid</th>
+      <th>Si_Sigmoid</th>
+      <td>7594</td>
     </tr>
     <tr>
       <th>MatMul</th>
       <th>Ma_MatMul2</th>
-      <td>9952</td>
+      <td>8032</td>
     </tr>
     <tr>
       <th rowspan="2" valign="top">Gemm</th>
-      <th>Ma_MatMul/MatMulAddFusion/</th>
-      <td>16856</td>
+      <th>Ma_MatMul/MatMulAddFusion</th>
+      <td>28069</td>
     </tr>
     <tr>
-      <th>Ma_MatMul1/MatMulAddFusion/</th>
-      <td>103444</td>
+      <th>Ma_MatMul1/MatMulAddFusion</th>
+      <td>55140</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gr_n</span> <span class="o">=</span> <span class="p">(</span>
@@ -1489,7 +1492,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1522,21 +1525,23 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
   </thead>
   <tbody>
     <tr>
-      <th rowspan="2" valign="top">Sigmoid</th>
+      <th>Mul</th>
+      <th>Mu_Mul1</th>
+      <td>43</td>
+    </tr>
+    <tr>
+      <th>Sigmoid</th>
       <th>Si_Sigmoid1</th>
       <td>43</td>
     </tr>
     <tr>
-      <th>Si_Sigmoid</th>
-      <td>43</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">Mul</th>
+      <th>Mul</th>
       <th>Mu_Mul</th>
       <td>43</td>
     </tr>
     <tr>
-      <th>Mu_Mul1</th>
+      <th>Sigmoid</th>
+      <th>Si_Sigmoid</th>
       <td>43</td>
     </tr>
     <tr>
@@ -1546,11 +1551,11 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     </tr>
     <tr>
       <th rowspan="2" valign="top">Gemm</th>
-      <th>Ma_MatMul/MatMulAddFusion/</th>
+      <th>Ma_MatMul/MatMulAddFusion</th>
       <td>43</td>
     </tr>
     <tr>
-      <th>Ma_MatMul1/MatMulAddFusion/</th>
+      <th>Ma_MatMul1/MatMulAddFusion</th>
       <td>43</td>
     </tr>
   </tbody>
@@ -1558,7 +1563,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -1580,7 +1585,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 <p>onnxruntime passe principalement son temps dans un produit matriciel. On vérifie plus précisément.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">args_op_name</span> <span class="o">==</span> <span class="s2">&quot;Gemm&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dur</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;dur&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span>
@@ -1590,7 +1595,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1612,8 +1617,8 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>541</th>
-      <th>564</th>
+      <th>11</th>
+      <th>2</th>
     </tr>
   </thead>
   <tbody>
@@ -1624,23 +1629,23 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     </tr>
     <tr>
       <th>pid</th>
-      <td>32438</td>
-      <td>32438</td>
+      <td>50840</td>
+      <td>50840</td>
     </tr>
     <tr>
       <th>tid</th>
-      <td>32438</td>
-      <td>32438</td>
+      <td>50840</td>
+      <td>50840</td>
     </tr>
     <tr>
       <th>dur</th>
-      <td>27614</td>
-      <td>10836</td>
+      <td>3549</td>
+      <td>3437</td>
     </tr>
     <tr>
       <th>ts</th>
-      <td>85208</td>
-      <td>116118</td>
+      <td>10439</td>
+      <td>2343</td>
     </tr>
     <tr>
       <th>ph</th>
@@ -1649,18 +1654,8 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     </tr>
     <tr>
       <th>name</th>
-      <td>Ma_MatMul1/MatMulAddFusion/_kernel_time</td>
-      <td>Ma_MatMul1/MatMulAddFusion/_kernel_time</td>
-    </tr>
-    <tr>
-      <th>args_op_name</th>
-      <td>Gemm</td>
-      <td>Gemm</td>
-    </tr>
-    <tr>
-      <th>op_name</th>
-      <td>Ma_MatMul1/MatMulAddFusion/</td>
-      <td>Ma_MatMul1/MatMulAddFusion/</td>
+      <td>Ma_MatMul/MatMulAddFusion_kernel_time</td>
+      <td>Ma_MatMul/MatMulAddFusion_kernel_time</td>
     </tr>
     <tr>
       <th>args_thread_scheduling_stats</th>
@@ -1669,28 +1664,38 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     </tr>
     <tr>
       <th>args_output_size</th>
-      <td>2560000</td>
-      <td>2560000</td>
+      <td>2540000</td>
+      <td>2540000</td>
     </tr>
     <tr>
       <th>args_parameter_size</th>
-      <td>512</td>
-      <td>512</td>
+      <td>508</td>
+      <td>508</td>
     </tr>
     <tr>
       <th>args_activation_size</th>
-      <td>2540000</td>
-      <td>2540000</td>
+      <td>200000</td>
+      <td>200000</td>
     </tr>
     <tr>
       <th>args_node_index</th>
-      <td>12</td>
-      <td>12</td>
+      <td>11</td>
+      <td>11</td>
     </tr>
     <tr>
       <th>args_provider</th>
       <td>CPUExecutionProvider</td>
       <td>CPUExecutionProvider</td>
+    </tr>
+    <tr>
+      <th>args_op_name</th>
+      <td>Gemm</td>
+      <td>Gemm</td>
+    </tr>
+    <tr>
+      <th>op_name</th>
+      <td>Ma_MatMul/MatMulAddFusion</td>
+      <td>Ma_MatMul/MatMulAddFusion</td>
     </tr>
     <tr>
       <th>event_name</th>
@@ -1699,13 +1704,13 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
     </tr>
     <tr>
       <th>iteration</th>
-      <td>22</td>
-      <td>23</td>
+      <td>0</td>
+      <td>-1</td>
     </tr>
     <tr>
       <th>it==0</th>
-      <td>0</td>
-      <td>0</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
@@ -1713,7 +1718,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 <p>C’est un produit matriciel d’environ <em>5000x800</em> par <em>800x800</em>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gr_dur</span> <span class="o">/</span> <span class="n">gr_dur</span><span class="o">.</span><span class="n">dur</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1721,7 +1726,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1754,43 +1759,45 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
   </thead>
   <tbody>
     <tr>
-      <th rowspan="2" valign="top">Sigmoid</th>
-      <th>Si_Sigmoid1</th>
-      <td>0.033348</td>
-    </tr>
-    <tr>
-      <th>Si_Sigmoid</th>
-      <td>0.034335</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">Mul</th>
-      <th>Mu_Mul</th>
-      <td>0.050846</td>
-    </tr>
-    <tr>
+      <th>Mul</th>
       <th>Mu_Mul1</th>
-      <td>0.062528</td>
+      <td>0.054147</td>
+    </tr>
+    <tr>
+      <th>Sigmoid</th>
+      <th>Si_Sigmoid1</th>
+      <td>0.058972</td>
+    </tr>
+    <tr>
+      <th>Mul</th>
+      <th>Mu_Mul</th>
+      <td>0.061785</td>
+    </tr>
+    <tr>
+      <th>Sigmoid</th>
+      <th>Si_Sigmoid</th>
+      <td>0.063396</td>
     </tr>
     <tr>
       <th>MatMul</th>
       <th>Ma_MatMul2</th>
-      <td>0.062572</td>
+      <td>0.067053</td>
     </tr>
     <tr>
       <th rowspan="2" valign="top">Gemm</th>
-      <th>Ma_MatMul/MatMulAddFusion/</th>
-      <td>0.105980</td>
+      <th>Ma_MatMul/MatMulAddFusion</th>
+      <td>0.234326</td>
     </tr>
     <tr>
-      <th>Ma_MatMul1/MatMulAddFusion/</th>
-      <td>0.650391</td>
+      <th>Ma_MatMul1/MatMulAddFusion</th>
+      <td>0.460321</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">gr_dur</span> <span class="o">/</span> <span class="n">gr_dur</span><span class="o">.</span><span class="n">dur</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">.</span><span class="n">dur</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -1799,17 +1806,17 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-np.float64(0.6503907600802269)
+np.float64(0.46032090561501343)
 </pre></div></div>
 </div>
 <p>Il occupe 82% du temps. et d’après l’expérience précédente, son temps d’éxecution peut-être réduit par 10 en le remplaçant par une matrice sparse. Cela ne suffira pas pour accélerer le temps de calcul de ce réseau de neurones. Il est 84 ms comparé à 247 µs pour l’arbre de décision. Avec cette optimisation, il pourrait passer de :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="mf">3.75</span>  <span class="c1"># ms</span>
@@ -1818,12 +1825,12 @@ np.float64(0.6503907600802269)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-np.float64(1.5142817622242202)
+np.float64(2.167646886948391)
 </pre></div></div>
 </div>
 <p>Soit une réduction du temps de calcul. Ce n’est pas mal mais pas assez.</p>
@@ -1832,7 +1839,7 @@ np.float64(1.5142817622242202)
 <h2>Hummingbird<a class="headerlink" href="#Hummingbird" title="Lien vers cette rubrique">¶</a></h2>
 <p><a class="reference external" href="https://github.com/microsoft/hummingbird">hummingbird</a> est une librairie qui convertit un arbre de décision en réseau de neurones. Voyons ses performances.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hummingbird.ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert</span>
@@ -1846,17 +1853,17 @@ np.float64(1.5142817622242202)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(np.float64(2.817548150346738e-08), np.float64(4.224119546935093e-09))
+(np.float64(2.7422816128996885e-08), np.float64(3.844877509922521e-09))
 </pre></div></div>
 </div>
 <p>Le résultat est beaucoup plus fidèle au modèle.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> model.predict(x_exp)
@@ -1868,22 +1875,22 @@ np.float64(1.5142817622242202)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-872 μs ± 66.6 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+526 μs ± 41.2 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Il reste plus lent mais beaucoup plus rapide que la solution manuelle proposée dans les précédents paragraphes. Il contient un attribut <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">Module</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-<span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">Module</span><span class="p">)</span>
+<span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1892,8 +1899,8 @@ True
 </pre></div></div>
 </div>
 <p>On convertit ce modèle au format ONNX.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.onnx</span>
@@ -1907,12 +1914,22 @@ True
     <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">],</span>
     <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">],</span>
     <span class="n">dynamic_axes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">},</span> <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">}},</span>
+    <span class="n">dynamo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_50840/2369393440.py:4: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter has become the default. Learn more about the new export logic: https://docs.pytorch.org/docs/stable/onnx_export.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html
+  torch.onnx.export(
+</pre></div></div>
+</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
@@ -1922,7 +1939,7 @@ True
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onxh</span><span class="p">,</span> <span class="n">raise_exc</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
@@ -1936,22 +1953,22 @@ True
 <div class="highlight"><pre>
 opset: domain=&#39;&#39; version=15
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_size&#39;, 10]
-init: name=&#39;_operators.0.root_nodes&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([8])
-init: name=&#39;_operators.0.root_biases&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([-0.00267735], dtype=float32)
-init: name=&#39;_operators.0.tree_indices&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([0])
-init: name=&#39;_operators.0.leaf_nodes&#39; type=dtype(&#39;float32&#39;) shape=(128, 1)
-init: name=&#39;_operators.0.nodes.0&#39; type=dtype(&#39;int64&#39;) shape=(2,) -- array([3, 4])
-init: name=&#39;_operators.0.nodes.1&#39; type=dtype(&#39;int64&#39;) shape=(4,) -- array([4, 9, 0, 5])
-init: name=&#39;_operators.0.nodes.2&#39; type=dtype(&#39;int64&#39;) shape=(8,)
-init: name=&#39;_operators.0.nodes.3&#39; type=dtype(&#39;int64&#39;) shape=(16,)
-init: name=&#39;_operators.0.nodes.4&#39; type=dtype(&#39;int64&#39;) shape=(32,)
-init: name=&#39;_operators.0.nodes.5&#39; type=dtype(&#39;int64&#39;) shape=(64,)
-init: name=&#39;_operators.0.biases.0&#39; type=dtype(&#39;float32&#39;) shape=(2,) -- array([-0.09563538, -0.16326863], dtype=float32)
-init: name=&#39;_operators.0.biases.1&#39; type=dtype(&#39;float32&#39;) shape=(4,) -- array([-0.25053233,  0.6288608 , -0.48234493, -0.3351562 ], dtype=float32)
-init: name=&#39;_operators.0.biases.2&#39; type=dtype(&#39;float32&#39;) shape=(8,)
-init: name=&#39;_operators.0.biases.3&#39; type=dtype(&#39;float32&#39;) shape=(16,)
-init: name=&#39;_operators.0.biases.4&#39; type=dtype(&#39;float32&#39;) shape=(32,)
-init: name=&#39;_operators.0.biases.5&#39; type=dtype(&#39;float32&#39;) shape=(64,)
+init: name=&#39;_operators.0.root_nodes&#39; type=int64 shape=(1,) -- array([3])
+init: name=&#39;_operators.0.root_biases&#39; type=float32 shape=(1,) -- array([0.123061], dtype=float32)
+init: name=&#39;_operators.0.tree_indices&#39; type=int64 shape=(1,) -- array([0])
+init: name=&#39;_operators.0.leaf_nodes&#39; type=float32 shape=(128, 1)
+init: name=&#39;_operators.0.nodes.0&#39; type=int64 shape=(2,) -- array([2, 4])
+init: name=&#39;_operators.0.nodes.1&#39; type=int64 shape=(4,) -- array([5, 8, 1, 0])
+init: name=&#39;_operators.0.nodes.2&#39; type=int64 shape=(8,)
+init: name=&#39;_operators.0.nodes.3&#39; type=int64 shape=(16,)
+init: name=&#39;_operators.0.nodes.4&#39; type=int64 shape=(32,)
+init: name=&#39;_operators.0.nodes.5&#39; type=int64 shape=(64,)
+init: name=&#39;_operators.0.biases.0&#39; type=float32 shape=(2,) -- array([-0.00307798, -0.19721702], dtype=float32)
+init: name=&#39;_operators.0.biases.1&#39; type=float32 shape=(4,) -- array([ 0.04036466, -0.18311241,  0.2513926 , -0.7457566 ], dtype=float32)
+init: name=&#39;_operators.0.biases.2&#39; type=float32 shape=(8,)
+init: name=&#39;_operators.0.biases.3&#39; type=float32 shape=(16,)
+init: name=&#39;_operators.0.biases.4&#39; type=float32 shape=(32,)
+init: name=&#39;_operators.0.biases.5&#39; type=float32 shape=(64,)
 Constant(value=[-1]) -&gt; /_operators.0/Constant_output_0
 Gather(X, _operators.0.root_nodes, axis=1) -&gt; /_operators.0/Gather_output_0
   LessOrEqual(/_operators.0/Gather_output_0, _operators.0.root_biases) -&gt; /_operators.0/LessOrEqual_output_0
@@ -2038,9 +2055,33 @@ Constant(value=[1]) -&gt; onnx::ReduceSum_98
 output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_size&#39;, &#39;ReduceSumvariable_dim_1&#39;]
 </pre></div></div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.dot_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_dot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">graphviz</span>
+
+<span class="n">dot</span> <span class="o">=</span> <span class="n">to_dot</span><span class="p">(</span><span class="n">onxh</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;dump_model.dot&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;dump_model.dot&quot;</span><span class="p">)</span>
+<span class="n">graph</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_ml_neural_tree_onnx_68_0.svg" src="../../_images/notebooks_ml_neural_tree_onnx_68_0.svg" />
+</div>
+</div>
 <p>La librairie réimplémente la décision d’un arbre décision à partir d’un produit matriciel pour chaque niveau de l’arbre. Tous les seuils sont évalués. Les matrices n’ont pas besoin d’être sparses car les features nécessaires sont récupérées. Le seuil de décision est implémenté avec un test et non une sigmoïde. Ce modèle est donc identique en terme de prédiction au modèle initial.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">oinfh</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onxh</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
@@ -2052,17 +2093,17 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-np.float64(1.4748302929273112)
+np.float64(1.7091389654766018)
 </pre></div></div>
 </div>
 <p>La conversion reste imparfaite également.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinfh.run(None, {&#39;X&#39;: x_exp32})[0]
@@ -2074,7 +2115,7 @@ np.float64(1.4748302929273112)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.67 ms ± 17.8 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+1.02 ms ± 34.1 μs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 </pre></div></div>
 </div>
 <p>Et le temps de calcul est aussi plus long.</p>
@@ -2083,7 +2124,7 @@ np.float64(1.4748302929273112)
 <h2>Apprentissage<a class="headerlink" href="#Apprentissage" title="Lien vers cette rubrique">¶</a></h2>
 <p>L’idée derrière tout cela est aussi de pouvoir réestimer les coefficients du réseau de neurones une fois converti.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
@@ -2093,7 +2134,7 @@ np.float64(1.4748302929273112)
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">got</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
@@ -2102,17 +2143,17 @@ np.float64(1.4748302929273112)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(np.float64(1.3105977468247925), np.float64(0.21366120021158772))
+(np.float64(1.1582154970123497), np.float64(0.21548286223135504))
 </pre></div></div>
 </div>
 <p>La différence est grande.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
@@ -2124,27 +2165,28 @@ np.float64(1.4748302929273112)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0/10: loss: 2.76 lr=0.0001 max(coef): 6.5 l1=0/1.5e+03 l2=0/2.5e+03
-1/10: loss: 2.242 lr=9.95e-06 max(coef): 6.5 l1=8.4e+02/1.5e+03 l2=3.3e+02/2.5e+03
-2/10: loss: 2.165 lr=7.05e-06 max(coef): 6.5 l1=1.7e+03/1.5e+03 l2=2e+03/2.5e+03
-3/10: loss: 2.135 lr=5.76e-06 max(coef): 6.5 l1=2.6e+02/1.5e+03 l2=88/2.5e+03
-4/10: loss: 2.119 lr=4.99e-06 max(coef): 6.5 l1=4.7e+02/1.5e+03 l2=2.9e+02/2.5e+03
-5/10: loss: 2.106 lr=4.47e-06 max(coef): 6.5 l1=1.6e+02/1.5e+03 l2=23/2.5e+03
-6/10: loss: 2.098 lr=4.08e-06 max(coef): 6.5 l1=1.9e+03/1.5e+03 l2=3.5e+03/2.5e+03
-7/10: loss: 2.086 lr=3.78e-06 max(coef): 6.5 l1=9.9e+02/1.5e+03 l2=9.4e+02/2.5e+03
-8/10: loss: 2.072 lr=3.53e-06 max(coef): 6.5 l1=54/1.5e+03 l2=1.9/2.5e+03
-9/10: loss: 2.063 lr=3.33e-06 max(coef): 6.5 l1=6.4e+02/1.5e+03 l2=1.9e+02/2.5e+03
-10/10: loss: 2.054 lr=3.16e-06 max(coef): 6.5 l1=1.2e+03/1.5e+03 l2=6.4e+02/2.5e+03
+0/10: loss: 2.025 lr=0.0001 max(coef): 6.5 l1=0/1.5e+03 l2=0/2.5e+03
+1/10: loss: 2.03 lr=9.95e-06 max(coef): 6.5 l1=4e+02/1.5e+03 l2=67/2.5e+03
+2/10: loss: 2.019 lr=7.05e-06 max(coef): 6.5 l1=7.6e+02/1.5e+03 l2=2.8e+02/2.5e+03
+3/10: loss: 2.014 lr=5.76e-06 max(coef): 6.5 l1=2.3e+02/1.5e+03 l2=39/2.5e+03
+4/10: loss: 2.013 lr=4.99e-06 max(coef): 6.5 l1=2.3e+03/1.5e+03 l2=4.5e+03/2.5e+03
+5/10: loss: 2.01 lr=4.47e-06 max(coef): 6.5 l1=7.1e+02/1.5e+03 l2=1.6e+02/2.5e+03
+6/10: loss: 2.007 lr=4.08e-06 max(coef): 6.5 l1=7.1e+02/1.5e+03 l2=2e+02/2.5e+03
+7/10: loss: 2.005 lr=3.78e-06 max(coef): 6.5 l1=1.1e+03/1.5e+03 l2=5.9e+02/2.5e+03
+8/10: loss: 2 lr=3.53e-06 max(coef): 6.5 l1=7.1e+02/1.5e+03 l2=2e+02/2.5e+03
+9/10: loss: 1.997 lr=3.33e-06 max(coef): 6.5 l1=9.3e+02/1.5e+03 l2=8.5e+02/2.5e+03
+10/10: loss: 1.994 lr=3.16e-06 max(coef): 6.5 l1=2e+03/1.5e+03 l2=5.1e+03/2.5e+03
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<style>#sk-container-id-1 {
+<style>#sk-container-id-2 {
   /* Definition of color scheme common for light and dark mode */
-  --sklearn-color-text: black;
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
   --sklearn-color-line: gray;
   /* Definition of color scheme for unfitted estimators */
   --sklearn-color-unfitted-level-0: #fff5e6;
@@ -2172,15 +2214,15 @@ np.float64(1.4748302929273112)
   }
 }
 
-#sk-container-id-1 {
+#sk-container-id-2 {
   color: var(--sklearn-color-text);
 }
 
-#sk-container-id-1 pre {
+#sk-container-id-2 pre {
   padding: 0;
 }
 
-#sk-container-id-1 input.sk-hidden--visually {
+#sk-container-id-2 input.sk-hidden--visually {
   border: 0;
   clip: rect(1px 1px 1px 1px);
   clip: rect(1px, 1px, 1px, 1px);
@@ -2192,7 +2234,7 @@ np.float64(1.4748302929273112)
   width: 1px;
 }
 
-#sk-container-id-1 div.sk-dashed-wrapped {
+#sk-container-id-2 div.sk-dashed-wrapped {
   border: 1px dashed var(--sklearn-color-line);
   margin: 0 0.4em 0.5em 0.4em;
   box-sizing: border-box;
@@ -2200,7 +2242,7 @@ np.float64(1.4748302929273112)
   background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-1 div.sk-container {
+#sk-container-id-2 div.sk-container {
   /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
      but bootstrap.min.css set `[hidden] { display: none !important; }`
      so we also need the `!important` here to be able to override the
@@ -2210,7 +2252,7 @@ np.float64(1.4748302929273112)
   position: relative;
 }
 
-#sk-container-id-1 div.sk-text-repr-fallback {
+#sk-container-id-2 div.sk-text-repr-fallback {
   display: none;
 }
 
@@ -2226,14 +2268,14 @@ div.sk-item {
 
 /* Parallel-specific style estimator block */
 
-#sk-container-id-1 div.sk-parallel-item::after {
+#sk-container-id-2 div.sk-parallel-item::after {
   content: "";
   width: 100%;
   border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
   flex-grow: 1;
 }
 
-#sk-container-id-1 div.sk-parallel {
+#sk-container-id-2 div.sk-parallel {
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -2241,28 +2283,28 @@ div.sk-item {
   position: relative;
 }
 
-#sk-container-id-1 div.sk-parallel-item {
+#sk-container-id-2 div.sk-parallel-item {
   display: flex;
   flex-direction: column;
 }
 
-#sk-container-id-1 div.sk-parallel-item:first-child::after {
+#sk-container-id-2 div.sk-parallel-item:first-child::after {
   align-self: flex-end;
   width: 50%;
 }
 
-#sk-container-id-1 div.sk-parallel-item:last-child::after {
+#sk-container-id-2 div.sk-parallel-item:last-child::after {
   align-self: flex-start;
   width: 50%;
 }
 
-#sk-container-id-1 div.sk-parallel-item:only-child::after {
+#sk-container-id-2 div.sk-parallel-item:only-child::after {
   width: 0;
 }
 
 /* Serial-specific style estimator block */
 
-#sk-container-id-1 div.sk-serial {
+#sk-container-id-2 div.sk-serial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2280,24 +2322,33 @@ clickable and can be expanded/collapsed.
 
 /* Pipeline and ColumnTransformer style (default) */
 
-#sk-container-id-1 div.sk-toggleable {
+#sk-container-id-2 div.sk-toggleable {
   /* Default theme specific background. It is overwritten whether we have a
   specific estimator or a Pipeline/ColumnTransformer */
   background-color: var(--sklearn-color-background);
 }
 
 /* Toggleable label */
-#sk-container-id-1 label.sk-toggleable__label {
+#sk-container-id-2 label.sk-toggleable__label {
   cursor: pointer;
-  display: block;
+  display: flex;
   width: 100%;
   margin-bottom: 0;
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5em;
 }
 
-#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+#sk-container-id-2 label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+#sk-container-id-2 label.sk-toggleable__label-arrow:before {
   /* Arrow on the left of the label */
   content: "▸";
   float: left;
@@ -2305,27 +2356,25 @@ clickable and can be expanded/collapsed.
   color: var(--sklearn-color-icon);
 }
 
-#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {
   color: var(--sklearn-color-text);
 }
 
 /* Toggleable content - dropdown */
 
-#sk-container-id-1 div.sk-toggleable__content {
-  max-height: 0;
-  max-width: 0;
-  overflow: hidden;
+#sk-container-id-2 div.sk-toggleable__content {
+  display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-1 div.sk-toggleable__content.fitted {
+#sk-container-id-2 div.sk-toggleable__content.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-1 div.sk-toggleable__content pre {
+#sk-container-id-2 div.sk-toggleable__content pre {
   margin: 0.2em;
   border-radius: 0.25em;
   color: var(--sklearn-color-text);
@@ -2333,79 +2382,79 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+#sk-container-id-2 div.sk-toggleable__content.fitted pre {
   /* unfitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
-  max-height: 200px;
-  max-width: 100%;
-  overflow: auto;
+  display: block;
+  width: 100%;
+  overflow: visible;
 }
 
-#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
   content: "▾";
 }
 
 /* Pipeline/ColumnTransformer-specific style */
 
-#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator-specific style */
 
 /* Colorize estimator box */
-#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-2 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-1 div.sk-label label.sk-toggleable__label,
-#sk-container-id-1 div.sk-label label {
+#sk-container-id-2 div.sk-label label.sk-toggleable__label,
+#sk-container-id-2 div.sk-label label {
   /* The background is the default theme color */
   color: var(--sklearn-color-text-on-default-background);
 }
 
 /* On hover, darken the color of the background */
-#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
 /* Label box, darken color on hover, fitted */
-#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-2 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator label */
 
-#sk-container-id-1 div.sk-label label {
+#sk-container-id-2 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
   display: inline-block;
   line-height: 1.2em;
 }
 
-#sk-container-id-1 div.sk-label-container {
+#sk-container-id-2 div.sk-label-container {
   text-align: center;
 }
 
 /* Estimator-specific */
-#sk-container-id-1 div.sk-estimator {
+#sk-container-id-2 div.sk-estimator {
   font-family: monospace;
   border: 1px dotted var(--sklearn-color-border-box);
   border-radius: 0.25em;
@@ -2415,18 +2464,18 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-1 div.sk-estimator.fitted {
+#sk-container-id-2 div.sk-estimator.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
 /* on hover */
-#sk-container-id-1 div.sk-estimator:hover {
+#sk-container-id-2 div.sk-estimator:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-1 div.sk-estimator.fitted:hover {
+#sk-container-id-2 div.sk-estimator.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -2447,7 +2496,8 @@ a:visited.sk-estimator-doc-link {
   height: 1em;
   width: 1em;
   text-decoration: none !important;
-  margin-left: 1ex;
+  margin-left: 0.5em;
+  text-align: center;
   /* unfitted */
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
   color: var(--sklearn-color-unfitted-level-1);
@@ -2513,7 +2563,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-1 a.estimator_doc_link {
+#sk-container-id-2 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -2528,28 +2578,244 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-1 a.estimator_doc_link.fitted {
+#sk-container-id-2 a.estimator_doc_link.fitted {
   /* fitted */
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
 
 /* On hover */
-#sk-container-id-1 a.estimator_doc_link:hover {
+#sk-container-id-2 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+#sk-container-id-2 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
-</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>NeuralTreeNetRegressor(estimator=None, lr=0.0001, max_iter=10, verbose=1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;NeuralTreeNetRegressor<span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>NeuralTreeNetRegressor(estimator=None, lr=0.0001, max_iter=10, verbose=1)</pre></div> </div></div></div></div></div>
+
+.estimator-table summary {
+    padding: .5rem;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left;
+}
+
+.user-set td.value pre {
+    color:rgb(255, 94, 0) !important;
+    background-color: transparent !important;
+}
+
+.default td {
+    color: black;
+    text-align: left;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>NeuralTreeNetRegressor(estimator=None, lr=0.0001, max_iter=10, verbose=1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>NeuralTreeNetRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('estimator',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">estimator&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('optimizer',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">optimizer&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('max_iter',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">max_iter&nbsp;</td>
+            <td class="value">10</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('early_th',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">early_th&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose&nbsp;</td>
+            <td class="value">1</td>
+        </tr>
+
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('lr',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">lr&nbsp;</td>
+            <td class="value">0.0001</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('lr_schedule',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">lr_schedule&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('l1',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">l1&nbsp;</td>
+            <td class="value">0.0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('l2',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">l2&nbsp;</td>
+            <td class="value">0.0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('momentum',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">momentum&nbsp;</td>
+            <td class="value">0.9</td>
+        </tr>
+
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+</script></body></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">got</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
@@ -2558,17 +2824,25 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(np.float64(1.324478311165207), np.float64(0.22581473935951998))
+(np.float64(1.2809916184057408), np.float64(0.22175907540246548))
 </pre></div></div>
 </div>
 <p>Ca ne marche pas aussi bien que prévu. Il faudrait sans doute plusieurs itérations et jouer avec les paramètres d’apprentissage.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
