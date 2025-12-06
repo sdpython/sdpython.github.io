@@ -1,5 +1,0 @@
-
-Quantization
-============
-
-*to be completed*

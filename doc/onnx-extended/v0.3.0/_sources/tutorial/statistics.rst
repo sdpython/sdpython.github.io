@@ -1,5 +1,0 @@
-
-Statistics
-==========
-
-To be completed.

@@ -1,3 +1,0 @@
-Notebook sur Spark
-==================
-
