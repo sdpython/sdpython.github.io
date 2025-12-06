@@ -1278,6 +1278,33 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedStaticExpandPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#ShapeBasedStaticExpandPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedStaticExpandPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Compares input and output shapes to tell if the expand
 can uses a constant as a second input.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-e6b4b317f02f7806fb887862beb16ec51f74ea5d.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,3,d,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Shape_1 [label=&quot;Shape(., end=-1, start=0)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Concat_2 [label=&quot;Concat(., [2], axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_3 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Shape_1 [label=&quot;FLOAT(2,3,d,1)&quot;];
+  Shape_1 -&gt; Concat_2 [label=&quot;INT64(3)&quot;];
+  I_0 -&gt; Expand_3 [label=&quot;FLOAT(2,3,d,1)&quot;];
+  Concat_2 -&gt; Expand_3 [label=&quot;INT64(4)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(2,3,d,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_3 -&gt; O_4;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-d17dfd7a060a913cd1b480ff88aedb93c8fef905.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(2,3,d,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Expand_1 [label=&quot;Expand(., [1, 1, 1, 2])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Expand_1 [label=&quot;FLOAT(2,3,d,1)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(2,3,d,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Expand_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedStaticExpandPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_expand.html#ShapeBasedStaticExpandPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedStaticExpandPattern.apply" title="Link to this definition">¶</a></dt>

@@ -550,7 +550,39 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.simple_rotary.SimpleRotaryPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_exp.simple_rotary.</span></span><span class="sig-name descname"><span class="pre">SimpleRotaryPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/simple_rotary.html#SimpleRotaryPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.simple_rotary.SimpleRotaryPattern" title="Link to this definition">¶</a></dt>
-<dd><p>Replaces ConstantOfShape + ScatterND with ScatterNDOfShape (com.domain).</p>
+<dd><p>Replaces Split Neg Concat by SimpleRotary.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-86c7fbe1e60560e7ebc16e23c3b566110a2c4c52.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;splits\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; splits&quot;, fillcolor=&quot;#cccccc&quot;];
+  Split_3 [label=&quot;Split(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Neg_4 [label=&quot;Neg(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_5 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Split_3 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  Constant_2 -&gt; Split_3 [label=&quot;INT64(2)&quot;];
+  Split_3 -&gt; Neg_4 [label=&quot;FLOAT(UNKNOWNDIM,?)&quot;];
+  Neg_4 -&gt; Concat_5 [label=&quot;FLOAT(UNKNOWNDIM,?)&quot;];
+  Split_3 -&gt; Concat_5 [label=&quot;FLOAT(UNKNOWNDIM,?)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(UNKNOWNDIM2,UNKNOWNDIM3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_5 -&gt; O_6;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-b64f47b937808bea2730961350486e04d1140f38.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;splits\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Rotary_2 [label=&quot;onnx_extended.ortops.optim.cuda.\nRotary\n(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Rotary_2 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  I_0 -&gt; Rotary_2 [label=&quot;INT64(2)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(UNKNOWNDIM2,UNKNOWNDIM3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Rotary_2 -&gt; O_3;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.simple_rotary.SimpleRotaryPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">neg_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/simple_rotary.html#SimpleRotaryPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.simple_rotary.SimpleRotaryPattern.apply" title="Link to this definition">¶</a></dt>

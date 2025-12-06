@@ -851,6 +851,38 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Replaces <code class="docutils literal notranslate"><span class="pre">MatMul(a*c,</span> <span class="pre">b*d)</span></code>
 where c and d are constant scalar
 by <code class="docutils literal notranslate"><span class="pre">MatMul(a,b)</span> <span class="pre">*</span> <span class="pre">(c,d)</span></code>.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-22cd55960ec8654d33cc92e7efa126a1821ae3e5.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(16,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(32,16)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Mul_2 [label=&quot;Mul(., [0.4])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_3 [label=&quot;Mul([0.6], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  MatMul_4 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  I_1 -&gt; Mul_2 [label=&quot;FLOAT(32,16)&quot;];
+  I_0 -&gt; Mul_3 [label=&quot;FLOAT(16,64)&quot;];
+  Mul_2 -&gt; MatMul_4 [label=&quot;FLOAT(32,16)&quot;];
+  Mul_3 -&gt; MatMul_4 [label=&quot;FLOAT(16,64)&quot;];
+  O_5 [label=&quot;z\nFLOAT(32,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3a887aeb6436b8fd8fa920795534354d04cf9862.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Y\nFLOAT(16,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT(32,16)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  MatMul_2 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  Mul_3 [label=&quot;Mul(., [0.24000001])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; MatMul_2 [label=&quot;FLOAT(32,16)&quot;];
+  I_0 -&gt; MatMul_2 [label=&quot;FLOAT(16,64)&quot;];
+  MatMul_2 -&gt; Mul_3 [label=&quot;FLOAT(32,64)&quot;];
+  O_4 [label=&quot;z\nFLOAT(32,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.MulMulMatMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#MulMulMatMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.MulMulMatMulPattern.apply" title="Link to this definition">¶</a></dt>

@@ -2359,25 +2359,27 @@
                 <span class="n">source</span><span class="o">=</span><span class="s2">&quot;RMSNormalization.apply.scale.1&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">sh</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">input_name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">nname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">axis_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-                <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">axis</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-                <span class="n">source</span><span class="o">=</span><span class="s2">&quot;RMSNormalization.apply.axis&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">ga</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                <span class="s2">&quot;Gather&quot;</span><span class="p">,</span>
-                <span class="p">[</span><span class="n">sh</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis_name</span><span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">nname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">sh</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                    <span class="s2">&quot;Shape&quot;</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">input_name</span><span class="p">],</span>
+                    <span class="n">start</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span>
+                    <span class="n">end</span><span class="o">=</span><span class="n">axis</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">nname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">axis</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="k">else</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                    <span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">input_name</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">nname</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
             <span class="p">)</span>
             <span class="n">cc</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
                 <span class="s2">&quot;ConstantOfShape&quot;</span><span class="p">,</span>
-                <span class="p">[</span><span class="n">ga</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="p">[</span><span class="n">sh</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
                 <span class="n">value</span><span class="o">=</span><span class="n">from_array_extended</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)),</span>
                 <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">nname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">scale</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">sh</span><span class="p">,</span> <span class="n">ga</span><span class="p">,</span> <span class="n">cc</span><span class="p">])</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">sh</span><span class="p">,</span> <span class="n">cc</span><span class="p">])</span>
 
         <span class="n">layer</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;RMSNormalization&quot;</span><span class="p">,</span>

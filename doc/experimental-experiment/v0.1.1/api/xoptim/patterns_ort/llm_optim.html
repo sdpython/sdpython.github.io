@@ -553,6 +553,53 @@
 <dd><p>Extension to
 <a class="reference internal" href="#experimental_experiment.xoptim.patterns_ort.llm_optim.ContribRotaryEmbeddingPattern" title="experimental_experiment.xoptim.patterns_ort.llm_optim.ContribRotaryEmbeddingPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns_ort.llm_optim.ContribRotaryEmbeddingPattern</span></code></a>,
 turn the operator into a 3D operator including the transpose.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-c8530b0a04d7df56edad755b1413d546fe289ba4.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;ContribRotaryEmbeddingPattern--m2x2\nFLOAT(NEWDIM_range,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;position_ids\nINT64(a,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;ContribRotaryEmbeddingPattern--m1x2\nFLOAT(NEWDIM_range,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;X\nFLOAT(a,c,2,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Transpose_4 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  RotaryEmbedding_5 [label=&quot;com.microsoft.\nRotaryEmbedding\n(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_3 -&gt; Transpose_4 [label=&quot;FLOAT(a,c,2,d)&quot;];
+  Transpose_4 -&gt; RotaryEmbedding_5 [label=&quot;FLOAT(a,2,c,d)&quot;];
+  I_1 -&gt; RotaryEmbedding_5 [label=&quot;INT64(a,e)&quot;];
+  I_2 -&gt; RotaryEmbedding_5 [label=&quot;FLOAT(NEWDIM_range,2)&quot;];
+  I_0 -&gt; RotaryEmbedding_5 [label=&quot;FLOAT(NEWDIM_range,2)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  RotaryEmbedding_5 -&gt; O_6;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-7c2c406b82cfdc1076ac4594ffd0e563a1eb9d77.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;ContribRotaryEmbeddingPattern--m2x2\nFLOAT(NEWDIM_range,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;position_ids\nINT64(a,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;ContribRotaryEmbeddingPattern--m1x2\nFLOAT(NEWDIM_range,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_3 [label=&quot;X\nFLOAT(a,c,2,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Reshape_4 [label=&quot;Reshape(., [0, 0, -1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  RotaryEmbedding_5 [label=&quot;com.microsoft.\nRotaryEmbedding\n(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Shape_6 [label=&quot;Shape(., start=3)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Concat_7 [label=&quot;Concat([0, 0, -1], ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_8 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Transpose_9 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_3 -&gt; Reshape_4 [label=&quot;FLOAT(a,c,2,d)&quot;];
+  Reshape_4 -&gt; RotaryEmbedding_5 [label=&quot;FLOAT(a,c,?)&quot;];
+  I_1 -&gt; RotaryEmbedding_5 [label=&quot;INT64(a,e)&quot;];
+  I_2 -&gt; RotaryEmbedding_5 [label=&quot;FLOAT(NEWDIM_range,2)&quot;];
+  I_0 -&gt; RotaryEmbedding_5 [label=&quot;FLOAT(NEWDIM_range,2)&quot;];
+  I_3 -&gt; Shape_6 [label=&quot;FLOAT(a,c,2,d)&quot;];
+  Shape_6 -&gt; Concat_7 [label=&quot;INT64(1)&quot;];
+  RotaryEmbedding_5 -&gt; Reshape_8;
+  Concat_7 -&gt; Reshape_8 [label=&quot;INT64(4)&quot;];
+  Reshape_8 -&gt; Transpose_9;
+  O_10 [label=&quot;Y\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_9 -&gt; O_10;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.llm_optim.ContribRotaryEmbedding3DPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/llm_optim.html#ContribRotaryEmbedding3DPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.llm_optim.ContribRotaryEmbedding3DPattern.apply" title="Link to this definition">¶</a></dt>

@@ -551,6 +551,38 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.</span></span><span class="sig-name descname"><span class="pre">ConstantOfShapeScatterNDPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/constant_of_shape_scatter_nd.html#ConstantOfShapeScatterNDPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces ConstantOfShape + ScatterND with ScatterNDOfShape.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-937afee35940bcf4afaa1f0a0774c0b635962615.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;indices\nINT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;shape\nINT64(UNKNOWNDIM)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;masked_updates\nFLOAT(UNKNOWNDIM1^UNKNOWNDIM3,UNKNOWNDIM2^UNKNOWNDIM4,UNKNOWNDIM5)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  ConstantOfShape_3 [label=&quot;ConstantOfShape(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ScatterND_4 [label=&quot;ScatterND(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; ConstantOfShape_3 [label=&quot;INT64(UNKNOWNDIM)&quot;];
+  ConstantOfShape_3 -&gt; ScatterND_4 [label=&quot;FLOAT()&quot;];
+  I_0 -&gt; ScatterND_4 [label=&quot;INT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;];
+  I_2 -&gt; ScatterND_4 [label=&quot;FLOAT(UNKNOWNDIM1^UNKNOWNDIM3,\nUNKNOWNDIM2^UNKNOWNDIM4,\nUNKNOWNDIM5)&quot;];
+  O_5 [label=&quot;y\nFLOAT(UNKNOWNDIM6,UNKNOWNDIM7)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ScatterND_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-53389fe269f8ed0e4aae797c318492f08a312472.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;indices\nINT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;shape\nINT64(UNKNOWNDIM)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;masked_updates\nFLOAT(UNKNOWNDIM1^UNKNOWNDIM3,UNKNOWNDIM2^UNKNOWNDIM4,UNKNOWNDIM5)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  ScatterNDOfShape_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nScatterNDOfShape\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; ScatterNDOfShape_3 [label=&quot;INT64(UNKNOWNDIM)&quot;];
+  I_0 -&gt; ScatterNDOfShape_3 [label=&quot;INT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;];
+  I_2 -&gt; ScatterNDOfShape_3 [label=&quot;FLOAT(UNKNOWNDIM1^UNKNOWNDIM3,\nUNKNOWNDIM2^UNKNOWNDIM4,\nUNKNOWNDIM5)&quot;];
+  O_4 [label=&quot;y\nFLOAT(UNKNOWNDIM6,UNKNOWNDIM7)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ScatterNDOfShape_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/constant_of_shape_scatter_nd.html#ConstantOfShapeScatterNDPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern.apply" title="Link to this definition">¶</a></dt>
@@ -611,6 +643,41 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.MaskedShapeScatterNDPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.</span></span><span class="sig-name descname"><span class="pre">MaskedShapeScatterNDPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/constant_of_shape_scatter_nd.html#MaskedShapeScatterNDPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.MaskedShapeScatterNDPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces Equal, Where, ScatterNDOfShape by MaskedScatterNDOfShape.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-6ec31f786cc2bf093fd2e4a6edb454eb1081b562.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;updates\nFLOAT(UNKNOWNDIM3,UNKNOWNDIM4,UNKNOWNDIM5)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;indices\nINT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;shape\nINT64(UNKNOWNDIM)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  ScatterNDOfShape_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nScatterNDOfShape\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Where_4 [label=&quot;Where(., [0.0], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Equal_5 [label=&quot;Equal(., [-1])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; ScatterNDOfShape_3 [label=&quot;INT64(UNKNOWNDIM)&quot;];
+  I_1 -&gt; ScatterNDOfShape_3 [label=&quot;INT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;];
+  Where_4 -&gt; ScatterNDOfShape_3 [label=&quot;FLOAT()&quot;];
+  Equal_5 -&gt; Where_4 [label=&quot;BOOL(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;];
+  I_0 -&gt; Where_4 [label=&quot;FLOAT(UNKNOWNDIM3,\nUNKNOWNDIM4,\nUNKNOWNDIM5)&quot;];
+  I_1 -&gt; Equal_5 [label=&quot;INT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;];
+  O_6 [label=&quot;y\nFLOAT(UNKNOWNDIM6,UNKNOWNDIM7)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ScatterNDOfShape_3 -&gt; O_6;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-60dedcec352f94ce987feb9ea6da741ddbbfbff8.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;updates\nFLOAT(UNKNOWNDIM3,UNKNOWNDIM4,UNKNOWNDIM5)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;indices\nINT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;shape\nINT64(UNKNOWNDIM)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  MaskedScatterNDOfShape_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nMaskedScatterNDOfShape\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; MaskedScatterNDOfShape_3 [label=&quot;INT64(UNKNOWNDIM)&quot;];
+  I_1 -&gt; MaskedScatterNDOfShape_3 [label=&quot;INT64(UNKNOWNDIM1,UNKNOWNDIM2,1)&quot;];
+  I_0 -&gt; MaskedScatterNDOfShape_3 [label=&quot;FLOAT(UNKNOWNDIM3,\nUNKNOWNDIM4,\nUNKNOWNDIM5)&quot;];
+  O_4 [label=&quot;y\nFLOAT(UNKNOWNDIM6,UNKNOWNDIM7)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MaskedScatterNDOfShape_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.MaskedShapeScatterNDPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatter_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">where_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/constant_of_shape_scatter_nd.html#MaskedShapeScatterNDPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.MaskedShapeScatterNDPattern.apply" title="Link to this definition">¶</a></dt>

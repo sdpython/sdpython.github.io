@@ -853,6 +853,45 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">SkipSimplifiedLayerNormalizationMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SkipSimplifiedLayerNormalizationMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipSimplifiedLayerNormalizationMulPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence SkipSimplifiedLayerNormalization + Mul
 by SkipSimplifiedLayerNormalization.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-dbeba8e7d12a5841b2c9da666b54f2259a248dcd.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;skip\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;weights\nFLOAT(192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_3 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_4 [label=&quot;Constant() -&gt; weights&quot;, fillcolor=&quot;#cccccc&quot;];
+  SkipSimplifiedLayerNormalization_5 [label=&quot;com.microsoft.\nSkipSimplifiedLayerNormalization\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_6 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; SkipSimplifiedLayerNormalization_5 [label=&quot;FLOAT(batch,cache,192)&quot;];
+  I_1 -&gt; SkipSimplifiedLayerNormalization_5 [label=&quot;FLOAT(batch,cache,192)&quot;];
+  Constant_3 -&gt; SkipSimplifiedLayerNormalization_5 [label=&quot;FLOAT(192)&quot;];
+  SkipSimplifiedLayerNormalization_5 -&gt; Mul_6;
+  Constant_4 -&gt; Mul_6 [label=&quot;FLOAT(192)&quot;];
+  O_7 [label=&quot;a\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_6 -&gt; O_7;
+  O_8 [label=&quot;xs\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SkipSimplifiedLayerNormalization_5 -&gt; O_8;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-45cdcc6e8dfd4785b72438f063f71a12e47d21f3.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;skip\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;weights\nFLOAT(192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  SkipSimplifiedLayerNormalization_3 [label=&quot;com.microsoft.\nSkipSimplifiedLayerNormalization\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; SkipSimplifiedLayerNormalization_3 [label=&quot;FLOAT(batch,cache,192)&quot;];
+  I_1 -&gt; SkipSimplifiedLayerNormalization_3 [label=&quot;FLOAT(batch,cache,192)&quot;];
+  I_2 -&gt; SkipSimplifiedLayerNormalization_3 [label=&quot;FLOAT(192)&quot;];
+  O_4 [label=&quot;a\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SkipSimplifiedLayerNormalization_3 -&gt; O_4;
+  O_5 [label=&quot;xs\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SkipSimplifiedLayerNormalization_3 -&gt; O_5;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipSimplifiedLayerNormalizationMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_simp_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SkipSimplifiedLayerNormalizationMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipSimplifiedLayerNormalizationMulPattern.apply" title="Link to this definition">¶</a></dt>

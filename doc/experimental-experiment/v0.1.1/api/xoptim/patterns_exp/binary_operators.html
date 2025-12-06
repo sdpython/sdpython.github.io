@@ -569,6 +569,38 @@ if they operate on the same shape.</p>
 <dd class="field-odd"><p><strong>broadcast</strong> – allow broadcast on the first dimensions.</p>
 </dd>
 </dl>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-cc7d302b6dbd515bbe19215d70bd64bdaf8be61b.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_4 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Add_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(d)&quot;];
+  Add_3 -&gt; Add_4 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; Add_4 [label=&quot;FLOAT(d)&quot;];
+  O_5 [label=&quot;F\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-551f522735c5d41fd9eecf1a54bd4a78882c7ee2.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  AddAdd_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nAddAdd\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; AddAdd_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; AddAdd_3 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; AddAdd_3 [label=&quot;FLOAT(d)&quot;];
+  O_4 [label=&quot;F\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  AddAdd_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#AddAddMulMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulPattern.apply" title="Link to this definition">¶</a></dt>
@@ -647,6 +679,38 @@ if they operate on the same shape.</p>
 <dd class="field-odd"><p><strong>broadcast</strong> – allow broadcast on the first dimensions.</p>
 </dd>
 </dl>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-b5882a406029856d9206a0b4e52c31b94e1aadff.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Add_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(d)&quot;];
+  Add_3 -&gt; Mul_4 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; Mul_4 [label=&quot;FLOAT(d)&quot;];
+  O_5 [label=&quot;F\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-fec55d25a36f05789a9922cc482b7a030193f3e1.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  AddMul_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nAddMul\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; AddMul_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; AddMul_3 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; AddMul_3 [label=&quot;FLOAT(d)&quot;];
+  O_4 [label=&quot;F\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  AddMul_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#AddMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulPattern.apply" title="Link to this definition">¶</a></dt>
@@ -727,6 +791,42 @@ operator Mul.</p>
 <dd class="field-odd"><p><strong>broadcast</strong> – allow broadcast on the first dimensions.</p>
 </dd>
 </dl>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-be1cd0e7582f4eec9813b8fa7e8a1fd0112da2f2.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_4 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Add_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(d)&quot;];
+  I_2 -&gt; Add_4 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; Add_4 [label=&quot;FLOAT(d)&quot;];
+  O_5 [label=&quot;F1\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_3 -&gt; O_5;
+  O_6 [label=&quot;F2\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_4 -&gt; O_6;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-82b8b670e6213c158c8439ae61bf663d40180365.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  AddSharedInput_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nAddSharedInput\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; AddSharedInput_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; AddSharedInput_3 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; AddSharedInput_3 [label=&quot;FLOAT(d)&quot;];
+  O_4 [label=&quot;F1\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  AddSharedInput_3 -&gt; O_4;
+  O_5 [label=&quot;F2\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  AddSharedInput_3 -&gt; O_5;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulSharedInputPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#AddMulSharedInputPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulSharedInputPattern.apply" title="Link to this definition">¶</a></dt>
@@ -794,6 +894,38 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_exp.binary_operators.</span></span><span class="sig-name descname"><span class="pre">AddMulTransposePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#AddMulTransposePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulTransposePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces (AddMul|MulAdd) + Transpose by (AddMul|MulAdd)(., transposeMiddle=1)
 if it is possible.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-affbf362fd5a5797f63d152ac516a30a7c982699.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  AddMul_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nAddMul\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_4 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_2 -&gt; AddMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_1 -&gt; AddMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_0 -&gt; AddMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  AddMul_3 -&gt; Transpose_4;
+  O_5 [label=&quot;final\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-893215bb8ecbd20fe43d8ff22b821c3463a1e2a8.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  AddMul_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nAddMul\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; AddMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_1 -&gt; AddMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  I_0 -&gt; AddMul_3 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  O_4 [label=&quot;final\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  AddMul_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulTransposePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#AddMulTransposePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulTransposePattern.apply" title="Link to this definition">¶</a></dt>
@@ -855,6 +987,31 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_exp.binary_operators.</span></span><span class="sig-name descname"><span class="pre">MulSigmoidPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#MulSigmoidPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.MulSigmoidPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces Mul + Sigmoid by MulSigmoid
 if they operate on the same input.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-11459e3e797380dddf024ce69b37eae704937d73.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Sigmoid_1 [label=&quot;Sigmoid(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_2 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Sigmoid_1 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  I_0 -&gt; Mul_2 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  Sigmoid_1 -&gt; Mul_2 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(UNKNOWNDIM2,UNKNOWNDIM3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_2 -&gt; O_3;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-047cf97b80a2e7b4abf4cf1d122fb57229449008.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  MulSigmoid_1 [label=&quot;onnx_extended.ortops.optim.cuda.\nMulSigmoid\n(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; MulSigmoid_1 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(UNKNOWNDIM2,UNKNOWNDIM3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MulSigmoid_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.binary_operators.MulSigmoidPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_sigmoid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_mul</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#MulSigmoidPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.MulSigmoidPattern.apply" title="Link to this definition">¶</a></dt>
@@ -916,6 +1073,28 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_exp.binary_operators.</span></span><span class="sig-name descname"><span class="pre">NegXplus1Pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#NegXplus1Pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.NegXplus1Pattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces 1 - X by NegXplus1
 if they operate on the same input.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-10f1391839c967dce776e911aaaf29d2297981bb.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Sub_1 [label=&quot;Sub([1.0], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Sub_1 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(UNKNOWNDIM2,UNKNOWNDIM3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Sub_1 -&gt; O_2;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-e2be2fe8157dfaff83f047a05329b60a19ed0f8b.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  NegXplus1_1 [label=&quot;onnx_extended.ortops.optim.cuda.\nNegXplus1\n(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; NegXplus1_1 [label=&quot;FLOAT(UNKNOWNDIM,UNKNOWNDIM1)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(UNKNOWNDIM2,UNKNOWNDIM3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  NegXplus1_1 -&gt; O_2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.binary_operators.NegXplus1Pattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#NegXplus1Pattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.NegXplus1Pattern.apply" title="Link to this definition">¶</a></dt>
@@ -994,6 +1173,38 @@ if they operate on the same shape.</p>
 <dd class="field-odd"><p><strong>broadcast</strong> – allow broadcast on the first dimensions.</p>
 </dd>
 </dl>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-460652f0143170012f7fb352400a443c26100b91.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Sub_3 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Sub_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; Sub_3 [label=&quot;FLOAT(d)&quot;];
+  Sub_3 -&gt; Mul_4 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; Mul_4 [label=&quot;FLOAT(d)&quot;];
+  O_5 [label=&quot;F\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_4 -&gt; O_5;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-396eae6458aaf43ab54fdcb925e8615e3c31a246.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;Z\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;X\nFLOAT(d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  SubMul_3 [label=&quot;onnx_extended.ortops.optim.cuda.\nSubMul\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; SubMul_3 [label=&quot;FLOAT(d)&quot;];
+  I_1 -&gt; SubMul_3 [label=&quot;FLOAT(d)&quot;];
+  I_0 -&gt; SubMul_3 [label=&quot;FLOAT(d)&quot;];
+  O_4 [label=&quot;F\nFLOAT(d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SubMul_3 -&gt; O_4;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_exp.binary_operators.SubMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_exp/binary_operators.html#SubMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.SubMulPattern.apply" title="Link to this definition">¶</a></dt>

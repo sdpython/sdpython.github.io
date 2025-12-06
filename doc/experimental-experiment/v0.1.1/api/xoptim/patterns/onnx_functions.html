@@ -694,6 +694,65 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_functions.</span></span><span class="sig-name descname"><span class="pre">SoftmaxCrossEntropyLossCastPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_functions.html#SoftmaxCrossEntropyLossCastPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Detects one decomposed version of SoftmaxCrossEntropyLoss.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-9d53edda6ca6e6f721ad3ec51d648a5a2a747db6.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;I\nINT64(A)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT16(A,B)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Equal_2 [label=&quot;Equal(., [-100])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Not_3 [label=&quot;Not(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Where_4 [label=&quot;Where(., ., [0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_5 [label=&quot;Unsqueeze(., [1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  LogSoftmax_6 [label=&quot;LogSoftmax(., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  GatherElements_7 [label=&quot;GatherElements(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Squeeze_8 [label=&quot;Squeeze(., [1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Neg_9 [label=&quot;Neg(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Where_10 [label=&quot;Where(., ., [0.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_11 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_12 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_13 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_14 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_15 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_16 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_17 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Equal_2 [label=&quot;INT64(A)&quot;];
+  Equal_2 -&gt; Not_3 [label=&quot;BOOL(A)&quot;];
+  Not_3 -&gt; Where_4 [label=&quot;BOOL(A)&quot;];
+  I_0 -&gt; Where_4 [label=&quot;INT64(A)&quot;];
+  Where_4 -&gt; Unsqueeze_5 [label=&quot;INT64(A)&quot;];
+  I_1 -&gt; LogSoftmax_6 [label=&quot;FLOAT16(A,B)&quot;];
+  LogSoftmax_6 -&gt; GatherElements_7 [label=&quot;FLOAT16(A,B)&quot;];
+  Unsqueeze_5 -&gt; GatherElements_7 [label=&quot;INT64(A,1)&quot;];
+  GatherElements_7 -&gt; Squeeze_8 [label=&quot;FLOAT16(A,1)&quot;];
+  Squeeze_8 -&gt; Neg_9 [label=&quot;FLOAT16(A)&quot;];
+  Not_3 -&gt; Where_10 [label=&quot;BOOL(A)&quot;];
+  Neg_9 -&gt; Where_10 [label=&quot;FLOAT16(A)&quot;];
+  Not_3 -&gt; Cast_11 [label=&quot;BOOL(A)&quot;];
+  Cast_11 -&gt; ReduceSum_12 [label=&quot;FLOAT(A)&quot;];
+  ReduceSum_12 -&gt; Cast_13 [label=&quot;FLOAT()&quot;];
+  Where_10 -&gt; Cast_14 [label=&quot;FLOAT16(A)&quot;];
+  Cast_14 -&gt; ReduceSum_15 [label=&quot;FLOAT(A)&quot;];
+  ReduceSum_15 -&gt; Cast_16 [label=&quot;FLOAT()&quot;];
+  Cast_16 -&gt; Div_17 [label=&quot;FLOAT16()&quot;];
+  Cast_13 -&gt; Div_17 [label=&quot;FLOAT16()&quot;];
+  O_18 [label=&quot;Y\nFLOAT16()&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Div_17 -&gt; O_18;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-1063186652c983b67b6287bc143415f3e15974d9.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;I\nINT64(A)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;X\nFLOAT16(A,B)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  SoftmaxCrossEntropyLoss_2 [label=&quot;SoftmaxCrossEntropyLoss(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; SoftmaxCrossEntropyLoss_2 [label=&quot;FLOAT16(A,B)&quot;];
+  I_0 -&gt; SoftmaxCrossEntropyLoss_2 [label=&quot;INT64(A)&quot;];
+  O_3 [label=&quot;Y\nFLOAT16()&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SoftmaxCrossEntropyLoss_2 -&gt; O_3;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern.apply_pattern">
 <em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">apply_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zerof</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_functions.html#SoftmaxCrossEntropyLossCastPattern.apply_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern.apply_pattern" title="Link to this definition">¶</a></dt>
