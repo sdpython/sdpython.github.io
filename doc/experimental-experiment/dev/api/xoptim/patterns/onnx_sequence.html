@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -552,27 +553,23 @@
 <dd><p>Replaces the sequence <code class="docutils literal notranslate"><span class="pre">SequenceConstruct(x1,</span> <span class="pre">x2,</span> <span class="pre">...)</span></code> followed
 by <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">0)</span></code>, <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">1)</span></code>, …</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-15e26dc482d5cd98e5d2ca8df2885c47d1dc3c0b.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-cb2cf1a17ed893e38ed0440828d478efc846f91b.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X1\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;X2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; i0&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; i1&quot;, fillcolor=&quot;#cccccc&quot;];
-  SequenceConstruct_4 [label=&quot;SequenceConstruct(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  SequenceAt_5 [label=&quot;SequenceAt(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  SequenceAt_6 [label=&quot;SequenceAt(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; SequenceConstruct_4 [label=&quot;FLOAT(a,b)&quot;];
-  I_1 -&gt; SequenceConstruct_4 [label=&quot;FLOAT(c,d)&quot;];
-  SequenceConstruct_4 -&gt; SequenceAt_5;
-  Constant_2 -&gt; SequenceAt_5 [label=&quot;INT64()&quot;];
-  SequenceConstruct_4 -&gt; SequenceAt_6;
-  Constant_3 -&gt; SequenceAt_6 [label=&quot;INT64()&quot;];
-  O_7 [label=&quot;Y1\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  SequenceAt_5 -&gt; O_7;
-  O_8 [label=&quot;Y2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  SequenceAt_6 -&gt; O_8;
+  SequenceConstruct_2 [label=&quot;SequenceConstruct(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SequenceAt_3 [label=&quot;SequenceAt(., 0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SequenceAt_4 [label=&quot;SequenceAt(., 1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; SequenceConstruct_2 [label=&quot;FLOAT(a,b)&quot;];
+  I_1 -&gt; SequenceConstruct_2 [label=&quot;FLOAT(c,d)&quot;];
+  SequenceConstruct_2 -&gt; SequenceAt_3;
+  SequenceConstruct_2 -&gt; SequenceAt_4;
+  O_5 [label=&quot;Y1\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SequenceAt_3 -&gt; O_5;
+  O_6 [label=&quot;Y2\nFLOAT(c,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  SequenceAt_4 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-b6c160fcbed42813ad319e825054e6d5da02adf5.png" alt="digraph {

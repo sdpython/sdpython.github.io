@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -2298,6 +2299,8 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
         <span class="n">cast_1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">node_pow</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">cast_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cast_1</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Cast&quot;</span><span class="p">:</span>
+            <span class="n">cast_1</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cast_2</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">cast_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">to</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">cast_1</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">i</span>

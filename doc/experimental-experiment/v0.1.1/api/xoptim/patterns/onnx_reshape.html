@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -578,7 +579,7 @@ by replacing one of the dimension by -1.</p>
   Reshape_9 -&gt; O_10;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-5b8b5789fe333cd6508fd5219fbb4dce7e510b12.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-77c2091ba1eb099f791afe5395f61da4338cfae5.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -586,17 +587,15 @@ by replacing one of the dimension by -1.</p>
   I_1 [label=&quot;D1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_2 [label=&quot;X\nFLOAT(a,b,c,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_3 [label=&quot;I2\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; init7_s1_-1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Concat_5 [label=&quot;Concat(., ., ., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_6 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_0 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
-  I_3 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
-  I_1 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
-  Constant_4 -&gt; Concat_5 [label=&quot;INT64(1)&quot;];
-  I_2 -&gt; Reshape_6 [label=&quot;FLOAT(a,b,c,d)&quot;];
-  Concat_5 -&gt; Reshape_6 [label=&quot;INT64(4)&quot;];
-  O_7 [label=&quot;Y\nFLOAT(a,b,d,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_6 -&gt; O_7;
+  Concat_4 [label=&quot;Concat(., ., ., [-1], axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_5 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; Concat_4 [label=&quot;INT64(1)&quot;];
+  I_3 -&gt; Concat_4 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; Concat_4 [label=&quot;INT64(1)&quot;];
+  I_2 -&gt; Reshape_5 [label=&quot;FLOAT(a,b,c,d)&quot;];
+  Concat_4 -&gt; Reshape_5 [label=&quot;INT64(4)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(a,b,d,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ConcatReshapePattern.apply">
@@ -660,19 +659,17 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Replaces the sequence Reduce* Reshape if reshape is only
 introduces to deal with a dimension kept because keepdims=1.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-c6da45eda04b28365e8b7f385a422cdab7fece3e.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-bdf1f007c670ea5c6092d4da475b42bc7c892299.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(3,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
-  ReduceSum_2 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_0 -&gt; ReduceSum_2 [label=&quot;FLOAT(3,2)&quot;];
-  ReduceSum_2 -&gt; Reshape_3 [label=&quot;FLOAT(3,1)&quot;];
-  Constant_1 -&gt; Reshape_3 [label=&quot;INT64(1)&quot;];
-  O_4 [label=&quot;Y\nFLOAT(3)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_3 -&gt; O_4;
+  ReduceSum_1 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_2 [label=&quot;Reshape(., [3])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; ReduceSum_1 [label=&quot;FLOAT(3,2)&quot;];
+  ReduceSum_1 -&gt; Reshape_2 [label=&quot;FLOAT(3,1)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(3)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-2348ea78eb79eeaf7cdd176411d745c6ac2b68be.png" alt="digraph {
@@ -747,7 +744,7 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Replaces the reshapes around element-wise operators.
 It can be 3 or 2 out of 3.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-09031a280db5152ced9bcb73ebebba4af0afe068.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-6aaa46e657654980de9f0927a11a8bbebba68758.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -755,25 +752,21 @@ It can be 3 or 2 out of 3.</p>
   I_1 [label=&quot;shape2\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_2 [label=&quot;X\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_3 [label=&quot;Z\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; shape1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_5 [label=&quot;Constant() -&gt; shape2&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_6 [label=&quot;Constant() -&gt; shape3&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_7 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Reshape_8 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Reshape_9 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Mul_10 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_2 -&gt; Reshape_7 [label=&quot;FLOAT(2,3,4)&quot;];
-  Constant_4 -&gt; Reshape_7 [label=&quot;INT64(2)&quot;];
-  I_0 -&gt; Reshape_8 [label=&quot;FLOAT(2,3,4)&quot;];
-  Constant_5 -&gt; Reshape_8 [label=&quot;INT64(2)&quot;];
-  Mul_10 -&gt; Reshape_9;
-  Constant_6 -&gt; Reshape_9 [label=&quot;INT64(3)&quot;];
-  Reshape_7 -&gt; Mul_10 [label=&quot;FLOAT(3,8)&quot;];
-  Reshape_8 -&gt; Mul_10 [label=&quot;FLOAT(3,8)&quot;];
-  O_11 [label=&quot;xrr\nFLOAT(3,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_10 -&gt; O_11;
-  O_12 [label=&quot;Z\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_9 -&gt; O_12;
+  Constant_4 [label=&quot;Constant() -&gt; shape2&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_5 [label=&quot;Reshape(., [-1, 8])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_6 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_7 [label=&quot;Reshape(., [2, 3, 4])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Reshape_5 [label=&quot;FLOAT(2,3,4)&quot;];
+  I_0 -&gt; Reshape_6 [label=&quot;FLOAT(2,3,4)&quot;];
+  Constant_4 -&gt; Reshape_6 [label=&quot;INT64(2)&quot;];
+  Mul_8 -&gt; Reshape_7;
+  Reshape_5 -&gt; Mul_8 [label=&quot;FLOAT(3,8)&quot;];
+  Reshape_6 -&gt; Mul_8 [label=&quot;FLOAT(3,8)&quot;];
+  O_9 [label=&quot;xrr\nFLOAT(3,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_8 -&gt; O_9;
+  O_10 [label=&quot;Z\nFLOAT(2,3,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_7 -&gt; O_10;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-a870edfcabcc8da4e201a885dc1bbb66822ac5f9.png" alt="digraph {
@@ -917,7 +910,7 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Moves two reshape operators beyond a binary operator
 if it is possible.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-9a45e2610fef4cdb19741568ade68e04446355e3.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-99378689bbb37539ab226248b67ce1122bf06dbb.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -925,16 +918,16 @@ if it is possible.</p>
   I_1 [label=&quot;sh1\nINT64(2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_2 [label=&quot;X\nFLOAT(a,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   Constant_3 [label=&quot;Constant() -&gt; sh1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; sh2&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_5 [label=&quot;Reshape(., [-1, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Reshape_6 [label=&quot;Reshape(., [1, -1])&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Add_7 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_2 -&gt; Reshape_5 [label=&quot;FLOAT(a,4)&quot;];
-  I_0 -&gt; Reshape_6 [label=&quot;FLOAT(a,4)&quot;];
-  Reshape_5 -&gt; Add_7 [label=&quot;FLOAT(?,8)&quot;];
-  Reshape_6 -&gt; Add_7 [label=&quot;FLOAT(?,8)&quot;];
-  O_8 [label=&quot;Z\nFLOAT(b,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Add_7 -&gt; O_8;
+  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_5 [label=&quot;Reshape(., [-1, 8])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Add_6 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Reshape_4 [label=&quot;FLOAT(a,4)&quot;];
+  Constant_3 -&gt; Reshape_4 [label=&quot;INT64(2)&quot;];
+  I_0 -&gt; Reshape_5 [label=&quot;FLOAT(a,4)&quot;];
+  Reshape_4 -&gt; Add_6 [label=&quot;FLOAT(?,8)&quot;];
+  Reshape_5 -&gt; Add_6 [label=&quot;FLOAT(?,8)&quot;];
+  O_7 [label=&quot;Z\nFLOAT(b,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_6 -&gt; O_7;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-4630c82075ddc5ffcc545c8ac19c617e16de0a56.png" alt="digraph {
@@ -1283,21 +1276,19 @@ by replacing one of the dimension by -1.</p>
   Reshape_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-155876b236c9359e22ae03ac2af50c419d134d19.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-9871834f59ac9f9e1056058b0eafc84c7d08ea3b.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;I1\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;X\nFLOAT(2,3,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; init7_s1_-1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Concat_3 [label=&quot;Concat(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_0 -&gt; Concat_3 [label=&quot;INT64(1)&quot;];
-  Constant_2 -&gt; Concat_3 [label=&quot;INT64(1)&quot;];
-  I_1 -&gt; Reshape_4 [label=&quot;FLOAT(2,3,d)&quot;];
-  Concat_3 -&gt; Reshape_4 [label=&quot;INT64(2)&quot;];
-  O_5 [label=&quot;Y\nFLOAT(6,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_4 -&gt; O_5;
+  Concat_2 [label=&quot;Concat(., [-1], axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; Concat_2 [label=&quot;INT64(1)&quot;];
+  I_1 -&gt; Reshape_3 [label=&quot;FLOAT(2,3,d)&quot;];
+  Concat_2 -&gt; Reshape_3 [label=&quot;INT64(2)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(6,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.StaticConcatReshapePattern.apply">

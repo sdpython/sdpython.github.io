@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -552,7 +553,7 @@
 <dd><p>Replaces the sequence SimplifiedLayerNormalization + Mul
 by SimplifiedLayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-021f7365c1d4d8c5fff265eaabce34e1507987e4.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-eb897bcc3348502f9d493e567bdbb0da8142201d.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -560,7 +561,7 @@ by SimplifiedLayerNormalization.</p>
   I_1 [label=&quot;weights\nFLOAT(192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   Constant_2 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
   Constant_3 [label=&quot;Constant() -&gt; weights&quot;, fillcolor=&quot;#cccccc&quot;];
-  SimplifiedLayerNormalization_4 [label=&quot;SimplifiedLayerNormalization(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SimplifiedLayerNormalization_4 [label=&quot;SimplifiedLayerNormalization\n(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
   Mul_5 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_0 -&gt; SimplifiedLayerNormalization_4 [label=&quot;FLOAT(batch,cache,192)&quot;];
   Constant_2 -&gt; SimplifiedLayerNormalization_4 [label=&quot;FLOAT(192)&quot;];
@@ -570,13 +571,13 @@ by SimplifiedLayerNormalization.</p>
   Mul_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-69f27c596b505dab9f0bc6edf158d2a037bcb85a.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-4d6b1940068fa80f0063b2bdc51d62c686203b16.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;xs\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;weights\nFLOAT(192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  SimplifiedLayerNormalization_2 [label=&quot;SimplifiedLayerNormalization(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SimplifiedLayerNormalization_2 [label=&quot;SimplifiedLayerNormalization\n(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_0 -&gt; SimplifiedLayerNormalization_2 [label=&quot;FLOAT(batch,cache,192)&quot;];
   I_1 -&gt; SimplifiedLayerNormalization_2 [label=&quot;FLOAT(192)&quot;];
   O_3 [label=&quot;a\nFLOAT()&quot;, fillcolor=&quot;#aaaaee&quot;];
@@ -643,40 +644,34 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">SimplifiedLayerNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SimplifiedLayerNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses the nodes equivalent to SimplifiedLayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-1542da5fc92777345c766e2981c2ac36abfacc8e.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-8b755739c6a9017b33745f746f57db29113deda0.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(a,D)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;axis\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; exp&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; axis&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; eps&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_5 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
-  Pow_6 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  ReduceMean_7 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_8 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Sqrt_9 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_10 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_11 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Pow_6 [label=&quot;FLOAT(a,D)&quot;];
-  Constant_2 -&gt; Pow_6 [label=&quot;FLOAT(1)&quot;];
-  Pow_6 -&gt; ReduceMean_7 [label=&quot;FLOAT(a,D)&quot;];
-  Constant_3 -&gt; ReduceMean_7 [label=&quot;INT64(1)&quot;];
-  ReduceMean_7 -&gt; Add_8 [label=&quot;FLOAT(a,1)&quot;];
-  Constant_4 -&gt; Add_8 [label=&quot;FLOAT(1)&quot;];
-  Add_8 -&gt; Sqrt_9 [label=&quot;FLOAT(a,1)&quot;];
-  Constant_5 -&gt; Div_10 [label=&quot;FLOAT(1)&quot;];
-  Sqrt_9 -&gt; Div_10 [label=&quot;FLOAT(a,1)&quot;];
-  Div_10 -&gt; Mul_11;
-  I_0 -&gt; Mul_11 [label=&quot;FLOAT(a,D)&quot;];
-  O_12 [label=&quot;Z\nFLOAT(a,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Div_10 -&gt; O_12;
-  O_13 [label=&quot;Y\nFLOAT(a,D)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_11 -&gt; O_13;
+  Constant_2 [label=&quot;Constant() -&gt; axis&quot;, fillcolor=&quot;#cccccc&quot;];
+  Pow_3 [label=&quot;Pow(., [2.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceMean_4 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_5 [label=&quot;Add(., [1e-06])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sqrt_6 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_7 [label=&quot;Div([1.0], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Pow_3 [label=&quot;FLOAT(a,D)&quot;];
+  Pow_3 -&gt; ReduceMean_4 [label=&quot;FLOAT(a,D)&quot;];
+  Constant_2 -&gt; ReduceMean_4 [label=&quot;INT64(1)&quot;];
+  ReduceMean_4 -&gt; Add_5 [label=&quot;FLOAT(a,1)&quot;];
+  Add_5 -&gt; Sqrt_6 [label=&quot;FLOAT(a,1)&quot;];
+  Sqrt_6 -&gt; Div_7 [label=&quot;FLOAT(a,1)&quot;];
+  Div_7 -&gt; Mul_8;
+  I_0 -&gt; Mul_8 [label=&quot;FLOAT(a,D)&quot;];
+  O_9 [label=&quot;Z\nFLOAT(a,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Div_7 -&gt; O_9;
+  O_10 [label=&quot;Y\nFLOAT(a,D)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_8 -&gt; O_10;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-4586e9a86ff39a4e6861d3a8a146f06ed59eccfa.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-7106536afe639d34fb7ee5936a835368b0e9c2dd.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -685,7 +680,7 @@ will automatically determine the position of the new nodes.</p></li>
   Shape_2 [label=&quot;Shape(.)&quot;, fillcolor=&quot;#d2a81f&quot;];
   Gather_3 [label=&quot;Gather(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   ConstantOfShape_4 [label=&quot;ConstantOfShape(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  SimplifiedLayerNormalization_5 [label=&quot;SimplifiedLayerNormalization(., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SimplifiedLayerNormalization_5 [label=&quot;SimplifiedLayerNormalization\n(., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_0 -&gt; Shape_2 [label=&quot;FLOAT(a,D)&quot;];
   Shape_2 -&gt; Gather_3 [label=&quot;INT64(2)&quot;];
   I_1 -&gt; Gather_3 [label=&quot;INT64(1)&quot;];
@@ -779,7 +774,7 @@ will automatically determine the position of the new nodes.</p></li>
   LayerNormalization_5 -&gt; O_7;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-248f10cda5a0f3ab2e922dc624def4bf0b70787d.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-3fa19d1ec4f48183433799331c3884b2f9ef84a9.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -787,7 +782,7 @@ will automatically determine the position of the new nodes.</p></li>
   I_1 [label=&quot;X1\nFLOAT16(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_2 [label=&quot;scale\nFLOAT16(c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_3 [label=&quot;bias\nFLOAT16(c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  SkipLayerNormalization_4 [label=&quot;com.microsoft.\nSkipLayerNormalization(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SkipLayerNormalization_4 [label=&quot;com.microsoft.\nSkipLayerNormalization\n(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_1 -&gt; SkipLayerNormalization_4 [label=&quot;FLOAT16(a,b,c)&quot;];
   I_0 -&gt; SkipLayerNormalization_4 [label=&quot;FLOAT16(a,b,c)&quot;];
   I_2 -&gt; SkipLayerNormalization_4 [label=&quot;FLOAT16(c)&quot;];
@@ -920,7 +915,7 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Replaces the sequence Add + SimplifiedLayerNormalization
 by SkipSimplifiedLayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-bf672b8184fa8c0b1a1e51575fc9db05c5b4b9ea.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-5549743809a4aa6579e47f72b356cda56d7709c9.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -929,7 +924,7 @@ by SkipSimplifiedLayerNormalization.</p>
   I_2 [label=&quot;X\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   Constant_3 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
   Add_4 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  SimplifiedLayerNormalization_5 [label=&quot;SimplifiedLayerNormalization(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SimplifiedLayerNormalization_5 [label=&quot;SimplifiedLayerNormalization\n(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_2 -&gt; Add_4 [label=&quot;FLOAT(batch,cache,192)&quot;];
   I_1 -&gt; Add_4 [label=&quot;FLOAT(batch,cache,192)&quot;];
   Add_4 -&gt; SimplifiedLayerNormalization_5;
@@ -940,14 +935,14 @@ by SkipSimplifiedLayerNormalization.</p>
   SimplifiedLayerNormalization_5 -&gt; O_7;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-453fb7190b44fee446f189693a4f4d51149d6222.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-eada24edbc2842d4fbe5000f75311bae438bd3d6.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;scale\nFLOAT(192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;skip\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_2 [label=&quot;X\nFLOAT(batch,cache,192)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  SkipSimplifiedLayerNormalization_3 [label=&quot;com.microsoft.\nSkipSimplifiedLayerNormalization(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  SkipSimplifiedLayerNormalization_3 [label=&quot;com.microsoft.\nSkipSimplifiedLayerNormalization\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_2 -&gt; SkipSimplifiedLayerNormalization_3 [label=&quot;FLOAT(batch,cache,192)&quot;];
   I_1 -&gt; SkipSimplifiedLayerNormalization_3 [label=&quot;FLOAT(batch,cache,192)&quot;];
   I_0 -&gt; SkipSimplifiedLayerNormalization_3 [label=&quot;FLOAT(192)&quot;];

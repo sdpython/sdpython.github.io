@@ -9,7 +9,7 @@
         <title>experimental_experiment.xshape.shape_builder_impl - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -589,6 +590,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_known_shapes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_known_ranks</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_known_types</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_</span> <span class="o">=</span> <span class="p">{}</span>
@@ -866,6 +868,42 @@
             <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_value</span></div>
 
+
+<div class="viewcode-block" id="BasicShapeBuilder.set_device">
+<a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.set_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_device</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">],</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the shape for a result. It is exists, it checks the new shape</span>
+<span class="sd">        is equal to the existing one.</span>
+
+<span class="sd">        :param name: name</span>
+<span class="sd">        :param device: an integer or a torch device then converted into an integer</span>
+<span class="sd">        :param exc: raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">exc</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;not implemented when exc=</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span> <span class="k">else</span> <span class="n">device</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">==</span> <span class="n">device</span><span class="p">,</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;device mismatch for name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;new device is </span><span class="si">{</span><span class="n">device</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">device</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name.&quot;</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name.&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unknown device for name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BasicShapeBuilder.has_type">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.has_type">[docs]</a>

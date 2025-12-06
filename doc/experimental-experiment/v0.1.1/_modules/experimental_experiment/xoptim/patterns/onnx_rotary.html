@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -2751,24 +2752,34 @@
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">reshape_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
+        <span class="c1"># Unsqueeze -&gt; Cast -&gt; Reshape -&gt; Mul or Cast -&gt; Unsqueeze -&gt; Reshape -&gt; Mul</span>
+
         <span class="n">cast_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">reshape_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">cast_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">cast_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="n">unsq_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">cast_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">unsq_node</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">unsq_node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Unsqueeze&quot;</span> <span class="ow">or</span> <span class="n">unsq_node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">unsq_node</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">unsq_node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+
+        <span class="k">if</span> <span class="p">{</span><span class="n">cast_node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">unsq_node</span><span class="o">.</span><span class="n">op_type</span><span class="p">}</span> <span class="o">!=</span> <span class="p">{</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="s2">&quot;Unsqueeze&quot;</span><span class="p">}:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="n">cst_position_ids</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">true_unsq_node</span> <span class="o">=</span> <span class="n">unsq_node</span> <span class="k">if</span> <span class="n">unsq_node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Unsqueeze&quot;</span> <span class="k">else</span> <span class="n">cast_node</span>
+        <span class="n">last_node</span> <span class="o">=</span> <span class="n">unsq_node</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">true_unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="n">cst_position_ids</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">true_unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cst_position_ids</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)):</span>
             <span class="c1"># unsqueeze before position ids</span>
             <span class="c1"># (0, 1) -&gt; input is a scalar</span>
             <span class="c1"># (1, ) -&gt; input is a tensor with position_ids</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
-        <span class="n">range_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">range_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">last_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">range_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cst_position_ids</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
@@ -2838,8 +2849,8 @@
         <span class="n">dim_squeeze1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">dim_squeeze2</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">range_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">unsq_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">cast_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">unsq_or_cast_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">cast_or_unsq_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">mul_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">cos</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -2849,7 +2860,10 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="c1"># Builds the name of the local function.</span>
         <span class="n">to</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">cos_cast</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">sin_cast</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">cos_cast</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">i</span>
-        <span class="n">cst_position_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">true_unsq_node</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">unsq_or_cast_node</span> <span class="k">if</span> <span class="n">unsq_or_cast_node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Unsqueeze&quot;</span> <span class="k">else</span> <span class="n">cast_or_unsq_node</span>
+        <span class="p">)</span>
+        <span class="n">cst_position_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">true_unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="n">with_range</span> <span class="o">=</span> <span class="s2">&quot;WithRange&quot;</span> <span class="k">if</span> <span class="n">range_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_operator_name</span><span class="si">}{</span><span class="n">with_range</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2873,8 +2887,8 @@
                         <span class="n">dim_squeeze1</span><span class="p">,</span>
                         <span class="n">dim_squeeze2</span><span class="p">,</span>
                         <span class="n">range_node</span><span class="p">,</span>
-                        <span class="n">unsq_node</span><span class="p">,</span>
-                        <span class="n">cast_node</span><span class="p">,</span>
+                        <span class="n">unsq_or_cast_node</span><span class="p">,</span>
+                        <span class="n">cast_or_unsq_node</span><span class="p">,</span>
                         <span class="n">reshape_node</span><span class="p">,</span>
                     <span class="p">]</span>
                     <span class="k">if</span> <span class="n">n</span>
@@ -2887,7 +2901,7 @@
                 <span class="p">(</span>
                     <span class="p">[</span><span class="n">dim_squeeze1</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dim_squeeze2</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                     <span class="k">if</span> <span class="n">range_node</span>
-                    <span class="k">else</span> <span class="p">[</span><span class="n">unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                    <span class="k">else</span> <span class="p">[</span><span class="n">unsq_or_cast_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                 <span class="p">),</span>
                 <span class="p">[</span>
                     <span class="n">cos_cast</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cos</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>

@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -555,35 +556,29 @@
 </pre></div>
 </div>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-09fe02729097382e4dd358c3553905d6d81fa7ea.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-09e78ab3b09cdff070c0c3e904841aa8762a3ea8.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;B\nFLOAT(8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;X\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   Constant_2 [label=&quot;Constant() -&gt; B&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; sq2&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_5 [label=&quot;Constant() -&gt; half&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_6 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_7 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Erf_8 [label=&quot;Erf(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_9 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_10 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_11 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_1 -&gt; Add_6 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Constant_2 -&gt; Add_6 [label=&quot;FLOAT(8)&quot;];
-  Add_6 -&gt; Div_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Constant_3 -&gt; Div_7 [label=&quot;FLOAT(1)&quot;];
-  Div_7 -&gt; Erf_8 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Erf_8 -&gt; Add_9 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Constant_4 -&gt; Add_9 [label=&quot;FLOAT(1)&quot;];
-  Add_6 -&gt; Mul_10 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Add_9 -&gt; Mul_10 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Mul_10 -&gt; Mul_11 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Constant_5 -&gt; Mul_11 [label=&quot;FLOAT(1)&quot;];
-  O_12 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_11 -&gt; O_12;
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_4 [label=&quot;Div(., [1.4140625])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Erf_5 [label=&quot;Erf(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_6 [label=&quot;Add(., [1.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_7 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_8 [label=&quot;Mul(., [0.5])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Constant_2 -&gt; Add_3 [label=&quot;FLOAT(8)&quot;];
+  Add_3 -&gt; Div_4 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Div_4 -&gt; Erf_5 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Erf_5 -&gt; Add_6 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Add_3 -&gt; Mul_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Add_6 -&gt; Mul_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Mul_7 -&gt; Mul_8 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  O_9 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_8 -&gt; O_9;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-04448b099de84de8fe0ea97f0e9b40a1fad5fcd2.png" alt="digraph {
@@ -674,13 +669,13 @@ will automatically determine the position of the new nodes.</p></li>
   Softmax_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-b9239d346bb9f4c5a6f0f8712f157ce4f98ccd5b.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-4c26fa2dbe019af0173645d405c64031382b1e7f.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(16,8,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;Y\nFLOAT(16,1,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  BiasSoftmax_2 [label=&quot;com.microsoft.\nBiasSoftmax(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  BiasSoftmax_2 [label=&quot;com.microsoft.\nBiasSoftmax\n(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_0 -&gt; BiasSoftmax_2 [label=&quot;FLOAT(16,8,4,8)&quot;];
   I_1 -&gt; BiasSoftmax_2 [label=&quot;FLOAT(16,1,4,8)&quot;];
   O_3 [label=&quot;Z\nFLOAT(16,8,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
@@ -829,30 +824,24 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.activation.</span></span><span class="sig-name descname"><span class="pre">GeluErfPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/activation.html#GeluErfPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Detects the decomposed version of Gelu with Erf.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-e3fe6e5e34d6cb0d293639f0a4a2526fc402b78f.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-45a5ec5d5af5b6d61e200cc8b3be9a9ebffc04ef.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; sq2&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; half&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_4 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Erf_5 [label=&quot;Erf(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_6 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_7 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Div_4 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Constant_1 -&gt; Div_4 [label=&quot;FLOAT(1)&quot;];
-  Div_4 -&gt; Erf_5 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Erf_5 -&gt; Add_6 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Constant_2 -&gt; Add_6 [label=&quot;FLOAT(1)&quot;];
-  I_0 -&gt; Mul_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Add_6 -&gt; Mul_7 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  Constant_3 -&gt; Mul_8 [label=&quot;FLOAT(1)&quot;];
-  Mul_7 -&gt; Mul_8 [label=&quot;FLOAT(2,2,4,8)&quot;];
-  O_9 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_8 -&gt; O_9;
+  Div_1 [label=&quot;Div(., [1.4140625])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Erf_2 [label=&quot;Erf(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_3 [label=&quot;Add(., [1.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_5 [label=&quot;Mul([0.5], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Div_1 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Div_1 -&gt; Erf_2 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Erf_2 -&gt; Add_3 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  I_0 -&gt; Mul_4 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Add_3 -&gt; Mul_4 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  Mul_4 -&gt; Mul_5 [label=&quot;FLOAT(2,2,4,8)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(2,2,4,8)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-c1eb3b997cebd57ab59a9e19e25928aad6732464.png" alt="digraph {
@@ -907,41 +896,31 @@ will automatically determine the position of the new nodes.</p></li>
 (x + 0.044715 * x^3)\right)\right)"/></p>
 </div></div>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-109130c32eff1897a3167980bcb1e4c59e5f30a7.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-43a554a3b39209ccaa82592d84f4de09aafc01de.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;linear_73\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; init10_s1_63&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; init10_s_89&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; init10_s_90&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; init10_s_91&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_5 [label=&quot;Constant() -&gt; init10_s_88&quot;, fillcolor=&quot;#cccccc&quot;];
-  Pow_6 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_7 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_8 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_9 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Tanh_10 [label=&quot;Tanh(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_11 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_12 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_13 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Pow_6 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_1 -&gt; Pow_6 [label=&quot;FLOAT16(1)&quot;];
-  Pow_6 -&gt; Mul_7 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_2 -&gt; Mul_7 [label=&quot;FLOAT16()&quot;];
-  I_0 -&gt; Add_8 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Mul_7 -&gt; Add_8 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Add_8 -&gt; Mul_9 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_3 -&gt; Mul_9 [label=&quot;FLOAT16()&quot;];
-  Mul_9 -&gt; Tanh_10 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Tanh_10 -&gt; Add_11 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_4 -&gt; Add_11 [label=&quot;FLOAT16()&quot;];
-  I_0 -&gt; Mul_12 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_5 -&gt; Mul_12 [label=&quot;FLOAT16()&quot;];
-  Mul_12 -&gt; Mul_13 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Add_11 -&gt; Mul_13 [label=&quot;FLOAT16(4,512,128)&quot;];
-  O_14 [label=&quot;mul_52\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_13 -&gt; O_14;
+  Pow_1 [label=&quot;Pow(., [3.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_2 [label=&quot;Mul(., 0.0447)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_4 [label=&quot;Mul(., 0.798)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Tanh_5 [label=&quot;Tanh(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_6 [label=&quot;Add(., 1.0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_7 [label=&quot;Mul(., 0.5)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Pow_1 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Pow_1 -&gt; Mul_2 [label=&quot;FLOAT16(4,512,128)&quot;];
+  I_0 -&gt; Add_3 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Mul_2 -&gt; Add_3 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Add_3 -&gt; Mul_4 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Mul_4 -&gt; Tanh_5 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Tanh_5 -&gt; Add_6 [label=&quot;FLOAT16(4,512,128)&quot;];
+  I_0 -&gt; Mul_7 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Mul_7 -&gt; Mul_8 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Add_6 -&gt; Mul_8 [label=&quot;FLOAT16(4,512,128)&quot;];
+  O_9 [label=&quot;mul_52\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_8 -&gt; O_9;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-88b99cfda4e722b1e6ac226fa0edd6ff26e824e4.png" alt="digraph {

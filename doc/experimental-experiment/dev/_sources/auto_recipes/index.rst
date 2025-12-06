@@ -47,7 +47,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_untrained_tinyllm_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_untrained_tinyllm.py`
+  :doc:`/auto_recipes/plot_exporter_exporter_untrained_tinyllm`
 
 .. raw:: html
 
@@ -64,7 +64,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_phi35_piece_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_phi35_piece.py`
+  :doc:`/auto_recipes/plot_exporter_exporter_phi35_piece`
 
 .. raw:: html
 
@@ -81,7 +81,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_draft_mode_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_draft_mode.py`
+  :doc:`/auto_recipes/plot_exporter_exporter_draft_mode`
 
 .. raw:: html
 
@@ -98,7 +98,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_reportibility_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_reportibility.py`
+  :doc:`/auto_recipes/plot_exporter_exporter_reportibility`
 
 .. raw:: html
 
@@ -115,7 +115,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_scan_pdist_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_scan_pdist.py`
+  :doc:`/auto_recipes/plot_exporter_exporter_scan_pdist`
 
 .. raw:: html
 
@@ -132,7 +132,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_inplace_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py`
+  :doc:`/auto_recipes/plot_exporter_recipes_c_custom_ops_inplace`
 
 .. raw:: html
 
@@ -149,7 +149,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_fct_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py`
+  :doc:`/auto_recipes/plot_exporter_recipes_c_custom_ops_fct`
 
 .. raw:: html
 
@@ -166,7 +166,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_cond_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py`
+  :doc:`/auto_recipes/plot_exporter_recipes_c_cond`
 
 .. raw:: html
 
@@ -183,7 +183,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_dynpad_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_dynpad.py`
+  :doc:`/auto_recipes/plot_exporter_recipes_c_dynpad`
 
 .. raw:: html
 
@@ -200,7 +200,7 @@ pytorch nightly build should be installed, see
   .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_modules_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py`
+  :doc:`/auto_recipes/plot_exporter_recipes_c_modules`
 
 .. raw:: html
 

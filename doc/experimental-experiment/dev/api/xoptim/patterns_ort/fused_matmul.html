@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -788,25 +789,23 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">FusedMatMulx2Pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#FusedMatMulx2Pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulx2Pattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Div by a scalar consumed by two FusedMatMul.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-8b893a3a9cd25b059e634f429c64a2c70f03cedf.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-5ed11fc8c8eed4a094fb1a989f87727aeaf3f028.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; deux&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_2 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_1 [label=&quot;Div(., [2.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  FusedMatMul_2 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   FusedMatMul_3 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  FusedMatMul_4 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Div_2 [label=&quot;FLOAT(2,2,4,4)&quot;];
-  Constant_1 -&gt; Div_2 [label=&quot;FLOAT(1)&quot;];
-  Div_2 -&gt; FusedMatMul_3 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  I_0 -&gt; Div_1 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  Div_1 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  I_0 -&gt; FusedMatMul_2 [label=&quot;FLOAT(2,2,4,4)&quot;];
   I_0 -&gt; FusedMatMul_3 [label=&quot;FLOAT(2,2,4,4)&quot;];
-  I_0 -&gt; FusedMatMul_4 [label=&quot;FLOAT(2,2,4,4)&quot;];
-  Div_2 -&gt; FusedMatMul_4 [label=&quot;FLOAT(2,2,4,4)&quot;];
-  O_5 [label=&quot;x2\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  FusedMatMul_4 -&gt; O_5;
-  O_6 [label=&quot;x1\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  FusedMatMul_3 -&gt; O_6;
+  Div_1 -&gt; FusedMatMul_3 [label=&quot;FLOAT(2,2,4,4)&quot;];
+  O_4 [label=&quot;x2\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_3 -&gt; O_4;
+  O_5 [label=&quot;x1\nFLOAT(2,2,4,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  FusedMatMul_2 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-2a140ee820774b8c71e49ba0dd9faae20799ce74.png" alt="digraph {
@@ -884,38 +883,34 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">ReshapeGemmPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#ReshapeGemmPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.ReshapeGemmPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Reshape(-1, …) + Gemm into FusedMatMul().</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3039fc74972ae481c06460a03f8c526d1df54e1e.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-7480e184ae3d0de920ec4f2404f3936b61d29664.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;B\nFLOAT(4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;A\nFLOAT(a,b,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Gemm_4 [label=&quot;Gemm(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_1 -&gt; Reshape_3 [label=&quot;FLOAT(a,b,8)&quot;];
-  Constant_2 -&gt; Reshape_3 [label=&quot;INT64(2)&quot;];
-  Reshape_3 -&gt; Gemm_4 [label=&quot;FLOAT(?,8)&quot;];
-  I_0 -&gt; Gemm_4 [label=&quot;FLOAT(4,8)&quot;];
-  O_5 [label=&quot;Y\nFLOAT(f,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Gemm_4 -&gt; O_5;
+  Reshape_2 [label=&quot;Reshape(., [-1, 8])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Gemm_3 [label=&quot;Gemm(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Reshape_2 [label=&quot;FLOAT(a,b,8)&quot;];
+  Reshape_2 -&gt; Gemm_3 [label=&quot;FLOAT(?,8)&quot;];
+  I_0 -&gt; Gemm_3 [label=&quot;FLOAT(4,8)&quot;];
+  O_4 [label=&quot;Y\nFLOAT(f,4)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gemm_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-1a3fa5a22b0c4ab8202088b2cdb1700d7469d179.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-35319fb02184dd88cd9139325469311272227052.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;B\nFLOAT(4,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;A\nFLOAT(a,b,8)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; init7_s2_-1_4&quot;, fillcolor=&quot;#cccccc&quot;];
-  FusedMatMul_3 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_1 -&gt; FusedMatMul_3 [label=&quot;FLOAT(a,b,8)&quot;];
-  I_0 -&gt; FusedMatMul_3 [label=&quot;FLOAT(4,8)&quot;];
-  FusedMatMul_3 -&gt; Reshape_4;
-  Constant_2 -&gt; Reshape_4 [label=&quot;INT64(2)&quot;];
-  O_5 [label=&quot;Y\nFLOAT(f,g)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_4 -&gt; O_5;
+  FusedMatMul_2 [label=&quot;com.microsoft.\nFusedMatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_3 [label=&quot;Reshape(., [-1, 4])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_1 -&gt; FusedMatMul_2 [label=&quot;FLOAT(a,b,8)&quot;];
+  I_0 -&gt; FusedMatMul_2 [label=&quot;FLOAT(4,8)&quot;];
+  FusedMatMul_2 -&gt; Reshape_3;
+  O_4 [label=&quot;Y\nFLOAT(f,g)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.fused_matmul.ReshapeGemmPattern.apply">

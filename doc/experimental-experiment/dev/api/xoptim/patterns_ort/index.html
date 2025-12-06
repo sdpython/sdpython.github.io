@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -594,13 +595,13 @@ It is equal to the following list.</p>
 <td><p>BiasSoftmaxPattern</p></td>
 <td><p>BiasSoftmax</p></td>
 <td><p>1</p></td>
-<td><p>Replaces Softmax(Add(x,y), axis=-1) by BiasSoftmax(x,y,axis=-1)</p></td>
+<td><p>Replaces Softmax(Add(x,y), axis=-1) by BiasSoftmax(x,y,axis=-1)      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
 <td><p>ContribRotaryEmbeddingPattern</p></td>
 <td><p>ContribRotaryEmbedding</p></td>
 <td><p>2</p></td>
-<td><p>Very similar to     <a class="reference internal" href="../patterns/onnx_rotary.html#experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern" title="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern</span></code></a>.</p></td>
+<td><p>Very similar to     <a class="reference internal" href="../patterns/onnx_rotary.html#experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern" title="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern</span></code></a>.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
 <td><p>ContribRotaryEmbedding3DPattern</p></td>
@@ -618,31 +619,31 @@ It is equal to the following list.</p>
 <td><p>GeluErfPattern</p></td>
 <td><p>GeluErf</p></td>
 <td><p>0</p></td>
-<td><p>Detects the decomposed version of Gelu with Erf.</p></td>
+<td><p>Detects the decomposed version of Gelu with Erf.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>6</p></td>
 <td><p>FusedConvPattern</p></td>
 <td><p>FusedConv</p></td>
 <td><p>2</p></td>
-<td><p>Replaces the Conv + Relu into FusedConv.</p></td>
+<td><p>Replaces the Conv + Relu into FusedConv.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>7</p></td>
 <td><p>FastGeluPattern</p></td>
 <td><p>FastGelu</p></td>
 <td><p>1</p></td>
-<td><p>Replaces Gelu by FastGelu.</p></td>
+<td><p>Replaces Gelu by FastGelu.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>8</p></td>
 <td><p>FusedMatMulPattern</p></td>
 <td><p>FusedMatMul</p></td>
 <td><p>2</p></td>
-<td><p>Replaces the sequence Transpose, Matmul into FusedMatMul.</p></td>
+<td><p>Replaces the sequence Transpose, Matmul into FusedMatMul.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>9</p></td>
 <td><p>FusedMatMulx2Pattern</p></td>
 <td><p>FusedMatMulx2</p></td>
 <td><p>3</p></td>
-<td><p>Replaces the sequence Div by a scalar consumed by two FusedMatMul.</p></td>
+<td><p>Replaces the sequence Div by a scalar consumed by two FusedMatMul.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>10</p></td>
 <td><p>FusedMatMulDivPattern</p></td>
@@ -654,7 +655,7 @@ It is equal to the following list.</p>
 <td><p>FusedMatMulTransposePattern</p></td>
 <td><p>FusedMatMulTranspose</p></td>
 <td><p>3</p></td>
-<td><p>Replaces the sequence (Fused)Matmul(A,B) + Transpose     into FusedMatMul(B.T, A.T).</p></td>
+<td><p>Replaces the sequence (Fused)Matmul(A,B) + Transpose     into FusedMatMul(B.T, A.T).      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>12</p></td>
 <td><p>MissingCosSinPattern</p></td>
@@ -672,7 +673,7 @@ It is equal to the following list.</p>
 <td><p>MultiHeadAttention3DPattern</p></td>
 <td><p>MultiHeadAttention3D</p></td>
 <td><p>1</p></td>
-<td><p>Merges multiple nodes into MultiHeadAttention. It assumes pattern     <a class="reference internal" href="../patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern" title="experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern</span></code></a>     was triggered before.</p></td>
+<td><p>Merges multiple nodes into MultiHeadAttention. It assumes pattern     <a class="reference internal" href="../patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern" title="experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern</span></code></a>     was triggered before.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>15</p></td>
 <td><p>OrtBatchNormalizationTrainingPattern</p></td>
@@ -684,37 +685,37 @@ It is equal to the following list.</p>
 <td><p>QuickGeluPattern</p></td>
 <td><p>QuickGelu</p></td>
 <td><p>1</p></td>
-<td><p>Replaces Mul(x, Sigmoid(x)) by QuickGelu(x, alpha=1)</p></td>
+<td><p>Replaces Mul(x, Sigmoid(x)) by QuickGelu(x, alpha=1)      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>17</p></td>
 <td><p>ReshapeGemmPattern</p></td>
 <td><p>ReshapeGemm</p></td>
 <td><p>3</p></td>
-<td><p>Replaces the sequence Reshape(-1, …) + Gemm into FusedMatMul().</p></td>
+<td><p>Replaces the sequence Reshape(-1, …) + Gemm into FusedMatMul().      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>18</p></td>
 <td><p>SimplifiedLayerNormalizationPattern</p></td>
 <td><p>SimplifiedLayerNormalization</p></td>
 <td><p>1</p></td>
-<td><p>Fuses the nodes equivalent to SimplifiedLayerNormalization.</p></td>
+<td><p>Fuses the nodes equivalent to SimplifiedLayerNormalization.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>19</p></td>
 <td><p>SimplifiedLayerNormalizationMulPattern</p></td>
 <td><p>SimplifiedLayerNormalizationMul</p></td>
 <td><p>1</p></td>
-<td><p>Replaces the sequence SimplifiedLayerNormalization + Mul     by SimplifiedLayerNormalization.</p></td>
+<td><p>Replaces the sequence SimplifiedLayerNormalization + Mul     by SimplifiedLayerNormalization.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>20</p></td>
 <td><p>SkipLayerNormalizationPattern</p></td>
 <td><p>SkipLayerNormalization</p></td>
 <td><p>1</p></td>
-<td><p>Replaces the sequence Add + LayerNormalization into SkipLayerNormalization.</p></td>
+<td><p>Replaces the sequence Add + LayerNormalization into SkipLayerNormalization.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>21</p></td>
 <td><p>SkipSimplifiedLayerNormalizationPattern</p></td>
 <td><p>SkipSimplifiedLayerNormalization</p></td>
 <td><p>1</p></td>
-<td><p>Replaces the sequence Add + SimplifiedLayerNormalization     by SkipSimplifiedLayerNormalization.</p></td>
+<td><p>Replaces the sequence Add + SimplifiedLayerNormalization     by SkipSimplifiedLayerNormalization.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-even"><td><p>22</p></td>
 <td><p>SkipSimplifiedLayerNormalizationMulPattern</p></td>
@@ -732,7 +733,7 @@ It is equal to the following list.</p>
 <td><p>TransposeFusedMatMulBPattern</p></td>
 <td><p>TransposeFusedMatMulB</p></td>
 <td><p>3</p></td>
-<td><p>Replaces the sequence Transpose(B, [0, 2, 3, 1] + (Fused)Matmul(A,B)     into Transpose(A, [0, 2, 1, 3]) + FusedMatMul(A, B, transB=1).</p></td>
+<td><p>Replaces the sequence Transpose(B, [0, 2, 3, 1] + (Fused)Matmul(A,B)     into Transpose(A, [0, 2, 1, 3]) + FusedMatMul(A, B, transB=1).      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 </tbody>
 </table>

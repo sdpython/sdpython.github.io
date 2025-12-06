@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -551,7 +552,7 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_attention.</span></span><span class="sig-name descname"><span class="pre">FunctionAttentionPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_attention.html#FunctionAttentionPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Merges Attention nodes into a local function.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-75d20df015eea5622686f6ee258ec4b0e2fd9f9e.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-c58b49f9c54045298d40fb856d40fae587991c2b.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -561,42 +562,37 @@
   I_3 [label=&quot;mask\nBOOL(am,bm,cm,dm)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_4 [label=&quot;query\nFLOAT(aq,bq,cq,dq)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   Constant_5 [label=&quot;Constant() -&gt; scale_sqrt&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_6 [label=&quot;Constant() -&gt; zero&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_7 [label=&quot;Constant() -&gt; minfty&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_9 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_10 [label=&quot;Transpose(., perm=[0, 1, 3, 2])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  MatMul_11 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
-  Where_12 [label=&quot;Where(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_13 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Softmax_14 [label=&quot;Softmax(., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
-  IsNaN_15 [label=&quot;IsNaN(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Where_16 [label=&quot;Where(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  MatMul_17 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
-  I_4 -&gt; Mul_8 [label=&quot;FLOAT(aq,bq,cq,dq)&quot;];
-  Constant_5 -&gt; Mul_8 [label=&quot;FLOAT(1)&quot;];
-  I_1 -&gt; Mul_9 [label=&quot;FLOAT(ak,bk,ck,dk)&quot;];
-  Constant_5 -&gt; Mul_9 [label=&quot;FLOAT(1)&quot;];
-  Mul_9 -&gt; Transpose_10 [label=&quot;FLOAT(ak,bk,ck,dk)&quot;];
-  Mul_8 -&gt; MatMul_11 [label=&quot;FLOAT(aq,bq,cq,dq)&quot;];
-  Transpose_10 -&gt; MatMul_11 [label=&quot;FLOAT(ak,bk,dk,ck)&quot;];
-  I_3 -&gt; Where_12 [label=&quot;BOOL(am,bm,cm,dm)&quot;];
-  Constant_6 -&gt; Where_12 [label=&quot;FLOAT(1)&quot;];
-  Constant_7 -&gt; Where_12 [label=&quot;FLOAT(1)&quot;];
-  MatMul_11 -&gt; Add_13 [label=&quot;FLOAT(?,?,cq,ck)&quot;];
-  Where_12 -&gt; Add_13 [label=&quot;FLOAT(am,bm,cm,dm)&quot;];
-  Add_13 -&gt; Softmax_14 [label=&quot;FLOAT(?,?,?,?)&quot;];
-  Softmax_14 -&gt; IsNaN_15 [label=&quot;FLOAT(?,?,?,?)&quot;];
-  IsNaN_15 -&gt; Where_16 [label=&quot;BOOL(?,?,?,?)&quot;];
-  Constant_6 -&gt; Where_16 [label=&quot;FLOAT(1)&quot;];
-  Softmax_14 -&gt; Where_16 [label=&quot;FLOAT(?,?,?,?)&quot;];
-  Where_16 -&gt; MatMul_17 [label=&quot;FLOAT(?,?,?,?)&quot;];
-  I_0 -&gt; MatMul_17 [label=&quot;FLOAT(av,bv,cv,dv)&quot;];
-  O_18 [label=&quot;Y\nFLOAT(ay,by,cy,dy)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  MatMul_17 -&gt; O_18;
+  Mul_6 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_7 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_8 [label=&quot;Transpose(., perm=[0, 1, 3, 2])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  MatMul_9 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  Where_10 [label=&quot;Where(., [0.0], [-inf])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_11 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Softmax_12 [label=&quot;Softmax(., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  IsNaN_13 [label=&quot;IsNaN(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Where_14 [label=&quot;Where(., [0.0], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  MatMul_15 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  I_4 -&gt; Mul_6 [label=&quot;FLOAT(aq,bq,cq,dq)&quot;];
+  Constant_5 -&gt; Mul_6 [label=&quot;FLOAT(1)&quot;];
+  I_1 -&gt; Mul_7 [label=&quot;FLOAT(ak,bk,ck,dk)&quot;];
+  Constant_5 -&gt; Mul_7 [label=&quot;FLOAT(1)&quot;];
+  Mul_7 -&gt; Transpose_8 [label=&quot;FLOAT(ak,bk,ck,dk)&quot;];
+  Mul_6 -&gt; MatMul_9 [label=&quot;FLOAT(aq,bq,cq,dq)&quot;];
+  Transpose_8 -&gt; MatMul_9 [label=&quot;FLOAT(ak,bk,dk,ck)&quot;];
+  I_3 -&gt; Where_10 [label=&quot;BOOL(am,bm,cm,dm)&quot;];
+  MatMul_9 -&gt; Add_11 [label=&quot;FLOAT(?,?,cq,ck)&quot;];
+  Where_10 -&gt; Add_11 [label=&quot;FLOAT(am,bm,cm,dm)&quot;];
+  Add_11 -&gt; Softmax_12 [label=&quot;FLOAT(?,?,?,?)&quot;];
+  Softmax_12 -&gt; IsNaN_13 [label=&quot;FLOAT(?,?,?,?)&quot;];
+  IsNaN_13 -&gt; Where_14 [label=&quot;BOOL(?,?,?,?)&quot;];
+  Softmax_12 -&gt; Where_14 [label=&quot;FLOAT(?,?,?,?)&quot;];
+  Where_14 -&gt; MatMul_15 [label=&quot;FLOAT(?,?,?,?)&quot;];
+  I_0 -&gt; MatMul_15 [label=&quot;FLOAT(av,bv,cv,dv)&quot;];
+  O_16 [label=&quot;Y\nFLOAT(ay,by,cy,dy)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_15 -&gt; O_16;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-0d0f6211753b573426f1bfea30ca15106e16f4ea.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-7728e8102f95a962ff12b15de1221772655e080a.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -605,7 +601,7 @@
   I_2 [label=&quot;scale_sqrt\nFLOAT(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_3 [label=&quot;mask\nBOOL(am,bm,cm,dm)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_4 [label=&quot;query\nFLOAT(aq,bq,cq,dq)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  LocalAttention_to1_5 [label=&quot;intermediate.\nLocalAttention_to1(., ., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  LocalAttention_to1_5 [label=&quot;intermediate.\nLocalAttention_to1\n(., ., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_4 -&gt; LocalAttention_to1_5 [label=&quot;FLOAT(aq,bq,cq,dq)&quot;];
   I_1 -&gt; LocalAttention_to1_5 [label=&quot;FLOAT(ak,bk,ck,dk)&quot;];
   I_0 -&gt; LocalAttention_to1_5 [label=&quot;FLOAT(av,bv,cv,dv)&quot;];

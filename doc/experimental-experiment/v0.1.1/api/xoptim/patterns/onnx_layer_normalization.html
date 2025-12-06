@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -701,7 +702,7 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">CastLayerNormalizationCastPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#CastLayerNormalizationCastPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Cast is really needed around LayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-bda4e9438d27167ef12dd3424258ebac4a9c6993.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-6435168c5cb4ecdc7baa2a7b923a2f506a7b4116.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -711,7 +712,7 @@ will automatically determine the position of the new nodes.</p></li>
   Constant_3 [label=&quot;Constant() -&gt; scale&quot;, fillcolor=&quot;#cccccc&quot;];
   Constant_4 [label=&quot;Constant() -&gt; bias&quot;, fillcolor=&quot;#cccccc&quot;];
   Cast_5 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  LayerNormalization_6 [label=&quot;LayerNormalization(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_6 [label=&quot;LayerNormalization\n(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
   Cast_7 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_2 -&gt; Cast_5 [label=&quot;FLOAT16(3,3)&quot;];
   Cast_5 -&gt; LayerNormalization_6 [label=&quot;FLOAT(3,3)&quot;];
@@ -722,7 +723,7 @@ will automatically determine the position of the new nodes.</p></li>
   Cast_7 -&gt; O_8;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3dc84866318f999698951b31e5bfc2c0e29dc332.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-72ce96ca6caa6c41f4d9ff8e369b557b27f47206.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -731,7 +732,7 @@ will automatically determine the position of the new nodes.</p></li>
   I_2 [label=&quot;X\nFLOAT16(3,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   Cast_3 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
   Cast_4 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  LayerNormalization_5 [label=&quot;LayerNormalization(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_5 [label=&quot;LayerNormalization\n(., ., ., stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_0 -&gt; Cast_3 [label=&quot;FLOAT(3)&quot;];
   I_1 -&gt; Cast_4 [label=&quot;FLOAT(3)&quot;];
   I_2 -&gt; LayerNormalization_5 [label=&quot;FLOAT16(3,3)&quot;];
@@ -801,46 +802,39 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">LayerNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#LayerNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses nodes of a LayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-8ab7a91054f5db6a5f44ab4c0d5b3d7cc3a74b9c.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-f08a6c23b53b3acb3f9b8f578d5fc31179641d62.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;add_1\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; init7_s1_-1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; init10_s1_&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; init10_s1_2&quot;, fillcolor=&quot;#cccccc&quot;];
-  ReduceMean_4 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Sub_5 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Pow_6 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  ReduceMean_7 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_8 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Sqrt_9 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_10 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; ReduceMean_4 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_1 -&gt; ReduceMean_4 [label=&quot;INT64(1)&quot;];
-  I_0 -&gt; Sub_5 [label=&quot;FLOAT16(4,512,128)&quot;];
-  ReduceMean_4 -&gt; Sub_5 [label=&quot;FLOAT16(4,512,1)&quot;];
-  Sub_5 -&gt; Pow_6 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_2 -&gt; Pow_6 [label=&quot;FLOAT16(1)&quot;];
-  Pow_6 -&gt; ReduceMean_7 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_1 -&gt; ReduceMean_7 [label=&quot;INT64(1)&quot;];
-  ReduceMean_7 -&gt; Add_8 [label=&quot;FLOAT16(4,512,1)&quot;];
-  Constant_3 -&gt; Add_8 [label=&quot;FLOAT16(1)&quot;];
-  Add_8 -&gt; Sqrt_9 [label=&quot;FLOAT16(4,512,1)&quot;];
-  Sub_5 -&gt; Div_10 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Sqrt_9 -&gt; Div_10 [label=&quot;FLOAT16(4,512,1)&quot;];
-  O_11 [label=&quot;_onx_div0\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Div_10 -&gt; O_11;
+  ReduceMean_1 [label=&quot;ReduceMean(., [-1])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sub_2 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Pow_3 [label=&quot;Pow(., [2.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceMean_4 [label=&quot;ReduceMean(., [-1])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_5 [label=&quot;Add(., [0.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sqrt_6 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_7 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; ReduceMean_1 [label=&quot;FLOAT16(4,512,128)&quot;];
+  I_0 -&gt; Sub_2 [label=&quot;FLOAT16(4,512,128)&quot;];
+  ReduceMean_1 -&gt; Sub_2 [label=&quot;FLOAT16(4,512,1)&quot;];
+  Sub_2 -&gt; Pow_3 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Pow_3 -&gt; ReduceMean_4 [label=&quot;FLOAT16(4,512,128)&quot;];
+  ReduceMean_4 -&gt; Add_5 [label=&quot;FLOAT16(4,512,1)&quot;];
+  Add_5 -&gt; Sqrt_6 [label=&quot;FLOAT16(4,512,1)&quot;];
+  Sub_2 -&gt; Div_7 [label=&quot;FLOAT16(4,512,128)&quot;];
+  Sqrt_6 -&gt; Div_7 [label=&quot;FLOAT16(4,512,1)&quot;];
+  O_8 [label=&quot;_onx_div0\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Div_7 -&gt; O_8;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-3f81e25ad60b84fc207cefa3df8902464e0bbc57.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-5f1845656e5e9fbda285546dca332878d7126c28.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;add_1\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; p_model_albert_embeddings_layernorm_weight&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; p_model_albert_embeddings_layernorm_bias&quot;, fillcolor=&quot;#cccccc&quot;];
-  LayerNormalization_3 [label=&quot;LayerNormalization(., ., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_1 [label=&quot;Constant\n() -&gt; p_model_albert_embeddings_layernorm_weight&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_2 [label=&quot;Constant\n() -&gt; p_model_albert_embeddings_layernorm_bias&quot;, fillcolor=&quot;#cccccc&quot;];
+  LayerNormalization_3 [label=&quot;LayerNormalization\n(., ., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_0 -&gt; LayerNormalization_3 [label=&quot;FLOAT16(4,512,128)&quot;];
   Constant_1 -&gt; LayerNormalization_3 [label=&quot;FLOAT16(128)&quot;];
   Constant_2 -&gt; LayerNormalization_3 [label=&quot;FLOAT16(128)&quot;];
@@ -1004,42 +998,36 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">RMSNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#RMSNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses the nodes equivalent to RMSNormalization(23).</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-c6c872ffae07d8943761d2a1ec77ca60e981c047.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-946b9a07b89134c7de63927d747bdfc0d04b8f56.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT16(a,D)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;axis\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; exp&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; axis&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; eps&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_5 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_6 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Pow_7 [label=&quot;Pow(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  ReduceMean_8 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Add_9 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Sqrt_10 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_11 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_12 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Cast_13 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Cast_6 [label=&quot;FLOAT16(a,D)&quot;];
-  Cast_6 -&gt; Pow_7 [label=&quot;FLOAT(a,D)&quot;];
-  Constant_2 -&gt; Pow_7 [label=&quot;FLOAT16(1)&quot;];
-  Pow_7 -&gt; ReduceMean_8 [label=&quot;FLOAT(a,D)&quot;];
-  Constant_3 -&gt; ReduceMean_8 [label=&quot;INT64(1)&quot;];
-  ReduceMean_8 -&gt; Add_9 [label=&quot;FLOAT(a,1)&quot;];
-  Constant_4 -&gt; Add_9 [label=&quot;FLOAT(1)&quot;];
-  Add_9 -&gt; Sqrt_10 [label=&quot;FLOAT(a,1)&quot;];
-  Constant_5 -&gt; Div_11 [label=&quot;FLOAT(1)&quot;];
-  Sqrt_10 -&gt; Div_11 [label=&quot;FLOAT(a,1)&quot;];
-  Div_11 -&gt; Mul_12 [label=&quot;FLOAT(a,1)&quot;];
-  Cast_6 -&gt; Mul_12 [label=&quot;FLOAT(a,D)&quot;];
-  Mul_12 -&gt; Cast_13 [label=&quot;FLOAT(a,D)&quot;];
-  O_14 [label=&quot;Y\nFLOAT16(a,D)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Cast_13 -&gt; O_14;
+  Constant_2 [label=&quot;Constant() -&gt; axis&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_3 [label=&quot;Cast(., to=FLOAT)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Pow_4 [label=&quot;Pow(., [2.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceMean_5 [label=&quot;ReduceMean(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_6 [label=&quot;Add(., [1e-06])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sqrt_7 [label=&quot;Sqrt(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_8 [label=&quot;Div([1.0], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_9 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Cast_10 [label=&quot;Cast(., to=FLOAT16)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Cast_3 [label=&quot;FLOAT16(a,D)&quot;];
+  Cast_3 -&gt; Pow_4 [label=&quot;FLOAT(a,D)&quot;];
+  Pow_4 -&gt; ReduceMean_5 [label=&quot;FLOAT(a,D)&quot;];
+  Constant_2 -&gt; ReduceMean_5 [label=&quot;INT64(1)&quot;];
+  ReduceMean_5 -&gt; Add_6 [label=&quot;FLOAT(a,1)&quot;];
+  Add_6 -&gt; Sqrt_7 [label=&quot;FLOAT(a,1)&quot;];
+  Sqrt_7 -&gt; Div_8 [label=&quot;FLOAT(a,1)&quot;];
+  Div_8 -&gt; Mul_9 [label=&quot;FLOAT(a,1)&quot;];
+  Cast_3 -&gt; Mul_9 [label=&quot;FLOAT(a,D)&quot;];
+  Mul_9 -&gt; Cast_10 [label=&quot;FLOAT(a,D)&quot;];
+  O_11 [label=&quot;Y\nFLOAT16(a,D)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Cast_10 -&gt; O_11;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-b5a2d5872658b94f7bcadef66ee1216de8a90e3e.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-530742f30f51f6f6f8d24360cb95dfab74e1307e.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -1048,7 +1036,7 @@ will automatically determine the position of the new nodes.</p></li>
   Shape_2 [label=&quot;Shape(.)&quot;, fillcolor=&quot;#d2a81f&quot;];
   Gather_3 [label=&quot;Gather(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   ConstantOfShape_4 [label=&quot;ConstantOfShape(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  RMSNormalization_5 [label=&quot;RMSNormalization(., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  RMSNormalization_5 [label=&quot;RMSNormalization\n(., ., axis=-1, stash_type=1)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_0 -&gt; Shape_2 [label=&quot;FLOAT16(a,D)&quot;];
   Shape_2 -&gt; Gather_3 [label=&quot;INT64(2)&quot;];
   I_1 -&gt; Gather_3 [label=&quot;INT64(1)&quot;];

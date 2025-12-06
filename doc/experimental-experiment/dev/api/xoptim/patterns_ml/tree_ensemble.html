@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -647,19 +648,17 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ml.tree_ensemble.</span></span><span class="sig-name descname"><span class="pre">TreeEnsembleRegressorMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ml/tree_ensemble.html#TreeEnsembleRegressorMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces TreeEnsembleRegressor + Mul(., scalar) with TreeEnsembleRegressor.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-bdde09db4d1245b89eced42dd7dd98e905e56f66.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-37428045d6e6a6c0c893a189ced9005219080a2c.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(batch,3)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; cst&quot;, fillcolor=&quot;#cccccc&quot;];
-  TreeEnsembleRegressor_2 [label=&quot;ai.onnx.ml.\nTreeEnsembleRegressor(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_3 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; TreeEnsembleRegressor_2 [label=&quot;FLOAT(batch,3)&quot;];
-  TreeEnsembleRegressor_2 -&gt; Mul_3 [label=&quot;FLOAT(batch,1)&quot;];
-  Constant_1 -&gt; Mul_3 [label=&quot;FLOAT(1)&quot;];
-  O_4 [label=&quot;Y\nFLOAT(batch,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_3 -&gt; O_4;
+  TreeEnsembleRegressor_1 [label=&quot;ai.onnx.ml.\nTreeEnsembleRegressor(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_2 [label=&quot;Mul(., [0.4])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; TreeEnsembleRegressor_1 [label=&quot;FLOAT(batch,3)&quot;];
+  TreeEnsembleRegressor_1 -&gt; Mul_2 [label=&quot;FLOAT(batch,1)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(batch,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-a6868926a97351052c6bd9591bc7614fcdc888b4.png" alt="digraph {

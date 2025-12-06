@@ -48,7 +48,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_custom_backend_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py`
+  :doc:`/auto_examples/plot_torch_custom_backend_101`
 
 .. raw:: html
 
@@ -65,7 +65,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_linreg_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py`
+  :doc:`/auto_examples/plot_torch_linreg_101`
 
 .. raw:: html
 
@@ -82,7 +82,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_optimize_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_optimize_101.py`
+  :doc:`/auto_examples/plot_optimize_101`
 
 .. raw:: html
 
@@ -99,7 +99,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_rewrite_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_rewrite_101.py`
+  :doc:`/auto_examples/plot_rewrite_101`
 
 .. raw:: html
 
@@ -116,7 +116,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_profile_existing_onnx_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py`
+  :doc:`/auto_examples/plot_profile_existing_onnx_101`
 
 .. raw:: html
 
@@ -133,7 +133,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_export_101.py`
+  :doc:`/auto_examples/plot_torch_export_101`
 
 .. raw:: html
 
@@ -150,7 +150,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_onnxscript_102_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py`
+  :doc:`/auto_examples/plot_onnxscript_102`
 
 .. raw:: html
 
@@ -167,7 +167,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_executorch_102_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_executorch_102.py`
+  :doc:`/auto_examples/plot_executorch_102`
 
 .. raw:: html
 
@@ -184,7 +184,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_compile_102_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py`
+  :doc:`/auto_examples/plot_torch_export_compile_102`
 
 .. raw:: html
 
@@ -201,7 +201,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_shape_inference_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_shape_inference.py`
+  :doc:`/auto_examples/plot_shape_inference`
 
 .. raw:: html
 
@@ -218,7 +218,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_201_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_export_201.py`
+  :doc:`/auto_examples/plot_torch_export_201`
 
 .. raw:: html
 
@@ -235,7 +235,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_sklearn_201_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py`
+  :doc:`/auto_examples/plot_torch_sklearn_201`
 
 .. raw:: html
 
@@ -252,7 +252,7 @@ all the graphs, the data used to draw them, and the models.
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_model_to_python_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_model_to_python.py`
+  :doc:`/auto_examples/plot_model_to_python`
 
 .. raw:: html
 

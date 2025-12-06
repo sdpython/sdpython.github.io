@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -614,7 +615,7 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Very similar to
 <a class="reference internal" href="../patterns/onnx_rotary.html#experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern" title="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern</span></code></a>.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-cfefc92205372ad61e416544287f22a7bfd6cc3b.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-72cdc3471211c6c41444d6b697d6b13629c4ec15.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -623,7 +624,7 @@ will automatically determine the position of the new nodes.</p></li>
   I_2 [label=&quot;m2\nFLOAT(1,1,c,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   Concat_3 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
   Concat_4 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
-  HalfRotaryEmbedding_5 [label=&quot;intermediate.\nHalfRotaryEmbedding(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  HalfRotaryEmbedding_5 [label=&quot;intermediate.\nHalfRotaryEmbedding\n(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   I_2 -&gt; Concat_3 [label=&quot;FLOAT(1,1,c,e)&quot;];
   I_1 -&gt; Concat_4 [label=&quot;FLOAT(1,1,c,e)&quot;];
   I_0 -&gt; HalfRotaryEmbedding_5 [label=&quot;FLOAT(a,2,c,2*e)&quot;];
@@ -633,46 +634,37 @@ will automatically determine the position of the new nodes.</p></li>
   HalfRotaryEmbedding_5 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ed1f04c24fba4ec6a96a2176bb55dfc9a5970a35.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-ea079e04c28f128d38336e2a267e0b3fe407be6b.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(a,2,c,2*e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;m1\nFLOAT(1,1,c,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_2 [label=&quot;m2\nFLOAT(1,1,c,e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; init7_s2_0_1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_4 [label=&quot;Constant() -&gt; init7_s_0&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_5 [label=&quot;Constant() -&gt; init7_s_1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_6 [label=&quot;Constant() -&gt; init7_s1_1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Squeeze_7 [label=&quot;Squeeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Squeeze_8 [label=&quot;Squeeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Shape_9 [label=&quot;Shape(., end=1, start=0)&quot;, fillcolor=&quot;#d2a81f&quot;];
-  Shape_10 [label=&quot;Shape(., end=3, start=2)&quot;, fillcolor=&quot;#d2a81f&quot;];
-  Squeeze_11 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Range_12 [label=&quot;Range(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Concat_13 [label=&quot;Concat(., ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Expand_14 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  RotaryEmbedding_15 [label=&quot;com.microsoft.\nRotaryEmbedding(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_2 -&gt; Squeeze_7 [label=&quot;FLOAT(1,1,c,e)&quot;];
-  Constant_3 -&gt; Squeeze_7 [label=&quot;INT64(2)&quot;];
-  I_1 -&gt; Squeeze_8 [label=&quot;FLOAT(1,1,c,e)&quot;];
-  Constant_3 -&gt; Squeeze_8 [label=&quot;INT64(2)&quot;];
-  I_0 -&gt; Shape_9 [label=&quot;FLOAT(a,2,c,2*e)&quot;];
-  I_0 -&gt; Shape_10 [label=&quot;FLOAT(a,2,c,2*e)&quot;];
-  Shape_10 -&gt; Squeeze_11 [label=&quot;INT64(1)&quot;];
-  Constant_4 -&gt; Range_12 [label=&quot;INT64()&quot;];
-  Squeeze_11 -&gt; Range_12 [label=&quot;INT64()&quot;];
-  Constant_5 -&gt; Range_12 [label=&quot;INT64()&quot;];
-  Shape_9 -&gt; Concat_13 [label=&quot;INT64(1)&quot;];
-  Constant_6 -&gt; Concat_13 [label=&quot;INT64(1)&quot;];
-  Range_12 -&gt; Expand_14 [label=&quot;INT64(?)&quot;];
-  Concat_13 -&gt; Expand_14 [label=&quot;INT64(2)&quot;];
-  I_0 -&gt; RotaryEmbedding_15 [label=&quot;FLOAT(a,2,c,2*e)&quot;];
-  Expand_14 -&gt; RotaryEmbedding_15 [label=&quot;INT64(?,?)&quot;];
-  Squeeze_7 -&gt; RotaryEmbedding_15 [label=&quot;FLOAT(c,e)&quot;];
-  Squeeze_8 -&gt; RotaryEmbedding_15 [label=&quot;FLOAT(c,e)&quot;];
-  O_16 [label=&quot;Y\nFLOAT(a,b,c,2*e)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  RotaryEmbedding_15 -&gt; O_16;
+  Squeeze_3 [label=&quot;Squeeze(., [0, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Squeeze_4 [label=&quot;Squeeze(., [0, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Shape_5 [label=&quot;Shape(., end=1, start=0)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Shape_6 [label=&quot;Shape(., end=3, start=2)&quot;, fillcolor=&quot;#d2a81f&quot;];
+  Squeeze_7 [label=&quot;Squeeze(.)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Range_8 [label=&quot;Range(0, ., 1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_9 [label=&quot;Concat(., [1], axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Expand_10 [label=&quot;Expand(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  RotaryEmbedding_11 [label=&quot;com.microsoft.\nRotaryEmbedding\n(., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_2 -&gt; Squeeze_3 [label=&quot;FLOAT(1,1,c,e)&quot;];
+  I_1 -&gt; Squeeze_4 [label=&quot;FLOAT(1,1,c,e)&quot;];
+  I_0 -&gt; Shape_5 [label=&quot;FLOAT(a,2,c,2*e)&quot;];
+  I_0 -&gt; Shape_6 [label=&quot;FLOAT(a,2,c,2*e)&quot;];
+  Shape_6 -&gt; Squeeze_7 [label=&quot;INT64(1)&quot;];
+  Squeeze_7 -&gt; Range_8 [label=&quot;INT64()&quot;];
+  Shape_5 -&gt; Concat_9 [label=&quot;INT64(1)&quot;];
+  Range_8 -&gt; Expand_10 [label=&quot;INT64(?)&quot;];
+  Concat_9 -&gt; Expand_10 [label=&quot;INT64(2)&quot;];
+  I_0 -&gt; RotaryEmbedding_11 [label=&quot;FLOAT(a,2,c,2*e)&quot;];
+  Expand_10 -&gt; RotaryEmbedding_11 [label=&quot;INT64(?,?)&quot;];
+  Squeeze_3 -&gt; RotaryEmbedding_11 [label=&quot;FLOAT(c,e)&quot;];
+  Squeeze_4 -&gt; RotaryEmbedding_11 [label=&quot;FLOAT(c,e)&quot;];
+  O_12 [label=&quot;Y\nFLOAT(a,b,c,2*e)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  RotaryEmbedding_11 -&gt; O_12;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.llm_optim.ContribRotaryEmbeddingPattern.apply">
@@ -737,7 +729,7 @@ will automatically determine the position of the new nodes.</p></li>
 <a class="reference internal" href="../patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern" title="experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern</span></code></a>
 was triggered before.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-d8d6f27d1bd59a10976f58bb9f8010ddadd71eba.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-ef637fa0d8a8e2c8dc4696dd2586b0966f38b6b7.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -747,36 +739,34 @@ was triggered before.</p>
   I_3 [label=&quot;query\nFLOAT(aq,bq,8,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_4 [label=&quot;past_keys\nFLOAT(pak,8,pck,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_5 [label=&quot;keys\nFLOAT(ak,bk,8,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_6 [label=&quot;Constant() -&gt; scale_sqrt&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_6 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
   Transpose_7 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  Transpose_8 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  Concat_9 [label=&quot;Concat(., ., axis=-2)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_10 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  Concat_11 [label=&quot;Concat(., ., axis=-2)&quot;, fillcolor=&quot;#cccccc&quot;];
-  LocalAttention_to1_12 [label=&quot;intermediate.\nLocalAttention_to1(., ., ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_13 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  I_3 -&gt; Transpose_7 [label=&quot;FLOAT(aq,bq,8,64)&quot;];
-  I_5 -&gt; Transpose_8 [label=&quot;FLOAT(ak,bk,8,64)&quot;];
-  I_4 -&gt; Concat_9 [label=&quot;FLOAT(pak,8,pck,64)&quot;];
-  Transpose_8 -&gt; Concat_9 [label=&quot;FLOAT(ak,8,bk,64)&quot;];
-  I_2 -&gt; Transpose_10 [label=&quot;FLOAT(av,bv,8,64)&quot;];
-  I_1 -&gt; Concat_11 [label=&quot;FLOAT(pav,8,pcv,64)&quot;];
-  Transpose_10 -&gt; Concat_11 [label=&quot;FLOAT(av,8,bv,64)&quot;];
-  Transpose_7 -&gt; LocalAttention_to1_12 [label=&quot;FLOAT(aq,8,bq,64)&quot;];
-  Concat_9 -&gt; LocalAttention_to1_12;
-  Concat_11 -&gt; LocalAttention_to1_12;
-  I_0 -&gt; LocalAttention_to1_12 [label=&quot;BOOL(am,1,cm,dm)&quot;];
-  Constant_6 -&gt; LocalAttention_to1_12 [label=&quot;FLOAT(1)&quot;];
-  LocalAttention_to1_12 -&gt; Transpose_13;
-  O_14 [label=&quot;ct_values\nFLOAT(pav,8,pcv+bv,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Concat_11 -&gt; O_14;
-  O_15 [label=&quot;Y\nFLOAT(ay,by,cy,dy)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_13 -&gt; O_15;
-  O_16 [label=&quot;ct_keys\nFLOAT(pak,8,pck+bk,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Concat_9 -&gt; O_16;
+  Concat_8 [label=&quot;Concat(., ., axis=-2)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_9 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Concat_10 [label=&quot;Concat(., ., axis=-2)&quot;, fillcolor=&quot;#cccccc&quot;];
+  LocalAttention_to1_11 [label=&quot;intermediate.\nLocalAttention_to1\n(., ., ., ., [0.31622776])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_12 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_3 -&gt; Transpose_6 [label=&quot;FLOAT(aq,bq,8,64)&quot;];
+  I_5 -&gt; Transpose_7 [label=&quot;FLOAT(ak,bk,8,64)&quot;];
+  I_4 -&gt; Concat_8 [label=&quot;FLOAT(pak,8,pck,64)&quot;];
+  Transpose_7 -&gt; Concat_8 [label=&quot;FLOAT(ak,8,bk,64)&quot;];
+  I_2 -&gt; Transpose_9 [label=&quot;FLOAT(av,bv,8,64)&quot;];
+  I_1 -&gt; Concat_10 [label=&quot;FLOAT(pav,8,pcv,64)&quot;];
+  Transpose_9 -&gt; Concat_10 [label=&quot;FLOAT(av,8,bv,64)&quot;];
+  Transpose_6 -&gt; LocalAttention_to1_11 [label=&quot;FLOAT(aq,8,bq,64)&quot;];
+  Concat_8 -&gt; LocalAttention_to1_11;
+  Concat_10 -&gt; LocalAttention_to1_11;
+  I_0 -&gt; LocalAttention_to1_11 [label=&quot;BOOL(am,1,cm,dm)&quot;];
+  LocalAttention_to1_11 -&gt; Transpose_12;
+  O_13 [label=&quot;ct_values\nFLOAT(pav,8,pcv+bv,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_10 -&gt; O_13;
+  O_14 [label=&quot;Y\nFLOAT(ay,by,cy,dy)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_12 -&gt; O_14;
+  O_15 [label=&quot;ct_keys\nFLOAT(pak,8,pck+bk,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_8 -&gt; O_15;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-570e6656ced11ee73bd85b1825498e21006946a2.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-89f95a3a82bc913d712f0c3d35ed1719f5d20328.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -786,39 +776,29 @@ was triggered before.</p>
   I_3 [label=&quot;query\nFLOAT(aq,bq,8,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_4 [label=&quot;past_keys\nFLOAT(pak,8,pck,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_5 [label=&quot;keys\nFLOAT(ak,bk,8,64)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_6 [label=&quot;Constant() -&gt; init7_s3_0_0_-1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_7 [label=&quot;Constant() -&gt; init1_s1_&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_8 [label=&quot;Constant() -&gt; init1_s1_2&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_9 [label=&quot;Constant() -&gt; init7_s4_0_0_-1_64&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_10 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Reshape_11 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Reshape_12 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Where_13 [label=&quot;Where(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  MultiHeadAttention_14 [label=&quot;com.microsoft.\nMultiHeadAttention(., ., ., , , ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_15 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_3 -&gt; Reshape_10 [label=&quot;FLOAT(aq,bq,8,64)&quot;];
-  Constant_6 -&gt; Reshape_10 [label=&quot;INT64(3)&quot;];
-  I_5 -&gt; Reshape_11 [label=&quot;FLOAT(ak,bk,8,64)&quot;];
-  Constant_6 -&gt; Reshape_11 [label=&quot;INT64(3)&quot;];
-  I_2 -&gt; Reshape_12 [label=&quot;FLOAT(av,bv,8,64)&quot;];
-  Constant_6 -&gt; Reshape_12 [label=&quot;INT64(3)&quot;];
-  I_0 -&gt; Where_13 [label=&quot;BOOL(am,1,cm,dm)&quot;];
-  Constant_7 -&gt; Where_13 [label=&quot;FLOAT(1)&quot;];
-  Constant_8 -&gt; Where_13 [label=&quot;FLOAT(1)&quot;];
-  Reshape_10 -&gt; MultiHeadAttention_14 [label=&quot;FLOAT(aq,bq,512)&quot;];
-  Reshape_11 -&gt; MultiHeadAttention_14 [label=&quot;FLOAT(ak,bk,512)&quot;];
-  Reshape_12 -&gt; MultiHeadAttention_14 [label=&quot;FLOAT(av,bv,512)&quot;];
-  Where_13 -&gt; MultiHeadAttention_14 [label=&quot;FLOAT(am,1,cm,dm)&quot;];
-  I_4 -&gt; MultiHeadAttention_14 [label=&quot;FLOAT(pak,8,pck,64)&quot;];
-  I_1 -&gt; MultiHeadAttention_14 [label=&quot;FLOAT(pav,8,pcv,64)&quot;];
-  MultiHeadAttention_14 -&gt; Reshape_15;
-  Constant_9 -&gt; Reshape_15 [label=&quot;INT64(4)&quot;];
-  O_16 [label=&quot;ct_values\nFLOAT(pav,8,pcv+bv,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  MultiHeadAttention_14 -&gt; O_16;
-  O_17 [label=&quot;Y\nFLOAT(ay,by,cy,dy)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_15 -&gt; O_17;
-  O_18 [label=&quot;ct_keys\nFLOAT(pak,8,pck+bk,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  MultiHeadAttention_14 -&gt; O_18;
+  Reshape_6 [label=&quot;Reshape(., [0, 0, -1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_7 [label=&quot;Reshape(., [0, 0, -1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_8 [label=&quot;Reshape(., [0, 0, -1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Where_9 [label=&quot;Where(., [0.0], [-inf])&quot;, fillcolor=&quot;#cccccc&quot;];
+  MultiHeadAttention_10 [label=&quot;com.microsoft.\nMultiHeadAttention\n(., ., ., , , ., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_11 [label=&quot;Reshape(., [0, 0, -1, 64])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_3 -&gt; Reshape_6 [label=&quot;FLOAT(aq,bq,8,64)&quot;];
+  I_5 -&gt; Reshape_7 [label=&quot;FLOAT(ak,bk,8,64)&quot;];
+  I_2 -&gt; Reshape_8 [label=&quot;FLOAT(av,bv,8,64)&quot;];
+  I_0 -&gt; Where_9 [label=&quot;BOOL(am,1,cm,dm)&quot;];
+  Reshape_6 -&gt; MultiHeadAttention_10 [label=&quot;FLOAT(aq,bq,512)&quot;];
+  Reshape_7 -&gt; MultiHeadAttention_10 [label=&quot;FLOAT(ak,bk,512)&quot;];
+  Reshape_8 -&gt; MultiHeadAttention_10 [label=&quot;FLOAT(av,bv,512)&quot;];
+  Where_9 -&gt; MultiHeadAttention_10 [label=&quot;FLOAT(am,1,cm,dm)&quot;];
+  I_4 -&gt; MultiHeadAttention_10 [label=&quot;FLOAT(pak,8,pck,64)&quot;];
+  I_1 -&gt; MultiHeadAttention_10 [label=&quot;FLOAT(pav,8,pcv,64)&quot;];
+  MultiHeadAttention_10 -&gt; Reshape_11;
+  O_12 [label=&quot;ct_values\nFLOAT(pav,8,pcv+bv,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MultiHeadAttention_10 -&gt; O_12;
+  O_13 [label=&quot;Y\nFLOAT(ay,by,cy,dy)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_11 -&gt; O_13;
+  O_14 [label=&quot;ct_keys\nFLOAT(pak,8,pck+bk,64)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MultiHeadAttention_10 -&gt; O_14;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.llm_optim.MultiHeadAttention3DPattern.apply">

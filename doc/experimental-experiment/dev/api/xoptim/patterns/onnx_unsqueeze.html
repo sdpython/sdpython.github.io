@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -741,21 +742,17 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_unsqueeze.</span></span><span class="sig-name descname"><span class="pre">SqueezeUnsqueezePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_unsqueeze.html#SqueezeUnsqueezePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeUnsqueezePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Squeeze, Unsqueeze by Identity or the other ways around.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ec196a8a2242e04ebe861329104f7da2edda00ad.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-2c6291128e72e66eb0c9f7339cca00218ce9a3cd.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(a,1,1,d)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; axes1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; axes2&quot;, fillcolor=&quot;#cccccc&quot;];
-  Unsqueeze_3 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Squeeze_4 [label=&quot;Squeeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_0 -&gt; Unsqueeze_3 [label=&quot;FLOAT(a,1,1,d)&quot;];
-  Constant_1 -&gt; Unsqueeze_3 [label=&quot;INT64(2)&quot;];
-  Unsqueeze_3 -&gt; Squeeze_4 [label=&quot;FLOAT(a,1,1,1,1,d)&quot;];
-  Constant_2 -&gt; Squeeze_4 [label=&quot;INT64(2)&quot;];
-  O_5 [label=&quot;Y\nFLOAT(a,1,1,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Squeeze_4 -&gt; O_5;
+  Unsqueeze_1 [label=&quot;Unsqueeze(., [1, 2])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Squeeze_2 [label=&quot;Squeeze(., [1, 2])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; Unsqueeze_1 [label=&quot;FLOAT(a,1,1,d)&quot;];
+  Unsqueeze_1 -&gt; Squeeze_2 [label=&quot;FLOAT(a,1,1,1,1,d)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(a,1,1,d)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Squeeze_2 -&gt; O_3;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-23fa227983d24344b9d7c8cbc31bdaa6f6463498.png" alt="digraph {
@@ -830,35 +827,29 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><blockquote>
 <div><p>Replaces the sequence Unsqueeze, Unsqueeze by Unsqueeze.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-918dc93239c7ac907aa888d583eda921c0cd14e4.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-b426c9e540fed1027e9cbf1b492798490bc330b3.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; ii&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; jj&quot;, fillcolor=&quot;#cccccc&quot;];
-  Unsqueeze_3 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Unsqueeze_4 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_0 -&gt; Unsqueeze_3 [label=&quot;FLOAT(a,b)&quot;];
-  Constant_1 -&gt; Unsqueeze_3 [label=&quot;INT64(1)&quot;];
-  Unsqueeze_3 -&gt; Unsqueeze_4 [label=&quot;FLOAT(a,b,1)&quot;];
-  Constant_2 -&gt; Unsqueeze_4 [label=&quot;INT64(1)&quot;];
-  O_5 [label=&quot;Y\nFLOAT(1,1,1,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Unsqueeze_4 -&gt; O_5;
+  Unsqueeze_1 [label=&quot;Unsqueeze(., [2])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Unsqueeze_2 [label=&quot;Unsqueeze(., [3])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; Unsqueeze_1 [label=&quot;FLOAT(a,b)&quot;];
+  Unsqueeze_1 -&gt; Unsqueeze_2 [label=&quot;FLOAT(a,b,1)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(1,1,1,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Unsqueeze_2 -&gt; O_3;
 }" class="graphviz" /></div>
 </div></blockquote>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-596ce4147a13ebcb12c0f6282b5d58a3ea90d047.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-ba9d2ed0d0c180b93fbcf38e93acb3de8ef1d7a9.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; init7_s2_2_3&quot;, fillcolor=&quot;#cccccc&quot;];
-  Unsqueeze_2 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  I_0 -&gt; Unsqueeze_2 [label=&quot;FLOAT(a,b)&quot;];
-  Constant_1 -&gt; Unsqueeze_2 [label=&quot;INT64(2)&quot;];
-  O_3 [label=&quot;Y\nFLOAT(1,1,1,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Unsqueeze_2 -&gt; O_3;
+  Unsqueeze_1 [label=&quot;Unsqueeze(., [2, 3])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; Unsqueeze_1 [label=&quot;FLOAT(a,b)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(1,1,1,1)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Unsqueeze_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.UnsqueezeUnsqueezePattern.apply">

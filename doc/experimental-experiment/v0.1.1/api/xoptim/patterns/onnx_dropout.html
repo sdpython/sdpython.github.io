@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title=".xoptim.patterns.onnx_equal" href="onnx_equal.html"><link rel="prev" title=".xoptim.patterns.onnx_conv" href="onnx_conv.html">
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title=".xoptim.patterns.onnx_equal" href="onnx_equal.html"><link rel="prev" title=".xoptim.patterns.onnx_concat" href="onnx_concat.html">
         <link rel="prefetch" href="../../../_static/logo.png" as="image">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -551,19 +552,15 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_dropout.</span></span><span class="sig-name descname"><span class="pre">DropoutPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_dropout.html#DropoutPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_dropout.DropoutPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Cast is really needed.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-4dbfbaf3a2a08485ba2519aea09fea115c27911f.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-5e06bc544f4fc71c9dfbf4dd7dbc794bfcdb45cc.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;_onx_add02\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_1 [label=&quot;Constant() -&gt; init10_s_3&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; init9_s_&quot;, fillcolor=&quot;#cccccc&quot;];
-  Dropout_3 [label=&quot;Dropout(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Dropout_3 [label=&quot;FLOAT16(4,512,128)&quot;];
-  Constant_1 -&gt; Dropout_3 [label=&quot;FLOAT16()&quot;];
-  Constant_2 -&gt; Dropout_3 [label=&quot;BOOL()&quot;];
-  O_4 [label=&quot;dropout\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Dropout_3 -&gt; O_4;
+  Dropout_1 [label=&quot;Dropout(., 0.0, False)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Dropout_1 [label=&quot;FLOAT16(4,512,128)&quot;];
+  O_2 [label=&quot;dropout\nFLOAT16(4,512,128)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Dropout_1 -&gt; O_2;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-2619805635719f33167c747c53f86bfcbb4b484a.png" alt="digraph {
@@ -648,14 +645,14 @@ will automatically determine the position of the new nodes.</p></li>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="onnx_conv.html">
+          <a class="prev-page" href="onnx_concat.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">.xoptim.patterns.onnx_conv</div>
+                <div class="title">.xoptim.patterns.onnx_concat</div>
                 
               </div>
             </a>

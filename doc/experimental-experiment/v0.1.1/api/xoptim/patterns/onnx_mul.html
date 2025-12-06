@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -551,42 +552,36 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_mul.</span></span><span class="sig-name descname"><span class="pre">MulMulMulScalarPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_mul.html#MulMulMulScalarPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence {Div | Mul} and {Div | Mul} + {Div | Mul} with {Div | Mul} Mul.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-5bea06ce4877b46421c3c8fc09ab298ea2d67736.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-0f40a229cf5ae239610564fcafd035105d0f56c2.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; cst1&quot;, fillcolor=&quot;#cccccc&quot;];
-  Constant_3 [label=&quot;Constant() -&gt; cst2&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_4 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_5 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_6 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_5 -&gt; Mul_4 [label=&quot;FLOAT(a,b)&quot;];
-  Div_6 -&gt; Mul_4 [label=&quot;FLOAT(a,b)&quot;];
-  I_1 -&gt; Div_5 [label=&quot;FLOAT(a,b)&quot;];
-  Constant_2 -&gt; Div_5 [label=&quot;FLOAT(1)&quot;];
-  I_0 -&gt; Div_6 [label=&quot;FLOAT(a,b)&quot;];
-  Constant_3 -&gt; Div_6 [label=&quot;FLOAT(1)&quot;];
-  O_7 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Mul_4 -&gt; O_7;
+  Mul_2 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_3 [label=&quot;Div(., [2.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_4 [label=&quot;Div(., [3.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_3 -&gt; Mul_2 [label=&quot;FLOAT(a,b)&quot;];
+  Div_4 -&gt; Mul_2 [label=&quot;FLOAT(a,b)&quot;];
+  I_1 -&gt; Div_3 [label=&quot;FLOAT(a,b)&quot;];
+  I_0 -&gt; Div_4 [label=&quot;FLOAT(a,b)&quot;];
+  O_5 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_2 -&gt; O_5;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-25bdc33cff825292200698b7483d966620a96dc8.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-b5a44e27e7427daa956df4b969fd8ef505838d67.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;Y\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; init1_s1_&quot;, fillcolor=&quot;#cccccc&quot;];
-  Mul_3 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_4 [label=&quot;Div(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_1 -&gt; Mul_3 [label=&quot;FLOAT(a,b)&quot;];
-  I_0 -&gt; Mul_3 [label=&quot;FLOAT(a,b)&quot;];
-  Mul_3 -&gt; Div_4 [label=&quot;FLOAT(a,b)&quot;];
-  Constant_2 -&gt; Div_4 [label=&quot;FLOAT(1)&quot;];
-  O_5 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Div_4 -&gt; O_5;
+  Mul_2 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_3 [label=&quot;Div(., [6.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_1 -&gt; Mul_2 [label=&quot;FLOAT(a,b)&quot;];
+  I_0 -&gt; Mul_2 [label=&quot;FLOAT(a,b)&quot;];
+  Mul_2 -&gt; Div_3 [label=&quot;FLOAT(a,b)&quot;];
+  O_4 [label=&quot;Z\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Div_3 -&gt; O_4;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern.apply">

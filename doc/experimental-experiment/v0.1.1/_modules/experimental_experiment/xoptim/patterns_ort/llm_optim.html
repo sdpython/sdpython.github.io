@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -789,6 +790,8 @@
         <span class="k">if</span> <span class="n">shape_cos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">shape_sin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="c1"># if shape_cos[0] != 1 or shape_sin[0] != 1:</span>
+        <span class="c1">#    return self.none(node, inspect.currentframe().f_lineno)</span>
+        <span class="c1"># if shape_cos[0] != 1 or shape_sin[0] != 1:</span>
         <span class="c1"># batch size is not 1 because position_ids was involved in the</span>
         <span class="c1"># computation of cos/sin caches.</span>
         <span class="c1">#    return self.none(node, inspect.currentframe().f_lineno)</span>
@@ -977,16 +980,19 @@
             <span class="n">anc_sin</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">sin_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">anc_cos</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">anc_sin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="n">anc_cos</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">anc_sin</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="ow">and</span> <span class="nb">id</span><span class="p">(</span><span class="n">anc_cos</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">anc_sin</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">anc_cos</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-            <span class="p">):</span>
-                <span class="k">if</span> <span class="n">cos_name</span> <span class="o">!=</span> <span class="n">anc_cos</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">sin_name</span> <span class="o">!=</span> <span class="n">anc_cos</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                    <span class="c1"># cos/sin were switched, the pattern should not match at all.</span>
-                    <span class="k">return</span> <span class="p">[]</span>
-                <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anc_cos</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">nodes</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">anc_cos</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">anc_sin</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">id</span><span class="p">(</span><span class="n">anc_cos</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">anc_sin</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">anc_cos</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">cos_name</span> <span class="o">!=</span> <span class="n">anc_cos</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="ow">or</span> <span class="n">sin_name</span> <span class="o">!=</span> <span class="n">anc_cos</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="ow">or</span> <span class="ow">not</span> <span class="n">anc_cos</span><span class="o">.</span><span class="n">op_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;CosSinCache&quot;</span><span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="c1"># cos/sin were switched, the pattern should not match at all.</span>
+                        <span class="k">return</span> <span class="p">[]</span>
+                    <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anc_cos</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">nodes</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># cos/sin are not produced the usual way (CosSinCache)</span>
+                <span class="k">return</span> <span class="p">[]</span>
             <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">anc_cos</span><span class="p">,</span> <span class="n">anc_sin</span><span class="p">])</span>
         <span class="k">return</span> <span class="kc">None</span>
 

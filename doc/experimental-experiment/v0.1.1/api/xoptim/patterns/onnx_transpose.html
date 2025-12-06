@@ -335,6 +335,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -714,44 +715,40 @@ will automatically determine the position of the new nodes.</p></li>
 </pre></div>
 </div>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-563652846568b441c4794a47bafd0ae907a12d9f.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-5e2613543092a3938418b0b19d1bd9a5767fdb8c.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;X\nFLOAT(32,256,28,26)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
-  Transpose_3 [label=&quot;Transpose(., perm=[0, 2, 3, 1])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  Reshape_4 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Transpose_5 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  I_1 -&gt; Transpose_3 [label=&quot;FLOAT(32,256,28,26)&quot;];
-  Transpose_3 -&gt; Reshape_4 [label=&quot;FLOAT(32,28,26,256)&quot;];
-  Constant_2 -&gt; Reshape_4 [label=&quot;INT64(6)&quot;];
-  Reshape_4 -&gt; Transpose_5 [label=&quot;FLOAT(32,2,14,2,13,256)&quot;];
-  O_6 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Reshape_4 -&gt; O_6;
-  O_7 [label=&quot;Y\nFLOAT(32,2,2,14,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_5 -&gt; O_7;
+  Transpose_2 [label=&quot;Transpose(., perm=[0, 2, 3, 1])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Reshape_3 [label=&quot;Reshape(., [32, 2, 14, 2, 13, 256])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Transpose_4 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_1 -&gt; Transpose_2 [label=&quot;FLOAT(32,256,28,26)&quot;];
+  Transpose_2 -&gt; Reshape_3 [label=&quot;FLOAT(32,28,26,256)&quot;];
+  Reshape_3 -&gt; Transpose_4 [label=&quot;FLOAT(32,2,14,2,13,256)&quot;];
+  O_5 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_3 -&gt; O_5;
+  O_6 [label=&quot;Y\nFLOAT(32,2,2,14,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_4 -&gt; O_6;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-ea6b5906b7d62e98a61765b3ba4bc5884d81f857.png" alt="digraph {
+<div class="graphviz"><img src="../../../_images/graphviz-28df9ad470807ddaea82213532a3f81fac0a57a9.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
   I_0 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   I_1 [label=&quot;X\nFLOAT(32,256,28,26)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  Constant_2 [label=&quot;Constant() -&gt; init7_s6_&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_3 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
-  Transpose_4 [label=&quot;Transpose(., perm=[0, 2, 3, 4, 5, 1])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  Transpose_5 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#ee99ee&quot;];
-  I_1 -&gt; Reshape_3 [label=&quot;FLOAT(32,256,28,26)&quot;];
-  Constant_2 -&gt; Reshape_3 [label=&quot;INT64(6)&quot;];
-  Reshape_3 -&gt; Transpose_4 [label=&quot;FLOAT(32,256,2,14,2,13)&quot;];
-  Transpose_4 -&gt; Transpose_5 [label=&quot;FLOAT(32,2,14,2,13,256)&quot;];
-  O_6 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_2 [label=&quot;Reshape(., [32, 256, 2, 14, 2, 13])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Transpose_3 [label=&quot;Transpose(., perm=[0, 2, 3, 4, 5, 1])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  Transpose_4 [label=&quot;Transpose(., perm=[0, 1, 3, 2, 4, 5])&quot;, fillcolor=&quot;#ee99ee&quot;];
+  I_1 -&gt; Reshape_2 [label=&quot;FLOAT(32,256,28,26)&quot;];
+  Reshape_2 -&gt; Transpose_3 [label=&quot;FLOAT(32,256,2,14,2,13)&quot;];
+  Transpose_3 -&gt; Transpose_4 [label=&quot;FLOAT(32,2,14,2,13,256)&quot;];
+  O_5 [label=&quot;xts\nFLOAT(32,2,14,2,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_3 -&gt; O_5;
+  O_6 [label=&quot;Y\nFLOAT(32,2,2,14,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
   Transpose_4 -&gt; O_6;
-  O_7 [label=&quot;Y\nFLOAT(32,2,2,14,13,256)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Transpose_5 -&gt; O_7;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_transpose.TransposeReshapeTransposePattern.apply">
