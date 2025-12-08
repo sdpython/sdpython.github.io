@@ -10,7 +10,7 @@
         <title>.xoptim.patterns - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -739,408 +739,426 @@ It is equal to the following list.</p>
 <td><p>Sin(Concat(x,x)) -&gt; Concat(Sin(x), Sin(x)).      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
 <tr class="row-odd"><td><p>13</p></td>
+<td><p>ConstantToInitializerPattern</p></td>
+<td><p>ConstantToInitializer</p></td>
+<td><p>1</p></td>
+<td><p>Replaces a node Constant by an initializer and a node Identity.      Model with nodes to be fused:      .. gdot</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
 <td><p>ConvBiasNullPattern</p></td>
 <td><p>ConvBiasNull</p></td>
 <td><p>0</p></td>
 <td><p>Checks that a Conv has a null bias.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>14</p></td>
+<tr class="row-odd"><td><p>15</p></td>
 <td><p>DropoutPattern</p></td>
 <td><p>Dropout</p></td>
 <td><p>1</p></td>
 <td><p>Checks that a Cast is really needed.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>15</p></td>
+<tr class="row-even"><td><p>16</p></td>
 <td><p>ExpandPattern</p></td>
 <td><p>Expand</p></td>
 <td><p>0</p></td>
 <td><p>Checks that a Expand is really needed.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>16</p></td>
+<tr class="row-odd"><td><p>17</p></td>
 <td><p>ExpandBroadcastPattern</p></td>
 <td><p>ExpandBroadcast</p></td>
 <td><p>1</p></td>
 <td><p>Checks that a Expand is really needed before an element wise operator.     The objective is to save one allocation and let the next operator     do the expansion by broadcasting one input.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>17</p></td>
+<tr class="row-even"><td><p>18</p></td>
 <td><p>ExpandSwapPattern</p></td>
 <td><p>ExpandSwap</p></td>
 <td><p>1</p></td>
 <td><p>Tries to move a node Expand forward in the graph.     Expand + Exp can be changed into Exp + Expand.     Then Exp applies on a tensor of a smaller or equal size.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>18</p></td>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>GathersSplitPattern</p></td>
+<td><p>GathersSplit</p></td>
+<td><p>1</p></td>
+<td><p>Merges multiple parallel gather into a split followed by unsqueeze.      Model with nodes to be fused:      .. gdot</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
 <td><p>GeluPattern</p></td>
 <td><p>Gelu</p></td>
 <td><p>0</p></td>
 <td><p>Detects the decomposed version of Gelu with Tanh      .. math</p></td>
 </tr>
-<tr class="row-odd"><td><p>19</p></td>
+<tr class="row-odd"><td><p>21</p></td>
 <td><p>IdentityPattern</p></td>
 <td><p>Identity</p></td>
 <td><p>0</p></td>
 <td><p>Replaces operator such as     Div(X, 1), Mul(X, 1), Add(X, 0), Sub(X, 0), Transpose(X, [0, 1, 2, …])     by identity nodes.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>20</p></td>
+<tr class="row-even"><td><p>22</p></td>
 <td><p>LayerNormalizationPattern</p></td>
 <td><p>LayerNormalization</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes of a LayerNormalization.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>21</p></td>
+<tr class="row-odd"><td><p>23</p></td>
 <td><p>LayerNormalizationScalePattern</p></td>
 <td><p>LayerNormalizationScale</p></td>
 <td><p>1</p></td>
 <td><p>Fused LayerNormalization, scale, bias just after.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>22</p></td>
+<tr class="row-even"><td><p>24</p></td>
 <td><p>LeakyReluPattern</p></td>
 <td><p>LeakyRelu</p></td>
 <td><p>0</p></td>
 <td><p>Detects the decomposed version of LeakyRelu.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>23</p></td>
+<tr class="row-odd"><td><p>25</p></td>
 <td><p>MulMulMulScalarPattern</p></td>
 <td><p>MulMulMulScalar</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence {Div | Mul} and {Div | Mul} + {Div | Mul} with {Div | Mul} Mul.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>24</p></td>
+<tr class="row-even"><td><p>26</p></td>
 <td><p>ReduceReshapePattern</p></td>
 <td><p>ReduceReshape</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence Reduce* Reshape if reshape is only     introduces to deal with a dimension kept because keepdims=1.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>25</p></td>
+<tr class="row-odd"><td><p>27</p></td>
 <td><p>ReduceSumNormalizePattern</p></td>
 <td><p>ReduceSumNormalize</p></td>
 <td><p>1</p></td>
 <td><p>Nodes equivalent to a reduction.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>26</p></td>
+<tr class="row-even"><td><p>28</p></td>
 <td><p>ReshapePattern</p></td>
 <td><p>Reshape</p></td>
 <td><p>0</p></td>
 <td><p>Checks that a Reshape is really needed.</p></td>
 </tr>
-<tr class="row-odd"><td><p>27</p></td>
+<tr class="row-odd"><td><p>29</p></td>
 <td><p>ReshapeMatMulReshapePattern</p></td>
 <td><p>ReshapeMatMulReshape</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence Reshape, Matmul, Reshape by Matmul.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>28</p></td>
+<tr class="row-even"><td><p>30</p></td>
 <td><p>Reshape2Of3Pattern</p></td>
 <td><p>Reshape2Of3</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the reshapes around element-wise operators.     It can be 3 or 2 out of 3.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>29</p></td>
+<tr class="row-odd"><td><p>31</p></td>
 <td><p>ReshapeReshapeBinaryPattern</p></td>
 <td><p>ReshapeReshapeBinary</p></td>
 <td><p>1</p></td>
 <td><p>Moves two reshape operators beyond a binary operator     if it is possible.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>30</p></td>
+<tr class="row-even"><td><p>32</p></td>
 <td><p>MatMulAddPattern</p></td>
 <td><p>MatMulAdd</p></td>
 <td><p>3</p></td>
 <td><p>Replaces the sequence MatMul, Add into Gemm.     By default, no reshape is allowed this happens only it is two dimensions.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>31</p></td>
+<tr class="row-odd"><td><p>33</p></td>
 <td><p>GemmTransposePattern</p></td>
 <td><p>GemmTranspose</p></td>
 <td><p>1</p></td>
 <td><p>Replaces Gemm (., constant) by Gemm(., constant’, transB=1)      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>32</p></td>
+<tr class="row-even"><td><p>34</p></td>
 <td><p>MatMulReshape2Of3Pattern</p></td>
 <td><p>MatMulReshape2Of3</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the reshapes around a matmul     It can be 3 or 2 out of 3.     It is similar to     <a class="reference internal" href="onnx_reshape.html#experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern" title="experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern</span></code></a>.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>33</p></td>
+<tr class="row-odd"><td><p>35</p></td>
 <td><p>MulMulMatMulPattern</p></td>
 <td><p>MulMulMatMul</p></td>
 <td><p>1</p></td>
 <td><p>Replaces <code class="docutils literal notranslate"><span class="pre">MatMul(a*c,</span> <span class="pre">b*d)</span></code>     where c and d are constant scalar     by <code class="docutils literal notranslate"><span class="pre">MatMul(a,b)</span> <span class="pre">*</span> <span class="pre">(c,d)</span></code>.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>34</p></td>
+<tr class="row-even"><td><p>36</p></td>
 <td><p>ShapeBasedReshapeIsSqueezePattern</p></td>
 <td><p>ShapeBasedReshapeIsSqueeze</p></td>
 <td><p>0</p></td>
 <td><p>Replaces a replaces by a squeeze or unsqueeze pattern if possible.     It is only available for <code class="docutils literal notranslate"><span class="pre">opset</span> <span class="pre">&gt;=</span> <span class="pre">18</span></code>.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>35</p></td>
+<tr class="row-odd"><td><p>37</p></td>
 <td><p>ShapeBasedStaticExpandPattern</p></td>
 <td><p>ShapeBasedStaticExpand</p></td>
 <td><p>0</p></td>
 <td><p>Compares input and output shapes to tell if the expand     can uses a constant as a second input.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>36</p></td>
+<tr class="row-even"><td><p>38</p></td>
 <td><p>ShapeBasedConcatExpandPattern</p></td>
 <td><p>ShapeBasedConcatExpand</p></td>
 <td><p>1</p></td>
 <td><p>Rewrites Expand(X, concat(…)) if possible.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>37</p></td>
+<tr class="row-odd"><td><p>39</p></td>
 <td><p>ShapeBasedEditDistanceReshapePattern</p></td>
 <td><p>ShapeBasedEditDistanceReshape</p></td>
 <td><p>0</p></td>
 <td><p>Tries to reduce the number of nodes in the sequence Concat + Reshape     by replacing one of the dimension by -1 or 0.     The pattern tries to align shape information to infer a static shape.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>38</p></td>
+<tr class="row-even"><td><p>40</p></td>
 <td><p>ShapeBasedIdentityPattern</p></td>
 <td><p>ShapeBasedIdentity</p></td>
 <td><p>0</p></td>
 <td><p>If a slice leads to the same shape and the step is 1 then it is identity.     In some cases, just known the same is enough to replace them.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>39</p></td>
+<tr class="row-odd"><td><p>41</p></td>
 <td><p>ShapeBasedExpandBroadcastPattern</p></td>
 <td><p>ShapeBasedExpandBroadcast</p></td>
 <td><p>1</p></td>
 <td><p>Similar to     <a class="reference internal" href="onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern" title="experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern</span></code></a>,     but it allows dynamic shapes as well. It does not look into the second     argument of Expand, it just infers than an expand is not needed for     a binary operator following just after.</p></td>
 </tr>
-<tr class="row-even"><td><p>40</p></td>
+<tr class="row-even"><td><p>42</p></td>
 <td><p>ShapeBasedExpandBroadcastMatMulPattern</p></td>
 <td><p>ShapeBasedExpandBroadcastMatMul</p></td>
 <td><p>1</p></td>
 <td><p>Similar to     <a class="reference internal" href="onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern" title="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern</span></code></a>,     but works only with MatMul.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>41</p></td>
+<tr class="row-odd"><td><p>43</p></td>
 <td><p>ShapeBasedExpandCastWhereSwapPattern</p></td>
 <td><p>ShapeBasedExpandCastWhereSwap</p></td>
 <td><p>1</p></td>
 <td><p>Rewrites Where(Cast(X), X, cond).      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>42</p></td>
+<tr class="row-even"><td><p>44</p></td>
 <td><p>ShapeBasedExpandSwapPattern</p></td>
 <td><p>ShapeBasedExpandSwap</p></td>
 <td><p>1</p></td>
 <td><p>Tries to move a node Expand forward in the graph     for a binary operator. The code is similar to     <a class="reference internal" href="onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern" title="experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern</span></code></a>      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>43</p></td>
+<tr class="row-odd"><td><p>45</p></td>
 <td><p>ShapeBasedMatMulToMulPattern</p></td>
 <td><p>ShapeBasedMatMulToMul</p></td>
 <td><p>1</p></td>
 <td><p>MatMul can be replaced by Mul with broadcast. It makes it easier     to detect optimization pattern with Expand operators.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>44</p></td>
+<tr class="row-even"><td><p>46</p></td>
 <td><p>ShapedBasedReshapePattern</p></td>
 <td><p>ShapedBasedReshape</p></td>
 <td><p>0</p></td>
 <td><p>Checks that a Reshape is really needed based on the input shape.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>45</p></td>
+<tr class="row-odd"><td><p>47</p></td>
 <td><p>ShapeBasedSameChildrenPattern</p></td>
 <td><p>ShapeBasedSameChildren</p></td>
 <td><p>0</p></td>
 <td><p>Checks there is no duplicated node doing the same than another one beside.     <a class="reference internal" href="onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern" title="experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern</span></code></a>     checks it is exactly the same.     This one assumes it is exactly the same in some cases such     expand (X, sh1) = expand(X, sh2) if the output shapes are the same.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>46</p></td>
+<tr class="row-even"><td><p>48</p></td>
 <td><p>ShapeBasedShapeShapeAddPattern</p></td>
 <td><p>ShapeBasedShapeShapeAdd</p></td>
 <td><p>0</p></td>
 <td><p>Tries to find another way to get a dimension obtained with the addition of two.</p></td>
 </tr>
-<tr class="row-odd"><td><p>47</p></td>
+<tr class="row-odd"><td><p>49</p></td>
 <td><p>ReshapeReshapePattern</p></td>
 <td><p>ReshapeReshape</p></td>
 <td><p>0</p></td>
 <td><p>Replaces the sequence Reshape, Reshape by Reshape.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>48</p></td>
+<tr class="row-even"><td><p>50</p></td>
 <td><p>RotaryEmbeddingPattern</p></td>
 <td><p>RotaryEmbedding</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes matching RotaryEmbedding(23).      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>49</p></td>
+<tr class="row-odd"><td><p>51</p></td>
 <td><p>SameChildrenPattern</p></td>
 <td><p>SameChildren</p></td>
 <td><p>0</p></td>
 <td><p>Checks there is no duplicated node doing the same than another one beside.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>50</p></td>
+<tr class="row-even"><td><p>52</p></td>
 <td><p>SameChildrenFromInputPattern</p></td>
 <td><p>SameChildrenFromInput</p></td>
 <td><p>0</p></td>
 <td><p>Checks there is no duplicated node doing the same than another     one beside and taking a model input as input.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>51</p></td>
+<tr class="row-odd"><td><p>53</p></td>
 <td><p>SequenceConstructAtPattern</p></td>
 <td><p>SequenceConstructAt</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence <code class="docutils literal notranslate"><span class="pre">SequenceConstruct(x1,</span> <span class="pre">x2,</span> <span class="pre">...)</span></code> followed     by <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">0)</span></code>, <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">1)</span></code>, …      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>52</p></td>
+<tr class="row-even"><td><p>54</p></td>
 <td><p>SliceSlicePattern</p></td>
 <td><p>SliceSlice</p></td>
 <td><p>1</p></td>
 <td><p>Merges consecutive slices if axis are disjoints.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>53</p></td>
+<tr class="row-odd"><td><p>55</p></td>
 <td><p>SlicesSplitPattern</p></td>
 <td><p>SlicesSplit</p></td>
 <td><p>1</p></td>
 <td><p>Merges multiple parallel slices into a split.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>54</p></td>
+<tr class="row-even"><td><p>56</p></td>
 <td><p>SoftmaxCrossEntropyLossCastPattern</p></td>
 <td><p>SoftmaxCrossEntropyLossCast</p></td>
 <td><p>0</p></td>
 <td><p>Detects one decomposed version of SoftmaxCrossEntropyLoss.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>55</p></td>
+<tr class="row-odd"><td><p>57</p></td>
 <td><p>SplitConcatPattern</p></td>
 <td><p>SplitConcat</p></td>
 <td><p>1</p></td>
 <td><p>Replaces Split + Concat into identity if this is equivalent.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>56</p></td>
+<tr class="row-even"><td><p>58</p></td>
 <td><p>SqueezeAddPattern</p></td>
 <td><p>SqueezeAdd</p></td>
 <td><p>0</p></td>
 <td><p>Replaces the sequence Add(Squeeze, Squeeze) by Squeeze(Add).      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>57</p></td>
+<tr class="row-odd"><td><p>59</p></td>
 <td><p>SqueezeBinaryUnsqueezePattern</p></td>
 <td><p>SqueezeBinaryUnsqueeze</p></td>
 <td><p>0</p></td>
 <td><p>Replaces the sequence Squeeze Binary Unsqueeze) by Binary.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>58</p></td>
+<tr class="row-even"><td><p>60</p></td>
 <td><p>SqueezeUnsqueezePattern</p></td>
 <td><p>SqueezeUnsqueeze</p></td>
 <td><p>0</p></td>
 <td><p>Replaces the sequence Squeeze, Unsqueeze by Identity or the other ways around.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>59</p></td>
+<tr class="row-odd"><td><p>61</p></td>
 <td><p>StaticConcatReshapePattern</p></td>
 <td><p>StaticConcatReshape</p></td>
 <td><p>0</p></td>
 <td><p>Tries to reduce the number of nodes in the sequence Concat + Reshape     by replacing one of the dimension by -1.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>60</p></td>
+<tr class="row-even"><td><p>62</p></td>
 <td><p>Sub1MulPattern</p></td>
 <td><p>Sub1Mul</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence <cite>(1 - X) x Y</cite>  by <cite>Y - X x Y</cite> to avoid the creation     of a constant in the graph. <cite>x</cite> means element wise multiplication.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>61</p></td>
+<tr class="row-odd"><td><p>63</p></td>
 <td><p>SwapExpandReshapePattern</p></td>
 <td><p>SwapExpandReshape</p></td>
 <td><p>0</p></td>
 <td><p>Checks if Expand + Reshape can be swapped.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>62</p></td>
+<tr class="row-even"><td><p>64</p></td>
 <td><p>SwapUnaryPattern</p></td>
 <td><p>SwapUnary</p></td>
 <td><p>0</p></td>
 <td><p>Tries to move computation nodes before any transpose or reshape.     That works for unary operator or equivalent to that.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>63</p></td>
+<tr class="row-odd"><td><p>65</p></td>
+<td><p>SwapUnsqueezeTransposePattern</p></td>
+<td><p>SwapUnsqueezeTranspose</p></td>
+<td><p>0</p></td>
+<td><p>Swaps Unsqueeze and Transpose.      Model with nodes to be fused:      .. gdot</p></td>
+</tr>
+<tr class="row-even"><td><p>66</p></td>
 <td><p>SwitchOrderBinaryPattern</p></td>
 <td><p>SwitchOrderBinary</p></td>
 <td><p>1</p></td>
 <td><p>If it makes sense, switches the order of two multiplications     or two addtions if the broadcasting reduces one operator to     a an insignificant number.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>64</p></td>
+<tr class="row-odd"><td><p>67</p></td>
 <td><p>SwitchReshapeActivationPattern</p></td>
 <td><p>SwitchReshapeActivation</p></td>
 <td><p>1</p></td>
 <td><p>Swiches Gelu and Reshape after a Gemm or a MatMul.     Gelu can also be Gelu, Exp, Elu, Relu, Tan,     Tanh, Cos, Cosh, Sin, Sinh, Erf, LeakyRelu, PRelu,     Selu, Softmax, Softplus.     Reshape can also be Transpose.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>65</p></td>
+<tr class="row-even"><td><p>68</p></td>
 <td><p>TransposeEqualReshapePattern</p></td>
 <td><p>TransposeEqualReshape</p></td>
 <td><p>1</p></td>
 <td><p>Replaces a Transpose by a Reshape when switched dimensions are     all equal to 1 but one.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>66</p></td>
+<tr class="row-odd"><td><p>69</p></td>
 <td><p>TransposeGatherPattern</p></td>
 <td><p>TransposeGather</p></td>
 <td><p>0</p></td>
 <td><p>Removes one unnecessary transpose followed by Gather with only one index.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>67</p></td>
+<tr class="row-even"><td><p>70</p></td>
 <td><p>TransposeMatMulPattern</p></td>
 <td><p>TransposeMatMul</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence Transpose, Matmul or Gemm into Gemm      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>68</p></td>
+<tr class="row-odd"><td><p>71</p></td>
 <td><p>TransposeReshapeMatMulPattern</p></td>
 <td><p>TransposeReshapeMatMul</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence Transpose, Reshape, Matmul into     Reshape, Transpose, Matmul if possible. Another optimizer     will optimizes this sequence by using Gemm or better.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>69</p></td>
+<tr class="row-even"><td><p>72</p></td>
 <td><p>TransposeReshapeTransposePattern</p></td>
 <td><p>TransposeReshapeTranspose</p></td>
 <td><p>0</p></td>
 <td><p>Swaps Reshape and Transpose in a sequence such as this one:</p></td>
 </tr>
-<tr class="row-even"><td><p>70</p></td>
+<tr class="row-odd"><td><p>73</p></td>
 <td><p>TransposeTransposePattern</p></td>
 <td><p>TransposeTranspose</p></td>
 <td><p>0</p></td>
 <td><p>Removes two consecutive transpose if the second one put the tensor in origin shape.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-odd"><td><p>71</p></td>
+<tr class="row-even"><td><p>74</p></td>
 <td><p>UnsqueezeEqualPattern</p></td>
 <td><p>UnsqueezeEqual</p></td>
 <td><p>1</p></td>
 <td><p>Replaces the sequence R -&gt; Equal -&gt; Unsqueeze, R -&gt; Unsqueeze,     into R -&gt; Unsqueeze -&gt; Equal.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>72</p></td>
+<tr class="row-odd"><td><p>75</p></td>
 <td><p>UnsqueezeReshapePattern</p></td>
 <td><p>UnsqueezeReshape</p></td>
 <td><p>0</p></td>
 <td><p>Unsqueeze + Reshape into Unsqueeze at a different place if possible.</p></td>
 </tr>
-<tr class="row-odd"><td><p>73</p></td>
+<tr class="row-even"><td><p>76</p></td>
 <td><p>UnsqueezeUnsqueezePattern</p></td>
 <td><p>UnsqueezeUnsqueeze</p></td>
 <td><p>0</p></td>
 <td><p>Replaces the sequence Unsqueeze, Unsqueeze by Unsqueeze.          Model with nodes to be fused:          .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>74</p></td>
+<tr class="row-odd"><td><p>77</p></td>
 <td><p>RotaryConcatPartPattern</p></td>
 <td><p>RotaryConcatPart</p></td>
 <td><p>1</p></td>
 <td><p>Optimizes the following pattern      .. plot</p></td>
 </tr>
-<tr class="row-odd"><td><p>75</p></td>
+<tr class="row-even"><td><p>78</p></td>
 <td><p>FunctionAttentionPattern</p></td>
 <td><p>FunctionAttention</p></td>
 <td><p>0</p></td>
 <td><p>Merges Attention nodes into a local function.      Model with nodes to be fused:      .. gdot</p></td>
 </tr>
-<tr class="row-even"><td><p>76</p></td>
+<tr class="row-odd"><td><p>79</p></td>
 <td><p>FunctionCausalMaskPattern</p></td>
 <td><p>FunctionCausalMask</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes matching CausalMask into a local function.      .. runpython</p></td>
 </tr>
-<tr class="row-odd"><td><p>77</p></td>
+<tr class="row-even"><td><p>80</p></td>
 <td><p>FunctionCausalMaskMulAddPattern</p></td>
 <td><p>FunctionCausalMaskMulAdd</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes matching CausalMask into a local function.      .. runpython</p></td>
 </tr>
-<tr class="row-even"><td><p>78</p></td>
+<tr class="row-odd"><td><p>81</p></td>
 <td><p>FunctionCosSinCachePattern</p></td>
 <td><p>FunctionCosSinCache</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes to simplify the creation of cos/sin caches in LLM.      .. runpython</p></td>
 </tr>
-<tr class="row-odd"><td><p>79</p></td>
+<tr class="row-even"><td><p>82</p></td>
 <td><p>FunctionHalfRotaryEmbeddingPattern</p></td>
 <td><p>FunctionHalfRotaryEmbedding</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes matching half RotaryEmbedding(23) into a local function.      .. runpython</p></td>
 </tr>
-<tr class="row-even"><td><p>80</p></td>
+<tr class="row-odd"><td><p>83</p></td>
 <td><p>RMSNormalizationPattern</p></td>
 <td><p>RMSNormalization</p></td>
 <td><p>1</p></td>

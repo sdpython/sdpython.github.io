@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -563,7 +564,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -577,7 +577,7 @@
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;c&quot;, &quot;d&quot;)))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;i0&quot;],</span>
@@ -585,16 +585,16 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;i1&quot;],</span>
 <span class="sd">                value=onh.from_array(np.array(1, dtype=np.int64), name=&quot;value&quot;),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;SequenceConstruct&quot;, [&quot;X1&quot;, &quot;X2&quot;], [&quot;seq&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;SequenceAt&quot;, [&quot;seq&quot;, &quot;i0&quot;], [&quot;Y1&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;SequenceAt&quot;, [&quot;seq&quot;, &quot;i1&quot;], [&quot;Y2&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;SequenceConstruct&quot;, [&quot;X1&quot;, &quot;X2&quot;], [&quot;seq&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;SequenceAt&quot;, [&quot;seq&quot;, &quot;i0&quot;], [&quot;Y1&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;SequenceAt&quot;, [&quot;seq&quot;, &quot;i1&quot;], [&quot;Y2&quot;]))</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(&quot;Y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;))</span>
 <span class="sd">        )</span>
@@ -625,7 +625,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -638,8 +637,8 @@
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;c&quot;, &quot;d&quot;)))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Identity&quot;, [&quot;X1&quot;], [&quot;Y1&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Identity&quot;, [&quot;X2&quot;], [&quot;Y2&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;X1&quot;], [&quot;Y1&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;X2&quot;], [&quot;Y2&quot;]))</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(&quot;Y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;))</span>
 <span class="sd">        )</span>

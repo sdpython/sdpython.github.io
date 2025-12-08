@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -627,9 +628,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequenceConstructAtPattern</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_shape</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeBasedShapeShapeAddPattern</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_slice</span><span class="w"> </span><span class="kn">import</span> <span class="n">SliceSlicePattern</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_split</span><span class="w"> </span><span class="kn">import</span> <span class="n">SplitConcatPattern</span><span class="p">,</span> <span class="n">SlicesSplitPattern</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_split</span><span class="w"> </span><span class="kn">import</span> <span class="n">GathersSplitPattern</span><span class="p">,</span> <span class="n">SplitConcatPattern</span><span class="p">,</span> <span class="n">SlicesSplitPattern</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_sub</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sub1MulPattern</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_transpose</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SwapUnsqueezeTransposePattern</span><span class="p">,</span>
     <span class="n">TransposeEqualReshapePattern</span><span class="p">,</span>
     <span class="n">TransposeGatherPattern</span><span class="p">,</span>
     <span class="n">TransposeReshapeTransposePattern</span><span class="p">,</span>
@@ -703,6 +705,7 @@
 
 <span class="sd">        print(pattern_table_doc(get_default_patterns(), as_rst=True))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">ConstantToInitializerPattern</span>
     <span class="k">return</span> <span class="p">[</span>
         <span class="c1"># AlmostDoNothingPattern(verbose=verbose),</span>
         <span class="n">BatchNormalizationPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
@@ -718,11 +721,13 @@
         <span class="n">ConcatGatherPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ConcatReshapePattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ConcatTwiceUnaryPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
+        <span class="n">ConstantToInitializerPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ConvBiasNullPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">DropoutPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ExpandPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ExpandBroadcastPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ExpandSwapPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
+        <span class="n">GathersSplitPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">GeluPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">IdentityPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">LayerNormalizationPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
@@ -768,6 +773,7 @@
         <span class="n">Sub1MulPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">SwapExpandReshapePattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">SwapUnaryPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
+        <span class="n">SwapUnsqueezeTransposePattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">SwitchOrderBinaryPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">SwitchReshapeActivationPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">TransposeEqualReshapePattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>

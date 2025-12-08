@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.graph_builder_optim - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -642,6 +642,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">patterns</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">todrop</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_step</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PATTERNSTEP&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">do_not_turn_constant_initializers_maybe_because_of_showing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">do_not_turn_constant_initializers_maybe_because_of_showing</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_exact_same_constant_in_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_exact_same_constant_in_context</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.has_processor">
 <a class="viewcode-back" href="../../../api/xoptim/index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.has_processor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_processor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -1030,6 +1036,20 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AttributeProto</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an attribute for a node.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">att_name</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="n">exc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.get_attribute_with_default">
+<a class="viewcode-back" href="../../../api/xoptim/index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_attribute_with_default">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_attribute_with_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an attribute or its default value if missing.</span>
+
+<span class="sd">        :param node: node</span>
+<span class="sd">        :param name: attribute name</span>
+<span class="sd">        :param default_value: default value</span>
+<span class="sd">        :return: value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default_value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.get_attributes_with_default">

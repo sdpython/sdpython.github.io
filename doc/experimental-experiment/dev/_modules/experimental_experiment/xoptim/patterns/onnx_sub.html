@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_sub - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -564,7 +564,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -577,15 +576,15 @@
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;input3&quot;, onnx.TensorProto.FLOAT, shape=(1,)))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init1_s1_&quot;],</span>
 <span class="sd">                value=onh.from_array(np.array([1.0], dtype=np.float32), name=&quot;value&quot;),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;input3&quot;, &quot;_onx_sub0&quot;], [&quot;_onx_mul0&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Sub&quot;, [&quot;init1_s1_&quot;, &quot;input3&quot;], [&quot;_onx_sub0&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;input3&quot;, &quot;_onx_sub0&quot;], [&quot;_onx_mul0&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Sub&quot;, [&quot;init1_s1_&quot;, &quot;input3&quot;], [&quot;_onx_sub0&quot;]))</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(&quot;_onx_mul0&quot;, onnx.TensorProto.FLOAT, shape=(1,))</span>
 <span class="sd">        )</span>
@@ -613,7 +612,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -626,10 +624,10 @@
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;input3&quot;, onnx.TensorProto.FLOAT, shape=(1,)))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(&quot;Mul&quot;, [&quot;input3&quot;, &quot;input3&quot;], [&quot;Sub1MulPattern--_onx_mul0&quot;])</span>
+<span class="sd">            oh.make_node(&quot;Mul&quot;, [&quot;input3&quot;, &quot;input3&quot;], [&quot;Sub1MulPattern--_onx_mul0&quot;])</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(&quot;Sub&quot;, [&quot;input3&quot;, &quot;Sub1MulPattern--_onx_mul0&quot;], [&quot;_onx_mul0&quot;])</span>
+<span class="sd">            oh.make_node(&quot;Sub&quot;, [&quot;input3&quot;, &quot;Sub1MulPattern--_onx_mul0&quot;], [&quot;_onx_mul0&quot;])</span>
 <span class="sd">        )</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(&quot;_onx_mul0&quot;, onnx.TensorProto.FLOAT, shape=(1,))</span>

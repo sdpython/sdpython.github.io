@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -538,7 +539,8 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns.onnx_constants</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
@@ -561,7 +563,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -573,7 +574,7 @@
 <span class="sd">        sparse_initializers = []</span>
 <span class="sd">        functions = []</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;cst&quot;],</span>
@@ -605,7 +606,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -617,14 +617,14 @@
 <span class="sd">        sparse_initializers = []</span>
 <span class="sd">        functions = []</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;cst_cst2init&quot;],</span>
 <span class="sd">                value=onh.from_array(np.array([1.0, 2.0], dtype=np.float32), name=&quot;value&quot;),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Identity&quot;, [&quot;cst_cst2init&quot;], [&quot;cst&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;cst_cst2init&quot;], [&quot;cst&quot;]))</span>
 <span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;cst&quot;, onnx.TensorProto.FLOAT, shape=(2,)))</span>
 <span class="sd">        graph = oh.make_graph(</span>
 <span class="sd">            nodes,</span>
@@ -649,6 +649,8 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Constant&quot;</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">do_not_turn_constant_initializers_maybe_because_of_showing</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span></div>
 
 
@@ -663,6 +665,7 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">cst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span><span class="si">}</span><span class="s2"> is a constant, it must be possible to evaluate it.&quot;</span>
+        <span class="c1"># if not g.has_exact_same_constant_in_context(node.output[0]):</span>
         <span class="n">init</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_cst2init&quot;</span><span class="p">,</span> <span class="n">cst</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>

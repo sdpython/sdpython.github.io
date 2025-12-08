@@ -9,7 +9,7 @@
         <title>experimental_experiment.xbuilder.graph_builder - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -841,6 +841,11 @@
 <span class="sd">        self._debug_shape_missing = int(os.environ.get(&quot;ONNXSHAPECOMPUTE&quot;, &quot;0&quot;))</span>
 <span class="sd">        self._debug_constant_folding = int(os.environ.get(&quot;ONNXCONSTANTFOLD&quot;, &quot;0&quot;))</span>
 <span class="sd">        self._debug_dyn_dim = os.environ.get(&quot;ONNXDYNDIM&quot;,&quot;&quot;).split(&quot;,&quot;)</span>
+
+<span class="sd">    .. warning:: ModelProto may be modified</span>
+
+<span class="sd">        The builder tries to minimize the copies of protos. The original</span>
+<span class="sd">        model may be modified if the builder is initialized with a model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">MINUS_ONE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
@@ -1034,6 +1039,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">check_empty_source</span> <span class="o">=</span> <span class="n">check_empty_source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_defined_output_names</span> <span class="o">=</span> <span class="n">output_names</span> <span class="ow">or</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">_context</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_do_not_turn_constant_initializers</span> <span class="o">=</span> <span class="kc">False</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_parent</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">_parent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parent_node</span> <span class="o">=</span> <span class="n">_parent</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -1142,6 +1149,66 @@
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">target_opset_or_existing_proto</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GraphBuilder.has_exact_same_constant_in_context">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.has_exact_same_constant_in_context">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_exact_same_constant_in_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells if this constant already exiting in the context of the main graph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">cstp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">is_constant_part_of_previous_context</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cst</span> <span class="ow">and</span> <span class="n">cstp</span><span class="p">:</span>
+            <span class="c1"># Maybe it the same constant and then it is ok.</span>
+            <span class="c1"># Should be compare (only if the cost if not two much)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">shape1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">shape2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">shape1</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+                <span class="n">n_elem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">n_elem</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">:</span>
+                    <span class="c1"># Then the code is not much.</span>
+                    <span class="n">cst1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_constant</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">computed_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">cst2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_constant_from_parent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">computed_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">cst1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cst2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">d</span> <span class="o">=</span> <span class="n">cst1</span> <span class="o">-</span> <span class="n">cst2</span>
+                        <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">==</span> <span class="n">d</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilder.do_not_turn_constant_initializers_maybe_because_of_showing">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.do_not_turn_constant_initializers_maybe_because_of_showing">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">do_not_turn_constant_initializers_maybe_because_of_showing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constants are turned into initializers in the main graph.</span>
+<span class="sd">        It is not possible in function or not always safe inside subgraphs</span>
+<span class="sd">        (due to shadowing).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_not_turn_constant_initializers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">:</span>
+            <span class="c1"># The current behaviour could be improved because</span>
+            <span class="c1"># the name could been create after this subgraph is really used</span>
+            <span class="c1"># in the parent graph.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_exact_same_constant_in_context</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="ow">not</span> <span class="n">r</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">do_not_turn_constant_initializers_maybe_because_of_showing</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
 
 <div class="viewcode-block" id="GraphBuilder.make_subset_builder">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.make_subset_builder">[docs]</a>
@@ -1714,8 +1781,7 @@
                 <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_ints&quot;</span><span class="p">:</span>
                     <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">ints</span><span class="p">),)</span>
                 <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
-                    <span class="n">t</span> <span class="o">=</span> <span class="n">onh</span><span class="o">.</span><span class="n">to_array</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Unexpected or unsupported scenario type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span><span class="si">}</span><span class="s2">: &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">proto</span><span class="si">}</span><span class="s2">, attribute=</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">attribute</span><span class="si">}</span><span class="s2">.&quot;</span>
@@ -1956,16 +2022,26 @@
             <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unable to compute value </span><span class="si">{</span><span class="n">name</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">return</span> <span class="n">possible_value</span>
 
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># So it should be stored in a parent.</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_constant_from_parent</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">computed_value</span><span class="o">=</span><span class="n">computed_value</span><span class="p">,</span>
+                <span class="n">as_shape</span><span class="o">=</span><span class="n">as_shape</span><span class="p">,</span>
+                <span class="n">multiple_outputs</span><span class="o">=</span><span class="n">multiple_outputs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Result </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> was never evaluated within method &#39;constant_folding&#39;.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Result </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> was never evaluated within method &#39;constant_folding&#39;, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;known initializers=</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.get_constant]   J: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">value</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span><span class="p">:</span>
@@ -2019,6 +2095,51 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to convert type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2"> into numpy array.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilder.get_constant_from_parent">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.get_constant_from_parent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_constant_from_parent</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">computed_value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">as_shape</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">multiple_outputs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if this name is part of the previous context.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="n">exc</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;No parent found, unable to retrieve constant name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">get_constant</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">computed_value</span><span class="o">=</span><span class="n">computed_value</span><span class="p">,</span>
+            <span class="n">as_shape</span><span class="o">=</span><span class="n">as_shape</span><span class="p">,</span>
+            <span class="n">multiple_outputs</span><span class="o">=</span><span class="n">multiple_outputs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">get_constant_from_parent</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">computed_value</span><span class="o">=</span><span class="n">computed_value</span><span class="p">,</span>
+            <span class="n">as_shape</span><span class="o">=</span><span class="n">as_shape</span><span class="p">,</span>
+            <span class="n">multiple_outputs</span><span class="o">=</span><span class="n">multiple_outputs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilder.is_constant_part_of_previous_context">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.is_constant_part_of_previous_context">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_constant_part_of_previous_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if this name is part of the previous context and a constant as well.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">is_constant_part_of_previous_context</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilder.is_sequence">
@@ -5740,6 +5861,7 @@
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_known_shapes=</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_known_shapes</span><span class="p">)[:</span><span class="mi">10000</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_known_types=</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_known_types</span><span class="p">)[:</span><span class="mi">10000</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_known_devices=</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_known_devices</span><span class="p">)[:</span><span class="mi">10000</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_context=</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">))[:</span><span class="mi">10000</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">short_sh</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">v</span> <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="k">else</span> <span class="n">string_type</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -6187,9 +6309,11 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The onnx model is empty (no node).</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">inline</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">([],</span> <span class="s2">&quot;before-inline&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_constants</span><span class="p">(</span><span class="s2">&quot;before-inline&quot;</span><span class="p">)</span>
             <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inline_functions</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_constants</span><span class="p">(</span><span class="s2">&quot;after-inline&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">([],</span> <span class="s2">&quot;after-inline&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">stats</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -6815,9 +6939,10 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">step</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">shadowing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;The onnx model is empty (step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">, no node)</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The onnx model is empty (step </span><span class="si">{</span><span class="n">step</span><span class="si">!r}</span><span class="s2">, no node, shadowing=</span><span class="si">{</span><span class="n">shadowing</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="n">known</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">)</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">known</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
@@ -10063,6 +10188,7 @@
 <span class="sd">        :param verbose: verbosity</span>
 <span class="sd">        :return: number of moved initializers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_do_not_turn_constant_initializers</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
             <span class="k">return</span>
 
@@ -10341,6 +10467,8 @@
                             <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;rename_names_input&quot;</span><span class="p">)</span>
                             <span class="k">break</span>
                     <span class="k">continue</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;GraphBuilder.rename_names&quot;</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>

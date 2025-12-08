@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_functions - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -568,7 +568,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 20),</span>
@@ -585,7 +584,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init10_s1_5&quot;],</span>
@@ -593,7 +592,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init10_s_8&quot;],</span>
@@ -603,7 +602,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init10_s_9&quot;],</span>
@@ -611,7 +610,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init10_s_10&quot;],</span>
@@ -619,21 +618,21 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init10_s_7&quot;],</span>
 <span class="sd">                value=onh.from_array(np.array(0.5, dtype=np.float16), name=&quot;value&quot;),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Pow&quot;, [&quot;linear_5&quot;, &quot;init10_s1_5&quot;], [&quot;pow_1&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;pow_1&quot;, &quot;init10_s_8&quot;], [&quot;_onx_mul05&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Add&quot;, [&quot;linear_5&quot;, &quot;_onx_mul05&quot;], [&quot;add_4&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;add_4&quot;, &quot;init10_s_9&quot;], [&quot;_onx_mul06&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Tanh&quot;, [&quot;_onx_mul06&quot;], [&quot;tanh&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Add&quot;, [&quot;tanh&quot;, &quot;init10_s_10&quot;], [&quot;add_5&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;linear_5&quot;, &quot;init10_s_7&quot;], [&quot;_onx_mul04&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;_onx_mul04&quot;, &quot;add_5&quot;], [&quot;mul_4&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Pow&quot;, [&quot;linear_5&quot;, &quot;init10_s1_5&quot;], [&quot;pow_1&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;pow_1&quot;, &quot;init10_s_8&quot;], [&quot;_onx_mul05&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Add&quot;, [&quot;linear_5&quot;, &quot;_onx_mul05&quot;], [&quot;add_4&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;add_4&quot;, &quot;init10_s_9&quot;], [&quot;_onx_mul06&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Tanh&quot;, [&quot;_onx_mul06&quot;], [&quot;tanh&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Add&quot;, [&quot;tanh&quot;, &quot;init10_s_10&quot;], [&quot;add_5&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;linear_5&quot;, &quot;init10_s_7&quot;], [&quot;_onx_mul04&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;_onx_mul04&quot;, &quot;add_5&quot;], [&quot;mul_4&quot;]))</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(&quot;mul_4&quot;, onnx.TensorProto.FLOAT16, shape=(4, 512, 16384))</span>
 <span class="sd">        )</span>
@@ -661,7 +660,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 20),</span>
@@ -677,7 +675,7 @@
 <span class="sd">                &quot;linear_5&quot;, onnx.TensorProto.FLOAT16, shape=(4, 512, 16384)</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Gelu&quot;, [&quot;linear_5&quot;], [&quot;mul_4&quot;], approximate=&quot;tanh&quot;))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Gelu&quot;, [&quot;linear_5&quot;], [&quot;mul_4&quot;], approximate=&quot;tanh&quot;))</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(&quot;mul_4&quot;, onnx.TensorProto.FLOAT16, shape=(4, 512, 16384))</span>
 <span class="sd">        )</span>
@@ -786,7 +784,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -799,7 +796,7 @@
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X1&quot;, onnx.TensorProto.FLOAT, shape=(3, 3)))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;zero&quot;],</span>
@@ -807,7 +804,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;slope2&quot;],</span>
@@ -816,9 +813,9 @@
 <span class="sd">                ),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Greater&quot;, [&quot;X1&quot;, &quot;zero&quot;], [&quot;xpos2&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;X1&quot;, &quot;slope2&quot;], [&quot;xmul2&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Where&quot;, [&quot;xpos2&quot;, &quot;X1&quot;, &quot;xmul2&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Greater&quot;, [&quot;X1&quot;, &quot;zero&quot;], [&quot;xpos2&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;X1&quot;, &quot;slope2&quot;], [&quot;xmul2&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Where&quot;, [&quot;xpos2&quot;, &quot;X1&quot;, &quot;xmul2&quot;], [&quot;Y&quot;]))</span>
 <span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(3, 3)))</span>
 <span class="sd">        graph = oh.make_graph(</span>
 <span class="sd">            nodes,</span>
@@ -844,7 +841,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -856,7 +852,7 @@
 <span class="sd">        sparse_initializers = []</span>
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X1&quot;, onnx.TensorProto.FLOAT, shape=(3, 3)))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;LeakyRelu&quot;, [&quot;X1&quot;], [&quot;Y&quot;], alpha=-0.33000001311302185))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;LeakyRelu&quot;, [&quot;X1&quot;], [&quot;Y&quot;], alpha=-0.33000001311302185))</span>
 <span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(3, 3)))</span>
 <span class="sd">        graph = oh.make_graph(</span>
 <span class="sd">            nodes,</span>
@@ -924,7 +920,152 @@
 <div class="viewcode-block" id="SoftmaxCrossEntropyLossCastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_functions.html#experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SoftmaxCrossEntropyLossCastPattern</span><span class="p">(</span><span class="n">EasyPatternOptimization</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detects one decomposed version of SoftmaxCrossEntropyLoss.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Detects one decomposed version of SoftmaxCrossEntropyLoss.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;I&quot;, onnx.TensorProto.INT64, shape=(&quot;A&quot;,)))</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;A&quot;, &quot;B&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;B&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([-100], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;zeroi&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([0], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;one&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([1], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;zerof&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([0.0], dtype=np.float16), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Equal&quot;, [&quot;I&quot;, &quot;B&quot;], [&quot;eq1&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Not&quot;, [&quot;eq1&quot;], [&quot;neq1&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Where&quot;, [&quot;neq1&quot;, &quot;I&quot;, &quot;zeroi&quot;], [&quot;ind&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Unsqueeze&quot;, [&quot;ind&quot;, &quot;one&quot;], [&quot;flat_ind&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;LogSoftmax&quot;, [&quot;X&quot;], [&quot;logX&quot;], axis=1))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;GatherElements&quot;, [&quot;logX&quot;, &quot;flat_ind&quot;], [&quot;gx&quot;], axis=1))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Squeeze&quot;, [&quot;gx&quot;, &quot;one&quot;], [&quot;flat_gx&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Neg&quot;, [&quot;flat_gx&quot;], [&quot;neg_gx&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Where&quot;, [&quot;neq1&quot;, &quot;neg_gx&quot;, &quot;zerof&quot;], [&quot;w2&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;neq1&quot;], [&quot;neq1f&quot;], to=1))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;ReduceSum&quot;, [&quot;neq1f&quot;], [&quot;red2&quot;], keepdims=0, noop_with_empty_axes=0</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;red2&quot;], [&quot;red2_16&quot;], to=10))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;w2&quot;], [&quot;w2f&quot;], to=1))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;ReduceSum&quot;, [&quot;w2f&quot;], [&quot;red1&quot;], keepdims=0, noop_with_empty_axes=0</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;red1&quot;], [&quot;red1_16&quot;], to=10))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Div&quot;, [&quot;red1_16&quot;, &quot;red2_16&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT16, shape=[]))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;I&quot;, onnx.TensorProto.INT64, shape=(&quot;A&quot;,)))</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;A&quot;, &quot;B&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;SoftmaxCrossEntropyLoss&quot;,</span>
+<span class="sd">                [&quot;X&quot;, &quot;I&quot;],</span>
+<span class="sd">                [&quot;Y&quot;],</span>
+<span class="sd">                ignore_index=-100,</span>
+<span class="sd">                reduction=&quot;mean&quot;,</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT16, shape=[]))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_opset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>

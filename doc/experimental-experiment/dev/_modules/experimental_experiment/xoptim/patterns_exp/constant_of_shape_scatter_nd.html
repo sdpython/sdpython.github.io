@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -564,7 +564,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -592,7 +591,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;ConstantOfShape&quot;,</span>
 <span class="sd">                [&quot;shape&quot;],</span>
 <span class="sd">                [&quot;data&quot;],</span>
@@ -600,7 +599,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;ScatterND&quot;, [&quot;data&quot;, &quot;indices&quot;, &quot;masked_updates&quot;], [&quot;y&quot;], reduction=&quot;add&quot;</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
@@ -633,7 +632,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -661,7 +659,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;ScatterNDOfShape&quot;,</span>
 <span class="sd">                [&quot;shape&quot;, &quot;indices&quot;, &quot;masked_updates&quot;],</span>
 <span class="sd">                [&quot;y&quot;],</span>
@@ -766,7 +764,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -794,7 +791,7 @@
 <span class="sd">            oh.make_tensor_value_info(&quot;shape&quot;, onnx.TensorProto.INT64, shape=(&quot;UNKNOWNDIM&quot;,))</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;zero&quot;],</span>
@@ -802,7 +799,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;mone&quot;],</span>
@@ -810,7 +807,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;ScatterNDOfShape&quot;,</span>
 <span class="sd">                [&quot;shape&quot;, &quot;indices&quot;, &quot;masked_updates&quot;],</span>
 <span class="sd">                [&quot;y&quot;],</span>
@@ -820,11 +817,11 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Where&quot;, [&quot;masked_indices&quot;, &quot;zero&quot;, &quot;updates&quot;], [&quot;masked_updates&quot;]</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Equal&quot;, [&quot;indices&quot;, &quot;mone&quot;], [&quot;masked_indices&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Equal&quot;, [&quot;indices&quot;, &quot;mone&quot;], [&quot;masked_indices&quot;]))</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(</span>
 <span class="sd">                &quot;y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;UNKNOWNDIM6&quot;, &quot;UNKNOWNDIM7&quot;)</span>
@@ -854,7 +851,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -882,7 +878,7 @@
 <span class="sd">            oh.make_tensor_value_info(&quot;shape&quot;, onnx.TensorProto.INT64, shape=(&quot;UNKNOWNDIM&quot;,))</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;MaskedScatterNDOfShape&quot;,</span>
 <span class="sd">                [&quot;shape&quot;, &quot;indices&quot;, &quot;updates&quot;],</span>
 <span class="sd">                [&quot;y&quot;],</span>

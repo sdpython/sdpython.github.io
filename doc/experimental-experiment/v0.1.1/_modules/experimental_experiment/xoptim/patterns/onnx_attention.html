@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -565,7 +566,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -601,7 +601,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;scale_sqrt&quot;],</span>
@@ -611,7 +611,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;zero&quot;],</span>
@@ -619,27 +619,27 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;minfty&quot;],</span>
 <span class="sd">                value=onh.from_array(np.array([-np.inf], dtype=np.float32), name=&quot;value&quot;),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;query&quot;, &quot;scale_sqrt&quot;], [&quot;query_scaled&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Mul&quot;, [&quot;keys&quot;, &quot;scale_sqrt&quot;], [&quot;keys_scaled&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;query&quot;, &quot;scale_sqrt&quot;], [&quot;query_scaled&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;keys&quot;, &quot;scale_sqrt&quot;], [&quot;keys_scaled&quot;]))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Transpose&quot;, [&quot;keys_scaled&quot;], [&quot;keys_scaled_t&quot;], perm=[0, 1, 3, 2]</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;MatMul&quot;, [&quot;query_scaled&quot;, &quot;keys_scaled_t&quot;], [&quot;qk&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Where&quot;, [&quot;mask&quot;, &quot;zero&quot;, &quot;minfty&quot;], [&quot;bias&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Add&quot;, [&quot;qk&quot;, &quot;bias&quot;], [&quot;qkb&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Softmax&quot;, [&quot;qkb&quot;], [&quot;qkbs&quot;], axis=-1))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;IsNaN&quot;, [&quot;qkbs&quot;], [&quot;nans&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Where&quot;, [&quot;nans&quot;, &quot;zero&quot;, &quot;qkbs&quot;], [&quot;filt&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;MatMul&quot;, [&quot;filt&quot;, &quot;values&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;MatMul&quot;, [&quot;query_scaled&quot;, &quot;keys_scaled_t&quot;], [&quot;qk&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Where&quot;, [&quot;mask&quot;, &quot;zero&quot;, &quot;minfty&quot;], [&quot;bias&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Add&quot;, [&quot;qk&quot;, &quot;bias&quot;], [&quot;qkb&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Softmax&quot;, [&quot;qkb&quot;], [&quot;qkbs&quot;], axis=-1))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;IsNaN&quot;, [&quot;qkbs&quot;], [&quot;nans&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Where&quot;, [&quot;nans&quot;, &quot;zero&quot;, &quot;qkbs&quot;], [&quot;filt&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;MatMul&quot;, [&quot;filt&quot;, &quot;values&quot;], [&quot;Y&quot;]))</span>
 <span class="sd">        outputs.append(</span>
 <span class="sd">            oh.make_tensor_value_info(</span>
 <span class="sd">                &quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;ay&quot;, &quot;by&quot;, &quot;cy&quot;, &quot;dy&quot;)</span>
@@ -669,7 +669,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -705,7 +704,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;LocalAttention_to1&quot;,</span>
 <span class="sd">                [&quot;query&quot;, &quot;keys&quot;, &quot;values&quot;, &quot;mask&quot;, &quot;scale_sqrt&quot;],</span>
 <span class="sd">                [&quot;Y&quot;],</span>

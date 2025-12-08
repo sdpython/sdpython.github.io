@@ -334,6 +334,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_concat.html">.xoptim.patterns.onnx_concat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns/onnx_expand.html">.xoptim.patterns.onnx_expand</a></li>
@@ -564,7 +565,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -582,7 +582,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init7_s1_0&quot;],</span>
@@ -590,7 +590,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init7_s1_256&quot;],</span>
@@ -598,7 +598,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init7_s1_3&quot;],</span>
@@ -606,7 +606,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init7_s1_9223372036854775807&quot;],</span>
@@ -616,14 +616,14 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Slice&quot;,</span>
 <span class="sd">                [&quot;transpose_1&quot;, &quot;init7_s1_0&quot;, &quot;init7_s1_256&quot;, &quot;init7_s1_3&quot;],</span>
 <span class="sd">                [&quot;slice_11&quot;],</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Slice&quot;,</span>
 <span class="sd">                [&quot;transpose_1&quot;, &quot;init7_s1_256&quot;, &quot;init7_s1_9223372036854775807&quot;, &quot;init7_s1_3&quot;],</span>
 <span class="sd">                [&quot;slice_12&quot;],</span>
@@ -663,7 +663,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -681,7 +680,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init7_s2_256_256&quot;],</span>
@@ -689,7 +688,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Split&quot;, [&quot;transpose_1&quot;, &quot;init7_s2_256_256&quot;], [&quot;slice_11&quot;, &quot;slice_12&quot;], axis=3</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
@@ -836,11 +835,11 @@
 
 
 
-<div class="viewcode-block" id="SplitConcatPattern">
-<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_split.html#experimental_experiment.xoptim.patterns.onnx_split.SplitConcatPattern">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SplitConcatPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<div class="viewcode-block" id="GathersSplitPattern">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_split.html#experimental_experiment.xoptim.patterns.onnx_split.GathersSplitPattern">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GathersSplitPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replaces Split + Concat into identity if this is equivalent.</span>
+<span class="sd">    Merges multiple parallel gather into a split followed by unsqueeze.</span>
 
 <span class="sd">    Model with nodes to be fused:</span>
 
@@ -857,7 +856,7 @@
 <span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
 <span class="sd">        ]</span>
 <span class="sd">        inputs = []</span>
 <span class="sd">        outputs = []</span>
@@ -865,10 +864,27 @@
 <span class="sd">        initializers = []</span>
 <span class="sd">        sparse_initializers = []</span>
 <span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Split&quot;, [&quot;X&quot;], [&quot;s1&quot;, &quot;s2&quot;], axis=-1, num_outputs=2))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Concat&quot;, [&quot;s1&quot;, &quot;s2&quot;], [&quot;Y&quot;], axis=-1))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2)))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;zero&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array(0, dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;one&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array(1, dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Gather&quot;, [&quot;X&quot;, &quot;zero&quot;], [&quot;x1&quot;], axis=1))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Gather&quot;, [&quot;X&quot;, &quot;one&quot;], [&quot;x2&quot;], axis=1))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;x2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;x1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
 <span class="sd">        graph = oh.make_graph(</span>
 <span class="sd">            nodes,</span>
 <span class="sd">            &quot;pattern&quot;,</span>
@@ -896,6 +912,182 @@
 <span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2)))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;init7_s1_1&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([1], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Split&quot;,</span>
+<span class="sd">                [&quot;X&quot;],</span>
+<span class="sd">                [&quot;GathersSplitPattern--x1&quot;, &quot;GathersSplitPattern--x2&quot;],</span>
+<span class="sd">                axis=1,</span>
+<span class="sd">                num_outputs=2,</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(&quot;Squeeze&quot;, [&quot;GathersSplitPattern--x1&quot;, &quot;init7_s1_1&quot;], [&quot;x1&quot;])</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(&quot;Squeeze&quot;, [&quot;GathersSplitPattern--x2&quot;, &quot;init7_s1_1&quot;], [&quot;x2&quot;])</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;x2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;x1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GathersSplitPattern.match">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_split.html#experimental_experiment.xoptim.patterns.onnx_split.GathersSplitPattern.match">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">matched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Gather&quot;</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">users</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">op</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Gather&quot;</span> <span class="ow">and</span> <span class="n">op</span><span class="o">.</span><span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">axis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">csts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">keep_users</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;user=</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">axis</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="n">a</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">continue</span>
+            <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">cst</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cst</span> <span class="ow">in</span> <span class="n">csts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">rk</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">rank</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rk</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="n">rk</span>
+            <span class="n">csts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
+            <span class="n">keep_users</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="n">users</span> <span class="o">=</span> <span class="n">keep_users</span>
+        <span class="n">sorted_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">csts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sorted_indices</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">csts</span><span class="p">))):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">axis</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_indices</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GathersSplitPattern.apply">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_split.html#experimental_experiment.xoptim.patterns.onnx_split.GathersSplitPattern.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="o">*</span><span class="n">gather_nodes</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+        <span class="c1"># nodes are all slices</span>
+
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span><span class="n">gather_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">gather_nodes</span><span class="p">]</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">gather_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">post_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">axis_init</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">axis</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.axes&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">gather_nodes</span><span class="p">:</span>
+            <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="n">cst</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">post_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                        <span class="s2">&quot;Squeeze&quot;</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="n">axis_init</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="n">cst</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="n">node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+            <span class="s2">&quot;Split&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">gather_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="n">outputs</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span>
+            <span class="n">num_outputs</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">gather_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">node</span><span class="p">,</span> <span class="o">*</span><span class="n">post_nodes</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SplitConcatPattern">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_split.html#experimental_experiment.xoptim.patterns.onnx_split.SplitConcatPattern">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplitConcatPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replaces Split + Concat into identity if this is equivalent.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+
+<span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
 <span class="sd">        ]</span>
 <span class="sd">        inputs = []</span>
@@ -905,7 +1097,45 @@
 <span class="sd">        sparse_initializers = []</span>
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Identity&quot;, [&quot;X&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Split&quot;, [&quot;X&quot;], [&quot;s1&quot;, &quot;s2&quot;], axis=-1, num_outputs=2))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Concat&quot;, [&quot;s1&quot;, &quot;s2&quot;], [&quot;Y&quot;], axis=-1))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;X&quot;], [&quot;Y&quot;]))</span>
 <span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
 <span class="sd">        graph = oh.make_graph(</span>
 <span class="sd">            nodes,</span>

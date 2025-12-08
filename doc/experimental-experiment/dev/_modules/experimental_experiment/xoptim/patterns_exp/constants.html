@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns_exp.constants - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -566,7 +566,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -580,7 +579,7 @@
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;shape&quot;, onnx.TensorProto.INT64, shape=(2,)))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;zero&quot;],</span>
@@ -588,7 +587,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;dim&quot;],</span>
@@ -596,7 +595,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;onei&quot;],</span>
@@ -604,7 +603,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;one&quot;],</span>
@@ -612,7 +611,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;shape1&quot;],</span>
@@ -620,7 +619,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;zerof&quot;],</span>
@@ -628,20 +627,20 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;shape&quot;],</span>
 <span class="sd">                value=onh.from_array(np.array([1024, 1024], dtype=np.int64), name=&quot;value&quot;),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Range&quot;, [&quot;zero&quot;, &quot;dim&quot;, &quot;onei&quot;], [&quot;ar&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Add&quot;, [&quot;ar&quot;, &quot;one&quot;], [&quot;ad&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Reshape&quot;, [&quot;ad&quot;, &quot;shape1&quot;], [&quot;re&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Less&quot;, [&quot;ar&quot;, &quot;re&quot;], [&quot;le&quot;]))</span>
-<span class="sd">        nodes.append(make_node_extended(&quot;Where&quot;, [&quot;le&quot;, &quot;zerof&quot;, &quot;cst&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Range&quot;, [&quot;zero&quot;, &quot;dim&quot;, &quot;onei&quot;], [&quot;ar&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Add&quot;, [&quot;ar&quot;, &quot;one&quot;], [&quot;ad&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Reshape&quot;, [&quot;ad&quot;, &quot;shape1&quot;], [&quot;re&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Less&quot;, [&quot;ar&quot;, &quot;re&quot;], [&quot;le&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Where&quot;, [&quot;le&quot;, &quot;zerof&quot;, &quot;cst&quot;], [&quot;Y&quot;]))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;ConstantOfShape&quot;,</span>
 <span class="sd">                [&quot;shape&quot;],</span>
 <span class="sd">                [&quot;cst&quot;],</span>
@@ -679,7 +678,6 @@
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
-<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
 
 <span class="sd">        opset_imports = [</span>
 <span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
@@ -693,7 +691,7 @@
 <span class="sd">        functions = []</span>
 <span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;shape&quot;, onnx.TensorProto.INT64, shape=(2,)))</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;TriMatrixPattern--&quot;],</span>
@@ -703,7 +701,7 @@
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
-<span class="sd">            make_node_extended(</span>
+<span class="sd">            oh.make_node(</span>
 <span class="sd">                &quot;TriMatrix&quot;,</span>
 <span class="sd">                [&quot;shape&quot;, &quot;TriMatrixPattern--&quot;],</span>
 <span class="sd">                [&quot;Y&quot;],</span>
