@@ -9,7 +9,7 @@
         <title>experimental_experiment.torch_bench._bash_bench_model_runner - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -204,6 +204,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../design/index.html">Design</a><input aria-label="Toggle navigation of Design" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/optimizer_patterns.html">Available Patterns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/backends.html">Dynamo Backends</a></li>
 </ul>
 </li>
@@ -342,6 +343,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_layer_normalization.html">.xoptim.patterns.onnx_layer_normalization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_matmul.html">.xoptim.patterns.onnx_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_mul.html">.xoptim.patterns.onnx_mul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_range.html">.xoptim.patterns.onnx_range</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_reduce.html">.xoptim.patterns.onnx_reduce</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_reshape.html">.xoptim.patterns.onnx_reshape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_rotary.html">.xoptim.patterns.onnx_rotary</a></li>
@@ -394,7 +396,6 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_dynamo/index.html">.torch_dynamo</a><input aria-label="Toggle navigation of .torch_dynamo" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/_dynamo_exporter.html">.torch_dynamo._dynamo_exporter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/backend_helper.html">.torch_dynamo.backend_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/compiled_model.html">.torch_dynamo.compiled_model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/debug_backend.html">.torch_dynamo.debug_backend</a></li>
@@ -500,6 +501,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -1303,7 +1305,6 @@
             <span class="k">assert</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="p">(</span>
                 <span class="kc">None</span><span class="p">,</span>
                 <span class="s2">&quot;none&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;fallback&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;detailed&quot;</span><span class="p">,</span>
             <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;strategy=</span><span class="si">{</span><span class="n">strategy</span><span class="si">!r}</span><span class="s2"> not implemented for </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_onnx_dynamo</span><span class="p">(</span>
@@ -1315,7 +1316,6 @@
                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
                 <span class="n">target_opset</span><span class="o">=</span><span class="n">target_opset</span><span class="p">,</span>
                 <span class="n">detailed</span><span class="o">=</span><span class="n">strategy</span> <span class="o">==</span> <span class="s2">&quot;detailed&quot;</span><span class="p">,</span>
-                <span class="n">fallback</span><span class="o">=</span><span class="n">strategy</span> <span class="o">==</span> <span class="s2">&quot;fallback&quot;</span><span class="p">,</span>
                 <span class="n">patch</span><span class="o">=</span><span class="n">patch</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;eager&quot;</span><span class="p">:</span>
@@ -1364,9 +1364,6 @@
                 <span class="s2">&quot;decall&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;nostrict&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;none&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;fallback&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;fallback-dec&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;fallback-decall&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;jit&quot;</span><span class="p">,</span>
             <span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;strategy=</span><span class="si">{</span><span class="n">strategy</span><span class="si">!r}</span><span class="s2"> not implemented for </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_export</span><span class="p">(</span>
@@ -1384,9 +1381,6 @@
                 <span class="kc">None</span><span class="p">,</span>
                 <span class="s2">&quot;nostrict&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;none&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;fallback&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;fallback-dec&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;fallback-decall&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;jit&quot;</span><span class="p">,</span>
             <span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;strategy=</span><span class="si">{</span><span class="n">strategy</span><span class="si">!r}</span><span class="s2"> not implemented for </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_executorch</span><span class="p">(</span>
@@ -1846,7 +1840,6 @@
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">target_opset</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">fallback</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">patch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">fake_tensor</span><span class="p">,</span> <span class="s2">&quot;fake_tensor not implemented.&quot;</span>
@@ -1868,7 +1861,7 @@
         <span class="n">dyn_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dynamic_shapes</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ModelRunner._to_onnx_dynamo] detailed=</span><span class="si">{</span><span class="n">detailed</span><span class="si">}</span><span class="s2">, fallback=</span><span class="si">{</span><span class="n">fallback</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ModelRunner._to_onnx_dynamo] detailed=</span><span class="si">{</span><span class="n">detailed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ModelRunner._to_onnx_dynamo] additional_kwargs=</span><span class="si">{</span><span class="n">additional_kwargs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ModelRunner._to_onnx_dynamo] dynamic_shapes=</span><span class="si">{</span><span class="n">dyn_shapes</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span>
@@ -1890,13 +1883,12 @@
                 <span class="n">onnx_program</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
                     <span class="n">export_inputs</span><span class="p">,</span>
-                    <span class="n">name</span> <span class="k">if</span> <span class="n">fallback</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="kc">None</span><span class="p">,</span>
                     <span class="n">kwargs</span><span class="o">=</span><span class="n">export_kw_inputs</span><span class="p">,</span>
                     <span class="n">opset_version</span><span class="o">=</span><span class="n">target_opset</span><span class="p">,</span>
                     <span class="n">dynamo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dyn_shapes</span><span class="p">,</span>
-                    <span class="n">fallback</span><span class="o">=</span><span class="n">fallback</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">additional_kwargs</span><span class="p">,</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1906,13 +1898,12 @@
                 <span class="n">onnx_program</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
                     <span class="n">export_inputs</span><span class="p">,</span>
-                    <span class="n">name</span> <span class="k">if</span> <span class="n">fallback</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="kc">None</span><span class="p">,</span>
                     <span class="n">kwargs</span><span class="o">=</span><span class="n">export_kw_inputs</span><span class="p">,</span>
                     <span class="n">opset_version</span><span class="o">=</span><span class="n">target_opset</span><span class="p">,</span>
                     <span class="n">dynamo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dyn_shapes</span><span class="p">,</span>
-                    <span class="n">fallback</span><span class="o">=</span><span class="n">fallback</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">additional_kwargs</span><span class="p">,</span>
                 <span class="p">)</span>
 
@@ -1943,7 +1934,7 @@
                     <span class="s2">&quot;-&quot;</span><span class="p">,</span>
                 <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected optimization scenario </span><span class="si">{</span><span class="n">opt</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="n">opts</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="n">onnx_program</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="n">fallback</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
             <span class="c1"># The model was not save in that case.</span>
             <span class="n">onnx_program</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">load_external_data</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">stats</span>

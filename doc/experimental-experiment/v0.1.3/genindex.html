@@ -203,6 +203,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="design/index.html">Design</a><input aria-label="Toggle navigation of Design" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="design/exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/optimizer_patterns.html">Available Patterns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/backends.html">Dynamo Backends</a></li>
 </ul>
 </li>
@@ -341,6 +342,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/xoptim/patterns/onnx_layer_normalization.html">.xoptim.patterns.onnx_layer_normalization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/xoptim/patterns/onnx_matmul.html">.xoptim.patterns.onnx_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/xoptim/patterns/onnx_mul.html">.xoptim.patterns.onnx_mul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/xoptim/patterns/onnx_range.html">.xoptim.patterns.onnx_range</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/xoptim/patterns/onnx_reduce.html">.xoptim.patterns.onnx_reduce</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/xoptim/patterns/onnx_reshape.html">.xoptim.patterns.onnx_reshape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/xoptim/patterns/onnx_rotary.html">.xoptim.patterns.onnx_rotary</a></li>
@@ -725,6 +727,8 @@
           <li><a href="api/xoptim/patterns/onnx_mul.html#experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern.apply">(experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern method)</a>
 </li>
           <li><a href="api/xoptim/patterns/onnx_mul.html#experimental_experiment.xoptim.patterns.onnx_mul.SwitchOrderBinaryPattern.apply">(experimental_experiment.xoptim.patterns.onnx_mul.SwitchOrderBinaryPattern method)</a>
+</li>
+          <li><a href="api/xoptim/patterns/onnx_range.html#experimental_experiment.xoptim.patterns.onnx_range.SwapRangeAddScalarPattern.apply">(experimental_experiment.xoptim.patterns.onnx_range.SwapRangeAddScalarPattern method)</a>
 </li>
           <li><a href="api/xoptim/patterns/onnx_reduce.html#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern.apply">(experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern method)</a>
 </li>
@@ -1161,10 +1165,10 @@
 </li>
         <li><a href="api/torch_interpreter/_aten_functions.html#experimental_experiment.torch_interpreter._aten_functions.aten_empty_like">aten_empty_like() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
-        <li><a href="api/torch_interpreter/_aten_functions.html#experimental_experiment.torch_interpreter._aten_functions.aten_empty_memory_format">aten_empty_memory_format() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/torch_interpreter/_aten_functions.html#experimental_experiment.torch_interpreter._aten_functions.aten_empty_memory_format">aten_empty_memory_format() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
+</li>
         <li><a href="api/torch_interpreter/_aten_functions.html#experimental_experiment.torch_interpreter._aten_functions.aten_empty_permuted">aten_empty_permuted() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
         <li><a href="api/torch_interpreter/_aten_functions.html#experimental_experiment.torch_interpreter._aten_functions.aten_empty_strided">aten_empty_strided() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
@@ -3005,6 +3009,13 @@
 </li>
         </ul></li>
         <li>
+    experimental_experiment.xoptim.patterns.onnx_range
+
+        <ul>
+          <li><a href="api/xoptim/patterns/onnx_range.html#module-experimental_experiment.xoptim.patterns.onnx_range">module</a>
+</li>
+        </ul></li>
+        <li>
     experimental_experiment.xoptim.patterns.onnx_reduce
 
         <ul>
@@ -3701,8 +3712,6 @@
         </ul></li>
         <li><a href="api/helpers.html#experimental_experiment.helpers.get_sig_kwargs">get_sig_kwargs() (in module experimental_experiment.helpers)</a>
 </li>
-        <li><a href="api/torch_bench/_bash_bench_models_helper.html#experimental_experiment.torch_bench._bash_bench_models_helper.get_speech2text2_causal_ml_not_trained_model">get_speech2text2_causal_ml_not_trained_model() (in module experimental_experiment.torch_bench._bash_bench_models_helper)</a>
-</li>
         <li><a href="api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.get_submodule_name">get_submodule_name() (experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter method)</a>
 </li>
         <li><a href="api/gradient/loss_helper.html#experimental_experiment.gradient.loss_helper.get_train_initializer">get_train_initializer() (in module experimental_experiment.gradient.loss_helper)</a>
@@ -4151,6 +4160,8 @@
           <li><a href="api/xoptim/patterns/onnx_mul.html#experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern.match">(experimental_experiment.xoptim.patterns.onnx_mul.MulMulMulScalarPattern method)</a>
 </li>
           <li><a href="api/xoptim/patterns/onnx_mul.html#experimental_experiment.xoptim.patterns.onnx_mul.SwitchOrderBinaryPattern.match">(experimental_experiment.xoptim.patterns.onnx_mul.SwitchOrderBinaryPattern method)</a>
+</li>
+          <li><a href="api/xoptim/patterns/onnx_range.html#experimental_experiment.xoptim.patterns.onnx_range.SwapRangeAddScalarPattern.match">(experimental_experiment.xoptim.patterns.onnx_range.SwapRangeAddScalarPattern method)</a>
 </li>
           <li><a href="api/xoptim/patterns/onnx_reduce.html#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern.match">(experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern method)</a>
 </li>
@@ -4644,6 +4655,8 @@
           <li><a href="api/xoptim/patterns/onnx_matmul.html#module-experimental_experiment.xoptim.patterns.onnx_matmul">experimental_experiment.xoptim.patterns.onnx_matmul</a>
 </li>
           <li><a href="api/xoptim/patterns/onnx_mul.html#module-experimental_experiment.xoptim.patterns.onnx_mul">experimental_experiment.xoptim.patterns.onnx_mul</a>
+</li>
+          <li><a href="api/xoptim/patterns/onnx_range.html#module-experimental_experiment.xoptim.patterns.onnx_range">experimental_experiment.xoptim.patterns.onnx_range</a>
 </li>
           <li><a href="api/xoptim/patterns/onnx_reduce.html#module-experimental_experiment.xoptim.patterns.onnx_reduce">experimental_experiment.xoptim.patterns.onnx_reduce</a>
 </li>
@@ -5422,10 +5435,10 @@
 </li>
         <li><a href="api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.StatusExport.short_reason">short_reason (experimental_experiment.torch_interpreter.piece_by_piece.StatusExport property)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/xshape/_shape_runtime.html#experimental_experiment.xshape._shape_runtime._ShapeRuntime.simple_update_value_shape_with_node">simple_update_value_shape_with_node() (experimental_experiment.xshape._shape_runtime._ShapeRuntime method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/xoptim/patterns_exp/simple_rotary.html#experimental_experiment.xoptim.patterns_exp.simple_rotary.SimpleRotaryPattern">SimpleRotaryPattern (class in experimental_experiment.xoptim.patterns_exp.simple_rotary)</a>
 </li>
         <li><a href="api/xshape/simplify_expressions.html#experimental_experiment.xshape.simplify_expressions.SimpleSimpliflyTransformer">SimpleSimpliflyTransformer (class in experimental_experiment.xshape.simplify_expressions)</a>
@@ -5527,6 +5540,8 @@
         <li><a href="api/torch_interpreter/index.html#experimental_experiment.torch_interpreter.Dispatcher.supported">supported (experimental_experiment.torch_interpreter.Dispatcher property)</a>
 </li>
         <li><a href="api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.SwapExpandReshapePattern">SwapExpandReshapePattern (class in experimental_experiment.xoptim.patterns.onnx_expand)</a>
+</li>
+        <li><a href="api/xoptim/patterns/onnx_range.html#experimental_experiment.xoptim.patterns.onnx_range.SwapRangeAddScalarPattern">SwapRangeAddScalarPattern (class in experimental_experiment.xoptim.patterns.onnx_range)</a>
 </li>
         <li><a href="api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SwapUnaryPattern">SwapUnaryPattern (class in experimental_experiment.xoptim.patterns.onnx_any)</a>
 </li>
