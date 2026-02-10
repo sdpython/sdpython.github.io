@@ -631,7 +631,27 @@
         <span class="p">),</span>
         <span class="nb">len</span><span class="p">(</span><span class="n">export_graph_signature</span><span class="o">.</span><span class="n">input_specs</span><span class="p">),</span>
     <span class="p">)</span>
+
     <span class="n">combined_args</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">_trace</span><span class="o">.</span><span class="n">_combine_args</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># This is because we trace based on the kwargs passed in from user</span>
+    <span class="c1"># not based on the signature. I feel it would be better to just enforce</span>
+    <span class="c1"># one ordering at the start of tracing to avoid confusions, but that is</span>
+    <span class="c1"># bigger refactor, so do this to unblock for now.</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">combined_args</span><span class="p">,</span> <span class="nb">dict</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">combined_args</span><span class="p">)</span><span class="si">}</span><span class="s2"> for &#39;combined_args&#39;&quot;</span>
+
+    <span class="n">combined_args_traced_order</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">combined_args</span><span class="p">:</span>
+            <span class="n">combined_args_traced_order</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_args</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">combined_args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">combined_args_traced_order</span><span class="p">:</span>
+            <span class="n">combined_args_traced_order</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_args</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="n">combined_args</span> <span class="o">=</span> <span class="n">combined_args_traced_order</span>
 
     <span class="n">range_constraints</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">make_constraints</span><span class="p">(</span>
         <span class="n">fake_mode</span><span class="p">,</span> <span class="n">gm</span><span class="p">,</span> <span class="n">combined_args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">num_lifted</span>
