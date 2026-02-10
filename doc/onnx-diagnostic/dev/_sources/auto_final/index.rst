@@ -30,6 +30,23 @@ Clean Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This reuses the recipe introduced by example l-plot-tiny-llm-export-input-observer for model microsoft/OptiMind-SFT. We only export class GptOssExperts.">
+
+.. only:: html
+
+  .. image:: /auto_final/images/thumb/sphx_glr_plot_export_optimind_input_observer_thumb.png
+    :alt:
+
+  :doc:`/auto_final/plot_export_optimind_input_observer`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export OptiMind-SFT with InputObserver</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The main issue when exporting a LLM is the example on HuggingFace is based on method generate but we only need to export the forward method. Example l-plot-tiny-llm-export gives details on how to guess dummy inputs and dynamic shapes to do so. Let&#x27;s see how to simplify that.">
 
 .. only:: html
@@ -64,6 +81,23 @@ Clean Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This shows how to only export attention from model arnir0/Tiny-LLM. It uses what was shown in example l-plot-tiny-llm-export-input-observer.">
+
+.. only:: html
+
+  .. image:: /auto_final/images/thumb/sphx_glr_plot_export_tiny_llm_attention_input_observer_thumb.png
+    :alt:
+
+  :doc:`/auto_final/plot_export_tiny_llm_attention_input_observer`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export attention from arnir0/Tiny-LLM with InputObserver</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This reuses the recipe introduced by example l-plot-tiny-llm-export-input-observer for model openai/whisper-tiny.">
 
 .. only:: html
@@ -90,8 +124,10 @@ Clean Examples Gallery
    :hidden:
 
    /auto_final/plot_export_gemma3_tiny_input_observer
+   /auto_final/plot_export_optimind_input_observer
    /auto_final/plot_export_tiny_llm_method_generate
    /auto_final/plot_export_tiny_llm_input_observer
+   /auto_final/plot_export_tiny_llm_attention_input_observer
    /auto_final/plot_export_whisper_tiny_input_observer
 
 

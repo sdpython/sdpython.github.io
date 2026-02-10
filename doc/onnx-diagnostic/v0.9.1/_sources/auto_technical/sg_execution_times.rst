@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:57.524** total execution time for 6 files **from auto_technical**:
+**00:02.407** total execution time for 7 files **from auto_technical**:
 
 .. container::
 
@@ -32,21 +32,24 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_technical_plot_generate.py` (``plot_generate.py``)
-     - 00:57.100
-     - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_layer_norm_discrepancies.py` (``plot_layer_norm_discrepancies.py``)
-     - 00:34.421
-     - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_gemm_or_matmul_add.py` (``plot_gemm_or_matmul_add.py``)
-     - 00:20.267
+   * - :ref:`sphx_glr_auto_technical_plot_histc.py` (``plot_histc.py``)
+     - 00:02.407
      - 0.0
    * - :ref:`sphx_glr_auto_technical_plot_broadcast_export_issue.py` (``plot_broadcast_export_issue.py``)
-     - 00:02.756
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_gemm_or_matmul_add.py` (``plot_gemm_or_matmul_add.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_generate.py` (``plot_generate.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_layer_norm_discrepancies.py` (``plot_layer_norm_discrepancies.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_technical_plot_parallelized_reduction.py` (``plot_parallelized_reduction.py``)
-     - 00:02.279
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_technical_plot_simple_for_loop.py` (``plot_simple_for_loop.py``)
-     - 00:00.701
+     - 00:00.000
      - 0.0

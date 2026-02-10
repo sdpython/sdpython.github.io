@@ -330,13 +330,13 @@ And the exported program.
             def forward(self, p_model_embed_tokens_weight: "f32[32064, 3072]", p_model_layers_0_self_attn_o_proj_weight: "f32[3072, 3072]", p_model_layers_0_self_attn_qkv_proj_weight: "f32[9216, 3072]", p_model_layers_0_mlp_gate_up_proj_weight: "f32[16384, 3072]", p_model_layers_0_mlp_down_proj_weight: "f32[3072, 8192]", p_model_layers_0_input_layernorm_weight: "f32[3072]", p_model_layers_0_post_attention_layernorm_weight: "f32[3072]", p_model_layers_1_self_attn_o_proj_weight: "f32[3072, 3072]", p_model_layers_1_self_attn_qkv_proj_weight: "f32[9216, 3072]", p_model_layers_1_mlp_gate_up_proj_weight: "f32[16384, 3072]", p_model_layers_1_mlp_down_proj_weight: "f32[3072, 8192]", p_model_layers_1_input_layernorm_weight: "f32[3072]", p_model_layers_1_post_attention_layernorm_weight: "f32[3072]", p_model_norm_weight: "f32[3072]", p_lm_head_weight: "f32[32064, 3072]", b_model_rotary_emb_inv_freq: "f32[48]", b_model_rotary_emb_original_inv_freq: "f32[48]", input_ids: "i64[2, 3]", attention_mask: "i64[2, 33]", past_key_values_key_0: "f32[2, 32, 30, 96]", past_key_values_value_0: "f32[2, 32, 30, 96]", past_key_values_key_1: "f32[2, 32, 30, 96]", past_key_values_value_1: "f32[2, 32, 30, 96]"):
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:189 in forward, code: return F.embedding(
                 embedding: "f32[2, 3, 3072]" = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids, 32000);  p_model_embed_tokens_weight = input_ids = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:407 in forward, code: cache_position = torch.arange(
                 arange: "i64[3]" = torch.ops.aten.arange.start(30, 33, device = device(type='cpu'), pin_memory = False)
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:412 in forward, code: position_ids = cache_position.unsqueeze(0)
                 unsqueeze: "i64[1, 3]" = torch.ops.aten.unsqueeze.default(arange, 0)
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:415 in forward, code: causal_mask = mask_function(
                 _assert_tensor_metadata_default = torch.ops.aten._assert_tensor_metadata.default(attention_mask, dtype = torch.int64, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default = None
                 to: "b8[2, 33]" = torch.ops.aten.to.device(attention_mask, device(type='cpu'), torch.bool);  attention_mask = None
@@ -375,57 +375,57 @@ And the exported program.
                 to_4: "b8[2, 1, 1, 33]" = torch.ops.aten.to.dtype_layout(index, dtype = torch.bool, layout = torch.strided, device = device(type='cpu'));  index = None
                 and_4: "b8[2, 1, 3, 33]" = torch.ops.aten.__and__.Tensor(and_3, to_4);  and_3 = to_4 = None
                 expand: "b8[2, 1, 3, 33]" = torch.ops.aten.expand.default(and_4, [2, -1, 3, 33]);  and_4 = None
-            
+    
                 # No stacktrace found for following nodes
                 submod_3 = self.submod_1
                 wrap_with_set_grad_enabled = torch.ops.higher_order.wrap_with_set_grad_enabled(False, submod_3, unsqueeze, b_model_rotary_emb_original_inv_freq);  submod_3 = unsqueeze = b_model_rotary_emb_original_inv_freq = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:132 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
                 to_11: "f32[1, 3, 96]" = wrap_with_set_grad_enabled[0]
                 to_12: "f32[1, 3, 96]" = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:291 in forward, code: hidden_states = hidden_states.to(torch.float32)
                 _assert_tensor_metadata_default_13 = torch.ops.aten._assert_tensor_metadata.default(embedding, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_13 = None
                 to_13: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:292 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
                 pow_1: "f32[2, 3, 3072]" = torch.ops.aten.pow.Tensor_Scalar(to_13, 2)
                 mean: "f32[2, 3, 1]" = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:293 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
                 add_2: "f32[2, 3, 1]" = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
                 rsqrt: "f32[2, 3, 1]" = torch.ops.aten.rsqrt.default(add_2);  add_2 = None
                 mul_2: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(to_13, rsqrt);  rsqrt = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:294 in forward, code: return self.weight * hidden_states.to(input_dtype)
                 _assert_tensor_metadata_default_14 = torch.ops.aten._assert_tensor_metadata.default(mul_2, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_14 = None
                 to_14: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
                 mul_3: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_14);  p_model_layers_0_input_layernorm_weight = to_14 = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear: "f32[2, 3, 9216]" = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_qkv_proj_weight);  mul_3 = p_model_layers_0_self_attn_qkv_proj_weight = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:242 in forward, code: query_states = qkv[..., :query_pos]
                 slice_1: "f32[2, 3, 3072]" = torch.ops.aten.slice.Tensor(linear, 2, 0, 3072)
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:243 in forward, code: key_states = qkv[..., query_pos : query_pos + self.num_key_value_heads * self.head_dim]
                 slice_2: "f32[2, 3, 3072]" = torch.ops.aten.slice.Tensor(linear, 2, 3072, 6144)
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:244 in forward, code: value_states = qkv[..., query_pos + self.num_key_value_heads * self.head_dim :]
                 slice_3: "f32[2, 3, 3072]" = torch.ops.aten.slice.Tensor(linear, 2, 6144, 9223372036854775807);  linear = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:246 in forward, code: query_states = query_states.view(hidden_shape).transpose(1, 2)
                 view: "f32[2, 3, 32, 96]" = torch.ops.aten.view.default(slice_1, [2, 3, -1, 96]);  slice_1 = None
                 transpose_1: "f32[2, 32, 3, 96]" = torch.ops.aten.transpose.int(view, 1, 2);  view = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:247 in forward, code: key_states = key_states.view(hidden_shape).transpose(1, 2)
                 view_1: "f32[2, 3, 32, 96]" = torch.ops.aten.view.default(slice_2, [2, 3, -1, 96]);  slice_2 = None
                 transpose_2: "f32[2, 32, 3, 96]" = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:248 in forward, code: value_states = value_states.view(hidden_shape).transpose(1, 2)
                 view_2: "f32[2, 3, 32, 96]" = torch.ops.aten.view.default(slice_3, [2, 3, -1, 96]);  slice_3 = None
                 transpose_3: "f32[2, 32, 3, 96]" = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:251 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
                 unsqueeze_16: "f32[1, 1, 3, 96]" = torch.ops.aten.unsqueeze.default(to_11, 1)
                 unsqueeze_17: "f32[1, 1, 3, 96]" = torch.ops.aten.unsqueeze.default(to_12, 1)
@@ -449,111 +449,111 @@ And the exported program.
                 mul_7: "f32[2, 32, 3, 96]" = torch.ops.aten.mul.Tensor(cat_3, unsqueeze_17);  cat_3 = unsqueeze_17 = None
                 add_4: "f32[2, 32, 3, 96]" = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
                 cat_4: "f32[2, 32, 3, 96]" = torch.ops.aten.cat.default([add_4, slice_5], -1);  add_4 = slice_5 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:256 in forward, code: key_states, value_states = past_key_values.update(key_states, value_states, self.layer_idx, cache_kwargs)
                 cat_5: "f32[2, 32, 33, 96]" = torch.ops.aten.cat.default([past_key_values_key_0, cat_4], -2);  past_key_values_key_0 = cat_4 = None
                 cat_6: "f32[2, 32, 33, 96]" = torch.ops.aten.cat.default([past_key_values_value_0, transpose_3], -2);  past_key_values_value_0 = transpose_3 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:262 in forward, code: attn_output, attn_weights = attention_interface(
                 scaled_dot_product_attention: "f32[2, 32, 3, 96]" = torch.ops.aten.scaled_dot_product_attention.default(cat_2, cat_5, cat_6, expand, scale = 0.10206207261596575);  cat_2 = None
                 transpose_4: "f32[2, 3, 32, 96]" = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
                 contiguous: "f32[2, 3, 32, 96]" = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:274 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
                 reshape: "f32[2, 3, 3072]" = torch.ops.aten.reshape.default(contiguous, [2, 3, -1]);  contiguous = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_1: "f32[2, 3, 3072]" = torch.ops.aten.linear.default(reshape, p_model_layers_0_self_attn_o_proj_weight);  reshape = p_model_layers_0_self_attn_o_proj_weight = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/dropout.py:73 in forward, code: return F.dropout(input, self.p, self.training, self.inplace)
                 dropout: "f32[2, 3, 3072]" = torch.ops.aten.dropout.default(linear_1, 0.0, False);  linear_1 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:336 in forward, code: hidden_states = residual + self.resid_attn_dropout(hidden_states)  # main diff with Llama
                 add_5: "f32[2, 3, 3072]" = torch.ops.aten.add.Tensor(to_13, dropout);  to_13 = dropout = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:291 in forward, code: hidden_states = hidden_states.to(torch.float32)
                 _assert_tensor_metadata_default_15 = torch.ops.aten._assert_tensor_metadata.default(add_5, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_15 = None
                 to_15: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(add_5, torch.float32);  add_5 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:292 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
                 pow_2: "f32[2, 3, 3072]" = torch.ops.aten.pow.Tensor_Scalar(to_15, 2)
                 mean_1: "f32[2, 3, 1]" = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:293 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
                 add_6: "f32[2, 3, 1]" = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
                 rsqrt_1: "f32[2, 3, 1]" = torch.ops.aten.rsqrt.default(add_6);  add_6 = None
                 mul_8: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(to_15, rsqrt_1);  rsqrt_1 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:294 in forward, code: return self.weight * hidden_states.to(input_dtype)
                 _assert_tensor_metadata_default_16 = torch.ops.aten._assert_tensor_metadata.default(mul_8, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_16 = None
                 to_16: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
                 mul_9: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_16);  p_model_layers_0_post_attention_layernorm_weight = to_16 = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_2: "f32[2, 3, 16384]" = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_gate_up_proj_weight);  mul_9 = p_model_layers_0_mlp_gate_up_proj_weight = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:62 in forward, code: gate, up_states = up_states.chunk(2, dim=-1)
                 chunk = torch.ops.aten.chunk.default(linear_2, 2, -1);  linear_2 = None
                 getitem_10: "f32[2, 3, 8192]" = chunk[0]
                 getitem_11: "f32[2, 3, 8192]" = chunk[1];  chunk = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/activations.py:103 in forward, code: return nn.functional.silu(input)
                 silu: "f32[2, 3, 8192]" = torch.ops.aten.silu.default(getitem_10);  getitem_10 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:63 in forward, code: up_states = up_states * self.activation_fn(gate)
                 mul_10: "f32[2, 3, 8192]" = torch.ops.aten.mul.Tensor(getitem_11, silu);  getitem_11 = silu = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_3: "f32[2, 3, 3072]" = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_down_proj_weight);  mul_10 = p_model_layers_0_mlp_down_proj_weight = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/dropout.py:73 in forward, code: return F.dropout(input, self.p, self.training, self.inplace)
                 dropout_1: "f32[2, 3, 3072]" = torch.ops.aten.dropout.default(linear_3, 0.0, False);  linear_3 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:341 in forward, code: hidden_states = residual + self.resid_mlp_dropout(hidden_states)  # main diff with Llama
                 add_7: "f32[2, 3, 3072]" = torch.ops.aten.add.Tensor(to_15, dropout_1);  to_15 = dropout_1 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:291 in forward, code: hidden_states = hidden_states.to(torch.float32)
                 _assert_tensor_metadata_default_17 = torch.ops.aten._assert_tensor_metadata.default(add_7, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_17 = None
                 to_17: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:292 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
                 pow_3: "f32[2, 3, 3072]" = torch.ops.aten.pow.Tensor_Scalar(to_17, 2)
                 mean_2: "f32[2, 3, 1]" = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:293 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
                 add_8: "f32[2, 3, 1]" = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
                 rsqrt_2: "f32[2, 3, 1]" = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
                 mul_11: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(to_17, rsqrt_2);  rsqrt_2 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:294 in forward, code: return self.weight * hidden_states.to(input_dtype)
                 _assert_tensor_metadata_default_18 = torch.ops.aten._assert_tensor_metadata.default(mul_11, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_18 = None
                 to_18: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
                 mul_12: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(p_model_layers_1_input_layernorm_weight, to_18);  p_model_layers_1_input_layernorm_weight = to_18 = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_4: "f32[2, 3, 9216]" = torch.ops.aten.linear.default(mul_12, p_model_layers_1_self_attn_qkv_proj_weight);  mul_12 = p_model_layers_1_self_attn_qkv_proj_weight = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:242 in forward, code: query_states = qkv[..., :query_pos]
                 slice_10: "f32[2, 3, 3072]" = torch.ops.aten.slice.Tensor(linear_4, 2, 0, 3072)
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:243 in forward, code: key_states = qkv[..., query_pos : query_pos + self.num_key_value_heads * self.head_dim]
                 slice_11: "f32[2, 3, 3072]" = torch.ops.aten.slice.Tensor(linear_4, 2, 3072, 6144)
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:244 in forward, code: value_states = qkv[..., query_pos + self.num_key_value_heads * self.head_dim :]
                 slice_12: "f32[2, 3, 3072]" = torch.ops.aten.slice.Tensor(linear_4, 2, 6144, 9223372036854775807);  linear_4 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:246 in forward, code: query_states = query_states.view(hidden_shape).transpose(1, 2)
                 view_3: "f32[2, 3, 32, 96]" = torch.ops.aten.view.default(slice_10, [2, 3, -1, 96]);  slice_10 = None
                 transpose_5: "f32[2, 32, 3, 96]" = torch.ops.aten.transpose.int(view_3, 1, 2);  view_3 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:247 in forward, code: key_states = key_states.view(hidden_shape).transpose(1, 2)
                 view_4: "f32[2, 3, 32, 96]" = torch.ops.aten.view.default(slice_11, [2, 3, -1, 96]);  slice_11 = None
                 transpose_6: "f32[2, 32, 3, 96]" = torch.ops.aten.transpose.int(view_4, 1, 2);  view_4 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:248 in forward, code: value_states = value_states.view(hidden_shape).transpose(1, 2)
                 view_5: "f32[2, 3, 32, 96]" = torch.ops.aten.view.default(slice_12, [2, 3, -1, 96]);  slice_12 = None
                 transpose_7: "f32[2, 32, 3, 96]" = torch.ops.aten.transpose.int(view_5, 1, 2);  view_5 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:251 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
                 unsqueeze_18: "f32[1, 1, 3, 96]" = torch.ops.aten.unsqueeze.default(to_11, 1);  to_11 = None
                 unsqueeze_19: "f32[1, 1, 3, 96]" = torch.ops.aten.unsqueeze.default(to_12, 1);  to_12 = None
@@ -577,94 +577,94 @@ And the exported program.
                 mul_16: "f32[2, 32, 3, 96]" = torch.ops.aten.mul.Tensor(cat_9, unsqueeze_19);  cat_9 = unsqueeze_19 = None
                 add_10: "f32[2, 32, 3, 96]" = torch.ops.aten.add.Tensor(mul_15, mul_16);  mul_15 = mul_16 = None
                 cat_10: "f32[2, 32, 3, 96]" = torch.ops.aten.cat.default([add_10, slice_14], -1);  add_10 = slice_14 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:256 in forward, code: key_states, value_states = past_key_values.update(key_states, value_states, self.layer_idx, cache_kwargs)
                 cat_11: "f32[2, 32, 33, 96]" = torch.ops.aten.cat.default([past_key_values_key_1, cat_10], -2);  past_key_values_key_1 = cat_10 = None
                 cat_12: "f32[2, 32, 33, 96]" = torch.ops.aten.cat.default([past_key_values_value_1, transpose_7], -2);  past_key_values_value_1 = transpose_7 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:262 in forward, code: attn_output, attn_weights = attention_interface(
                 scaled_dot_product_attention_1: "f32[2, 32, 3, 96]" = torch.ops.aten.scaled_dot_product_attention.default(cat_8, cat_11, cat_12, expand, scale = 0.10206207261596575);  cat_8 = expand = None
                 transpose_8: "f32[2, 3, 32, 96]" = torch.ops.aten.transpose.int(scaled_dot_product_attention_1, 1, 2);  scaled_dot_product_attention_1 = None
                 contiguous_1: "f32[2, 3, 32, 96]" = torch.ops.aten.contiguous.default(transpose_8);  transpose_8 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:274 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
                 reshape_1: "f32[2, 3, 3072]" = torch.ops.aten.reshape.default(contiguous_1, [2, 3, -1]);  contiguous_1 = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_5: "f32[2, 3, 3072]" = torch.ops.aten.linear.default(reshape_1, p_model_layers_1_self_attn_o_proj_weight);  reshape_1 = p_model_layers_1_self_attn_o_proj_weight = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/dropout.py:73 in forward, code: return F.dropout(input, self.p, self.training, self.inplace)
                 dropout_2: "f32[2, 3, 3072]" = torch.ops.aten.dropout.default(linear_5, 0.0, False);  linear_5 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:336 in forward, code: hidden_states = residual + self.resid_attn_dropout(hidden_states)  # main diff with Llama
                 add_11: "f32[2, 3, 3072]" = torch.ops.aten.add.Tensor(to_17, dropout_2);  to_17 = dropout_2 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:291 in forward, code: hidden_states = hidden_states.to(torch.float32)
                 _assert_tensor_metadata_default_19 = torch.ops.aten._assert_tensor_metadata.default(add_11, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_19 = None
                 to_19: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(add_11, torch.float32);  add_11 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:292 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
                 pow_4: "f32[2, 3, 3072]" = torch.ops.aten.pow.Tensor_Scalar(to_19, 2)
                 mean_3: "f32[2, 3, 1]" = torch.ops.aten.mean.dim(pow_4, [-1], True);  pow_4 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:293 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
                 add_12: "f32[2, 3, 1]" = torch.ops.aten.add.Tensor(mean_3, 1e-05);  mean_3 = None
                 rsqrt_3: "f32[2, 3, 1]" = torch.ops.aten.rsqrt.default(add_12);  add_12 = None
                 mul_17: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(to_19, rsqrt_3);  rsqrt_3 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:294 in forward, code: return self.weight * hidden_states.to(input_dtype)
                 _assert_tensor_metadata_default_20 = torch.ops.aten._assert_tensor_metadata.default(mul_17, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_20 = None
                 to_20: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(mul_17, torch.float32);  mul_17 = None
                 mul_18: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(p_model_layers_1_post_attention_layernorm_weight, to_20);  p_model_layers_1_post_attention_layernorm_weight = to_20 = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_6: "f32[2, 3, 16384]" = torch.ops.aten.linear.default(mul_18, p_model_layers_1_mlp_gate_up_proj_weight);  mul_18 = p_model_layers_1_mlp_gate_up_proj_weight = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:62 in forward, code: gate, up_states = up_states.chunk(2, dim=-1)
                 chunk_1 = torch.ops.aten.chunk.default(linear_6, 2, -1);  linear_6 = None
                 getitem_12: "f32[2, 3, 8192]" = chunk_1[0]
                 getitem_13: "f32[2, 3, 8192]" = chunk_1[1];  chunk_1 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/activations.py:103 in forward, code: return nn.functional.silu(input)
                 silu_1: "f32[2, 3, 8192]" = torch.ops.aten.silu.default(getitem_12);  getitem_12 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:63 in forward, code: up_states = up_states * self.activation_fn(gate)
                 mul_19: "f32[2, 3, 8192]" = torch.ops.aten.mul.Tensor(getitem_13, silu_1);  getitem_13 = silu_1 = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_7: "f32[2, 3, 3072]" = torch.ops.aten.linear.default(mul_19, p_model_layers_1_mlp_down_proj_weight);  mul_19 = p_model_layers_1_mlp_down_proj_weight = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/dropout.py:73 in forward, code: return F.dropout(input, self.p, self.training, self.inplace)
                 dropout_3: "f32[2, 3, 3072]" = torch.ops.aten.dropout.default(linear_7, 0.0, False);  linear_7 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:341 in forward, code: hidden_states = residual + self.resid_mlp_dropout(hidden_states)  # main diff with Llama
                 add_13: "f32[2, 3, 3072]" = torch.ops.aten.add.Tensor(to_19, dropout_3);  to_19 = dropout_3 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:291 in forward, code: hidden_states = hidden_states.to(torch.float32)
                 _assert_tensor_metadata_default_21 = torch.ops.aten._assert_tensor_metadata.default(add_13, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_21 = None
                 to_21: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(add_13, torch.float32);  add_13 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:292 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
                 pow_5: "f32[2, 3, 3072]" = torch.ops.aten.pow.Tensor_Scalar(to_21, 2)
                 mean_4: "f32[2, 3, 1]" = torch.ops.aten.mean.dim(pow_5, [-1], True);  pow_5 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:293 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
                 add_14: "f32[2, 3, 1]" = torch.ops.aten.add.Tensor(mean_4, 1e-05);  mean_4 = None
                 rsqrt_4: "f32[2, 3, 1]" = torch.ops.aten.rsqrt.default(add_14);  add_14 = None
                 mul_20: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(to_21, rsqrt_4);  to_21 = rsqrt_4 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:294 in forward, code: return self.weight * hidden_states.to(input_dtype)
                 _assert_tensor_metadata_default_22 = torch.ops.aten._assert_tensor_metadata.default(mul_20, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_22 = None
                 to_22: "f32[2, 3, 3072]" = torch.ops.aten.to.dtype(mul_20, torch.float32);  mul_20 = None
                 mul_21: "f32[2, 3, 3072]" = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_22);  p_model_norm_weight = to_22 = None
-            
+    
                 # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:506 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
                 alias_4: "f32[2, 3, 3072]" = torch.ops.aten.alias.default(mul_21);  mul_21 = None
-            
+    
                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_8: "f32[2, 3, 32064]" = torch.ops.aten.linear.default(alias_4, p_lm_head_weight);  alias_4 = p_lm_head_weight = None
                 return (linear_8, cat_5, cat_6, cat_11, cat_12)
-            
+    
             class submod_1(torch.nn.Module):
                 def forward(self, unsqueeze: "i64[1, 3]", b_model_rotary_emb_original_inv_freq: "f32[48]"):
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:425 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids=position_ids)
@@ -675,7 +675,7 @@ And the exported program.
                     item: "Sym(Eq(u0, 1))" = torch.ops.aten.item.default(ne);  ne = item = None
                     _assert_tensor_metadata_default_5 = torch.ops.aten._assert_tensor_metadata.default(b_model_rotary_emb_original_inv_freq, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_5 = None
                     to_5: "f32[48]" = torch.ops.aten.to.dtype_layout(b_model_rotary_emb_original_inv_freq, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  b_model_rotary_emb_original_inv_freq = None
-                
+    
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:122 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)
                     unsqueeze_13: "f32[1, 48]" = torch.ops.aten.unsqueeze.default(to_5, 0);  to_5 = None
                     unsqueeze_14: "f32[1, 48, 1]" = torch.ops.aten.unsqueeze.default(unsqueeze_13, 2);  unsqueeze_13 = None
@@ -684,12 +684,12 @@ And the exported program.
                     expand_1: "f32[1, 48, 1]" = torch.ops.aten.expand.default(to_6, [1, -1, 1]);  to_6 = None
                     _assert_tensor_metadata_default_7 = torch.ops.aten._assert_tensor_metadata.default(expand_1, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_7 = None
                     to_7: "f32[1, 48, 1]" = torch.ops.aten.to.dtype_layout(expand_1, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  expand_1 = None
-                
+    
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:123 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
                     unsqueeze_15: "i64[1, 1, 3]" = torch.ops.aten.unsqueeze.default(unsqueeze, 1);  unsqueeze = None
                     _assert_tensor_metadata_default_8 = torch.ops.aten._assert_tensor_metadata.default(unsqueeze_15, dtype = torch.int64, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_8 = None
                     to_8: "f32[1, 1, 3]" = torch.ops.aten.to.dtype(unsqueeze_15, torch.float32);  unsqueeze_15 = None
-                
+    
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:127 in forward, code: freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(1, 2)
                     _assert_tensor_metadata_default_9 = torch.ops.aten._assert_tensor_metadata.default(to_7, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_9 = None
                     to_9: "f32[1, 48, 1]" = torch.ops.aten.to.dtype(to_7, torch.float32);  to_7 = None
@@ -697,25 +697,25 @@ And the exported program.
                     to_10: "f32[1, 1, 3]" = torch.ops.aten.to.dtype(to_8, torch.float32);  to_8 = None
                     matmul: "f32[1, 48, 3]" = torch.ops.aten.matmul.default(to_9, to_10);  to_9 = to_10 = None
                     transpose: "f32[1, 3, 48]" = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
-                
+    
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:128 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
                     cat: "f32[1, 3, 96]" = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
-                
+    
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:129 in forward, code: cos = emb.cos() * self.attention_scaling
                     cos: "f32[1, 3, 96]" = torch.ops.aten.cos.default(cat)
                     mul: "f32[1, 3, 96]" = torch.ops.aten.mul.Tensor(cos, 1.1902380714238083);  cos = None
-                
+    
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:130 in forward, code: sin = emb.sin() * self.attention_scaling
                     sin: "f32[1, 3, 96]" = torch.ops.aten.sin.default(cat);  cat = None
                     mul_1: "f32[1, 3, 96]" = torch.ops.aten.mul.Tensor(sin, 1.1902380714238083);  sin = None
-                
+    
                     # File: /home/xadupre/github/transformers/src/transformers/models/phi3/modeling_phi3.py:132 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
                     _assert_tensor_metadata_default_11 = torch.ops.aten._assert_tensor_metadata.default(mul, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_11 = None
                     to_11: "f32[1, 3, 96]" = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
                     _assert_tensor_metadata_default_12 = torch.ops.aten._assert_tensor_metadata.default(mul_1, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_12 = None
                     to_12: "f32[1, 3, 96]" = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
                     return (to_11, to_12)
-                
+    
     Graph signature: 
         # inputs
         p_model_embed_tokens_weight: PARAMETER target='model.embed_tokens.weight'
@@ -758,7 +758,7 @@ And the exported program.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.637 seconds)
+   **Total running time of the script:** (0 minutes 5.752 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_draft_mode.py:

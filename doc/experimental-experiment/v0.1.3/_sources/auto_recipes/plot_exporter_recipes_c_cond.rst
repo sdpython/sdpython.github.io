@@ -107,7 +107,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-2.9606]], grad_fn=<MulBackward0>)
+    tensor([[-0.2844]], grad_fn=<MulBackward0>)
 
 
 
@@ -162,7 +162,7 @@ As expected, it does not export.
     Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 
     consider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_true.
-    Caused by: (_export/non_strict_utils.py:1140 in __torch_function__)
+    Caused by: (_export/non_strict_utils.py:1159 in __torch_function__)
     For more information, run with TORCH_LOGS="dynamic"
     For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"
     If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
@@ -232,7 +232,7 @@ The exporter fails with the same eror as it expects torch.export.export to work.
     Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 
     consider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_true.
-    Caused by: (_export/non_strict_utils.py:1140 in __torch_function__)
+    Caused by: (_export/non_strict_utils.py:1159 in __torch_function__)
     For more information, run with TORCH_LOGS="dynamic"
     For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"
     If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
@@ -361,9 +361,9 @@ Let's export again.
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='init1_s_::RSh122_cst2init' type=float32 shape=(1,) -- array([2.], dtype=float32)-- GraphBuilderPatternOptimization.make_initializer.1/Small
     init: name='GemmTransposePattern--p_mlp_0_weight::T10' type=float32 shape=(2, 3)-- GraphBuilder.constant_folding.from/fold(p_mlp_0_weight::T10)##p_mlp_0_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_0_weight)##p_mlp_0_weight/DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([ 0.5469572, -0.5194422], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.21018817, -0.3037031 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.37050298], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([ 0.11362757, -0.6720004 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_2,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_2/TransposeEqualReshapePattern.apply.new_shape
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([ 0.4219379 , -0.06641717], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.58337855], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, GemmTransposePattern--p_mlp_0_weight::T10, mlp.0.bias, transB=1) -> linear
       Gemm(linear, GemmTransposePattern--p_mlp_1_weight::T10, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -407,9 +407,9 @@ We can also inline the local function.
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='init1_s_::RSh122_cst2init' type=float32 shape=(1,) -- array([2.], dtype=float32)-- GraphBuilderPatternOptimization.make_initializer.1/Small
     init: name='GemmTransposePattern--p_mlp_0_weight::T10' type=float32 shape=(2, 3)-- GraphBuilder.constant_folding.from/fold(p_mlp_0_weight::T10)##p_mlp_0_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_0_weight)##p_mlp_0_weight/DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([ 0.5469572, -0.5194422], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.21018817, -0.3037031 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.37050298], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([ 0.11362757, -0.6720004 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_2,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_2/TransposeEqualReshapePattern.apply.new_shape
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([ 0.4219379 , -0.06641717], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.58337855], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, GemmTransposePattern--p_mlp_0_weight::T10, mlp.0.bias, transB=1) -> linear
       Gemm(linear, GemmTransposePattern--p_mlp_1_weight::T10, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -451,7 +451,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.902 seconds)
+   **Total running time of the script:** (0 minutes 0.960 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:

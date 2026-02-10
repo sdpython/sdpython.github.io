@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:57.886** total execution time for 32 files **from all galleries**:
+**00:13.130** total execution time for 35 files **from all galleries**:
 
 .. container::
 
@@ -32,26 +32,11 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_technical_plot_generate.py` (``technical/plot_generate.py``)
-     - 00:57.100
+   * - :ref:`sphx_glr_auto_final_plot_export_tiny_llm_attention_input_observer.py` (``final/plot_export_tiny_llm_attention_input_observer.py``)
+     - 00:10.723
      - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_layer_norm_discrepancies.py` (``technical/plot_layer_norm_discrepancies.py``)
-     - 00:34.421
-     - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_gemm_or_matmul_add.py` (``technical/plot_gemm_or_matmul_add.py``)
-     - 00:20.267
-     - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_broadcast_export_issue.py` (``technical/plot_broadcast_export_issue.py``)
-     - 00:02.756
-     - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_parallelized_reduction.py` (``technical/plot_parallelized_reduction.py``)
-     - 00:02.279
-     - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_simple_for_loop.py` (``technical/plot_simple_for_loop.py``)
-     - 00:00.701
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_export_with_dynamic.py` (``recipes/plot_export_with_dynamic.py``)
-     - 00:00.362
+   * - :ref:`sphx_glr_auto_technical_plot_histc.py` (``technical/plot_histc.py``)
+     - 00:02.407
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_dump_intermediate_results.py` (``examples/plot_dump_intermediate_results.py``)
      - 00:00.000
@@ -98,6 +83,9 @@ Computation times
    * - :ref:`sphx_glr_auto_final_plot_export_gemma3_tiny_input_observer.py` (``final/plot_export_gemma3_tiny_input_observer.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_final_plot_export_optimind_input_observer.py` (``final/plot_export_optimind_input_observer.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_final_plot_export_tiny_llm_input_observer.py` (``final/plot_export_tiny_llm_input_observer.py``)
      - 00:00.000
      - 0.0
@@ -126,5 +114,26 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_export_dim1.py` (``recipes/plot_export_dim1.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_export_with_dynamic.py` (``recipes/plot_export_with_dynamic.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_broadcast_export_issue.py` (``technical/plot_broadcast_export_issue.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_gemm_or_matmul_add.py` (``technical/plot_gemm_or_matmul_add.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_generate.py` (``technical/plot_generate.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_layer_norm_discrepancies.py` (``technical/plot_layer_norm_discrepancies.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_parallelized_reduction.py` (``technical/plot_parallelized_reduction.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_simple_for_loop.py` (``technical/plot_simple_for_loop.py``)
      - 00:00.000
      - 0.0

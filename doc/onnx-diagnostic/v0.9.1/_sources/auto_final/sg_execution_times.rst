@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:52.140** total execution time for 4 files **from auto_final**:
+**00:10.723** total execution time for 6 files **from auto_final**:
 
 .. container::
 
@@ -32,15 +32,21 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_final_plot_export_whisper_tiny_input_observer.py` (``plot_export_whisper_tiny_input_observer.py``)
-     - 00:47.460
-     - 0.0
-   * - :ref:`sphx_glr_auto_final_plot_export_tiny_llm_input_observer.py` (``plot_export_tiny_llm_input_observer.py``)
-     - 00:35.403
-     - 0.0
-   * - :ref:`sphx_glr_auto_final_plot_export_tiny_llm_method_generate.py` (``plot_export_tiny_llm_method_generate.py``)
-     - 00:29.277
+   * - :ref:`sphx_glr_auto_final_plot_export_tiny_llm_attention_input_observer.py` (``plot_export_tiny_llm_attention_input_observer.py``)
+     - 00:10.723
      - 0.0
    * - :ref:`sphx_glr_auto_final_plot_export_gemma3_tiny_input_observer.py` (``plot_export_gemma3_tiny_input_observer.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_final_plot_export_optimind_input_observer.py` (``plot_export_optimind_input_observer.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_final_plot_export_tiny_llm_input_observer.py` (``plot_export_tiny_llm_input_observer.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_final_plot_export_tiny_llm_method_generate.py` (``plot_export_tiny_llm_method_generate.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_final_plot_export_whisper_tiny_input_observer.py` (``plot_export_whisper_tiny_input_observer.py``)
      - 00:00.000
      - 0.0

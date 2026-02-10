@@ -13,6 +13,23 @@ Technical Details
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="torch.histc computes an histogram of a tensor, it counts the number of elements falling into each bin. There are many options do to this. If the number of bins is not too high, we can use something based on braodcasting. This method implies the creation of a matrix N   imes B where N is the number of elements in a tensor and B the number if bins. To avoid this, the best way is to use a tree. Before doing that, let&#x27;s first study torch.histc. See issue 174668.">
+
+.. only:: html
+
+  .. image:: /auto_technical/images/thumb/sphx_glr_plot_histc_thumb.png
+    :alt:
+
+  :doc:`/auto_technical/plot_histc`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Converting torch.histc into ONNX</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="torch.export.export makes strict assumption on dynamic shapes to the generic case. Let&#x27;s consider two tensors with only one dimension. x * y allows four configurations:">
 
 .. only:: html
@@ -123,6 +140,7 @@ Technical Details
 .. toctree::
    :hidden:
 
+   /auto_technical/plot_histc
    /auto_technical/plot_broadcast_export_issue
    /auto_technical/plot_simple_for_loop
    /auto_technical/plot_generate

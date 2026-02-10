@@ -183,7 +183,7 @@ Another graph obtained with torch.compile.
         %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
         return (relu,)
 
-    tensor([[0.6837, 0.4574, 0.3096]], grad_fn=<ReluBackward0>)
+    tensor([[0.5530, 0.4965, 0.5574]], grad_fn=<ReluBackward0>)
 
 
 
@@ -236,7 +236,7 @@ Unflattened
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=[1, 5]
     init: name='GemmTransposePattern--p_neuron_linear_weight::T10' type=float32 shape=(3, 5)-- GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight::T10)##p_neuron_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight)##p_neuron_linear_weight/DynamoInterpret.placeholder.1/P(neuron.linear.weight)
-    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([-0.14584008, -0.32585785, -0.29722077], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
+    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([-0.12421705,  0.11854652, -0.11136704], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
     Gemm(x, GemmTransposePattern--p_neuron_linear_weight::T10, neuron.linear.bias, transB=1) -> linear
       Sigmoid(linear) -> sigmoid
         Relu(sigmoid) -> output_0
@@ -270,7 +270,7 @@ Let's preserve the module.
     opset: domain='' version=18
     opset: domain='aten_local_function' version=1
     input: name='x' type=dtype('float32') shape=[1, 5]
-    init: name='bias_cst2init' type=float32 shape=(3,) -- array([-0.14584008, -0.32585785, -0.29722077], dtype=float32)-- GraphBuilderPatternOptimization.make_initializer.0
+    init: name='bias_cst2init' type=float32 shape=(3,) -- array([-0.12421705,  0.11854652, -0.11136704], dtype=float32)-- GraphBuilderPatternOptimization.make_initializer.0
     init: name='GemmTransposePattern--weight::T10_cst2init' type=float32 shape=(3, 5)-- GraphBuilderPatternOptimization.make_initializer.0
     Gemm(x, GemmTransposePattern--weight::T10_cst2init, bias_cst2init, transB=1) -> linear
       Sigmoid(linear) -> neuron
@@ -283,7 +283,7 @@ Let's preserve the module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.253 seconds)
+   **Total running time of the script:** (0 minutes 0.280 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_compile_102.py:

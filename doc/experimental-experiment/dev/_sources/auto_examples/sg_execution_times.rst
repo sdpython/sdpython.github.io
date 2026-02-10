@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:29.241** total execution time for 13 files **from auto_examples**:
+**01:49.972** total execution time for 13 files **from auto_examples**:
 
 .. container::
 
@@ -33,40 +33,40 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
-     - 00:55.093
+     - 01:04.818
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``plot_torch_sklearn_201.py``)
-     - 00:16.272
+     - 00:20.102
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``plot_torch_custom_backend_101.py``)
-     - 00:10.729
+     - 00:15.926
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``plot_torch_linreg_101.py``)
-     - 00:03.766
+     - 00:05.067
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
-     - 00:01.316
+     - 00:01.649
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
-     - 00:01.172
+     - 00:01.466
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``plot_torch_export_101.py``)
-     - 00:00.368
+     - 00:00.393
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``plot_torch_export_compile_102.py``)
-     - 00:00.253
+     - 00:00.280
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``plot_rewrite_101.py``)
-     - 00:00.186
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_shape_inference.py` (``plot_shape_inference.py``)
-     - 00:00.048
+     - 00:00.192
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``plot_executorch_102.py``)
-     - 00:00.028
+     - 00:00.036
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_shape_inference.py` (``plot_shape_inference.py``)
+     - 00:00.031
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``plot_onnxscript_102.py``)
-     - 00:00.005
+     - 00:00.008
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_model_to_python.py` (``plot_model_to_python.py``)
      - 00:00.004

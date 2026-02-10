@@ -205,6 +205,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../design/index.html">Design</a><input aria-label="Toggle navigation of Design" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../design/exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/optimizer_patterns.html">Available Patterns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/backends.html">Dynamo Backends</a></li>
 </ul>
 </li>
@@ -343,6 +344,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_layer_normalization.html">.xoptim.patterns.onnx_layer_normalization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_matmul.html">.xoptim.patterns.onnx_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_mul.html">.xoptim.patterns.onnx_mul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_range.html">.xoptim.patterns.onnx_range</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_reduce.html">.xoptim.patterns.onnx_reduce</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_reshape.html">.xoptim.patterns.onnx_reshape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_rotary.html">.xoptim.patterns.onnx_rotary</a></li>
@@ -395,7 +397,6 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../torch_dynamo/index.html">.torch_dynamo</a><input aria-label="Toggle navigation of .torch_dynamo" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../torch_dynamo/_dynamo_exporter.html">.torch_dynamo._dynamo_exporter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../torch_dynamo/backend_helper.html">.torch_dynamo.backend_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../torch_dynamo/compiled_model.html">.torch_dynamo.compiled_model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../torch_dynamo/debug_backend.html">.torch_dynamo.debug_backend</a></li>
@@ -501,6 +502,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -585,16 +587,16 @@ it is working.</p>
     use_kernel_func_from_hub is not available in the installed kernels version. Please upgrade kernels to use this feature.
     Traceback (most recent call last):
       File &quot;&lt;stdin&gt;&quot;, line 19, in &lt;module&gt;
-      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 1025, in to_onnx
+      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 1027, in to_onnx
         graph_module, builder, interpreter, mask_outputs = _make_builder_interpreter(
                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 583, in _make_builder_interpreter
+      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 585, in _make_builder_interpreter
         exported_program = export_options.export(
                            ^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/export_options.py&quot;, line 692, in export
+      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/export_options.py&quot;, line 690, in export
         exported_program = self._export(
                            ^^^^^^^^^^^^^
-      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/export_options.py&quot;, line 335, in _export
+      File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/export_options.py&quot;, line 336, in _export
         return torch_export(
                ^^^^^^^^^^^^^
       File &quot;~/github/experimental-experiment/experimental_experiment/export_helpers.py&quot;, line 73, in torch_export
@@ -616,7 +618,7 @@ it is working.</p>
       File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py&quot;, line 124, in wrapper
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2504, in _export
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2507, in _export
         ep = _export_for_training(
              ^^^^^^^^^^^^^^^^^^^^^
       File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1343, in wrapper
@@ -627,53 +629,53 @@ it is working.</p>
       File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py&quot;, line 124, in wrapper
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2293, in _export_for_training
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2296, in _export_for_training
         export_artifact = export_func(
                           ^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2222, in _non_strict_export
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2225, in _non_strict_export
         aten_export_artifact = _to_aten_func(
                                ^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1999, in _export_to_aten_ir_make_fx
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2002, in _export_to_aten_ir_make_fx
         gm, graph_signature = transform(_make_fx_helper)(
                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2129, in _aot_export_non_strict
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2132, in _aot_export_non_strict
         gm, sig = aot_export(stack, wrapped_mod, args, kwargs=kwargs, **flags)
                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
       File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1910, in _make_fx_helper
         gm = make_fx(
              ^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2778, in wrapped
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2824, in wrapped
         return make_fx_tracer.trace(f, *args)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2683, in trace
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2725, in trace
         return self._trace_inner(f, *args)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2645, in _trace_inner
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2686, in _trace_inner
         t = dispatch_trace(
             ^^^^^^^^^^^^^^^
       File &quot;~/vv/this312/lib/python3.12/site-packages/torch/_compile.py&quot;, line 54, in inner
         return disable_fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py&quot;, line 1226, in _fn
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py&quot;, line 1251, in _fn
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1508, in dispatch_trace
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1533, in dispatch_trace
         graph = tracer.trace(root, concrete_args)  # type: ignore[arg-type]
                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2230, in trace
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2264, in trace
         res = super().trace(root, concrete_args)
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py&quot;, line 875, in trace
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py&quot;, line 890, in trace
         (self.create_arg(fn(*args)),),
                          ^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1574, in wrapped
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1603, in wrapped
         out = f(*tensors)  # type:ignore[call-arg]
               ^^^^^^^^^^^
       File &quot;&lt;string&gt;&quot;, line 1, in &lt;lambda&gt;
       File &quot;~/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1794, in wrapped_fn
         return tuple(flat_fn(*args))
                      ^^^^^^^^^^^^^^
-      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py&quot;, line 199, in flat_fn
+      File &quot;~/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py&quot;, line 209, in flat_fn
         raise RuntimeError(
     RuntimeError: Found &lt;class &#39;transformers.cache_utils.DynamicCache&#39;&gt; in output, which is not a known type. If this type holds tensors, you need to register a pytree for it. See https://github.com/pytorch/functorch/issues/475 for a brief explanation why. If you don&#39;t need to register a pytree, please leave a comment explaining your use case and we&#39;ll make this more ergonomic to deal with
 </pre></div>

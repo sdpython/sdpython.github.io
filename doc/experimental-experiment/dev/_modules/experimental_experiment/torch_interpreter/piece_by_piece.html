@@ -204,6 +204,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../design/index.html">Design</a><input aria-label="Toggle navigation of Design" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/optimizer_patterns.html">Available Patterns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/backends.html">Dynamo Backends</a></li>
 </ul>
 </li>
@@ -342,6 +343,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_layer_normalization.html">.xoptim.patterns.onnx_layer_normalization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_matmul.html">.xoptim.patterns.onnx_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_mul.html">.xoptim.patterns.onnx_mul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_range.html">.xoptim.patterns.onnx_range</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_reduce.html">.xoptim.patterns.onnx_reduce</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_reshape.html">.xoptim.patterns.onnx_reshape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_rotary.html">.xoptim.patterns.onnx_rotary</a></li>
@@ -394,7 +396,6 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_dynamo/index.html">.torch_dynamo</a><input aria-label="Toggle navigation of .torch_dynamo" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/_dynamo_exporter.html">.torch_dynamo._dynamo_exporter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/backend_helper.html">.torch_dynamo.backend_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/compiled_model.html">.torch_dynamo.compiled_model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_dynamo/debug_backend.html">.torch_dynamo.debug_backend</a></li>
@@ -500,6 +501,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -551,10 +553,10 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">max_diff</span><span class="p">,</span> <span class="n">string_diff</span><span class="p">,</span> <span class="n">string_type</span><span class="p">,</span> <span class="n">string_sig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheKeyValue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.torch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_deepcopy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..export_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_export</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">FunctionOptions</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">ExportOptions</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">._torch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_copy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.piece_by_piece_serialize</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">choose_kwargs_for_dynamic_shapes</span><span class="p">,</span>
     <span class="n">deserialize_args</span><span class="p">,</span>
@@ -981,7 +983,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_kwargs</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_ordered_parameter_names</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">forward_fill_kwargs</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_copy</span><span class="p">((</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch_deepcopy</span><span class="p">((</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.add_outputs">
@@ -990,7 +992,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores returned outputs. Makes a copy.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="p">,)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_copy</span><span class="p">(</span><span class="n">args</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">args</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.add_child">
@@ -2297,7 +2299,7 @@
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Not implemented yet for replace_by_custom_op=</span><span class="si">{</span><span class="n">replace_by_custom_op</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index_best_input_to_export</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">export_inputs</span> <span class="o">=</span> <span class="n">modificator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="k">if</span> <span class="n">modificator</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-        <span class="n">export_inputs</span> <span class="o">=</span> <span class="n">make_copy</span><span class="p">(</span><span class="n">export_inputs</span><span class="p">)</span>
+        <span class="n">export_inputs</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">export_inputs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">use_dynamic_shapes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
         <span class="k">assert</span> <span class="p">(</span>
@@ -2347,7 +2349,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">exporter_outputs</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">exporter_discs</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)):</span>
-                <span class="n">copy_inp</span> <span class="o">=</span> <span class="n">make_copy</span><span class="p">(</span><span class="n">modificator</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="k">if</span> <span class="n">modificator</span> <span class="k">else</span> <span class="n">inp</span><span class="p">)</span>
+                <span class="n">copy_inp</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">modificator</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="k">if</span> <span class="n">modificator</span> <span class="k">else</span> <span class="n">inp</span><span class="p">)</span>
                 <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">copy_inp</span>
                 <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[try_export-</span><span class="si">{</span><span class="n">exporter</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dot_name</span><span class="si">}</span><span class="s2">: CALL </span><span class="si">{</span><span class="n">fct</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>

@@ -179,7 +179,7 @@ We can also evaluate every expression without evaluating the model itself.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.048 seconds)
+   **Total running time of the script:** (0 minutes 0.031 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_shape_inference.py:

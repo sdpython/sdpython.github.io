@@ -76,7 +76,7 @@ Then we export the model into ONNX.
 .. code-block:: Python
 
 
-    proto = do_this_or_do_that.to_model_proto(functions=[do_this, do_that])
+    proto = do_this_or_do_that.to_model_proto()
     print(onnx.printer.to_text(proto))
 
 
@@ -88,7 +88,7 @@ Then we export the model into ONNX.
 
     <
        ir_version: 10,
-       opset_import: ["" : 18, "m_opset.ml" : 1]
+       opset_import: ["" : 18]
     >
     do_this_or_do_that ( x,  y) => ( ret_1) {
        [n0] do_this_or_do_that = Constant <value_int: int = @do_this_or_do_that> ()
@@ -99,22 +99,6 @@ Then we export the model into ONNX.
           [n0] ret_0 = m_opset.ml.do_that (x, y)
        }>
     }
-    <
-      domain: "m_opset.ml",
-      opset_import: ["" : 18]
-    >
-    do_this (x, y) => (return_val)
-    {
-       [n0] return_val = Add (x, y)
-    }
-    <
-      domain: "m_opset.ml",
-      opset_import: ["" : 18]
-    >
-    do_that (x, y) => (return_val)
-    {
-       [n0] return_val = Sub (x, y)
-    }
 
 
 
@@ -122,7 +106,7 @@ Then we export the model into ONNX.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.005 seconds)
+   **Total running time of the script:** (0 minutes 0.008 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_onnxscript_102.py:
