@@ -10,7 +10,7 @@
         <title>.xoptim.patterns.onnx_reduce - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -355,6 +355,7 @@
 <li class="toctree-l4"><a class="reference internal" href="onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -545,6 +546,105 @@
           <section id="module-experimental_experiment.xoptim.patterns.onnx_reduce">
 <span id="xoptim-patterns-onnx-reduce"></span><h1>.xoptim.patterns.onnx_reduce<a class="headerlink" href="#module-experimental_experiment.xoptim.patterns.onnx_reduce" title="Link to this heading">¶</a></h1>
 <dl class="py class">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reduce.</span></span><span class="sig-name descname"><span class="pre">ReduceArgTopKPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reduce.html#ReduceArgTopKPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern" title="Link to this definition">¶</a></dt>
+<dd><p>Fuses ReduceMin(X, axis), ArgMin(X, axis) into TopK(, k=1).</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-806dfcf311a3b8dd23d28fd58fc61fe4b3ff3179.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;one\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Constant_2 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceMin_3 [label=&quot;ReduceMin(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ArgMin_4 [label=&quot;ArgMin(., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; ReduceMin_3 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_2 -&gt; ReduceMin_3 [label=&quot;INT64(1)&quot;];
+  I_0 -&gt; ArgMin_4 [label=&quot;FLOAT(a,b)&quot;];
+  O_5 [label=&quot;Y2\nINT64(a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ArgMin_4 -&gt; O_5;
+  O_6 [label=&quot;Y1\nFLOAT(a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ReduceMin_3 -&gt; O_6;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-507c4b70be79d92f50c3c2dacd1de1bf8e88d3e3.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,b)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;one\nINT64(1)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  TopK_2 [label=&quot;TopK(., ., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Squeeze_3 [label=&quot;Squeeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Squeeze_4 [label=&quot;Squeeze(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_0 -&gt; TopK_2 [label=&quot;FLOAT(a,b)&quot;];
+  I_1 -&gt; TopK_2 [label=&quot;INT64(1)&quot;];
+  TopK_2 -&gt; Squeeze_3 [label=&quot;FLOAT(?,?)&quot;];
+  I_1 -&gt; Squeeze_3 [label=&quot;INT64(1)&quot;];
+  TopK_2 -&gt; Squeeze_4 [label=&quot;INT64(?,?)&quot;];
+  I_1 -&gt; Squeeze_4 [label=&quot;INT64(1)&quot;];
+  O_5 [label=&quot;Y2\nINT64(a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Squeeze_4 -&gt; O_5;
+  O_6 [label=&quot;Y1\nFLOAT(a)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Squeeze_3 -&gt; O_6;
+}" class="graphviz" /></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduce_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reduce.html#ReduceArgTopKPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern.apply" title="Link to this definition">¶</a></dt>
+<dd><p>The method does the rewriting. It assumes it can happen.
+It takes a list of nodes impacted by the rewriting assumes no other
+pattern optimizer will be modify them. It receives the list of nodes
+returned by method <em>apply</em>. Since it is a list of argument, method
+<em>match</em> can include None values. The method returns the new nodes.
+The optimizer considers that any node given to this function is removed
+from the graph, and any node returned by it are added.
+If a received node must be kept, it must be added to the list of returned node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> – nodes returned by method <em>match</em>, there are then removed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nodes to add to graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reduce.html#ReduceArgTopKPattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern.match" title="Link to this definition">¶</a></dt>
+<dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – is a <a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>,
+it holds all the existing nodes, is able to return any information
+about type, shape, the node before, the node after another one.</p></li>
+<li><p><strong>node</strong> – the matching must determine if some nodes around this one
+are part of set of nodes this pattern optmizer can rewrite.
+From there, the function explores wherever it needs,
+checking any condition it needs.</p></li>
+<li><p><strong>matched</strong> – usually unused, it returns of nodes already matching
+a pattern</p></li>
+</ul>
+</dd>
+</dl>
+<p>The method must not modify the graph.
+The method returns None if no match is found or an instance
+of class <a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.MatchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResult</span></code></a>. It must contain:</p>
+<ul class="simple">
+<li><p>a list of nodes involved in the rewriting. It does not mean all
+of them will be removed but all of them are needed to do the rewriting
+and must not be impacted by other pattern optimizer.</p></li>
+<li><p>A function doing the rewriting (usually method <em>apply</em> of the pattern class).</p></li>
+<li><p>An existing node where the rewritten nodes can be inserted.
+Knowing it makes it faster to rewriter. If not specified, the optimizer
+will automatically determine the position of the new nodes.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reduce.</span></span><span class="sig-name descname"><span class="pre">ReduceSumNormalizePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reduce.html#ReduceSumNormalizePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Nodes equivalent to a reduction.</p>
@@ -709,6 +809,11 @@ will automatically determine the position of the new nodes.</p></li>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">.xoptim.patterns.onnx_reduce</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern"><code class="docutils literal notranslate"><span class="pre">ReduceArgTopKPattern</span></code></a><ul>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern.apply"><code class="docutils literal notranslate"><span class="pre">ReduceArgTopKPattern.apply()</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceArgTopKPattern.match"><code class="docutils literal notranslate"><span class="pre">ReduceArgTopKPattern.match()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern"><code class="docutils literal notranslate"><span class="pre">ReduceSumNormalizePattern</span></code></a><ul>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern.apply"><code class="docutils literal notranslate"><span class="pre">ReduceSumNormalizePattern.apply()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern.match"><code class="docutils literal notranslate"><span class="pre">ReduceSumNormalizePattern.match()</span></code></a></li>

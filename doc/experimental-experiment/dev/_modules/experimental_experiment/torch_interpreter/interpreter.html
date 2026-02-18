@@ -9,7 +9,7 @@
         <title>experimental_experiment.torch_interpreter.interpreter - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -354,6 +354,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/xoptim/patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -961,23 +962,25 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">trace_init</span> <span class="o">=</span> <span class="n">init</span>
 
-            <span class="n">builder</span><span class="p">,</span> <span class="n">_args</span><span class="p">,</span> <span class="n">_kwargs</span><span class="p">,</span> <span class="n">_output_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpret_sub_module</span><span class="p">(</span>
+            <span class="n">builder</span><span class="p">,</span> <span class="n">_args</span><span class="p">,</span> <span class="n">_kwargs</span><span class="p">,</span> <span class="n">output_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpret_sub_module</span><span class="p">(</span>
                 <span class="n">trace_init</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_node</span><span class="o">=</span><span class="n">node</span><span class="p">,</span> <span class="n">local_domain</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_local_function</span><span class="p">(</span>
-                <span class="n">builder</span><span class="p">,</span>
-                <span class="n">function_options</span><span class="o">=</span><span class="n">FunctionOptions</span><span class="p">(</span>
-                    <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="n">domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">local_domain</span><span class="p">,</span>
-                    <span class="n">export_as_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">return_initializer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">move_initializer_to_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">move_initializer_to_constant</span><span class="p">,</span>
-                    <span class="n">external_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">external_threshold</span><span class="p">,</span>
-                    <span class="n">merge_allowed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">merge_allowed</span><span class="p">,</span>
-                    <span class="n">rename_allowed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">rename_allowed</span><span class="p">,</span>
-                <span class="p">),</span>
-                <span class="n">optimize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimize_submodules</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">output_names</span><span class="p">:</span>
+                <span class="c1"># If no output, then it cannot be used.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_local_function</span><span class="p">(</span>
+                    <span class="n">builder</span><span class="p">,</span>
+                    <span class="n">function_options</span><span class="o">=</span><span class="n">FunctionOptions</span><span class="p">(</span>
+                        <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">local_domain</span><span class="p">,</span>
+                        <span class="n">export_as_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">return_initializer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">move_initializer_to_constant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">move_initializer_to_constant</span><span class="p">,</span>
+                        <span class="n">external_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">external_threshold</span><span class="p">,</span>
+                        <span class="n">merge_allowed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">merge_allowed</span><span class="p">,</span>
+                        <span class="n">rename_allowed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">function_options</span><span class="o">.</span><span class="n">rename_allowed</span><span class="p">,</span>
+                    <span class="p">),</span>
+                    <span class="n">optimize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimize_submodules</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">TreeSpec</span><span class="p">):</span>
@@ -2925,7 +2928,8 @@
 
         <span class="c1"># processes the submodules</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">graph_module</span><span class="p">,</span> <span class="n">interpreter</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">builder</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;No output detected for node=</span><span class="si">{</span><span class="n">source_node</span><span class="si">}</span><span class="s2">, graph=</span><span class="si">{</span><span class="n">gm</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">builder</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">builder</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
 
         <span class="c1"># processing args, kwargs</span>
         <span class="n">fx_args</span><span class="p">,</span> <span class="n">fx_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_in_default_kwargs</span><span class="p">(</span><span class="n">source_node</span><span class="p">)</span>

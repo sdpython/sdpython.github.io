@@ -10,7 +10,7 @@
         <title>.xoptim.patterns_ort.fused_matmul - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -355,6 +355,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" checked="" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
@@ -998,6 +999,24 @@ will automatically determine the position of the new nodes.</p></li>
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.fused_matmul.</span></span><span class="sig-name descname"><span class="pre">ReshapeGemmReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/fused_matmul.html#ReshapeGemmReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.fused_matmul.ReshapeGemmReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Reshape + Gemm + Reshape into FusedMatMul.</p>
 <p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-01dd6fc7c371e4298bd68ce5d499410e88daaf2f.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;B\nFLOAT(8,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;A\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_2 [label=&quot;shapey\nINT64(e)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  Reshape_3 [label=&quot;Reshape(., [-1, 8])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Gemm_4 [label=&quot;Gemm(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_5 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#eeeeee&quot;];
+  I_1 -&gt; Reshape_3 [label=&quot;FLOAT(a,b,c)&quot;];
+  Reshape_3 -&gt; Gemm_4 [label=&quot;FLOAT(?,8)&quot;];
+  I_0 -&gt; Gemm_4 [label=&quot;FLOAT(8,4)&quot;];
+  Gemm_4 -&gt; Reshape_5 [label=&quot;FLOAT(?,4)&quot;];
+  I_2 -&gt; Reshape_5 [label=&quot;INT64(e)&quot;];
+  O_6 [label=&quot;Y\nFLOAT(a,b,c)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_5 -&gt; O_6;
+}" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-d08ed6b3ab6b4610bfb6ac263545ab54766a4ff7.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];

@@ -9,7 +9,7 @@
         <title>experimental_experiment.xbuilder.graph_builder - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -354,6 +354,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/xoptim/patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -2720,7 +2721,11 @@
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;replacements_dimensions_&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">replacements_dimensions_</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
                 <span class="p">(</span>
-                    <span class="n">rename_dynamic_expression</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacements_for_replacements_dimensions_</span><span class="p">)</span>
+                    <span class="n">simplify_expression</span><span class="p">(</span>
+                        <span class="n">rename_dynamic_expression</span><span class="p">(</span>
+                            <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacements_for_replacements_dimensions_</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
                     <span class="k">else</span> <span class="n">_</span>
                 <span class="p">)</span>
@@ -6517,6 +6522,25 @@
         <span class="n">dtype</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">data_type</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">size_type</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_hidden_inputs_to_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;Loop&quot;</span><span class="p">}:</span>
+                <span class="k">continue</span>
+            <span class="n">hiddens</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_hidden_inputs_to_nodes</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hidden_inputs</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">hidden</span><span class="p">:</span>
+                    <span class="n">hiddens</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">hidden</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">hidden</span> <span class="ow">in</span> <span class="n">hiddens</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">metadata_props</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;hidden_input_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
+
 <div class="viewcode-block" id="GraphBuilder.to_onnx">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.to_onnx">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_onnx</span><span class="p">(</span>
@@ -6597,6 +6621,8 @@
                 <span class="sa">f</span><span class="s2">&quot;Length mismatch between mask=</span><span class="si">{</span><span class="n">mask_outputs</span><span class="si">}</span><span class="s2"> and outputs &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_hidden_inputs_to_nodes</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">function_options</span><span class="o">.</span><span class="n">export_as_function</span><span class="p">:</span>
             <span class="c1"># export as a function</span>
@@ -6931,7 +6957,11 @@
                 <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">replacements_dimensions_</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-                    <span class="p">(</span><span class="n">rename_dynamic_expression</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">_</span><span class="p">)</span>
+                    <span class="p">(</span>
+                        <span class="n">simplify_expression</span><span class="p">(</span><span class="n">rename_dynamic_expression</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">replacements</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                        <span class="k">else</span> <span class="n">_</span>
+                    <span class="p">)</span>
                     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span>
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">replacements</span>

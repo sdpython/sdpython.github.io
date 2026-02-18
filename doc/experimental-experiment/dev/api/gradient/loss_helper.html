@@ -10,7 +10,7 @@
         <title>.gradient.loss_helper - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -355,6 +355,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../xoptim/patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -593,7 +594,7 @@ columns, the sum on every line is 1.</p>
 </li>
 </ul>
 <p>Next example shows the loss with L1 and L2 loss.</p>
-<div class="graphviz"><img src="../../_images/graphviz-f4d30989814c6ff38fd80de1e8daf94a596aa49e.png" alt="digraph {
+<div class="graphviz"><img src="../../_images/graphviz-5cee78f1da248ba7ed7ca339908675c1fb7e65b2.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -602,7 +603,7 @@ columns, the sum on every line is 1.</p>
   I_2 [label=&quot;weight\nFLOAT(0)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   i_3 [label=&quot;coef\nFLOAT(10, 1)&quot;, fillcolor=&quot;#cccc00&quot;];
   MatMul_4 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
-  Add_5 [label=&quot;Add(., [2.000015])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_5 [label=&quot;Add(., [2.0000076])&quot;, fillcolor=&quot;#cccccc&quot;];
   Reshape_6 [label=&quot;Reshape(., [-1, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
   Sub_7 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
@@ -634,7 +635,7 @@ columns, the sum on every line is 1.</p>
 }" class="graphviz" /></div>
 <p>Next example shows how to add a L2 loss with L1 and L2 penalties
 on the coefficients.</p>
-<div class="graphviz"><img src="../../_images/graphviz-d55e6e358d566b652be0d504e5c8ba1d017f6ed0.png" alt="digraph {
+<div class="graphviz"><img src="../../_images/graphviz-69c026d8be4a3e8d14c97b2d6c01d41eff25805e.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
   node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
   edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
@@ -643,7 +644,7 @@ on the coefficients.</p>
   I_2 [label=&quot;weight\nFLOAT(0)&quot;, fillcolor=&quot;#aaeeaa&quot;];
   i_3 [label=&quot;coef\nFLOAT(10, 1)&quot;, fillcolor=&quot;#cccc00&quot;];
   MatMul_4 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
-  Add_5 [label=&quot;Add(., [1.9999924])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_5 [label=&quot;Add(., [1.9999886])&quot;, fillcolor=&quot;#cccccc&quot;];
   Reshape_6 [label=&quot;Reshape(., [-1, 1])&quot;, fillcolor=&quot;#eeeeee&quot;];
   Sub_7 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   Mul_8 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
@@ -661,7 +662,7 @@ on the coefficients.</p>
   ReduceSum_20 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
   Mul_21 [label=&quot;Mul(., [0.5])&quot;, fillcolor=&quot;#cccccc&quot;];
   Add_22 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Reshape_23 [label=&quot;Reshape([1.9999924], [-1])&quot;, fillcolor=&quot;#eeeeee&quot;];
+  Reshape_23 [label=&quot;Reshape([1.9999886], [-1])&quot;, fillcolor=&quot;#eeeeee&quot;];
   Mul_24 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
   ReduceSum_25 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
   Mul_26 [label=&quot;Mul(., [0.5])&quot;, fillcolor=&quot;#cccccc&quot;];
