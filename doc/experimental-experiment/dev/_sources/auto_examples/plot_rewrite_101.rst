@@ -164,18 +164,18 @@ Optimization
 
  .. code-block:: none
 
-    [GraphBuilder-VEE.optimize] start with 3 nodes
-    [GraphBuilder-VEE.optimize] #patterns=1
-    [GraphBuilderPatternOptimization-VEE.optimize] start with 3 nodes, 0 initializers, 1 patterns, priorities=[0], max_iter=10
-    [GraphBuilderPatternOptimization-VEE.optimize] iteration 0: 3 nodes, priority=0
-    [GraphBuilderPatternOptimization-VEE.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
-    [GraphBuilderPatternOptimization-VEE.optimize] iteration 1: 1 nodes, priority=0
-    [GraphBuilderPatternOptimization-VEE.optimize] stops current_priority_index=1, priorities=[0]
-    [GraphBuilderPatternOptimization-VEE.optimize] done after 2 iterations with 1 nodes in 0.004
+    [GraphBuilder-PNS.optimize] start with 3 nodes
+    [GraphBuilder-PNS.optimize] #patterns=1
+    [GraphBuilderPatternOptimization-PNS.optimize] start with 3 nodes, 0 initializers, 1 patterns, priorities=[0], max_iter=10
+    [GraphBuilderPatternOptimization-PNS.optimize] iteration 0: 3 nodes, priority=0
+    [GraphBuilderPatternOptimization-PNS.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
+    [GraphBuilderPatternOptimization-PNS.optimize] iteration 1: 1 nodes, priority=0
+    [GraphBuilderPatternOptimization-PNS.optimize] stops current_priority_index=1, priorities=[0]
+    [GraphBuilderPatternOptimization-PNS.optimize] done after 2 iterations with 1 nodes in 0.004
     [OrderOptimization.optimize] ALGO-2
     [OrderOptimization.random_order] -- starts with 1 nodes, 0 initializers
-    [OrderOptimization.shape_order] done after in 2.1570999990672135e-05s with changed=0 scale=0
-    [GraphBuilder-VEE.optimize] done with 1 nodes in 0.005
+    [OrderOptimization.shape_order] done after in 2.3476000933442265e-05s with changed=0 scale=0
+    [GraphBuilder-PNS.optimize] done with 1 nodes in 0.006
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cuda' version=1
     input: name='X' type=dtype('float32') shape=[1, 'b', 'c']
@@ -289,7 +289,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.192 seconds)
+   **Total running time of the script:** (0 minutes 0.220 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:

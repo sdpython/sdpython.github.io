@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_reshape - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -502,7 +502,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -1155,7 +1154,12 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">cst2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="k">if</span> <span class="mi">0</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cst2</span><span class="p">:</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">cst2</span><span class="p">:</span>
+                <span class="n">cst1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">cst1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">cst1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cst2</span><span class="p">):</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
                 <span class="c1"># The second shape wins it all.</span>
                 <span class="k">return</span> <span class="p">[</span>
                     <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>

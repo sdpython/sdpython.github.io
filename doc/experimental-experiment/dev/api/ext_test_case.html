@@ -355,6 +355,7 @@
 <li class="toctree-l4"><a class="reference internal" href="xoptim/patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="xoptim/patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="xoptim/patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xoptim/patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="xoptim/patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -502,7 +503,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -674,6 +674,13 @@ functions and other helpers.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.ext_test_case.ExtTestCase.set_env">
+<span class="sig-name descname"><span class="pre">set_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/ext_test_case.html#ExtTestCase.set_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.ext_test_case.ExtTestCase.set_env" title="Link to this definition">¶</a></dt>
+<dd><p>Sets environment variable <cite>varname</cite> to <cite>value</cite>
+and sets it back.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.ext_test_case.ExtTestCase.tearDownClass">
 <span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">tearDownClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/ext_test_case.html#ExtTestCase.tearDownClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.ext_test_case.ExtTestCase.tearDownClass" title="Link to this definition">¶</a></dt>
 <dd><p>Hook method for deconstructing the class fixture after running all tests in the class.</p>
@@ -828,15 +835,15 @@ beyond this time (approximatively), <em>repeat</em> is ignored,
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">5.585998587775976e-08</span><span class="p">),</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">8.223002078011632e-08</span><span class="p">),</span>
      <span class="s1">&#39;context_size&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
-     <span class="s1">&#39;deviation&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">6.679087993902882e-09</span><span class="p">),</span>
-     <span class="s1">&#39;max_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">7.144000846892595e-08</span><span class="p">),</span>
-     <span class="s1">&#39;min_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">4.9299997044727205e-08</span><span class="p">),</span>
+     <span class="s1">&#39;deviation&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1.0092448744153316e-08</span><span class="p">),</span>
+     <span class="s1">&#39;max_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">9.65400249697268e-08</span><span class="p">),</span>
+     <span class="s1">&#39;min_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">7.184004061855376e-08</span><span class="p">),</span>
      <span class="s1">&#39;number&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
      <span class="s1">&#39;repeat&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-     <span class="s1">&#39;ttime&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">5.585998587775976e-07</span><span class="p">),</span>
-     <span class="s1">&#39;warmup_time&#39;</span><span class="p">:</span> <span class="mf">5.10400059283711e-06</span><span class="p">}</span>
+     <span class="s1">&#39;ttime&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">8.223002078011632e-07</span><span class="p">),</span>
+     <span class="s1">&#39;warmup_time&#39;</span><span class="p">:</span> <span class="mf">9.282994142267853e-06</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://docs.python.org/3/library/timeit.html?timeit.Timer.repeat">Timer.repeat</a>
@@ -1010,7 +1017,7 @@ The function returns a duration corresponding to
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">30874</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1006</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">31117</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1016</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1049,12 +1056,12 @@ The function returns a duration corresponding to
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4633</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">135</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;export_helpers.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">235</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">10909</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">384</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bench_run.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">30874</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1006</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ext_test_case.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">31117</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1016</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ext_test_case.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7951</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">261</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_test_helper.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">16562</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">483</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ort_session.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">65</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;__main__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4328</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">186</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;memory_peak.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">16910</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">607</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">16936</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">607</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5287</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">157</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;model_run.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5677</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">212</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;onnx_tools.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;_bench_test.py&#39;</span><span class="p">},</span>
@@ -1103,7 +1110,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_math_functions.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">13206</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">13255</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">426</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_aten_functions_attention.py&#39;</span><span class="p">},</span>
@@ -1127,9 +1134,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_torch_helper.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">300173</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">300081</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">11411</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">11408</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_aten_functions.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">152</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_doc_.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7214</span><span class="p">,</span>
@@ -1144,9 +1151,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">353</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/piece_by_piece_serialize.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">69054</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">69073</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">2187</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">2190</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/interpreter.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4073</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1177,7 +1184,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">322</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_dynamo/debug_backend.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">3318</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/__init__.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">35612</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">35634</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1152</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_api.py&#39;</span><span class="p">},</span>
@@ -1195,17 +1202,17 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1522</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_expand.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">21455</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">21289</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">803</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">801</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_transpose.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5609</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">201</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_slice.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">28498</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">30806</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1025</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1113</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_any.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4175</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1215,9 +1222,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">369</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_concat.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7542</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7968</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">222</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">235</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">53341</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1239,9 +1246,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">98</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_constants.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4924</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">9699</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">159</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">318</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_reduce.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">3532</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1255,21 +1262,21 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">157</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_sub.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">34670</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">38436</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1463</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1595</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_layer_normalization.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2953</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_dropout.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">8858</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">39654</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">275</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1267</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_attention.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">54286</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">54051</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1877</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1878</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_reshape.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">20444</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1287,13 +1294,17 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">609</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_unsqueeze.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6417</span><span class="p">,</span>
+      <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">218</span><span class="p">,</span>
+      <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_where.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">3662</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">127</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_sequence.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">14165</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">13981</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">519</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">517</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_split.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">1456</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1303,9 +1314,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">140</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/batch_normalization.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2609</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2684</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">76</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">78</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">34326</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1319,9 +1330,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/activation_grad.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">28686</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">28772</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1092</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/fused_matmul.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">19523</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1331,9 +1342,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/fused_conv.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">31192</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">45515</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">967</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1427</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/llm_optim.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6143</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1404,9 +1415,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xbuilder/virtual_tensor.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">264262</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">264814</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">8411</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">8434</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xbuilder/graph_builder.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7516</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1531,9 +1542,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">82</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;reference/ops/op_scatter_elements.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">1260</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6831</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">47</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">222</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;reference/ops/op_attention.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">458</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1590,9 +1601,9 @@ The function returns a duration corresponding to
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;plotting/__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">1893</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;plotting/memory.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6285</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">377</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;plotting/data.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2792</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2700</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">83</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/rename_expressions.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2127</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1603,9 +1614,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">59</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/expressions_torch.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">3778</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">119</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/_shape_helper.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5946</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">8859</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">196</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">284</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/simplify_expressions.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">16044</span><span class="p">,</span>
@@ -1621,9 +1632,9 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">206</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/type_inference.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">52714</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">54954</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1524</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1586</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/shape_type_compute.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">15091</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -1767,10 +1778,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">384</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bench_run.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">30874</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">31117</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1006</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1016</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ext_test_case.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7951</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
@@ -1788,7 +1799,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">186</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;memory_peak.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">16910</span><span class="p">,</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">607</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">16936</span><span class="p">,</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">607</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5287</span><span class="p">,</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">157</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;model_run.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5677</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
@@ -1852,7 +1863,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_math_functions.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">13206</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">13255</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">426</span><span class="p">,</span>
@@ -1882,10 +1893,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_torch_helper.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">300173</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">300081</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">11411</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">11408</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/_aten_functions.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">152</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter&#39;</span><span class="p">,</span>
@@ -1907,10 +1918,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">353</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/piece_by_piece_serialize.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">69054</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">69073</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">2187</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">2190</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_interpreter/interpreter.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4073</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_dynamo&#39;</span><span class="p">,</span>
@@ -1952,7 +1963,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/__init__.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">35612</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">35634</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1152</span><span class="p">,</span>
@@ -1982,20 +1993,20 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1522</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_expand.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">21455</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">21289</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">803</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">801</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_transpose.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5609</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">201</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_slice.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">28498</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">30806</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1025</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1113</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_any.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4175</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2007,10 +2018,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">369</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_concat.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7542</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7968</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">222</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">235</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">53341</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2037,10 +2048,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">98</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_constants.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">4924</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">9699</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">159</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">318</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_reduce.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">3532</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2057,25 +2068,25 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">157</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_sub.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">34670</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">38436</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1463</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1595</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_layer_normalization.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2953</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_dropout.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">8858</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">39654</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">275</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1267</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_attention.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">54286</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">54051</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1877</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1878</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_reshape.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">20444</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2097,15 +2108,20 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">609</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_unsqueeze.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6417</span><span class="p">,</span>
+      <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">218</span><span class="p">,</span>
+      <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_where.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">3662</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">127</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_sequence.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">14165</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">13981</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">519</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">517</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns/onnx_split.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">1456</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2117,10 +2133,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">140</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/batch_normalization.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2609</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2684</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">76</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">78</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">34326</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2137,10 +2153,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/activation_grad.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">28686</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">28772</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1092</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/fused_matmul.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">19523</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2152,10 +2168,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/fused_conv.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">31192</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">45515</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">967</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1427</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim/patterns_ort/llm_optim.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6143</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xoptim&#39;</span><span class="p">,</span>
@@ -2247,10 +2263,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xbuilder/virtual_tensor.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">264262</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">264814</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xbuilder&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">8411</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">8434</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xbuilder/graph_builder.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">7516</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xbuilder&#39;</span><span class="p">,</span>
@@ -2447,10 +2463,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">82</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;reference/ops/op_scatter_elements.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">1260</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6831</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;reference&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">47</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">222</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;reference/ops/op_attention.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">458</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;reference&#39;</span><span class="p">,</span>
@@ -2532,10 +2548,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">377</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;plotting/data.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2792</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2700</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">83</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/rename_expressions.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2127</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape&#39;</span><span class="p">,</span>
@@ -2552,10 +2568,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">119</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/_shape_helper.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5946</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">8859</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">196</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">284</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/simplify_expressions.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape&#39;</span><span class="p">,</span>
@@ -2582,10 +2598,10 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">206</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/type_inference.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">52714</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">54954</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1524</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1586</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape/shape_type_compute.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">15091</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;xshape&#39;</span><span class="p">,</span>
@@ -2837,6 +2853,7 @@ Avois unit tests to be very long.</p>
 <li><a class="reference internal" href="#experimental_experiment.ext_test_case.ExtTestCase.print_model"><code class="docutils literal notranslate"><span class="pre">ExtTestCase.print_model()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.ext_test_case.ExtTestCase.print_onnx"><code class="docutils literal notranslate"><span class="pre">ExtTestCase.print_onnx()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.ext_test_case.ExtTestCase.setUpClass"><code class="docutils literal notranslate"><span class="pre">ExtTestCase.setUpClass()</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.ext_test_case.ExtTestCase.set_env"><code class="docutils literal notranslate"><span class="pre">ExtTestCase.set_env()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.ext_test_case.ExtTestCase.tearDownClass"><code class="docutils literal notranslate"><span class="pre">ExtTestCase.tearDownClass()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.ext_test_case.ExtTestCase.todo"><code class="docutils literal notranslate"><span class="pre">ExtTestCase.todo()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.ext_test_case.ExtTestCase.tryCall"><code class="docutils literal notranslate"><span class="pre">ExtTestCase.tryCall()</span></code></a></li>

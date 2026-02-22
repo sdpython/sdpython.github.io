@@ -355,6 +355,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../api/xoptim/patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -502,7 +503,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -946,37 +946,39 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a></a></a></a></a>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[GraphBuilder-VJK.optimize] start with 214 nodes
-[GraphBuilder-VJK.optimize] #patterns=85
-[GraphBuilderPatternOptimization-VJK.optimize] start with 214 nodes, 73 initializers, 85 patterns, priorities=[0, 1, 3], max_iter=642
-[GraphBuilderPatternOptimization-VJK.optimize] same children={&#39;SameChildrenPattern&#39;, &#39;SameChildrenFromInputPattern&#39;}
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 0: 214 nodes, priority=0
-[GraphBuilderPatternOptimization-VJK.optimize] applies 51 matches, 37*CastPattern, 3*ShapeBasedReshapeIsSqueezePattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.015 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 1: 159 nodes, priority=0
-[GraphBuilderPatternOptimization-VJK.optimize] increase priority to 1
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 2: 159 nodes, priority=1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[GraphBuilder-FEM.optimize] start with 214 nodes
+[GraphBuilder-FEM.optimize] #patterns=92
+[GraphBuilderPatternOptimization-FEM.optimize] start with 214 nodes, 73 initializers, 92 patterns, priorities=[0, 1, 2, 3], max_iter=856
+[GraphBuilderPatternOptimization-FEM.optimize] same children={&#39;SameChildrenPattern&#39;, &#39;SameChildrenFromInputPattern&#39;}
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 0: 214 nodes, priority=0
+[GraphBuilderPatternOptimization-FEM.optimize] applies 51 matches, 37*CastPattern, 3*ShapeBasedReshapeIsSqueezePattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.015 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 1: 159 nodes, priority=0
+[GraphBuilderPatternOptimization-FEM.optimize] increase priority to 1
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 2: 159 nodes, priority=1
 [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -&gt; (2, 1024, 1024)
 [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -&gt; (2, 1024, 1024)
 [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -&gt; (2, 1024, 1024)
-[GraphBuilderPatternOptimization-VJK.optimize] applies 26 matches, 1*ConstantToInitializerPattern, 3*MulMulMulScalarPattern, 2*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 1*Sub1MulPattern, 14*TransposeMatMulPattern - time=0.035 | max_time=Sub1MulPattern:0.012
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 3: 137 nodes, priority=1
+[GraphBuilderPatternOptimization-FEM.optimize] applies 26 matches, 1*ConstantToInitializerPattern, 3*MulMulMulScalarPattern, 2*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 1*Sub1MulPattern, 14*TransposeMatMulPattern - time=0.031 | max_time=Sub1MulPattern:0.012
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 3: 137 nodes, priority=1
 [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -&gt; (2, 1024, 1024)
 [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -&gt; (2, 1024, 1024)
 [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -&gt; (2, 1024, 1024)
-[GraphBuilderPatternOptimization-VJK.optimize] applies 10 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*TransposeReshapeMatMulPattern, 2*RotaryConcatPartPattern - time=0.016 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 4: 123 nodes, priority=1
-[GraphBuilderPatternOptimization-VJK.optimize] applies 5 matches, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.015 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 5: 123 nodes, priority=1
-[GraphBuilderPatternOptimization-VJK.optimize] increase priority to 3
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 6: 123 nodes, priority=3
-[GraphBuilderPatternOptimization-VJK.optimize] applies 3 matches, 3*MatMulAddPattern - time=0.013 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
-[GraphBuilderPatternOptimization-VJK.optimize] iteration 7: 120 nodes, priority=3
-[GraphBuilderPatternOptimization-VJK.optimize] stops current_priority_index=3, priorities=[0, 1, 3]
-[GraphBuilderPatternOptimization-VJK.optimize] done after 8 iterations with 120 nodes in 0.236
+[GraphBuilderPatternOptimization-FEM.optimize] applies 10 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*TransposeReshapeMatMulPattern, 2*RotaryConcatPartPattern - time=0.019 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 4: 123 nodes, priority=1
+[GraphBuilderPatternOptimization-FEM.optimize] applies 5 matches, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.015 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 5: 123 nodes, priority=1
+[GraphBuilderPatternOptimization-FEM.optimize] increase priority to 2
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 6: 123 nodes, priority=2
+[GraphBuilderPatternOptimization-FEM.optimize] increase priority to 3
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 7: 123 nodes, priority=3
+[GraphBuilderPatternOptimization-FEM.optimize] applies 3 matches, 3*MatMulAddPattern - time=0.014 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
+[GraphBuilderPatternOptimization-FEM.optimize] iteration 8: 120 nodes, priority=3
+[GraphBuilderPatternOptimization-FEM.optimize] stops current_priority_index=4, priorities=[0, 1, 2, 3]
+[GraphBuilderPatternOptimization-FEM.optimize] done after 9 iterations with 120 nodes in 0.282
 [OrderOptimization.optimize] ALGO-2
 [OrderOptimization.random_order] -- starts with 120 nodes, 19 initializers
-[OrderOptimization.shape_order] done after in 0.0013571350000347593s with changed=0 scale=0
-[GraphBuilder-VJK.optimize] done with 120 nodes in 0.268
+[OrderOptimization.shape_order] done after in 0.0007963259995449334s with changed=0 scale=0
+[GraphBuilder-FEM.optimize] done with 120 nodes in 0.311
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -1019,7 +1021,7 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>dynamic_dimension_naming</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000397</td>
+      <td>0.000319</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1035,7 +1037,7 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>check_A-dynamic_dimension_naming</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000705</td>
+      <td>0.000635</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1051,7 +1053,7 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>check_A-opt-sub</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000694</td>
+      <td>0.000904</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1067,7 +1069,7 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>remove_identity</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.001487</td>
+      <td>0.004329</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1083,7 +1085,7 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>check_remove_identity-0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000980</td>
+      <td>0.001095</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1111,11 +1113,11 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>...</td>
     </tr>
     <tr>
-      <th>968</th>
+      <th>1108</th>
       <td>check_orderL</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000488</td>
+      <td>0.000295</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1127,11 +1129,11 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>NaN</td>
     </tr>
     <tr>
-      <th>969</th>
+      <th>1109</th>
       <td>shape_order</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.001449</td>
+      <td>0.000838</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1143,7 +1145,7 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>NaN</td>
     </tr>
     <tr>
-      <th>970</th>
+      <th>1110</th>
       <td>order</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1159,11 +1161,11 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>2</td>
     </tr>
     <tr>
-      <th>971</th>
+      <th>1111</th>
       <td>check_order-12</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000679</td>
+      <td>0.000337</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1175,11 +1177,11 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
       <td>NaN</td>
     </tr>
     <tr>
-      <th>972</th>
+      <th>1112</th>
       <td>optimization</td>
       <td>94.0</td>
       <td>0.0</td>
-      <td>0.268194</td>
+      <td>0.310884</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1192,7 +1194,7 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
     </tr>
   </tbody>
 </table>
-<p>973 rows × 13 columns</p>
+<p>1113 rows × 13 columns</p>
 </div>
 </div>
 <br />
@@ -1216,19 +1218,19 @@ output: name=&#39;output_14&#39; type=dtype(&#39;float32&#39;) shape=None
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                     time_in  added  removed  iteration  match_index  instances
 pattern
-apply_CastPattern                   0.003769     37       37          0           36         37
-apply_ConstantToInitializerPattern  0.000781      1        1          2            0          1
-apply_ExpandBroadcastPattern        0.000438      3        6          3            2          3
-apply_MatMulAddPattern              0.000436      3        6          6            2          3
-apply_MatMulReshape2Of3Pattern      0.005692     10       12          3            8          4
+apply_CastPattern                   0.003669     37       37          0           36         37
+apply_ConstantToInitializerPattern  0.000685      1        1          2            0          1
+apply_ExpandBroadcastPattern        0.000470      3        6          3            2          3
+apply_MatMulAddPattern              0.000484      3        6          7            2          3
+apply_MatMulReshape2Of3Pattern      0.004783     10       12          3            8          4
 ...                                      ...    ...      ...        ...          ...        ...
-remove_duplicated_shape             0.000167      0        0          7            0          0
-remove_identity                     0.004425      0        0          0            0          0
-remove_identity_nodes               0.009749     44       88          7            0          0
-remove_unused                       0.019322      0        3          7            0          0
-shape_order                         0.001449      0        0          0            0          0
+remove_duplicated_shape             0.000177      0        0          8            0          0
+remove_identity                     0.006022      0        0          0            0          0
+remove_identity_nodes               0.022408     44       88          8            0          0
+remove_unused                       0.021277      0        3          8            0          0
+shape_order                         0.000838      0        0          0            0          0
 
-[146 rows x 6 columns]
+[154 rows x 6 columns]
 </pre></div>
 </div>
 <p>The total is:</p>
@@ -1478,12 +1480,12 @@ The second list is specific to <a class="reference external" href="https://onnxr
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a></a></a></a></a>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[GraphBuilder-GDK.optimize] start with 120 nodes
-[GraphBuilder-GDK.optimize] #patterns=1
-[GraphBuilderPatternOptimization-GDK.optimize] start with 120 nodes, 19 initializers, 1 patterns, priorities=[1], max_iter=120
-[GraphBuilderPatternOptimization-GDK.optimize] use pattern   1/1 - P1 - SwitchOrderBinaryPattern()
-[GraphBuilderPatternOptimization-GDK.optimize] iteration 0: 120 nodes, priority=1
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0 - matching_step
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[GraphBuilder-OEA.optimize] start with 120 nodes
+[GraphBuilder-OEA.optimize] #patterns=1
+[GraphBuilderPatternOptimization-OEA.optimize] start with 120 nodes, 19 initializers, 1 patterns, priorities=[1], max_iter=120
+[GraphBuilderPatternOptimization-OEA.optimize] use pattern   1/1 - P1 - SwitchOrderBinaryPattern()
+[GraphBuilderPatternOptimization-OEA.optimize] iteration 0: 120 nodes, priority=1
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0 - matching_step
 [PatternOptimization.enumerate_matches] start SwitchOrderBinaryPattern with main_opset=18 and min_opset=1
 [SwitchOrderBinaryPattern.match] NONE - line: 384:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul5, inputs=_onx_mul0,input34
 [SwitchOrderBinaryPattern.match] NONE - line: 384:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul7, inputs=_onx_mul0,input35
@@ -1505,28 +1507,28 @@ The second list is specific to <a class="reference external" href="https://onnxr
 [SwitchOrderBinaryPattern.match] NONE - line: 384:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst, inputs=_onx_mul033,init1_s_12
 [SwitchOrderBinaryPattern.match] NONE - line: 384:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst2, inputs=mul-_onx_mul033,input4
 [SwitchOrderBinaryPattern.match] NONE - line: 384:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor14, inputs=add_21,_onx_mul035
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0 - matching_step done 0
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - apply_step with 0 matches
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - done with 0 applied patterns
-[GraphBuilderPatternOptimization-GDK.optimize] done all: -0 +0 nodes
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - remove_duplicated_shape
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - remove_duplicated_shape done -0 +0 nodes
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - remove_identity
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - remove_identity done -0 +0 nodes
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - remove_unused
-[GraphBuilderPatternOptimization-GDK.optimize] it=0C0F0 - remove_unused done -0 +0 nodes
-[GraphBuilderPatternOptimization-GDK.optimize] stops current_priority_index=1, priorities=[1]
-[GraphBuilderPatternOptimization-GDK.optimize] done after 1 iterations with 120 nodes in 0.005
-    STAT build_graph_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0005385059999980513
-    STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0002904859999830478
-    STAT check_pattern_A20 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0005218129999775556
-    STAT check_pattern_BD0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00028176800003620883
-    STAT check_pattern_BI0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0003387550000297779
-    STAT check_pattern_BU0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00027351599999292375
-    STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0010132140000109757
-    STAT remove_duplicated_shape +0 -0 #it=1 maxmatch=0 i=0 - time=3.076600000895269e-05
-    STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.0007774729999709962
-    STAT remove_unused +0 -0 #it=1 maxmatch=0 i=0 - time=0.0008067370000048868
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0 - matching_step done 0
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - apply_step with 0 matches
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - done with 0 applied patterns
+[GraphBuilderPatternOptimization-OEA.optimize] done all: -0 +0 nodes
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - remove_duplicated_shape
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - remove_duplicated_shape done -0 +0 nodes
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - remove_identity
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - remove_identity done -0 +0 nodes
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - remove_unused
+[GraphBuilderPatternOptimization-OEA.optimize] it=0C0F0 - remove_unused done -0 +0 nodes
+[GraphBuilderPatternOptimization-OEA.optimize] stops current_priority_index=1, priorities=[1]
+[GraphBuilderPatternOptimization-OEA.optimize] done after 1 iterations with 120 nodes in 0.006
+    STAT build_graph_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0005829829970025457
+    STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00034250199678353965
+    STAT check_pattern_A20 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0003163940054946579
+    STAT check_pattern_BD0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0003066400022362359
+    STAT check_pattern_BI0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0003152999997837469
+    STAT check_pattern_BU0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00032004600507207215
+    STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0012208990010549314
+    STAT remove_duplicated_shape +0 -0 #it=1 maxmatch=0 i=0 - time=2.016000507865101e-05
+    STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.0008195980044547468
+    STAT remove_unused +0 -0 #it=1 maxmatch=0 i=0 - time=0.0009865780011750758
 --MODEL: 120 nodes, 40 inputs, 15 outputs, 19 initializers--
          INPUT:  39 x 1t
          INPUT:   1 x 7t
@@ -1629,8 +1631,8 @@ The second list is specific to <a class="reference external" href="https://onnxr
       NODE:   1 x Where -SIG- 9t[2x1024x1], 1t[1], 1t[2x1024x1024]
 [OrderOptimization.optimize] ALGO-2
 [OrderOptimization.random_order] -- starts with 120 nodes, 19 initializers
-[OrderOptimization.shape_order] done after in 0.0007257659999595489s with changed=0 scale=0
-[GraphBuilder-GDK.optimize] done with 120 nodes in 0.024
+[OrderOptimization.shape_order] done after in 0.0009531570030958392s with changed=0 scale=0
+[GraphBuilder-OEA.optimize] done with 120 nodes in 0.025
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -1671,7 +1673,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>dynamic_dimension_naming</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000203</td>
+      <td>0.000217</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1685,7 +1687,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_A-dynamic_dimension_naming</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000407</td>
+      <td>0.000422</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1699,7 +1701,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_A-opt-sub</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000356</td>
+      <td>0.000745</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1713,7 +1715,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_identity</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000993</td>
+      <td>0.000845</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1727,7 +1729,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_identity-0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000340</td>
+      <td>0.000399</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1741,7 +1743,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_unused</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000953</td>
+      <td>0.000950</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1755,7 +1757,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_unused-1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000343</td>
+      <td>0.000400</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1769,7 +1771,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>constant_folding</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000341</td>
+      <td>0.000372</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1797,7 +1799,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_constant_folding-2</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000339</td>
+      <td>0.000418</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1811,7 +1813,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_unused</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000841</td>
+      <td>0.000809</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1825,7 +1827,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_unused-3</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000339</td>
+      <td>0.000389</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1839,7 +1841,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>patterns</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.008950</td>
+      <td>0.009015</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1853,7 +1855,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_pattern_00</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000290</td>
+      <td>0.000343</td>
       <td>NaN</td>
       <td>-1.0</td>
       <td>NaN</td>
@@ -1867,7 +1869,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>match_SwitchOrderBinaryPattern</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.001013</td>
+      <td>0.001221</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -1881,7 +1883,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_pattern_A20</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000522</td>
+      <td>0.000316</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1895,7 +1897,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_duplicated_shape</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000031</td>
+      <td>0.000020</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1909,7 +1911,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_pattern_BD0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000282</td>
+      <td>0.000307</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1923,7 +1925,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_identity_nodes</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000777</td>
+      <td>0.000820</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1937,7 +1939,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_pattern_BI0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000339</td>
+      <td>0.000315</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1951,7 +1953,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_unused</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000807</td>
+      <td>0.000987</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1965,7 +1967,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_pattern_BU0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000274</td>
+      <td>0.000320</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1979,7 +1981,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>build_graph_for_pattern</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000539</td>
+      <td>0.000583</td>
       <td>NaN</td>
       <td>0.0</td>
       <td>NaN</td>
@@ -1993,7 +1995,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_patterns-4</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000608</td>
+      <td>0.000430</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2007,7 +2009,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_unused</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000841</td>
+      <td>0.000878</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2021,7 +2023,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_unused-5</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000332</td>
+      <td>0.000397</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2035,7 +2037,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_identity</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000678</td>
+      <td>0.000818</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2049,7 +2051,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_identity-6</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000398</td>
+      <td>0.000393</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2063,7 +2065,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>constant_folding</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000321</td>
+      <td>0.000372</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2091,7 +2093,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_constant_folding-7</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000320</td>
+      <td>0.000432</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2105,7 +2107,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_unused</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000829</td>
+      <td>0.000883</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2119,7 +2121,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_unused-8</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000351</td>
+      <td>0.000392</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2133,7 +2135,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_duplicated_initializer</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000160</td>
+      <td>0.000188</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2147,7 +2149,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_duplicated_initializer-9</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000316</td>
+      <td>0.000380</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2161,7 +2163,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_identity</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000633</td>
+      <td>0.000794</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2175,7 +2177,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_identity-10</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000316</td>
+      <td>0.000383</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2189,7 +2191,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>remove_unused</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000808</td>
+      <td>0.000815</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2203,7 +2205,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_remove_unused-11</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000317</td>
+      <td>0.000383</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2217,7 +2219,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>order</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.000883</td>
+      <td>0.001124</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2231,7 +2233,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_orderA</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000279</td>
+      <td>0.000402</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2245,7 +2247,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_orderL</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000266</td>
+      <td>0.000334</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2259,7 +2261,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>shape_order</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000762</td>
+      <td>0.000997</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2287,7 +2289,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>check_order-12</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000359</td>
+      <td>0.000395</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2301,7 +2303,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
       <td>optimization</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.023602</td>
+      <td>0.025132</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2315,7 +2317,7 @@ The second list is specific to <a class="reference external" href="https://onnxr
 </div>
 </div>
 <br />
-<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.466 seconds)</p>
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.954 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optimize-101-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/99b197f60b7a4249d51eec2cabfdedd4/plot_optimize_101.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optimize_101.ipynb</span></code></a></p>

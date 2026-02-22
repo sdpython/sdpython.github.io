@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_attention - experimental-experiment 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -502,7 +502,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -540,7 +539,7 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionOptions</span><span class="p">,</span> <span class="n">GraphBuilder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
@@ -831,7 +830,7 @@
 <span class="sd">                &quot;Constant&quot;,</span>
 <span class="sd">                [],</span>
 <span class="sd">                [&quot;init1_s1_&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([-inf], dtype=np.float32), name=&quot;value&quot;),</span>
+<span class="sd">                value=onh.from_array(np.array([-np.inf], dtype=np.float32), name=&quot;value&quot;),</span>
 <span class="sd">            )</span>
 <span class="sd">        )</span>
 <span class="sd">        nodes.append(</span>
@@ -1012,6 +1011,14 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_index_inf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">where_node</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">cst</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">i</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
 <div class="viewcode-block" id="FunctionAttentionPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionPattern.match">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
@@ -1053,13 +1060,16 @@
             <span class="c1"># Where(mask, -inf, X)</span>
             <span class="n">add_node</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">where_node</span> <span class="o">=</span> <span class="n">node_before</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span>
+                <span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
             <span class="n">cst_zero</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">cst_inf</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">cst_inf</span><span class="p">):</span>
+            <span class="n">inf_index</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">else</span> <span class="mi">2</span>
+            <span class="n">cst_inf</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="n">inf_index</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">cst_inf</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cst_inf</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-            <span class="n">mat_qk</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">mat_qk</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">where_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">3</span> <span class="o">-</span> <span class="n">inf_index</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">mat_qk</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">mat_qk</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;MatMul&quot;</span><span class="p">,</span> <span class="s2">&quot;FusedMatMul&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1254,8 +1264,16 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">mul1</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">suffix</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">add_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">index_inf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_index_inf</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">where_node</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">index_inf</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Could not any inf in node </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">where_node</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;the pattern </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> should not have matched.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">switch_where</span> <span class="o">=</span> <span class="n">index_inf</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">switch_where</span><span class="p">:</span>
             <span class="n">suffix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;SW&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">transpose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">mat_qk</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;FusedMatMul&quot;</span>
@@ -1294,7 +1312,7 @@
                 <span class="n">name</span><span class="p">,</span>
                 <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span>
                 <span class="n">gqa</span><span class="o">=</span><span class="n">gqa</span><span class="p">,</span>
-                <span class="n">switch_where</span><span class="o">=</span><span class="n">add_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">switch_where</span><span class="o">=</span><span class="n">switch_where</span><span class="p">,</span>
                 <span class="n">use_qga_squeeze</span><span class="o">=</span><span class="n">gqa_reshape</span> <span class="ow">and</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">nodes_to_return</span></div>
@@ -1314,7 +1332,8 @@
         <span class="n">lg</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">)</span>
         <span class="n">lg</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;keys&quot;</span><span class="p">)</span>
         <span class="n">lg</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;values&quot;</span><span class="p">)</span>
-        <span class="n">lg</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">)</span>
+        <span class="n">mask_name</span> <span class="o">=</span> <span class="s2">&quot;not_mask&quot;</span> <span class="k">if</span> <span class="n">switch_where</span> <span class="k">else</span> <span class="s2">&quot;mask&quot;</span>
+        <span class="n">lg</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="n">mask_name</span><span class="p">)</span>
         <span class="n">lg</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;scale_sqrt&quot;</span><span class="p">)</span>
 
         <span class="n">scaled_keys</span> <span class="o">=</span> <span class="n">lg</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="s2">&quot;keys&quot;</span><span class="p">,</span> <span class="s2">&quot;scale_sqrt&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
@@ -1345,7 +1364,7 @@
         <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
         <span class="n">minfty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
         <span class="n">where_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">minfty</span><span class="p">,</span> <span class="n">qk</span><span class="p">)</span> <span class="k">if</span> <span class="n">switch_where</span> <span class="k">else</span> <span class="p">(</span><span class="n">qk</span><span class="p">,</span> <span class="n">minfty</span><span class="p">)</span>
-        <span class="n">masked_qk</span> <span class="o">=</span> <span class="n">lg</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span><span class="s2">&quot;mask&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">where_args</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">masked_qk</span> <span class="o">=</span> <span class="n">lg</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span><span class="n">mask_name</span><span class="p">,</span> <span class="o">*</span><span class="n">where_args</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="n">softmax</span> <span class="o">=</span> <span class="n">lg</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">masked_qk</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="n">filtered</span> <span class="o">=</span> <span class="n">lg</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span>
             <span class="n">lg</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">IsNaN</span><span class="p">(</span><span class="n">softmax</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="n">zero</span><span class="p">,</span> <span class="n">softmax</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
@@ -1367,9 +1386,70 @@
 
 
 
+<span class="k">class</span><span class="w"> </span><span class="nc">_CommonGQAMethods</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_match_keys_or_values</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">keys_or_values</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]]]]:</span>
+
+        <span class="n">gqa_reshape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">keys_or_values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">gqa_reshape</span>
+            <span class="ow">or</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Reshape&quot;</span><span class="p">,</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
+            <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">&lt;</span> <span class="mi">18</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">gqa_expand</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">gqa_expand</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Expand&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">gqa_unsqueeze</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">gqa_expand</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Unsqueeze&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">gqa_expand</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="n">exp_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">gqa_expand</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">exp_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">exp_shape</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="n">unsq_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">unsq_shape</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">resh_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Reshape&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">resh_shape</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">resh_shape</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="n">shape1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">shape2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">shape1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">shape1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="n">shape1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">gqa_unsqueeze</span><span class="p">,</span>
+            <span class="n">gqa_expand</span><span class="p">,</span>
+            <span class="n">gqa_reshape</span><span class="p">,</span>
+            <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">unsq_shape</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">exp_shape</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">resh_shape</span><span class="p">)),</span>
+        <span class="p">)</span>
+
+
 <div class="viewcode-block" id="FunctionAttentionGQAPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionGQAPattern">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">FunctionAttentionGQAPattern</span><span class="p">(</span><span class="n">FunctionAttentionPattern</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FunctionAttentionGQAPattern</span><span class="p">(</span><span class="n">FunctionAttentionPattern</span><span class="p">,</span> <span class="n">_CommonGQAMethods</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Merges onnx nodes equivalent to repeat interleave followed by function</span>
 <span class="sd">    ``LocalAttention`` into ``LocalAttentionGQA`` (GQA for GroupQueryAttention).</span>
@@ -1603,65 +1683,6 @@
 
     <span class="n">_operator_gqa_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FunctionAttentionPattern</span><span class="o">.</span><span class="n">_operator_name</span><span class="si">}</span><span class="s2">GQA&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_match_keys_or_values</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">keys_or_values</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]]]]:</span>
-
-        <span class="n">gqa_reshape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">keys_or_values</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="ow">not</span> <span class="n">gqa_reshape</span>
-            <span class="ow">or</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Reshape&quot;</span><span class="p">,</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
-            <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">&lt;</span> <span class="mi">18</span>
-        <span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-
-        <span class="n">gqa_expand</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">gqa_expand</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Expand&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-
-        <span class="n">gqa_unsqueeze</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">gqa_expand</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Unsqueeze&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="c1">#</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">gqa_expand</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="n">exp_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">gqa_expand</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">exp_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">exp_shape</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="n">unsq_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">unsq_shape</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-
-        <span class="n">resh_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Reshape&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">resh_shape</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">gqa_reshape</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">resh_shape</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-        <span class="n">shape1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">shape2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">gqa_reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">shape1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">shape1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="n">shape1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">gqa_unsqueeze</span><span class="p">,</span>
-            <span class="n">gqa_expand</span><span class="p">,</span>
-            <span class="n">gqa_reshape</span><span class="p">,</span>
-            <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">unsq_shape</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">exp_shape</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">resh_shape</span><span class="p">)),</span>
-        <span class="p">)</span>
-
 <div class="viewcode-block" id="FunctionAttentionGQAPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.FunctionAttentionGQAPattern.match">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
@@ -1700,6 +1721,7 @@
         <span class="k">if</span> <span class="n">resh_shape_v</span> <span class="o">!=</span> <span class="n">resh_shape</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
+        <span class="c1"># Final verification, let&#39;s check none the nodes is used outside the pattern.</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">gqa_unsqueeze</span><span class="p">,</span>
             <span class="n">gqa_expand</span><span class="p">,</span>
@@ -1710,7 +1732,7 @@
             <span class="n">node</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">)</span></div>
 
@@ -1760,6 +1782,423 @@
                 <span class="n">use_qga_squeeze</span><span class="o">=</span><span class="n">gqa_reshape_v</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">attention_nodes</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AttentionGQAPattern">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.AttentionGQAPattern">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AttentionGQAPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_CommonGQAMethods</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fuses LocalAttention into Attention.</span>
+<span class="sd">    Opset must be &gt;= 23 to do so.</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 24),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;key&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;mask&quot;, onnx.TensorProto.BOOL, shape=(&quot;a&quot;, 1, &quot;c&quot;, &quot;c+h&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;value&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;past_key&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;query&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4, &quot;c&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;past_value&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;two&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([2], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;t11211&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([1, 1, 2, 1, 1], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;resh&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([0, 4, -1, 8], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Concat&quot;, [&quot;past_key&quot;, &quot;key&quot;], [&quot;present_key&quot;], axis=2))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(&quot;Concat&quot;, [&quot;past_value&quot;, &quot;value&quot;], [&quot;present_value&quot;], axis=2)</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Unsqueeze&quot;, [&quot;present_key&quot;, &quot;two&quot;], [&quot;key_u&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;key_u&quot;, &quot;t11211&quot;], [&quot;key_ue&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Reshape&quot;, [&quot;key_ue&quot;, &quot;resh&quot;], [&quot;key_ues&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Unsqueeze&quot;, [&quot;present_value&quot;, &quot;two&quot;], [&quot;value_u&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;value_u&quot;, &quot;t11211&quot;], [&quot;value_ue&quot;]))</span>
+<span class="sd">        nodes.append(oh.make_node(&quot;Reshape&quot;, [&quot;value_ue&quot;, &quot;resh&quot;], [&quot;value_ues&quot;]))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Attention&quot;,</span>
+<span class="sd">                [&quot;query&quot;, &quot;key_ues&quot;, &quot;value_ues&quot;, &quot;mask&quot;],</span>
+<span class="sd">                [&quot;Y&quot;],</span>
+<span class="sd">                scale=0.10999999940395355,</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;present_value&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c+h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;present_key&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c+h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4, &quot;c_&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from experimental_experiment.doc import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 24),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;key&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;mask&quot;, onnx.TensorProto.BOOL, shape=(&quot;a&quot;, 1, &quot;c&quot;, &quot;c+h&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;value&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;past_key&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;query&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4, &quot;c&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;past_value&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            oh.make_node(</span>
+<span class="sd">                &quot;Attention&quot;,</span>
+<span class="sd">                [&quot;query&quot;, &quot;key&quot;, &quot;value&quot;, &quot;mask&quot;, &quot;past_key&quot;, &quot;past_value&quot;],</span>
+<span class="sd">                [&quot;Y&quot;, &quot;present_key&quot;, &quot;present_value&quot;],</span>
+<span class="sd">                is_causal=0,</span>
+<span class="sd">                scale=0.10999999940395355,</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;present_value&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c+h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(</span>
+<span class="sd">                &quot;present_key&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, &quot;c+h&quot;, 8)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4, &quot;c_&quot;, 8))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_prefixes_operator_name</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FunctionAttentionGQAPattern</span><span class="o">.</span><span class="n">_operator_gqa_name</span><span class="si">}</span><span class="s2">SW_to&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FunctionAttentionGQAPattern</span><span class="o">.</span><span class="n">_operator_gqa_name</span><span class="si">}</span><span class="s2">SWsQ_to&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FunctionAttentionGQAPattern</span><span class="o">.</span><span class="n">_operator_gqa_name</span><span class="si">}</span><span class="s2">_to&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FunctionAttentionGQAPattern</span><span class="o">.</span><span class="n">_operator_gqa_name</span><span class="si">}</span><span class="s2">sQ_to&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AttentionGQAPattern.match">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.AttentionGQAPattern.match">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">matched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">&lt;</span> <span class="mi">23</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Attention&quot;</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefixes_operator_name</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="n">FunctionAttentionGQAPattern</span><span class="o">.</span><span class="n">_domain_name</span>
+                <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">7</span>
+            <span class="p">)</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span>
+        <span class="p">):</span>
+            <span class="c1"># Only 2D ranks allowed.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Attention&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="c1"># Only 4D Attention</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="c1"># Node Attention, we still need to check if there is some GQA node.</span>
+            <span class="n">gqa_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match_keys_or_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">gqa_keys</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">gqa_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match_keys_or_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">gqa_values</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">gqa_unsqueeze</span><span class="p">,</span> <span class="n">gqa_expand</span><span class="p">,</span> <span class="n">gqa_reshape</span><span class="p">,</span> <span class="n">shapes</span> <span class="o">=</span> <span class="n">gqa_keys</span>
+            <span class="n">gqa_unsqueeze_v</span><span class="p">,</span> <span class="n">gqa_expand_v</span><span class="p">,</span> <span class="n">gqa_reshape_v</span><span class="p">,</span> <span class="n">shapes_v</span> <span class="o">=</span> <span class="n">gqa_values</span>
+            <span class="n">unsq_shape</span><span class="p">,</span> <span class="n">exp_shape</span><span class="p">,</span> <span class="n">resh_shape</span> <span class="o">=</span> <span class="n">shapes</span>
+            <span class="n">unsq_shape_v</span><span class="p">,</span> <span class="n">exp_shape_v</span><span class="p">,</span> <span class="n">resh_shape_v</span> <span class="o">=</span> <span class="n">shapes_v</span>
+
+            <span class="k">if</span> <span class="n">unsq_shape_v</span> <span class="o">!=</span> <span class="n">unsq_shape</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">exp_shape</span> <span class="o">!=</span> <span class="n">exp_shape_v</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">resh_shape_v</span> <span class="o">!=</span> <span class="n">resh_shape</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">gqa_nodes</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">gqa_unsqueeze</span><span class="p">,</span>
+                <span class="n">gqa_expand</span><span class="p">,</span>
+                <span class="n">gqa_reshape</span><span class="p">,</span>
+                <span class="n">gqa_unsqueeze_v</span><span class="p">,</span>
+                <span class="n">gqa_expand_v</span><span class="p">,</span>
+                <span class="n">gqa_reshape_v</span><span class="p">,</span>
+            <span class="p">]</span>
+
+            <span class="n">concats</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">gqa_unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span>
+                <span class="n">gqa_unsqueeze_v</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">concats</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">concats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">concats</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">concats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Concat&quot;</span> <span class="ow">or</span> <span class="n">concats</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Concat&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span>
+                <span class="n">concats</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="p">)</span> <span class="o">!=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span><span class="n">concats</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">concats</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">concats</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">concats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">concats</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">concats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Concat&quot;</span> <span class="ow">or</span> <span class="n">concats</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Concat&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span>
+                <span class="n">concats</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="p">)</span> <span class="o">!=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span><span class="n">concats</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+            <span class="c1"># Local function</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">4</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">5</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">cst</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">cst</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cst</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">cst</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span> <span class="ow">or</span> <span class="n">cst</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">6</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">shape_or_axis</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">shape_or_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;sQ_to&quot;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">:</span>
+                <span class="c1"># This is an axis for a Squeeze node.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="c1"># We need that shape to get kv_num_heads.</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># This is a shape for a Reshape node.</span>
+                <span class="k">if</span> <span class="n">shape_or_axis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">gqa_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+
+        <span class="c1"># Final verification, let&#39;s check none the nodes is used outside the pattern.</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">concats</span><span class="p">,</span> <span class="o">*</span><span class="n">gqa_nodes</span><span class="p">,</span> <span class="n">node</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AttentionGQAPattern.apply">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_attention.html#experimental_experiment.xoptim.patterns.onnx_attention.AttentionGQAPattern.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">keys_concat_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">values_concat_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">gqa_unsqueeze</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="n">gqa_expand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="n">gqa_reshape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="n">gqa_unsqueeze_v</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="n">gqa_expand_v</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="n">gqa_reshape_v</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="n">local_attention_gqa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+        <span class="n">query</span><span class="p">,</span> <span class="n">_keys</span><span class="p">,</span> <span class="n">_values</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">local_attention_gqa</span><span class="o">.</span><span class="n">input</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">attn_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">local_attention_gqa</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Attention&quot;</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span><span class="n">local_attention_gqa</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">attn_kwargs</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span>
+            <span class="n">attn_kwargs</span><span class="p">[</span><span class="s2">&quot;is_causal&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute_with_default</span><span class="p">(</span>
+                <span class="n">local_attention_gqa</span><span class="p">,</span> <span class="s2">&quot;is_causal&quot;</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">local_attention_gqa</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># this scale ** 0.5</span>
+            <span class="n">attn_kwargs</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span>
+
+        <span class="c1"># In case we need the 3D pattern.</span>
+        <span class="c1"># expand_shape = g.get_computed_constant(local_attention_gqa.input[5])</span>
+        <span class="c1"># repeat = int(expand_shape[2])</span>
+        <span class="c1"># if &quot;sQ_&quot; in local_attention_gqa.op_type:</span>
+        <span class="c1">#    k_shape = g.get_shape(local_attention_gqa.input[1])</span>
+        <span class="c1">#    kv_num_heads = k_shape[1]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#    reshape_shape = g.get_computed_constant(local_attention_gqa.input[6])</span>
+        <span class="c1">#    kv_num_heads = reshape_shape[1] // repeat</span>
+        <span class="c1">#</span>
+        <span class="c1"># num_heads = kv_num_heads * repeat</span>
+
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">final_mask</span> <span class="o">=</span> <span class="n">mask</span>
+        <span class="k">if</span> <span class="n">mask</span><span class="p">:</span>
+            <span class="n">switch_where</span> <span class="o">=</span> <span class="s2">&quot;SW&quot;</span> <span class="ow">in</span> <span class="n">local_attention_gqa</span><span class="o">.</span><span class="n">op_type</span>
+            <span class="k">if</span> <span class="n">switch_where</span><span class="p">:</span>
+                <span class="c1"># mask is not mask if SW</span>
+                <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span>
+                    <span class="n">final_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">mask</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">_make_node</span><span class="p">(</span><span class="s2">&quot;Not&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="p">[</span><span class="n">final_mask</span><span class="p">]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;float mask is not implemented yet for pattern &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+        <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">_make_node</span><span class="p">(</span>
+                    <span class="s2">&quot;Attention&quot;</span><span class="p">,</span>
+                    <span class="p">[</span>
+                        <span class="n">query</span><span class="p">,</span>
+                        <span class="n">keys_concat_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">values_concat_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">final_mask</span><span class="p">,</span>
+                        <span class="n">keys_concat_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">values_concat_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">],</span>
+                    <span class="p">[</span>
+                        <span class="n">local_attention_gqa</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">keys_concat_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">values_concat_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">],</span>
+                    <span class="c1"># q_num_heads=num_heads,</span>
+                    <span class="c1"># kv_num_heads=kv_num_heads,</span>
+                    <span class="o">**</span><span class="n">attn_kwargs</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">unique_node_name</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">local_attention_gqa</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">nodes</span></div>
 </div>
 
 </pre></div>

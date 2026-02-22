@@ -276,6 +276,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../torch_interpreter/index.html">.torch_interpreter</a><input aria-label="Toggle navigation of .torch_interpreter" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_aten_functions.html">.torch_interpreter._aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_aten_functions_attention.html">.torch_interpreter._aten_functions_attention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_aten_functions_transformers.html">.torch_interpreter._aten_functions_transformers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_non_aten_functions.html">.torch_interpreter._non_aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_aten_methods.html">.torch_interpreter._aten_methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_doc_.html">.torch_interpreter._doc_</a></li>
@@ -503,7 +504,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -698,7 +698,8 @@ will automatically determine the position of the new nodes.</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">CastLayerNormalizationCastPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#CastLayerNormalizationCastPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern" title="Link to this definition">¶</a></dt>
-<dd><p>Checks that a Cast is really needed around LayerNormalization.</p>
+<dd><p>Checks that a Cast is really needed around
+GroupNormalization, LayerNormalization, RMSLayerNormalization.</p>
 <p>Model with nodes to be fused:</p>
 <div class="graphviz"><img src="../../../_images/graphviz-6435168c5cb4ecdc7baa2a7b923a2f506a7b4116.png" alt="digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
@@ -992,6 +993,90 @@ will automatically determine the position of the new nodes.</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">RMSNormalizationMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#RMSNormalizationMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern" title="Link to this definition">¶</a></dt>
+<dd><p>Fuses the nodes RMSNormalization(23) + Mul into RMSNormalization.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-bbb230cf6c5643d2b3cfd9fdc562a6c8949d9b30.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  RMSNormalization_1 [label=&quot;RMSNormalization(., [3.0, 4.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_2 [label=&quot;Mul(., [3.0, 4.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; RMSNormalization_1 [label=&quot;FLOAT(a,2)&quot;];
+  RMSNormalization_1 -&gt; Mul_2 [label=&quot;FLOAT(a,2)&quot;];
+  O_3 [label=&quot;Y\nFLOAT(a,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Mul_2 -&gt; O_3;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-13ff4892d887cbf33b925c5e7ef7cf6bf2bd7f97.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(a,2)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  RMSNormalization_1 [label=&quot;RMSNormalization(., [9.0, 16.0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; RMSNormalization_1 [label=&quot;FLOAT(a,2)&quot;];
+  O_2 [label=&quot;Y\nFLOAT(a,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  RMSNormalization_1 -&gt; O_2;
+}" class="graphviz" /></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rms_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#RMSNormalizationMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern.apply" title="Link to this definition">¶</a></dt>
+<dd><p>The method does the rewriting. It assumes it can happen.
+It takes a list of nodes impacted by the rewriting assumes no other
+pattern optimizer will be modify them. It receives the list of nodes
+returned by method <em>apply</em>. Since it is a list of argument, method
+<em>match</em> can include None values. The method returns the new nodes.
+The optimizer considers that any node given to this function is removed
+from the graph, and any node returned by it are added.
+If a received node must be kept, it must be added to the list of returned node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> – nodes returned by method <em>match</em>, there are then removed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nodes to add to graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#RMSNormalizationMulPattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern.match" title="Link to this definition">¶</a></dt>
+<dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – is a <a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>,
+it holds all the existing nodes, is able to return any information
+about type, shape, the node before, the node after another one.</p></li>
+<li><p><strong>node</strong> – the matching must determine if some nodes around this one
+are part of set of nodes this pattern optmizer can rewrite.
+From there, the function explores wherever it needs,
+checking any condition it needs.</p></li>
+<li><p><strong>matched</strong> – usually unused, it returns of nodes already matching
+a pattern</p></li>
+</ul>
+</dd>
+</dl>
+<p>The method must not modify the graph.
+The method returns None if no match is found or an instance
+of class <a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.MatchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResult</span></code></a>. It must contain:</p>
+<ul class="simple">
+<li><p>a list of nodes involved in the rewriting. It does not mean all
+of them will be removed but all of them are needed to do the rewriting
+and must not be impacted by other pattern optimizer.</p></li>
+<li><p>A function doing the rewriting (usually method <em>apply</em> of the pattern class).</p></li>
+<li><p>An existing node where the rewritten nodes can be inserted.
+Knowing it makes it faster to rewriter. If not specified, the optimizer
+will automatically determine the position of the new nodes.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">RMSNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_layer_normalization.html#RMSNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses the nodes equivalent to RMSNormalization(23).</p>
@@ -1181,6 +1266,11 @@ will automatically determine the position of the new nodes.</p></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern"><code class="docutils literal notranslate"><span class="pre">LayerNormalizationScalePattern</span></code></a><ul>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern.apply"><code class="docutils literal notranslate"><span class="pre">LayerNormalizationScalePattern.apply()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern.match"><code class="docutils literal notranslate"><span class="pre">LayerNormalizationScalePattern.match()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern"><code class="docutils literal notranslate"><span class="pre">RMSNormalizationMulPattern</span></code></a><ul>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern.apply"><code class="docutils literal notranslate"><span class="pre">RMSNormalizationMulPattern.apply()</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationMulPattern.match"><code class="docutils literal notranslate"><span class="pre">RMSNormalizationMulPattern.match()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern"><code class="docutils literal notranslate"><span class="pre">RMSNormalizationPattern</span></code></a><ul>

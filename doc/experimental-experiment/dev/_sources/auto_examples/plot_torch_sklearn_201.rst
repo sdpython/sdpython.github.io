@@ -174,7 +174,7 @@ Validation
 
  .. code-block:: none
 
-    discrepancies: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 15.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
+    discrepancies: {'abs': 1.1920928955078125e-07, 'rel': 1.802402462327467e-07, 'sum': 2.086162567138672e-07, 'n': 15.0, 'dnan': 0.0, 'argm': (4, 2), 'dev': 0}
 
 
 
@@ -628,14 +628,14 @@ We need to do that with different sizes of training set.
 
  .. code-block:: none
 
-    knn discrepancies for size=5: {'abs': 5.587935447692871e-09, 'rel': 2.6445300481704556e-08, 'sum': 6.146728992462158e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
-    knn discrepancies for size=5: {'abs': 5.587935447692871e-09, 'rel': 2.6445300481704556e-08, 'sum': 5.587935447692871e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
-    knn discrepancies for size=50: {'abs': 2.6296166799610887e-08, 'rel': 4.2841166039137845e-07, 'sum': 1.4117686073789049e-06, 'n': 120.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
-    knn discrepancies for size=50: {'abs': 2.6296166799610887e-08, 'rel': 6.958343624659891e-08, 'sum': 2.780956598336104e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
-    knn discrepancies for size=10: {'abs': 4.967053740534411e-09, 'rel': 2.7756723897997384e-08, 'sum': 4.967053740534411e-09, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0), 'dev': 0}
-    knn discrepancies for size=10: {'abs': 4.967053740534411e-09, 'rel': 2.7756723897997384e-08, 'sum': 4.967053740534411e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
-    knn discrepancies for size=11: {'abs': 9.93410742555767e-09, 'rel': 1.0679934090211538e-08, 'sum': 9.93410742555767e-09, 'n': 33.0, 'dnan': 0.0, 'argm': (1, 0), 'dev': 0}
-    knn discrepancies for size=11: {'abs': 9.93410742555767e-09, 'rel': 1.0679934090211538e-08, 'sum': 9.93410742555767e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
+    knn discrepancies for size=5: {'abs': 2.9802322387695312e-08, 'rel': 5.6926330745964654e-08, 'sum': 1.7881393432617188e-07, 'n': 30.0, 'dnan': 0.0, 'argm': (2, 2), 'dev': 0}
+    knn discrepancies for size=5: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
+    knn discrepancies for size=50: {'abs': 1.7202075791589166e-08, 'rel': 1.0228626557940933e-07, 'sum': 7.261302979941209e-07, 'n': 120.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
+    knn discrepancies for size=50: {'abs': 1.7202075791589166e-08, 'rel': 1.0228626557940933e-07, 'sum': 2.6049640250436212e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
+    knn discrepancies for size=10: {'abs': 9.934107481068821e-09, 'rel': 3.414073527321405e-08, 'sum': 9.934107481068821e-09, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0), 'dev': 0}
+    knn discrepancies for size=10: {'abs': 9.934107481068821e-09, 'rel': 3.414073527321405e-08, 'sum': 9.934107481068821e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
+    knn discrepancies for size=11: {'abs': 9.934107536579972e-09, 'rel': 9.527760412559299e-09, 'sum': 9.934107536579972e-09, 'n': 33.0, 'dnan': 0.0, 'argm': (1, 0), 'dev': 0}
+    knn discrepancies for size=11: {'abs': 9.934107536579972e-09, 'rel': 9.527760412559299e-09, 'sum': 9.934107536579972e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0), 'dev': 0}
 
 
 
@@ -962,7 +962,7 @@ to skip some errors with shape checking made by :mod:`torch`.
     ......_weights            SubWeightMatrix        FAIL -- step=, reason='Guard failed: donors_dist.size()[0] == 1'
     ......_donors_idx         SubDonorsIdx           FAIL -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
     ......_make_new_neights   MakeNewWeights         FAIL -- step=, reason='Guard failed: donors_mask.size()[0] == 1'
-    ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
+    ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='RuntimeError when making fake tensor call ---   Explanation: Dynamo failed to run FX node with fake ...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
     ......_identity           ColProcessorIdentity   FAIL -- step=, reason='Guard failed: dist_subset.size()[0] == 1'
     ..columns[1]              ColProcessor           OK_CHILDC -- ExportedProgram
@@ -970,7 +970,7 @@ to skip some errors with shape checking made by :mod:`torch`.
     ......_weights            SubWeightMatrix        FAIL -- step=, reason='Guard failed: donors_dist.size()[0] == 1'
     ......_donors_idx         SubDonorsIdx           FAIL -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
     ......_make_new_neights   MakeNewWeights         FAIL -- step=, reason='Guard failed: donors_mask.size()[0] == 1'
-    ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
+    ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='RuntimeError when making fake tensor call ---   Explanation: Dynamo failed to run FX node with fake ...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
     ......_identity           ColProcessorIdentity   FAIL -- step=, reason='Guard failed: dist_subset.size()[0] == 0'
     ..columns[2]              ColProcessor           OK_CHILDC -- ExportedProgram
@@ -978,7 +978,7 @@ to skip some errors with shape checking made by :mod:`torch`.
     ......_weights            SubWeightMatrix        FAIL -- step=, reason='Guard failed: donors_dist.size()[0] == 1'
     ......_donors_idx         SubDonorsIdx           FAIL -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
     ......_make_new_neights   MakeNewWeights         FAIL -- step=, reason='Guard failed: donors_mask.size()[0] == 1'
-    ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
+    ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='RuntimeError when making fake tensor call ---   Explanation: Dynamo failed to run FX node with fake ...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
     ......_identity           ColProcessorIdentity   FAIL -- step=, reason='Guard failed: dist_subset.size()[0] == 0'
     .._make_dict_idx_map      MakeDictIdxMap         OK -- ExportedProgram
@@ -1093,62 +1093,62 @@ were previously traced.
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0043741390109062195,8.243572235107422:A2.334817812155312N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0026067085564136505,8.588260650634766:A2.1445723585791416N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.047955457121133804,3.3769962787628174:A1.506764910019496N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05897815525531769,4.355805397033691:A1.7693591529832167N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.8796592950820923,4.205589294433594:A2.165738105773926],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.8796592950820923,4.205589294433594:A2.165738105773926]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.6249974966049194,2.1637587547302246:A1.335212653875351],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.6249974966049194,2.1637587547302246:A1.335212653875351]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.35240986943244934,3.043743371963501:A1.4048655141483655],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.35240986943244934,3.043743371963501:A1.4048655141483655]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[1.5462008714675903,5.071696758270264:A3.7825016650286587],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[1.5462008714675903,5.071696758270264:A3.7825016650286587]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0043741390109062195,8.243572235107422:A2.334817812155312N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0026067085564136505,8.588260650634766:A2.1445723585791416N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.047955457121133804,3.3769962787628174:A1.506764910019496N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05897815525531769,4.355805397033691:A1.7693591529832167N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.8796592950820923,4.205589294433594:A2.1657381296157836],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.8796592950820923,4.205589294433594:A2.1657381296157836]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.6249974966049194,2.1637587547302246:A1.335212653875351],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.6249974966049194,2.1637587547302246:A1.335212653875351]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.35240986943244934,3.043743371963501:A1.4048655141483655],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.35240986943244934,3.043743371963501:A1.4048655141483655]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[1.5462008714675903,5.071696758270264:A3.7825016758658667],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[1.5462008714675903,5.071696758270264:A3.7825016758658667]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0043741390109062195,8.243572235107422:A2.334817812155312N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0026067085564136505,8.588260650634766:A2.1445723585791416N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.047955457121133804,3.3769962787628174:A1.506764910019496N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05897815525531769,4.355805397033691:A1.7693591529832167N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.8796594142913818,4.205589294433594:A2.165738117694855],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.8796594142913818,4.205589294433594:A2.165738117694855]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.6249974966049194,2.1637587547302246:A1.335212653875351],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.6249974966049194,2.1637587547302246:A1.335212653875351]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.35240986943244934,3.043743371963501:A1.4048655249855735],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.35240986943244934,3.043743371963501:A1.4048655249855735]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[1.5462008714675903,5.071696758270264:A3.7825016758658667],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[1.5462008714675903,5.071696758270264:A3.7825016758658667]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0, dev=0
     [onnx_run_disc] .. M:dist-NanEuclidean validation done
     [to_onnx_local] .. M:dist-NanEuclidean - done
@@ -1391,7 +1391,7 @@ It can be run this way.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 20.102 seconds)
+   **Total running time of the script:** (0 minutes 18.889 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_sklearn_201.py:

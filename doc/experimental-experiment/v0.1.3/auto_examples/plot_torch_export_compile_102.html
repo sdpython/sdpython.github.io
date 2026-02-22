@@ -355,6 +355,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../api/xoptim/patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -502,7 +503,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -643,7 +643,7 @@ graph():
     %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
     return (relu,)
 
-tensor([[0.5530, 0.4965, 0.5574]], grad_fn=&lt;ReluBackward0&gt;)
+tensor([[0.5903, 0.2513, 0.7285]], grad_fn=&lt;ReluBackward0&gt;)
 </pre></div>
 </div>
 </section>
@@ -680,7 +680,7 @@ tensor([[0.5530, 0.4965, 0.5574]], grad_fn=&lt;ReluBackward0&gt;)
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=18
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[1, 5]
 init: name=&#39;GemmTransposePattern--p_neuron_linear_weight::T10&#39; type=float32 shape=(3, 5)-- GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight::T10)##p_neuron_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight)##p_neuron_linear_weight/DynamoInterpret.placeholder.1/P(neuron.linear.weight)
-init: name=&#39;neuron.linear.bias&#39; type=float32 shape=(3,) -- array([-0.12421705,  0.11854652, -0.11136704], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
+init: name=&#39;neuron.linear.bias&#39; type=float32 shape=(3,) -- array([-0.3975952 ,  0.3577706 , -0.19402753], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
 Gemm(x, GemmTransposePattern--p_neuron_linear_weight::T10, neuron.linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Relu(sigmoid) -&gt; output_0
@@ -697,7 +697,7 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[1, 3]
 opset: domain=&#39;&#39; version=18
 opset: domain=&#39;aten_local_function&#39; version=1
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[1, 5]
-init: name=&#39;bias_cst2init&#39; type=float32 shape=(3,) -- array([-0.12421705,  0.11854652, -0.11136704], dtype=float32)-- GraphBuilderPatternOptimization.make_initializer.0
+init: name=&#39;bias_cst2init&#39; type=float32 shape=(3,) -- array([-0.3975952 ,  0.3577706 , -0.19402753], dtype=float32)-- GraphBuilderPatternOptimization.make_initializer.0
 init: name=&#39;GemmTransposePattern--weight::T10_cst2init&#39; type=float32 shape=(3, 5)-- GraphBuilderPatternOptimization.make_initializer.0
 Gemm(x, GemmTransposePattern--weight::T10_cst2init, bias_cst2init, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; neuron
@@ -705,7 +705,7 @@ Gemm(x, GemmTransposePattern--weight::T10_cst2init, bias_cst2init, transB=1) -&g
 output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[1, 3]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.280 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.240 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-torch-export-compile-102-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/57e3261285a49fa37cee7fa9bef625cc/plot_torch_export_compile_102.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_torch_export_compile_102.ipynb</span></code></a></p>

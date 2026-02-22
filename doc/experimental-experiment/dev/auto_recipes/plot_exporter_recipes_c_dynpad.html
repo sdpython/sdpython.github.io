@@ -355,6 +355,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_sequence.html">.xoptim.patterns.onnx_sequence</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_transpose.html">.xoptim.patterns.onnx_transpose</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_unsqueeze.html">.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_where.html">.xoptim.patterns.onnx_where</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../api/xoptim/patterns_ort/index.html">.xoptim.patterns_ort</a><input aria-label="Toggle navigation of .xoptim.patterns_ort" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -502,7 +503,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -671,7 +671,7 @@ Mul(init7_s_-1, sym_size_int_4) -&gt; _onx_mul_init7_s_-1
   Concat(x::Shape:1, add_2::UnSq0, x::Shape2:3, axis=0) -&gt; _onx_concat_sym_size_int_3::UnSq0
     ConstantOfShape(_onx_concat_sym_size_int_3::UnSq0, value=[0.0]) -&gt; zeros
       Concat(x, zeros, axis=1) -&gt; output_0
-output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq_len+add_2&#39;, &#39;num_frames&#39;]
+output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;add_2+seq_len&#39;, &#39;num_frames&#39;]
 </pre></div>
 </div>
 <p>We save it.</p>
@@ -708,7 +708,7 @@ diff with shape=torch.Size([3, 9, 11]) -&gt; torch.Size([3, 12, 11]): discrepanc
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a></a></a><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" alt="plot exporter recipes c dynpad" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.584 seconds)</p>
+<img src="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" alt="plot exporter recipes c dynpad" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.554 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-c-dynpad-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/95cf425c085021182b7e9cde846545f6/plot_exporter_recipes_c_dynpad.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_c_dynpad.ipynb</span></code></a></p>

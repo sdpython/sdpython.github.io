@@ -294,7 +294,7 @@ Let's print the report.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.647 seconds)
+   **Total running time of the script:** (0 minutes 6.447 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_reportibility.py:

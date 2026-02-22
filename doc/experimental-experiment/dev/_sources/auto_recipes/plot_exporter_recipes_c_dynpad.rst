@@ -222,7 +222,7 @@ We can also inline the local function.
       Concat(x::Shape:1, add_2::UnSq0, x::Shape2:3, axis=0) -> _onx_concat_sym_size_int_3::UnSq0
         ConstantOfShape(_onx_concat_sym_size_int_3::UnSq0, value=[0.0]) -> zeros
           Concat(x, zeros, axis=1) -> output_0
-    output: name='output_0' type=dtype('float32') shape=['batch', 'seq_len+add_2', 'num_frames']
+    output: name='output_0' type=dtype('float32') shape=['batch', 'add_2+seq_len', 'num_frames']
 
 
 
@@ -311,7 +311,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.584 seconds)
+   **Total running time of the script:** (0 minutes 0.554 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_dynpad.py:

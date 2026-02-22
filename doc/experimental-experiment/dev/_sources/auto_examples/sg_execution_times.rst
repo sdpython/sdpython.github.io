@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:49.972** total execution time for 13 files **from auto_examples**:
+**01:54.442** total execution time for 13 files **from auto_examples**:
 
 .. container::
 
@@ -33,41 +33,41 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
-     - 01:04.818
+     - 01:09.559
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``plot_torch_sklearn_201.py``)
-     - 00:20.102
+     - 00:18.889
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``plot_torch_custom_backend_101.py``)
-     - 00:15.926
+     - 00:16.826
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``plot_torch_linreg_101.py``)
-     - 00:05.067
+     - 00:05.601
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
-     - 00:01.649
+     - 00:01.720
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
-     - 00:01.466
+     - 00:00.954
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``plot_torch_export_101.py``)
-     - 00:00.393
+     - 00:00.340
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``plot_torch_export_compile_102.py``)
-     - 00:00.280
+     - 00:00.240
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``plot_rewrite_101.py``)
-     - 00:00.192
+     - 00:00.220
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``plot_executorch_102.py``)
-     - 00:00.036
+     - 00:00.048
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_shape_inference.py` (``plot_shape_inference.py``)
-     - 00:00.031
+     - 00:00.032
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``plot_onnxscript_102.py``)
      - 00:00.008
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_model_to_python.py` (``plot_model_to_python.py``)
-     - 00:00.004
+     - 00:00.005
      - 0.0
