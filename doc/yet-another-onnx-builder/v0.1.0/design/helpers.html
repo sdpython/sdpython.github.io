@@ -10,7 +10,7 @@
         <title>Interesting Helpers - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -203,6 +203,7 @@
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Elements of Design</a><input aria-label="Toggle navigation of Elements of Design" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="evaluator.html">ExtendedReferenceEvaluator</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Interesting Helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html">ShapeBuilder</a></li>
@@ -213,6 +214,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_shape_expressions.html">Expressions in Shape Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_extended_reference_evaluator.html">ExtendedReferenceEvaluator: running models with contrib operators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_mini_onnx_builder.html">MiniOnnxBuilder: serialize tensors to an ONNX model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_dot_graph.html">ONNX Graph Visualization with to_dot</a></li>
 </ul>
 </li>
 </ul>
@@ -291,10 +293,186 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="interesting-helpers">
-<h1>Interesting Helpers<a class="headerlink" href="#interesting-helpers" title="Link to this heading">¶</a></h1>
+<span id="l-design-helpers"></span><h1>Interesting Helpers<a class="headerlink" href="#interesting-helpers" title="Link to this heading">¶</a></h1>
 <section id="onnx-serialization-of-nested-structured-with-tensors">
 <h2>ONNX Serialization of Nested Structured with Tensors<a class="headerlink" href="#onnx-serialization-of-nested-structured-with-tensors" title="Link to this heading">¶</a></h2>
-<p>This relies on <a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.MiniOnnxBuilder" title="yobx.helpers.mini_onnx_builder.MiniOnnxBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MiniOnnxBuilder</span></code></a>.</p>
+<p>The main goal is to serialize any Python structure into ONNX
+format. This relies on <a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.MiniOnnxBuilder" title="yobx.helpers.mini_onnx_builder.MiniOnnxBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MiniOnnxBuilder</span></code></a>.
+Example <a class="reference internal" href="../auto_examples/plot_mini_onnx_builder.html#l-plot-mini-onnx-builder"><span class="std std-ref">MiniOnnxBuilder: serialize tensors to an ONNX model</span></a> shows an example.</p>
+<p><a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.MiniOnnxBuilder" title="yobx.helpers.mini_onnx_builder.MiniOnnxBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MiniOnnxBuilder</span></code></a>
+creates minimal ONNX models whose only purpose is to <strong>store tensors as
+initializers</strong> and return them when the model is executed.  The model has
+<strong>no inputs</strong> — running it simply replays the stored values.  This is
+useful for:</p>
+<ul class="simple">
+<li><p>capturing intermediate activations or model weights for debugging,</p></li>
+<li><p>persisting arbitrary nested Python structures (dicts, tuples, lists,
+torch tensors) in a standard, portable format,</p></li>
+<li><p>sharing small test fixtures without committing raw binary files.</p></li>
+</ul>
+<p>The class exposes three methods to add outputs:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_initializer" title="yobx.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_initializer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">append_output_initializer</span></code></a>
+— stores a single tensor (numpy array or torch tensor).  When
+<code class="docutils literal notranslate"><span class="pre">randomize=True</span></code> the values are replaced by a random-number generator
+node, keeping shape and dtype but discarding the original data to reduce
+model size.</p></li>
+<li><p><a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_sequence" title="yobx.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_sequence"><code class="xref py py-meth docutils literal notranslate"><span class="pre">append_output_sequence</span></code></a>
+— wraps a list of tensors into an ONNX <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> output.</p></li>
+<li><p><a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_dict" title="yobx.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">append_output_dict</span></code></a>
+— stores a dict of tensors as two outputs (keys and values).</p></li>
+</ul>
+<p>Two higher-level helpers build on top of
+<a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.MiniOnnxBuilder" title="yobx.helpers.mini_onnx_builder.MiniOnnxBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">MiniOnnxBuilder</span></code></a>
+to handle arbitrary nesting automatically:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.create_onnx_model_from_input_tensors" title="yobx.helpers.mini_onnx_builder.create_onnx_model_from_input_tensors"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_onnx_model_from_input_tensors</span></code></a>
+— serialize any nested structure to an <code class="docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code>.</p></li>
+<li><p><a class="reference internal" href="../api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model" title="yobx.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_input_tensors_from_onnx_model</span></code></a>
+— deserialize the model back to the original Python structure.</p></li>
+</ul>
+<p>The following snippet shows a round-trip for a small nested input
+dictionary:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.mini_onnx_builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_onnx_model_from_input_tensors</span><span class="p">,</span>
+    <span class="n">create_input_tensors_from_onnx_model</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ids&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="s2">&quot;hidden&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="n">proto</span> <span class="o">=</span> <span class="n">create_onnx_model_from_input_tensors</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+<span class="n">restored</span> <span class="o">=</span> <span class="n">create_input_tensors_from_onnx_model</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;keys:&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">restored</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">v</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: shape=</span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">keys</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ids&#39;</span><span class="p">,</span> <span class="s1">&#39;hidden&#39;</span><span class="p">]</span>
+      <span class="n">ids</span><span class="p">:</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int64</span>
+      <span class="n">hidden</span><span class="p">:</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span>
+</pre></div>
+</div>
+<p>The higher-level helpers also handle <strong>deeply nested</strong> structures.  The
+next snippet serializes a dict whose values include a flat tensor <em>and</em> a
+list of tensors (typical for past-key-value caches in transformer models):</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.mini_onnx_builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_onnx_model_from_input_tensors</span><span class="p">,</span>
+    <span class="n">create_input_tensors_from_onnx_model</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="s2">&quot;past_key_values&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>  <span class="c1"># layer 0 keys</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>  <span class="c1"># layer 0 values</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">proto</span> <span class="o">=</span> <span class="n">create_onnx_model_from_input_tensors</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+<span class="n">restored</span> <span class="o">=</span> <span class="n">create_input_tensors_from_onnx_model</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;top-level keys:&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">restored</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input_ids     :&quot;</span><span class="p">,</span> <span class="n">restored</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;past_key_values is a&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="p">(</span><span class="n">restored</span><span class="p">[</span><span class="s2">&quot;past_key_values&quot;</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+    <span class="s2">&quot;of length&quot;</span><span class="p">,</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">restored</span><span class="p">[</span><span class="s2">&quot;past_key_values&quot;</span><span class="p">]),</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">restored</span><span class="p">[</span><span class="s2">&quot;past_key_values&quot;</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]: shape=</span><span class="si">{</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">keys</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">,</span> <span class="s1">&#39;past_key_values&#39;</span><span class="p">]</span>
+    <span class="n">input_ids</span>     <span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">past_key_values</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">length</span> <span class="mi">2</span>
+      <span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+      <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="onnx-graph-visualization">
+<h2>ONNX Graph Visualization<a class="headerlink" href="#onnx-graph-visualization" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../api/helpers/dot_helper.html#yobx.helpers.dot_helper.to_dot" title="yobx.helpers.dot_helper.to_dot"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dot</span></code></a> converts an
+<a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.21.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> into a <a class="reference external" href="https://graphviz.org/doc/info/lang.html">DOT</a>
+string suitable for rendering with <a class="reference external" href="https://graphviz.org/">Graphviz</a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.dot_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_dot</span>
+
+<span class="n">TFLOAT</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+    <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Add&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;MatMul&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;mm&quot;</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Relu&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;mm&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]),</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;add_matmul_relu&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
+        <span class="p">],</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">])],</span>
+        <span class="p">[</span>
+            <span class="n">onh</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;W&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">],</span>
+    <span class="p">),</span>
+    <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)],</span>
+    <span class="n">ir_version</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">to_dot</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dot</span><span class="p">[:</span><span class="mi">200</span><span class="p">],</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">digraph</span> <span class="p">{</span>
+      <span class="n">graph</span> <span class="p">[</span><span class="n">rankdir</span><span class="o">=</span><span class="n">TB</span><span class="p">,</span> <span class="n">splines</span><span class="o">=</span><span class="n">true</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="n">false</span><span class="p">,</span> <span class="n">nodesep</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ranksep</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">];</span>
+      <span class="n">node</span> <span class="p">[</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;rounded,filled&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#888888&quot;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s2">&quot;#222222&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">box</span><span class="p">];</span>
+      <span class="n">edge</span> <span class="p">[</span><span class="n">arrowhead</span><span class="o">=</span><span class="n">v</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>The resulting DOT source can be rendered directly in the documentation with the
+<code class="docutils literal notranslate"><span class="pre">gdot</span></code> directive from <a class="reference external" href="https://github.com/sdpython/sphinx-runpython">sphinx-runpython</a>:</p>
+<div class="graphviz"><img src="../_images/graphviz-190f683c5872ac4b4dbc23e7b068c6612295ef46.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,seq,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  I_1 [label=&quot;Y\nFLOAT(batch,seq,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  i_2 [label=&quot;W\nFLOAT(4, 2)&quot;, fillcolor=&quot;#cccc00&quot;];
+  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  MatMul_4 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
+  Relu_5 [label=&quot;Relu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Add_3 [label=&quot;FLOAT(batch,seq,4)&quot;];
+  I_1 -&gt; Add_3 [label=&quot;FLOAT(batch,seq,4)&quot;];
+  Add_3 -&gt; MatMul_4 [label=&quot;FLOAT(batch,seq,4)&quot;];
+  i_2 -&gt; MatMul_4 [label=&quot;FLOAT(4, 2)&quot;];
+  MatMul_4 -&gt; Relu_5 [label=&quot;FLOAT(batch,seq,2)&quot;];
+  O_6 [label=&quot;Z\nFLOAT(batch,seq,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Relu_5 -&gt; O_6;
+}" class="graphviz" /></div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../auto_examples/plot_dot_graph.html#l-plot-dot-graph"><span class="std std-ref">ONNX Graph Visualization with to_dot</span></a> — sphinx-gallery example demonstrating
+<a class="reference internal" href="../api/helpers/dot_helper.html#yobx.helpers.dot_helper.to_dot" title="yobx.helpers.dot_helper.to_dot"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dot</span></code></a> on a simple hand-built model.</p>
+</div>
 </section>
 </section>
 
@@ -355,6 +533,7 @@
             <ul>
 <li><a class="reference internal" href="#">Interesting Helpers</a><ul>
 <li><a class="reference internal" href="#onnx-serialization-of-nested-structured-with-tensors">ONNX Serialization of Nested Structured with Tensors</a></li>
+<li><a class="reference internal" href="#onnx-graph-visualization">ONNX Graph Visualization</a></li>
 </ul>
 </li>
 </ul>
