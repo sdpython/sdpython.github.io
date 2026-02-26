@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.040** total execution time for 16 files **from all galleries**:
+**00:04.116** total execution time for 17 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_examples.py` (``examples/prog/plot_serialisation_examples.py``)
-     - 00:00.040
+   * - :ref:`sphx_glr_auto_examples_ml_plot_template_data.py` (``examples/ml/plot_template_data.py``)
+     - 00:04.116
      - 0.0
    * - :ref:`sphx_glr_auto_examples_ml_plot_correlations.py` (``examples/ml/plot_correlations.py``)
      - 00:00.000
@@ -69,6 +69,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_partie_dame.py` (``examples/prog/plot_partie_dame.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_examples.py` (``examples/prog/plot_serialisation_examples.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_protobuf.py` (``examples/prog/plot_serialisation_protobuf.py``)

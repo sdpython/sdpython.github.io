@@ -11,7 +11,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -522,6 +522,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html#gallerie-d-exemples-sur-la-programmation">Gallerie d’exemples sur la programmation</a><input aria-label="Toggle navigation of Gallerie d’exemples sur la programmation" class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../auto_examples/ml/index.html">Gallerie d’exemples sur le machine learning</a><input aria-label="Toggle navigation of Gallerie d’exemples sur le machine learning" class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/ml/plot_template_data.html">Données parcours-sup 2021-2025</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
 </ul>
 </li>
@@ -651,20 +652,20 @@
 <h2>scikit-image<a class="headerlink" href="#scikit-image" title="Lien vers cette rubrique">¶</a></h2>
 <p>La première option est d’utiliser une librairie dédiée aux traitements d’images comme <a class="reference external" href="https://scikit-image.org/">scikit-image</a>. Ce sont des traitements rapides mais simples.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from skimage.io import imread
-from skimage.transform import resize
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">skimage.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">imread</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">resize</span>
 
-filename = &quot;images/Northern_Pintail_(Male)-_Preening_I_IMG_1119.jpg&quot;
-img = imread(filename)
-img.dtype, img.shape
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;images/Northern_Pintail_(Male)-_Preening_I_IMG_1119.jpg&quot;</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">img</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -674,18 +675,18 @@ img.dtype, img.shape
 </div>
 <p>C’est une image réelle codé sur 3 couleurs. On peut utiliser le package <a class="reference external" href="https://pillow.readthedocs.io/en/stable/">Pillow</a> également.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from PIL import Image
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
-imgpil = Image.open(filename)
-imgpil
+<span class="n">imgpil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">imgpil</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -697,32 +698,32 @@ imgpil
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
-from skimage.feature import hog
-from skimage.exposure import rescale_intensity
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.feature</span><span class="w"> </span><span class="kn">import</span> <span class="n">hog</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage.exposure</span><span class="w"> </span><span class="kn">import</span> <span class="n">rescale_intensity</span>
 
-fd, hog_image = hog(
-    img,
-    orientations=8,
-    pixels_per_cell=(16, 16),
-    cells_per_block=(1, 1),
-    visualize=True,
-    channel_axis=-1,
-)
+<span class="n">fd</span><span class="p">,</span> <span class="n">hog_image</span> <span class="o">=</span> <span class="n">hog</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">,</span>
+    <span class="n">orientations</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">pixels_per_cell</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="n">cells_per_block</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">visualize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">channel_axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6), sharex=True, sharey=True)
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-ax1.axis(&quot;off&quot;)
-ax1.imshow(img, cmap=plt.cm.gray)
-ax1.set_title(&quot;Input image&quot;)
+<span class="n">ax1</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Input image&quot;</span><span class="p">)</span>
 
-# Rescale histogram for better display
-hog_image_rescaled = rescale_intensity(hog_image, in_range=(0, 10))
+<span class="c1"># Rescale histogram for better display</span>
+<span class="n">hog_image_rescaled</span> <span class="o">=</span> <span class="n">rescale_intensity</span><span class="p">(</span><span class="n">hog_image</span><span class="p">,</span> <span class="n">in_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
-ax2.axis(&quot;off&quot;)
-ax2.imshow(hog_image_rescaled, cmap=plt.cm.gray)
-ax2.set_title(&quot;Histogram of Oriented Gradients&quot;)
-plt.show()
+<span class="n">ax2</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hog_image_rescaled</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Histogram of Oriented Gradients&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -736,24 +737,25 @@ plt.show()
 </section>
 <section id="Prétraitement-avancé-ou-transfer-learning">
 <h2>Prétraitement avancé ou transfer learning<a class="headerlink" href="#Prétraitement-avancé-ou-transfer-learning" title="Lien vers cette rubrique">¶</a></h2>
-<p>L’idée est d’utiliser un modèle appris sur beaucoup de données, des données dont on ne dispose pas souvent. Il faut utiliser le ou les modèles qui extraient l’information dont les modèles ont besoin, cela peut être de la reconnaissance objets (voir par exemple <a class="reference external" href="https://www.youtube.com/watch?v=fRH3YGIASYM">YOLO</a>), de la reconnaissance de texte… L’exemple suivant utilise le modèle <a class="reference external" href="https://paperswithcode.com/method/mobilenetv2">MobileNetV2</a>.</p>
+<p>L’idée est d’utiliser un modèle appris sur beaucoup de données, des données dont on ne dispose pas souvent. Il faut utiliser le ou les modèles qui extraient l’information dont les modèles ont besoin, cela peut être de la reconnaissance objets (voir par exemple <a class="reference external" href="https://www.youtube.com/watch?v=fRH3YGIASYM">YOLO</a>), de la reconnaissance de texte… L’exemple s’appuie sur la classe <code class="docutils literal notranslate"><span class="pre">AutoImageProcessor</span></code> de la librairie
+<a class="reference external" href="https://huggingface.co/docs/transformers/en/model_doc/auto#transformers.AutoImageProcessor">transformers</a>. L’exemple suivant utilise le modèle <a class="reference external" href="https://paperswithcode.com/method/mobilenetv2">MobileNetV2</a>. L’exemple de code en question est sur <a class="reference external" href="https://huggingface.co/google/mobilenet_v2_1.0_224">google/mobilenet_v2_1.0_224</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from PIL import Image
-import numpy as np
-from transformers import (
-    AutoImageProcessor,
-    MobileNetV2Model,
-    AutoFeatureExtractor,
-    AutoModel,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AutoImageProcessor</span><span class="p">,</span>
+    <span class="n">MobileNetV2Model</span><span class="p">,</span>
+    <span class="n">AutoFeatureExtractor</span><span class="p">,</span>
+    <span class="n">AutoModel</span><span class="p">,</span>
+<span class="p">)</span>
 
-# Charger un modèle léger (ResNet)
-MODEL_NAME = &quot;google/mobilenet_v2_1.0_224&quot;
-extractor = AutoFeatureExtractor.from_pretrained(MODEL_NAME)
-model = AutoModel.from_pretrained(MODEL_NAME)
+<span class="c1"># Charger un modèle léger (ResNet)</span>
+<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;google/mobilenet_v2_1.0_224&quot;</span>
+<span class="n">extractor</span> <span class="o">=</span> <span class="n">AutoImageProcessor</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -761,47 +763,41 @@ model = AutoModel.from_pretrained(MODEL_NAME)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "d7871a72830341dcb9e154d7a3d3f984", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "856833c161d3455d92d16a5d2bfc0f08", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-~/vv/this312/lib/python3.12/site-packages/transformers/models/mobilenet_v2/feature_extraction_mobilenet_v2.py:28: FutureWarning: The class MobileNetV2FeatureExtractor is deprecated and will be removed in version 5 of Transformers. Please use MobileNetV2ImageProcessor instead.
-  warnings.warn(
-</pre></div></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8dcb7b36a38a436983c7b72c396dbe68", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "d5bb761ade3547f28a7169ede7913ba8", "version_major": 2, "version_minor": 0}</script></div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-bold">MobileNetV2Model LOAD REPORT</span> from: google/mobilenet_v2_1.0_224
+Key               | Status     |  |
+------------------+------------+--+-
+classifier.weight | UNEXPECTED |  |
+classifier.bias   | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import torch
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
-def get_image_embedding(image_path):
-    image = Image.open(image_path).convert(&quot;RGB&quot;)
-    inputs = extractor(images=image, return_tensors=&quot;pt&quot;)
-    with torch.no_grad():
-        output = model(**inputs)
-    return output.pooler_output.numpy()  # Extraire les features
+<span class="k">def</span><span class="w"> </span><span class="nf">get_image_embedding</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">extractor</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">pooler_output</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>  <span class="c1"># Extraire les features</span>
 
 
-# Exemple avec une image
-embedding = get_image_embedding(filename)
-print(&quot;Shape embedding image :&quot;, embedding.shape, embedding.dtype)  # (1, 2048)
+<span class="c1"># Exemple avec une image</span>
+<span class="n">embedding</span> <span class="o">=</span> <span class="n">get_image_embedding</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape embedding image :&quot;</span><span class="p">,</span> <span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">embedding</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (1, 2048)</span>
 </pre></div>
 </div>
 </div>
