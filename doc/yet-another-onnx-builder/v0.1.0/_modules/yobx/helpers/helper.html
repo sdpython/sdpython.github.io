@@ -222,6 +222,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_shape_expressions.html">Expressions in Shape Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_extended_reference_evaluator.html">ExtendedReferenceEvaluator: running models with contrib operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_input_observer_transformers.html">InputObserver with Transformers Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_mini_onnx_builder.html">MiniOnnxBuilder: serialize tensors to an ONNX model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_dot_graph.html">ONNX Graph Visualization with to_dot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_flattening.html">Registering a custom class as a pytree node</a></li>
@@ -1665,7 +1666,7 @@
 <a class="viewcode-back" href="../../../api/helpers/helper.html#yobx.helpers.helper.string_diff">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">string_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">js</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ratio</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Renders discrepancies return by :func:`max_diff` into one string.</span>
+<span class="sd">    Renders discrepancies returned by :func:`max_diff` into one string.</span>
 
 <span class="sd">    :param diff: differences</span>
 <span class="sd">    :param js: json format</span>
@@ -1694,7 +1695,8 @@
             <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">v</span><span class="si">}{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-        <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">suffix</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="s2">&quot;argm&quot;</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span>
         <span class="n">sa</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;argm&quot;</span><span class="p">]))</span>

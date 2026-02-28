@@ -281,7 +281,7 @@ Before storing a symbolic dimension,
 :func:`simplify_expression <yobx.xshape.simplify_expressions.simplify_expression>`
 reduces the expression to its simplest equivalent form.
 
-.. GENERATED FROM PYTHON SOURCE LINES 181-192
+.. GENERATED FROM PYTHON SOURCE LINES 181-193
 
 .. code-block:: Python
 
@@ -300,6 +300,7 @@ reduces the expression to its simplest equivalent form.
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -312,10 +313,84 @@ reduces the expression to its simplest equivalent form.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 194-199
+
+Plot: symbolic shape expressions summary
+-----------------------------------------
+
+The table below collects all of the symbolic shape expressions computed in
+this example and their simplified forms side-by-side.
+
+.. GENERATED FROM PYTHON SOURCE LINES 199-249
+
+.. code-block:: Python
+
+
+    import matplotlib.pyplot as plt  # noqa: E402
+
+    rows = [
+        ["Concat (Z, axis=1)", "('batch', 'seq1+seq2')"],
+        ["Reshape (Xr)", "('a', 'b', 2, 'c//2')"],
+        ["Split S1", "('a', 'CeilToInt(b+c,2)')"],
+        ["Split S2", "('a', 'b+c-CeilToInt(b+c,2)')"],
+    ]
+    simplify_rows = [[expr, simplify_expression(expr)] for expr in examples]
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3))
+
+    # Left table: symbolic shapes per operation
+    ax = axes[0]
+    ax.axis("off")
+    tbl = ax.table(
+        cellText=rows,
+        colLabels=["Operation / output", "Symbolic shape"],
+        loc="center",
+        cellLoc="left",
+    )
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(8)
+    tbl.auto_set_column_width([0, 1])
+    for col in range(2):
+        tbl[0, col].set_facecolor("#4c72b0")
+        tbl[0, col].set_text_props(color="white", fontweight="bold")
+    ax.set_title("Symbolic shapes by operation", fontsize=9, pad=6)
+
+    # Right table: simplification examples
+    ax2 = axes[1]
+    ax2.axis("off")
+    tbl2 = ax2.table(
+        cellText=simplify_rows,
+        colLabels=["Input expression", "Simplified"],
+        loc="center",
+        cellLoc="left",
+    )
+    tbl2.auto_set_font_size(False)
+    tbl2.set_fontsize(8)
+    tbl2.auto_set_column_width([0, 1])
+    for col in range(2):
+        tbl2[0, col].set_facecolor("#dd8452")
+        tbl2[0, col].set_text_props(color="white", fontweight="bold")
+    ax2.set_title("Expression simplification", fontsize=9, pad=6)
+
+    plt.suptitle("Shape expression examples", fontsize=10)
+    plt.tight_layout()
+    plt.show()
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_shape_expressions_001.png
+   :alt: Shape expression examples, Symbolic shapes by operation, Expression simplification
+   :srcset: /auto_examples/images/sphx_glr_plot_shape_expressions_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.014 seconds)
+   **Total running time of the script:** (0 minutes 0.103 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_shape_expressions.py:

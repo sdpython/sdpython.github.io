@@ -114,12 +114,33 @@ print("All three evaluators produce the same result ✓")
 # Summary
 # -------
 #
-# +---------------------------------+--------------------+-----------------------------+
-# | Evaluator                       | Input/output type  | Highlights                  |
-# +=================================+====================+=============================+
-# | ExtendedReferenceEvaluator      | NumPy ndarray      | No ORT required; contrib ops|
-# +---------------------------------+--------------------+-----------------------------+
+# +---------------------------------+--------------------+--------------------------------+
+# | Evaluator                       | Input/output type  | Highlights                     |
+# +=================================+====================+================================+
+# | ExtendedReferenceEvaluator      | NumPy ndarray      | No ORT required; contrib ops   |
+# +---------------------------------+--------------------+--------------------------------+
 # | OnnxruntimeEvaluator            | NumPy or PyTorch   | intermediate=True; ORT backend |
-# +---------------------------------+--------------------+-----------------------------+
-# | TorchReferenceEvaluator         | torch.Tensor       | CUDA support; no round-trip |
-# +---------------------------------+--------------------+-----------------------------+
+# +---------------------------------+--------------------+--------------------------------+
+# | TorchReferenceEvaluator         | torch.Tensor       | CUDA support; no round-trip    |
+# +---------------------------------+--------------------+--------------------------------+
+
+# %%
+# Plot: outputs from all three evaluators
+# -----------------------------------------
+#
+# The heat-maps below show the ``Tanh(X + Y)`` output produced by each
+# evaluator.  All three panels are identical, confirming the results agree.
+
+import matplotlib.pyplot as plt  # noqa: E402
+
+fig, axes = plt.subplots(1, 3, figsize=(9, 3), sharey=True)
+labels = ["ExtendedRef", "OnnxruntimeEval", "TorchEval"]
+results_all = [result_ref, result_ort, result_torch.numpy()]
+for ax, label, res in zip(axes, labels, results_all):
+    im = ax.imshow(res, cmap="RdBu", vmin=-1, vmax=1, aspect="auto")
+    ax.set_title(label, fontsize=9)
+    ax.set_xlabel("col")
+axes[0].set_ylabel("row")
+fig.colorbar(im, ax=axes.tolist(), shrink=0.8, label="Tanh(X+Y)")
+fig.suptitle("Outputs from all three evaluators (Tanh(X + Y))")
+plt.show()
