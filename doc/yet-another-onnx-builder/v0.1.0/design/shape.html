@@ -3,14 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Gallery of Examples" href="../auto_examples/index.html"><link rel="prev" title="Interesting Helpers" href="helpers.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Translate" href="translate.html"><link rel="prev" title="Interesting Helpers" href="helpers.html">
         <link rel="prefetch" href="../_static/logo.svg" as="image">
 
     <link rel="shortcut icon" href="../_static/logo.svg"><!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>ShapeBuilder - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -211,18 +211,24 @@
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Elements of Design</a><input aria-label="Toggle navigation of Elements of Design" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="evaluator.html">Evaluators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html">Interesting Helpers</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">ShapeBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_shape_expressions.html">Expressions in Shape Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_extended_reference_evaluator.html">ExtendedReferenceEvaluator: running models with contrib operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_input_observer_transformers.html">InputObserver with Transformers Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_input_observer.html">InputObserver: recording inputs for ONNX export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_mini_onnx_builder.html">MiniOnnxBuilder: serialize tensors to an ONNX model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_dot_graph.html">ONNX Graph Visualization with to_dot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_flattening.html">Registering a custom class as a pytree node</a></li>
@@ -232,7 +238,22 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/helpers/index.html">yobx.helpers</a><input aria-label="Toggle navigation of yobx.helpers" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/builder/index.html">yobx.builder</a><input aria-label="Toggle navigation of yobx.builder" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/builder/light/index.html">yobx.builder.light</a><input aria-label="Toggle navigation of yobx.builder.light" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/builder/light/graph.html">yobx.builder.light – Graph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/builder/light/var.html">yobx.builder.light – Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/builder/light/op_var.html">yobx.builder.light – Single-input Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/builder/light/op_vars.html">yobx.builder.light – Multi-input Operators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/container/index.html">yobx.container</a><input aria-label="Toggle navigation of yobx.container" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/container/build_stats.html">yobx.container.build_stats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/container/model_container.html">yobx.container.model_container</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/helpers/index.html">yobx.helpers</a><input aria-label="Toggle navigation of yobx.helpers" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/cube_helper.html">yobx.helpers.cube_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/dot_helper.html">yobx.helpers.dot_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/helper.html">yobx.helpers.helper</a></li>
@@ -240,20 +261,20 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/reference/evaluator.html">yobx.reference.evaluator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/reference/onnxruntime_evaluator.html">yobx.reference.onnxruntime_evaluator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/reference/torch_evaluator.html">yobx.reference.torch_evaluator</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
 </ul>
 </li>
@@ -261,7 +282,16 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/translate.html">yobx.translate.translate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/light_emitter.html">yobx.translate.light_emitter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/builder_emitter.html">yobx.translate.builder_emitter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -278,6 +308,9 @@
 </li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../index_stats.html">Versions</a></li>
 </ul>
 
@@ -341,7 +374,7 @@ to deduce some shapes.</p>
 This can be later used to infer the shape after a reshape.</p>
 <p>After getting an expression, a few postprocessing are applied to reduce
 its complexity. This relies on <a class="reference external" href="https://docs.python.org/3/library/ast.html#module-ast" title="(in Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ast</span></code></a>. It is done by function
-<a class="reference internal" href="../api/xshape/simplify_expressions.html#yobx.xshape.simplify_expressions.simplify_expression" title="yobx.xshape.simplify_expressions.simplify_expression"><code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_expression</span></code></a>.
+<code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_expression</span></code>.
 <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">+</span> <span class="pre">f</span> <span class="pre">-</span> <span class="pre">f</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">d</span></code>.</p>
 <section id="symbolic-expressions">
 <h2>Symbolic Expressions<a class="headerlink" href="#symbolic-expressions" title="Link to this heading">¶</a></h2>
@@ -369,7 +402,7 @@ of the original dynamic dimensions.  For example, if the two inputs of a
 <section id="automatic-simplification">
 <h3>Automatic simplification<a class="headerlink" href="#automatic-simplification" title="Link to this heading">¶</a></h3>
 <p>Before storing a symbolic dimension,
-<a class="reference internal" href="../api/xshape/simplify_expressions.html#yobx.xshape.simplify_expressions.simplify_expression" title="yobx.xshape.simplify_expressions.simplify_expression"><code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_expression</span></code></a>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_expression</span></code>
 rewrites the expression to its simplest equivalent form:</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xshape.simplify_expressions</span><span class="w"> </span><span class="kn">import</span> <span class="n">simplify_expression</span>
@@ -391,7 +424,7 @@ rewrites the expression to its simplest equivalent form:</p>
 <section id="evaluating-symbolic-expressions-at-runtime">
 <h3>Evaluating symbolic expressions at runtime<a class="headerlink" href="#evaluating-symbolic-expressions-at-runtime" title="Link to this heading">¶</a></h3>
 <p>Once the concrete integer values of the input dimensions are known,
-<a class="reference internal" href="../api/xshape/evaluate_expressions.html#yobx.xshape.evaluate_expressions.evaluate_expression" title="yobx.xshape.evaluate_expressions.evaluate_expression"><code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_expression</span></code></a>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_expression</span></code>
 can resolve any symbolic dimension to its actual integer value.
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate_shape</span></code> applies this
 to a whole shape at once.</p>
@@ -513,7 +546,7 @@ the string expression <code class="docutils literal notranslate"><span class="pr
 inference-time, which lets the builder resolve the <code class="docutils literal notranslate"><span class="pre">-1</span></code> placeholder to
 the correct symbolic formula.</p></li>
 <li><p><strong>Simplifies</strong> — the resulting expression is reduced to its simplest form
-by <a class="reference internal" href="../api/xshape/simplify_expressions.html#yobx.xshape.simplify_expressions.simplify_expression" title="yobx.xshape.simplify_expressions.simplify_expression"><code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_expression</span></code></a>
+by <code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_expression</span></code>
 before being stored (<code class="docutils literal notranslate"><span class="pre">2*d_model//2</span></code> → <code class="docutils literal notranslate"><span class="pre">d_model</span></code>, etc.).</p></li>
 </ol>
 <p>The table below summarises the difference for a model that applies
@@ -553,12 +586,12 @@ this comparison step by step.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../auto_examples/index.html">
+          <a class="next-page" href="translate.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Gallery of Examples</div>
+                <div class="title">Translate</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
