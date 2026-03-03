@@ -10,7 +10,8 @@
         <title>Translate - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -214,13 +215,16 @@
 <li class="toctree-l2"><a class="reference internal" href="container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="evaluator.html">Evaluators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html">ShapeBuilder</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -259,6 +263,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -268,21 +273,29 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
@@ -291,7 +304,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -356,8 +378,8 @@
         <article role="main" id="furo-main-content">
           <section id="translate">
 <span id="l-design-translate"></span><h1>Translate<a class="headerlink" href="#translate" title="Link to this heading">¶</a></h1>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">translate</span></code> converts an existing
-<a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.21.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> into Python source code that, when executed,
+<p><a class="reference internal" href="../api/translate/index.html#yobx.translate.translate" title="yobx.translate.translate"><code class="xref py py-func docutils literal notranslate"><span class="pre">translate</span></code></a> converts an existing
+<a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> into Python source code that, when executed,
 recreates the same graph.  This is useful for:</p>
 <ul class="simple">
 <li><p><strong>debugging</strong> — turn an opaque <code class="docutils literal notranslate"><span class="pre">.onnx</span></code> file into readable Python so you
@@ -424,40 +446,51 @@ event, so any missing override is caught early.</p>
 </section>
 <section id="available-emitters">
 <h2>Available emitters<a class="headerlink" href="#available-emitters" title="Link to this heading">¶</a></h2>
-<p>Four concrete emitters are shipped:</p>
+<p>Five concrete emitters are shipped:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Class</p></th>
+<th class="head"><p>Short name</p></th>
 <th class="head"><p>Output API</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="xref py py-class docutils literal notranslate">
 <span class="pre">InnerEmitter</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;onnx&quot;</span></code></p></td>
 <td><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">onnx.helper</span></code> (<code class="docutils literal notranslate"><span class="pre">oh.make_*</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-class docutils literal notranslate">
 <span class="pre">InnerEmitterShortInitializer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;onnx-short&quot;</span></code></p></td>
 <td><p>Same as above, but replaces large
 initializers (&gt; 16 elements) with
 <code class="docutils literal notranslate"><span class="pre">np.random.randn(…)</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-class docutils literal notranslate">
+<span class="pre">InnerEmitterCompact</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;onnx-compact&quot;</span></code></p></td>
+<td><p>Compact single nested expression
+instead of assembling lists</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-class docutils literal notranslate">
 <span class="pre">LightEmitter</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;light&quot;</span></code></p></td>
 <td><p>Fluent <code class="docutils literal notranslate"><span class="pre">start(…).vin(…).…</span></code>
 method chain</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-class docutils literal notranslate">
+<tr class="row-even"><td><p><code class="xref py py-class docutils literal notranslate">
 <span class="pre">BuilderEmitter</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;builder&quot;</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">GraphBuilder</span></code>-based function
 wrapper</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The four APIs are exposed through the single convenience function
-<code class="xref py py-func docutils literal notranslate"><span class="pre">translate</span></code>:</p>
+<p>The five APIs are exposed through the single convenience function
+<a class="reference internal" href="../api/translate/index.html#yobx.translate.translate" title="yobx.translate.translate"><code class="xref py py-func docutils literal notranslate"><span class="pre">translate</span></code></a>:</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
@@ -530,7 +563,7 @@ wrapper</p></td>
 </section>
 <section id="event-sequence">
 <h2>Event sequence<a class="headerlink" href="#event-sequence" title="Link to this heading">¶</a></h2>
-<p>For a <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.21.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelProto</span></code></a> the <code class="docutils literal notranslate"><span class="pre">Translator</span></code> fires events in this
+<p>For a <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelProto</span></code></a> the <code class="docutils literal notranslate"><span class="pre">Translator</span></code> fires events in this
 order:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">START</span></code> — emitter initialises its state (opset list, ir_version).</p></li>
@@ -580,10 +613,7 @@ stays readable for large weight matrices.</p>
     <span class="p">),</span>
     <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)],</span>
 <span class="p">)</span>
-<span class="n">full</span> <span class="o">=</span> <span class="n">translate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="s2">&quot;onnx&quot;</span><span class="p">)</span>
 <span class="n">short</span> <span class="o">=</span> <span class="n">translate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="s2">&quot;onnx-short&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;full  : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">full</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2"> chars&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;short : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">short</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2"> chars&quot;</span><span class="p">)</span>
 <span class="c1"># Show only the initializer line from the short version</span>
 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">short</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
     <span class="k">if</span> <span class="s2">&quot;randn&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">&quot;randint&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
@@ -592,9 +622,51 @@ stays readable for large weight matrices.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">full</span>  <span class="p">:</span>  <span class="mi">1595</span> <span class="n">chars</span>
-    <span class="n">short</span> <span class="p">:</span>   <span class="mi">813</span> <span class="n">chars</span>
-    <span class="n">short</span> <span class="n">initializer</span><span class="p">:</span> <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">short</span> <span class="n">initializer</span><span class="p">:</span> <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="inneremittercompact">
+<h2>InnerEmitterCompact<a class="headerlink" href="#inneremittercompact" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../api/translate/inner_emitter.html#yobx.translate.inner_emitter.InnerEmitterCompact" title="yobx.translate.inner_emitter.InnerEmitterCompact"><code class="xref py py-class docutils literal notranslate"><span class="pre">InnerEmitterCompact</span></code></a> inherits
+from <a class="reference internal" href="../api/translate/inner_emitter.html#yobx.translate.inner_emitter.InnerEmitter" title="yobx.translate.inner_emitter.InnerEmitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">InnerEmitter</span></code></a> and produces a
+compact single nested expression instead of assembling separate lists of
+nodes, inputs, and outputs.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.translate</span><span class="w"> </span><span class="kn">import</span> <span class="n">translate</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+    <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Relu&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">])],</span>
+        <span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">])],</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">])],</span>
+    <span class="p">),</span>
+    <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)],</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">translate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="s2">&quot;onnx-compact&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+        <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s1">&#39;Relu&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]),</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;relu&#39;</span><span class="p">,</span>
+            <span class="p">[</span>
+                <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+            <span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">functions</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)],</span>
+        <span class="n">ir_version</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -723,7 +795,7 @@ the original model:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="../auto_examples/plot_translate_comparison.html#l-plot-translate-comparison"><span class="std std-ref">Comparing the four ONNX translation APIs</span></a> — sphinx-gallery example that builds
-a <code class="docutils literal notranslate"><span class="pre">Gemm</span> <span class="pre">→</span> <span class="pre">Relu</span></code> model, translates it with all four APIs, prints the
+a <code class="docutils literal notranslate"><span class="pre">Gemm</span> <span class="pre">→</span> <span class="pre">Relu</span></code> model, translates it with all five APIs, prints the
 generated snippets, verifies the round-trip, and plots a bar chart of
 generated code sizes.</p>
 </div>
@@ -790,6 +862,7 @@ generated code sizes.</p>
 <li><a class="reference internal" href="#available-emitters">Available emitters</a></li>
 <li><a class="reference internal" href="#event-sequence">Event sequence</a></li>
 <li><a class="reference internal" href="#inneremitter">InnerEmitter</a></li>
+<li><a class="reference internal" href="#inneremittercompact">InnerEmitterCompact</a></li>
 <li><a class="reference internal" href="#lightemitter">LightEmitter</a></li>
 <li><a class="reference internal" href="#builderemitter">BuilderEmitter</a></li>
 <li><a class="reference internal" href="#round-trip-verification">Round-trip verification</a></li>
@@ -808,5 +881,7 @@ generated code sizes.</p>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

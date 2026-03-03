@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="ShapeBuilder" href="shape.html"><link rel="prev" title="Flattening Functionalities" href="flatten.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Patches (torch export)" href="patches.html"><link rel="prev" title="GraphBuilder" href="graph_builder.html">
         <link rel="prefetch" href="../_static/logo.svg" as="image">
 
     <link rel="shortcut icon" href="../_static/logo.svg"><!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Interesting Helpers - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
@@ -214,13 +215,16 @@
 <li class="toctree-l2"><a class="reference internal" href="container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="evaluator.html">Evaluators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html">ShapeBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -259,6 +263,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -268,22 +273,30 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/translate/translate.html">yobx.translate.translate</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/light_emitter.html">yobx.translate.light_emitter</a></li>
@@ -291,7 +304,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -466,7 +488,7 @@ list of tensors (typical for past-key-value caches in transformer models):</p>
 <section id="onnx-graph-visualization">
 <h2>ONNX Graph Visualization<a class="headerlink" href="#onnx-graph-visualization" title="Link to this heading">¶</a></h2>
 <p><a class="reference internal" href="../api/helpers/dot_helper.html#yobx.helpers.dot_helper.to_dot" title="yobx.helpers.dot_helper.to_dot"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dot</span></code></a> converts an
-<a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.21.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> into a <a class="reference external" href="https://graphviz.org/doc/info/lang.html">DOT</a>
+<a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> into a <a class="reference external" href="https://graphviz.org/doc/info/lang.html">DOT</a>
 string suitable for rendering with <a class="reference external" href="https://graphviz.org/">Graphviz</a>.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -512,25 +534,15 @@ string suitable for rendering with <a class="reference external" href="https://g
 </div>
 <p>The resulting DOT source can be rendered directly in the documentation with the
 <code class="docutils literal notranslate"><span class="pre">gdot</span></code> directive from <a class="reference external" href="https://github.com/sdpython/sphinx-runpython">sphinx-runpython</a>:</p>
-<div class="graphviz"><img src="../_images/graphviz-190f683c5872ac4b4dbc23e7b068c6612295ef46.png" alt="digraph {
-  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
-  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
-  I_0 [label=&quot;X\nFLOAT(batch,seq,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  I_1 [label=&quot;Y\nFLOAT(batch,seq,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  i_2 [label=&quot;W\nFLOAT(4, 2)&quot;, fillcolor=&quot;#cccc00&quot;];
-  Add_3 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  MatMul_4 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#ee9999&quot;];
-  Relu_5 [label=&quot;Relu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Add_3 [label=&quot;FLOAT(batch,seq,4)&quot;];
-  I_1 -&gt; Add_3 [label=&quot;FLOAT(batch,seq,4)&quot;];
-  Add_3 -&gt; MatMul_4 [label=&quot;FLOAT(batch,seq,4)&quot;];
-  i_2 -&gt; MatMul_4 [label=&quot;FLOAT(4, 2)&quot;];
-  MatMul_4 -&gt; Relu_5 [label=&quot;FLOAT(batch,seq,2)&quot;];
-  O_6 [label=&quot;Z\nFLOAT(batch,seq,2)&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Relu_5 -&gt; O_6;
-}" class="graphviz" /></div>
-<div class="admonition seealso">
+
+    <div id="gdot-124933569176128-cont"><div id="gdot-124933569176128" style="width:100%;height:100%;"></div>
+    <script src="../_static/require.js"></script><script>
+
+    require(['https://cdnjs.cloudflare.com/ajax/libs/viz.js/1.8.0/viz-lite.js'], function() { var svgGraph = Viz(" digraph {\n  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];\n  node [style=\"rounded,filled\", color=\"#888888\", fontcolor=\"#222222\", shape=box];\n  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];\n  I_0 [label=\"X\\nFLOAT(batch,seq,4)\", fillcolor=\"#aaeeaa\"];\n  I_1 [label=\"Y\\nFLOAT(batch,seq,4)\", fillcolor=\"#aaeeaa\"];\n  i_2 [label=\"W\\nFLOAT(4, 2)\", fillcolor=\"#cccc00\"];\n  Add_3 [label=\"Add(., .)\", fillcolor=\"#cccccc\"];\n  MatMul_4 [label=\"MatMul(., .)\", fillcolor=\"#ee9999\"];\n  Relu_5 [label=\"Relu(.)\", fillcolor=\"#cccccc\"];\n  I_0 -> Add_3 [label=\"FLOAT(batch,seq,4)\"];\n  I_1 -> Add_3 [label=\"FLOAT(batch,seq,4)\"];\n  Add_3 -> MatMul_4 [label=\"FLOAT(batch,seq,4)\"];\n  i_2 -> MatMul_4 [label=\"FLOAT(4, 2)\"];\n  MatMul_4 -> Relu_5 [label=\"FLOAT(batch,seq,2)\"];\n  O_6 [label=\"Z\\nFLOAT(batch,seq,2)\", fillcolor=\"#aaaaee\"];\n  Relu_5 -> O_6;\n}\n");
+    document.getElementById('gdot-124933569176128').innerHTML = svgGraph; });
+    
+</script>
+</div><div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="../auto_examples/plot_dot_graph.html#l-plot-dot-graph"><span class="std std-ref">ONNX Graph Visualization with to_dot</span></a> — sphinx-gallery example demonstrating
 <a class="reference internal" href="../api/helpers/dot_helper.html#yobx.helpers.dot_helper.to_dot" title="yobx.helpers.dot_helper.to_dot"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dot</span></code></a> on a simple hand-built model.</p>
@@ -543,23 +555,23 @@ string suitable for rendering with <a class="reference external" href="https://g
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="shape.html">
+          <a class="next-page" href="patches.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">ShapeBuilder</div>
+                <div class="title">Patches (torch export)</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="flatten.html">
+          <a class="prev-page" href="graph_builder.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Flattening Functionalities</div>
+                <div class="title">GraphBuilder</div>
                 
               </div>
             </a>
@@ -611,5 +623,7 @@ string suitable for rendering with <a class="reference external" href="https://g
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

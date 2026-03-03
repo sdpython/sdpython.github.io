@@ -9,7 +9,8 @@
         <title>yobx.translate.inner_emitter - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -213,13 +214,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../design/container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/evaluator.html">Evaluators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../design/flatten.html">Flattening Functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/shape.html">ShapeBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -258,6 +262,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -267,22 +272,30 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../../../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/translate/translator.html">yobx.translate.translate</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/light_emitter.html">yobx.translate.light_emitter</a></li>
@@ -290,7 +303,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -592,6 +614,274 @@
 
 
 
+<div class="viewcode-block" id="InnerEmitterCompact">
+<a class="viewcode-back" href="../../../api/translate/inner_emitter.html#yobx.translate.inner_emitter.InnerEmitterCompact">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InnerEmitterCompact</span><span class="p">(</span><span class="n">InnerEmitter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts events into compact single-expression ONNX code.</span>
+
+<span class="sd">    Instead of building lists of nodes/inputs/outputs and then assembling them,</span>
+<span class="sd">    this emitter produces a single nested expression::</span>
+
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;shape&#39;], [&#39;reshaped&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Transpose&#39;, [&#39;reshaped&#39;], [&#39;Y&#39;], perm=[1, 0]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;simple&#39;,</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (None, None))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (None, None))],</span>
+<span class="sd">                [onh.from_array(np.array([-1, 1], dtype=np.int64), name=&#39;shape&#39;)],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 17)],</span>
+<span class="sd">            ir_version=8,</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opsets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Main graph state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_initializers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_graph_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;graph&quot;</span>
+        <span class="c1"># Function state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_in_function</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_attributes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_opsets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_function_vars</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_function_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_node_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_value_info_expr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem_type</span> <span class="ow">and</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;oh.make_tensor_value_info(</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;onnx.TensorProto.</span><span class="si">{</span><span class="n">_ELEMENT_TYPE_NAME</span><span class="p">[</span><span class="n">elem_type</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">shape</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">elem_type</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;oh.make_tensor_value_info(</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;onnx.TensorProto.</span><span class="si">{</span><span class="n">_ELEMENT_TYPE_NAME</span><span class="p">[</span><span class="n">elem_type</span><span class="p">]</span><span class="si">}</span><span class="s2">, [])&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;oh.make_tensor_value_info(</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, onnx.TensorProto.UNDEFINED, [])&quot;</span>
+
+<div class="viewcode-block" id="InnerEmitterCompact.render_attribute_value">
+<a class="viewcode-back" href="../../../api/translate/inner_emitter.html#yobx.translate.inner_emitter.InnerEmitterCompact.render_attribute_value">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render_attribute_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override to use a plain InnerEmitter for subgraph attributes.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+            <span class="n">tr</span> <span class="o">=</span> <span class="n">Translator</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">InnerEmitter</span><span class="p">())</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">as_str</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">single_line</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">new_rows</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;def _make_local_graph_</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">():&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;oh.make_model&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">new_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
+            <span class="n">new_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    return graph&quot;</span><span class="p">)</span>
+            <span class="n">new_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> = _make_local_graph_</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">()&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_rows</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render_attribute_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ir_version&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opsets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;opsets&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_function_vars</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_function_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_node_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_in_function</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_begin_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_initializers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_graph_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;graph&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_in_function</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_end_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_graph_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_graph_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_initializer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="n">repl</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="s2">&quot;bool_&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;object_&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span> <span class="s2">&quot;str_&quot;</span><span class="p">}</span>
+        <span class="n">fra</span> <span class="o">=</span> <span class="s2">&quot;onh.from_array&quot;</span>
+        <span class="n">sdtype</span> <span class="o">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="n">sdtype</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;np.</span><span class="si">{</span><span class="n">sdtype</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">sdtype</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;ml_dtypes.</span><span class="si">{</span><span class="n">sdtype</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">expr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fra</span><span class="si">}</span><span class="s2">(np.array(</span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="n">sdtype</span><span class="si">}</span><span class="s2">), name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_initializers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">elem_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;elem_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_value_info_expr</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">elem_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;elem_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_value_info_expr</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">op_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;op_type&quot;</span><span class="p">]</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">])</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;outputs&quot;</span><span class="p">])</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;domain&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">atts</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atts&quot;</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="n">before_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">regular_atts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ref_attr_appends</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">atts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">before</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_attribute_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">before_lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">before</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;ref_attr_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="n">ref_attr_appends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_cnode.attribute.append(</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">regular_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">node_args</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">outputs</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">domain</span><span class="p">:</span>
+            <span class="n">node_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;domain=</span><span class="si">{</span><span class="n">domain</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">node_args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">regular_atts</span><span class="p">)</span>
+        <span class="n">expr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;oh.make_node(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">node_args</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+        <span class="k">if</span> <span class="n">ref_attr_appends</span><span class="p">:</span>
+            <span class="n">node_var</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_cnode_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_node_counter</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_c_node_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">setup</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node_var</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">expr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">ref_attr_appends</span><span class="p">]</span>
+            <span class="n">entry</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">before_lines</span> <span class="o">+</span> <span class="n">setup</span><span class="p">,</span> <span class="n">node_var</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="p">(</span><span class="n">before_lines</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_in_function</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_c_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_begin_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_in_function</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_domain</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_opsets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;opsets&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_function_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_function_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_function_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">atts</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_attributes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">atts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_to_onnx_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_end_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">before_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">node_exprs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bl</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_nodes</span><span class="p">:</span>
+            <span class="n">before_lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bl</span><span class="p">)</span>
+            <span class="n">node_exprs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+        <span class="n">opset_exprs</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;oh.make_opsetid(</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">opsets_str</span> <span class="o">=</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">opset_exprs</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span>
+
+        <span class="n">var_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_function_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_function_count</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_function_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">before_lines</span><span class="p">]</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">var_name</span><span class="si">}</span><span class="s2"> = oh.make_function(&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_func_domain</span><span class="si">!r}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_func_name</span><span class="si">!r}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_func_inputs</span><span class="si">!r}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_func_outputs</span><span class="si">!r}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    [&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">node_exprs</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">ne</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    ],&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_func_attributes</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    attributes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_func_attributes</span><span class="si">!r}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    opset_imports=</span><span class="si">{</span><span class="n">opsets_str</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_function_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_in_function</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">lines</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_emit_to_onnx_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">before_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">node_exprs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bl</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_nodes</span><span class="p">:</span>
+            <span class="n">before_lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bl</span><span class="p">)</span>
+            <span class="n">node_exprs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+        <span class="n">opset_exprs</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;oh.make_opsetid(</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">opsets_str</span> <span class="o">=</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">opset_exprs</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span>
+        <span class="n">fns_str</span> <span class="o">=</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_function_vars</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span>
+
+        <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">before_lines</span><span class="p">]</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;model = oh.make_model(&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    oh.make_graph(&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        [&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ne</span> <span class="ow">in</span> <span class="n">node_exprs</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;            </span><span class="si">{</span><span class="n">ne</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        ],&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_graph_name</span><span class="si">!r}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        [&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ie</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_inputs</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;            </span><span class="si">{</span><span class="n">ie</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        ],&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        [&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">oe</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_outputs</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;            </span><span class="si">{</span><span class="n">oe</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        ],&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_initializers</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        [&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">init_e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_initializers</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;            </span><span class="si">{</span><span class="n">init_e</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;        ],&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    functions=</span><span class="si">{</span><span class="n">fns_str</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    opset_imports=</span><span class="si">{</span><span class="n">opsets_str</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ir_version</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    ir_version=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ir_version</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">lines</span></div>
+
+
+
 <div class="viewcode-block" id="InnerEmitterShortInitializer">
 <a class="viewcode-back" href="../../../api/translate/inner_emitter.html#yobx.translate.inner_emitter.InnerEmitterShortInitializer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InnerEmitterShortInitializer</span><span class="p">(</span><span class="n">InnerEmitter</span><span class="p">):</span>
@@ -672,5 +962,7 @@
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

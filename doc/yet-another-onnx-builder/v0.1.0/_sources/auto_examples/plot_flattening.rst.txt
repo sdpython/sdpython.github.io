@@ -36,10 +36,10 @@ This example walks through the three steps:
    custom dict-like class.
 2. Registering the class with
    :func:`register_class_flattening
-   <yobx.torch.flatten_helper.register_class_flattening>`.
+   <yobx.torch.flatten.register_class_flattening>`.
 3. Verifying the round-trip and then cleaning up with
    :func:`unregister_class_flattening
-   <yobx.torch.flatten_helper.unregister_class_flattening>`.
+   <yobx.torch.flatten.unregister_class_flattening>`.
 
 See :ref:`l-design-flatten` for a full description of the flattening design
 including the :epkg:`transformers` cache registrations.
@@ -52,7 +52,7 @@ including the :epkg:`transformers` cache registrations.
     from dataclasses import dataclass
     import torch
     import torch.utils._pytree
-    from yobx.torch.flatten_helper import (
+    from yobx.torch.flatten import (
         make_flattening_function_for_dataclass,
         register_class_flattening,
         unregister_class_flattening,
@@ -137,7 +137,7 @@ mirrors how :class:`transformers.modeling_outputs.ModelOutput` works.
 ----------------------
 
 :func:`register_class_flattening
-<yobx.torch.flatten_helper.register_class_flattening>` wraps
+<yobx.torch.flatten.register_class_flattening>` wraps
 ``torch.utils._pytree.register_pytree_node`` and returns ``True`` when the
 registration succeeds (``False`` when the class is already registered).
 
@@ -247,7 +247,7 @@ nested Python structure that contains :class:`EncoderOutput` objects.
 For classes that already expose ``.keys()`` / ``.values()`` (all
 :class:`transformers.modeling_outputs.ModelOutput` subclasses do),
 :func:`make_flattening_function_for_dataclass
-<yobx.torch.flatten_helper.make_flattening_function_for_dataclass>`
+<yobx.torch.flatten.make_flattening_function_for_dataclass>`
 generates the three required callables automatically.
 
 .. GENERATED FROM PYTHON SOURCE LINES 134-155
@@ -363,7 +363,7 @@ New test.
 
 After exporting (or when running inside a test) call
 :func:`unregister_class_flattening
-<yobx.torch.flatten_helper.unregister_class_flattening>` to undo the
+<yobx.torch.flatten.unregister_class_flattening>` to undo the
 registration and leave ``torch.utils._pytree.SUPPORTED_NODES`` exactly as
 it was before.
 
@@ -493,7 +493,7 @@ for an :class:`EncoderOutput` container with two tensor fields.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.056 seconds)
+   **Total running time of the script:** (0 minutes 0.118 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_flattening.py:

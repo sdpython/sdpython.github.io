@@ -9,6 +9,7 @@
         <title>yobx.helpers.onnx_helper - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
@@ -213,13 +214,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../design/container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/evaluator.html">Evaluators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../design/flatten.html">Flattening Functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/shape.html">ShapeBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -258,6 +262,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -267,22 +272,30 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../../../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/translate/translate.html">yobx.translate.translate</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/light_emitter.html">yobx.translate.light_emitter</a></li>
@@ -290,7 +303,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -346,12 +368,83 @@
           <h1>Source code for yobx.helpers.onnx_helper</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.defs</span><span class="w"> </span><span class="kn">import</span> <span class="n">onnx_opset_version</span><span class="p">,</span> <span class="n">get_all_schemas_with_history</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_default_OPSET_TO_IR_VERSION</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the dictionary mapping the main opset</span>
+<span class="sd">    to the corresponding `ir_version`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="mi">5</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="mi">6</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="mi">7</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="mi">8</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="mi">9</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="mi">10</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="mi">11</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="mi">12</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="mi">13</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="mi">14</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="mi">15</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="mi">16</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="mi">17</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="mi">19</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="mi">20</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="mi">21</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="mi">22</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="mi">23</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="mi">24</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="n">OPSET_ML_TO_OPSET</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">18</span><span class="p">}</span>
+<span class="n">_history</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="enumerate_subgraphs_builder">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.enumerate_subgraphs_builder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">enumerate_subgraphs_builder</span><span class="p">(</span>
+    <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">],</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the subgraphs inside a graph.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">recursive</span><span class="p">,</span> <span class="s2">&quot;not implemented when recursive is False&quot;</span>
+    <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span> <span class="ow">and</span> <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">:</span>
+            <span class="n">this</span> <span class="o">=</span> <span class="n">node</span><span class="p">,</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">att</span><span class="o">.</span><span class="n">g</span>
+            <span class="k">yield</span> <span class="n">this</span>  <span class="c1"># type: ignore</span>
+            <span class="k">for</span> <span class="n">no</span> <span class="ow">in</span> <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">tu</span> <span class="ow">in</span> <span class="n">enumerate_subgraphs</span><span class="p">(</span><span class="n">no</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                    <span class="k">yield</span> <span class="n">this</span> <span class="o">+</span> <span class="n">tu</span>  <span class="c1"># type: ignore</span></div>
+
+
+
+<div class="viewcode-block" id="enumerate_subgraphs">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.enumerate_subgraphs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">enumerate_subgraphs</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enumerates all inputs from a node including all the hidden inputs</span>
+<span class="sd">    from subgraphs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">yield</span> <span class="n">graph</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;LSI&quot;</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Loop&quot;</span><span class="p">,</span> <span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceMap&quot;</span><span class="p">}:</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                    <span class="k">yield from</span> <span class="n">enumerate_subgraphs</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="NodeCoordinates">
@@ -416,6 +509,196 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">producer</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;&gt;&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">producer</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_nice_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorShapeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">els</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sh</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span>
+        <span class="n">els</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sh</span><span class="o">.</span><span class="n">dim_value</span><span class="p">)</span> <span class="k">if</span> <span class="n">sh</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;dim_value&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">sh</span><span class="o">.</span><span class="n">dim_param</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">els</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="compatible_opsets">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.compatible_opsets">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compatible_opsets</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">new_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tells if two opset version for a particular operator type</span>
+<span class="sd">    means the same version of it.</span>
+
+<span class="sd">    :param domain: domain, only `ai.onnx` and `ai.onnx.ml` are checked.</span>
+<span class="sd">    :param op_type: operator type</span>
+<span class="sd">    :param current: current domain version</span>
+<span class="sd">    :param new_version: new version</span>
+<span class="sd">    :return: result</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_history</span>
+    <span class="k">if</span> <span class="n">_history</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">res</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">schema</span> <span class="ow">in</span> <span class="n">get_all_schemas_with_history</span><span class="p">():</span>
+            <span class="n">schema_domain</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">domain</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">since_version</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">schema_domain</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">schema_domain</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="n">schema_domain</span><span class="p">]:</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">schema_domain</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">schema_domain</span><span class="p">][</span><span class="n">name</span><span class="p">][</span><span class="n">version</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="n">_history</span> <span class="o">=</span> <span class="n">res</span>
+
+    <span class="k">assert</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">_history</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to find domain </span><span class="si">{</span><span class="n">domain</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_history</span><span class="p">))</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="k">assert</span> <span class="n">op_type</span> <span class="ow">in</span> <span class="n">_history</span><span class="p">[</span><span class="n">domain</span><span class="p">],</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Unable to find op_type </span><span class="si">{</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">, domain=</span><span class="si">{</span><span class="n">domain</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;in </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_history</span><span class="p">[</span><span class="n">domain</span><span class="p">]))</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">hist</span> <span class="o">=</span> <span class="n">_history</span><span class="p">[</span><span class="n">domain</span><span class="p">][</span><span class="n">op_type</span><span class="p">]</span>
+    <span class="n">versions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">hist</span><span class="p">))</span>  <span class="c1"># noqa: C413</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">versions</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">pos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Available version for </span><span class="si">{</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2"> from </span><span class="si">{</span><span class="n">domain</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;incompatible version is </span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">versions</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">versions</span><span class="p">[</span><span class="n">pos</span><span class="p">],</span> <span class="n">versions</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">new_version</span> <span class="o">&lt;</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">new_version</span> <span class="o">&gt;=</span> <span class="n">versions</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_default_opset_for_domain</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">main_opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the associated for a domain given the main opset.</span>
+
+<span class="sd">    :param domain: domain</span>
+<span class="sd">    :param main_opset: opset for the main domain</span>
+<span class="sd">    :return: version</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">main_opset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">main_opset</span> <span class="o">=</span> <span class="n">choose_consistent_domain_opset</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">main_opset</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">main_opset</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="n">main_opset</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;ai.onnx.training&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="choose_consistent_domain_opset">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.choose_consistent_domain_opset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">choose_consistent_domain_opset</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">opsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Chooses a compatible opset for a particular domain given</span>
+<span class="sd">    this existing one. Only works for `ai.onnx.ml`,</span>
+<span class="sd">    otherwise return 1.</span>
+
+<span class="sd">    :param domain: new domain</span>
+<span class="sd">    :param opsets: existing opsets</span>
+<span class="sd">    :return: version</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">opsets</span> <span class="o">=</span> <span class="n">opsets</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">opsets</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">opsets</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="s2">&quot;ai.onnx.ml&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">opsets</span><span class="p">,</span> <span class="p">(</span>
+            <span class="s2">&quot;If ai.onnx.ml is part of your model, &quot;</span>
+            <span class="s2">&quot;your should add a version for the main opset as well.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">onnx_opset_version</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">_get_default_opset_for_domain</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span></div>
+
+
+
+<div class="viewcode-block" id="same_function_proto">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.same_function_proto">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">same_function_proto</span><span class="p">(</span>
+    <span class="n">f1</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">f2</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compares two functions and tells if they are equal.</span>
+
+<span class="sd">    :param f1: first function</span>
+<span class="sd">    :param f2: second function</span>
+<span class="sd">    :param verbose: to know why the comparison failed,</span>
+<span class="sd">        the function returns a string in that case or True</span>
+<span class="sd">    :return: comparison</span>
+
+<span class="sd">    They may have different names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">input</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;different number of inputs&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">output</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;different number of outputs&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">node</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;different number of nodes&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">attribute</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;different number of attributes&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">attribute_proto</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">attribute_proto</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;different number of attributes (2)&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">attribute</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;different attribute names&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">f1</span><span class="o">.</span><span class="n">attribute_proto</span><span class="p">]</span> <span class="o">!=</span> <span class="p">[</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">f2</span><span class="o">.</span><span class="n">attribute_proto</span>
+    <span class="p">]:</span>
+        <span class="k">return</span> <span class="s2">&quot;different attribute protos&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="n">mapped</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">f2</span><span class="o">.</span><span class="n">input</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="n">f2</span><span class="o">.</span><span class="n">node</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">n1</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">n2</span><span class="o">.</span><span class="n">op_type</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;different node type at position </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">n1</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">n2</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">verbose</span>
+                <span class="k">else</span> <span class="kc">False</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">n2</span><span class="o">.</span><span class="n">input</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;different number of inputs at node </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">n2</span><span class="o">.</span><span class="n">output</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;different number of outputs at node </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">n2</span><span class="o">.</span><span class="n">attribute</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;different number of attributes at node </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="n">n2_input</span> <span class="o">=</span> <span class="p">[(</span><span class="n">mapped</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">n1</span><span class="o">.</span><span class="n">input</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">n2</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n2_input</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;different input names at node </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">n1</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">n2</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">n2_input</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">verbose</span>
+                <span class="k">else</span> <span class="kc">False</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span> <span class="n">n2</span><span class="o">.</span><span class="n">attribute</span><span class="p">):</span>
+            <span class="c1"># The test should be improved for subgraphs.</span>
+            <span class="k">if</span> <span class="n">a1</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span> <span class="o">!=</span> <span class="n">a2</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">():</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;different attribute </span><span class="si">{</span><span class="n">a1</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="n">mapped</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">n2</span><span class="o">.</span><span class="n">output</span><span class="p">)))</span>
+
+    <span class="n">f2_output</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapped</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">f1</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">f2</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">!=</span> <span class="n">f2_output</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;different output names, </span><span class="si">{</span><span class="n">f1</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f2</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">f2_output</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">verbose</span>
+            <span class="k">else</span> <span class="kc">False</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="clean_shapes">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.clean_shapes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_shapes</span><span class="p">(</span><span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cleans all shapes inplace.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">):</span>
+        <span class="n">clean_shapes</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">del</span> <span class="n">proto</span><span class="o">.</span><span class="n">value_info</span><span class="p">[:]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;Loop&quot;</span><span class="p">}:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                <span class="n">clean_shapes</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">)</span></div>
 
 
 
@@ -799,7 +1082,9 @@
 <div class="viewcode-block" id="shadowing_names">
 <a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.shadowing_names">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">shadowing_names</span><span class="p">(</span>
-    <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">]],</span>
+    <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">onnx</span><span class="o">.</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">]]</span>
+    <span class="p">],</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">existing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">shadow_context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -845,6 +1130,8 @@
     <span class="n">created</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="n">post_shadow</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">proto</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">continue</span>
         <span class="n">not_empty</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span> <span class="k">if</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">intersection</span> <span class="o">=</span> <span class="n">not_empty</span> <span class="o">&amp;</span> <span class="n">existing</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersection</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
@@ -1578,22 +1865,6 @@
 
 
 
-<div class="viewcode-block" id="enumerate_subgraphs">
-<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.enumerate_subgraphs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">enumerate_subgraphs</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Enumerates all inputs from a node including all the hidden inputs</span>
-<span class="sd">    from subgraphs.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">yield</span> <span class="n">graph</span>
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;LSI&quot;</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Loop&quot;</span><span class="p">,</span> <span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceMap&quot;</span><span class="p">}:</span>
-            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
-                    <span class="k">yield from</span> <span class="n">enumerate_subgraphs</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">)</span></div>
-
-
-
 <span class="k">def</span><span class="w"> </span><span class="nf">_rewrite_info</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ValueInfoProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ValueInfoProto</span><span class="p">:</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
@@ -1683,6 +1954,32 @@
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">mapping</span></div>
 
+
+
+<div class="viewcode-block" id="make_idn">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.make_idn">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_idn</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a unique id for a node hoping collision cannot happen.</span>
+<span class="sd">    onnx may reuse sometimes the nodes, ``id(node)`` may not be enough sometimes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># return f&quot;{id(node)}-{node.op_type}-{node.output[0]}-{node.name}&quot;</span>
+    <span class="c1"># id(node) should be enough and faster.</span>
+    <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_idg">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.make_idg">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_idg</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a unique id for a graph hoping collision cannot happen.</span>
+<span class="sd">    onnx may reuse sometimes the nodes, ``id(node)`` may not be enough sometimes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># return f&quot;{id(g)}-{len(g.node)}-{len(g.input)}-{len(g.output)}-{g.name}&quot;</span>
+    <span class="c1"># id(g) should be enough and faster.</span>
+    <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="n">g</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -1719,5 +2016,7 @@
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

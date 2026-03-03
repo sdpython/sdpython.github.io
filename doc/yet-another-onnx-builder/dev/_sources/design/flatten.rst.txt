@@ -1,15 +1,21 @@
 .. _l-design-flatten:
 
-============================
-Flattening Functionalities
-============================
+==================================
+Flattening Functionalities (torch)
+==================================
+
+.. note::
+    This section covers functionality that is **specific to PyTorch**.
+    It is only relevant when exporting :class:`torch.nn.Module` models with
+    :func:`torch.export.export` and has no bearing on ONNX models built
+    directly with the builder APIs.
 
 :func:`torch.export.export` and the :epkg:`torch` pytree machinery require every
 Python object that appears as a model input or output to be **registered** as a
 pytree node.  When a class is not registered, exporting fails with a cryptic
 error.
 
-:mod:`yobx.torch.flatten_helper` provides utilities to register, unregister,
+:mod:`yobx.torch.flatten` provides utilities to register, unregister,
 and compose such registrations cleanly.
 
 Why flattening matters
@@ -39,7 +45,7 @@ Core helpers
 register_class_flattening
 --------------------------
 
-:func:`yobx.torch.flatten_helper.register_class_flattening` is a thin wrapper
+:func:`yobx.torch.flatten.register_class_flattening` is a thin wrapper
 around ``torch.utils._pytree.register_pytree_node`` that:
 
 * skips the registration silently when the class is already registered (avoids
@@ -53,7 +59,7 @@ around ``torch.utils._pytree.register_pytree_node`` that:
     import dataclasses
     from typing import Any, List, Tuple
     import torch
-    from yobx.torch.flatten_helper import (
+    from yobx.torch.flatten import (
         register_class_flattening,
         unregister_class_flattening,
     )
@@ -95,7 +101,7 @@ around ``torch.utils._pytree.register_pytree_node`` that:
 make_flattening_function_for_dataclass
 --------------------------------------
 
-:func:`yobx.torch.flatten_helper.make_flattening_function_for_dataclass`
+:func:`yobx.torch.flatten.make_flattening_function_for_dataclass`
 auto-generates the three required callables for any class that exposes
 ``.keys()`` / ``.values()`` like a mapping (e.g. ``transformers.ModelOutput``
 subclasses).
@@ -104,7 +110,7 @@ subclasses).
     :showcode:
 
     import torch
-    from yobx.torch.flatten_helper import (
+    from yobx.torch.flatten import (
         make_flattening_function_for_dataclass,
         register_class_flattening,
         unregister_class_flattening,
@@ -135,12 +141,12 @@ subclasses).
 register_cache_flattening and the context manager
 --------------------------------------------------
 
-:func:`yobx.torch.flatten_helper.register_cache_flattening` registers a
+:func:`yobx.torch.flatten.register_cache_flattening` registers a
 collection of classes in one call and returns a ``dict`` that can be passed to
-:func:`yobx.torch.flatten_helper.unregister_cache_flattening` to undo every
+:func:`yobx.torch.flatten.unregister_cache_flattening` to undo every
 registration.
 
-:func:`yobx.torch.flatten_helper.register_flattening_functions` wraps both in
+:func:`yobx.torch.flatten.register_flattening_functions` wraps both in
 a :func:`contextlib.contextmanager` so that registrations are automatically
 undone when the ``with`` block exits:
 
@@ -162,11 +168,11 @@ After the ``with`` block all registrations are rolled back, leaving
 ``torch.utils._pytree.SUPPORTED_NODES`` exactly as it was before.
 
 Transformers-specific registrations
-=====================================
+===================================
 
 When ``patch_transformers=True`` is passed to
-:func:`~yobx.torch.flatten_helper.register_cache_flattening` (or
-:func:`~yobx.torch.flatten_helper.register_flattening_functions`), the
+:func:`~yobx.torch.flatten.register_cache_flattening` (or
+:func:`~yobx.torch.flatten.register_flattening_functions`), the
 following classes from :epkg:`transformers` are registered:
 
 +-----------------------------+-------------------------------------------------------------+
@@ -182,7 +188,7 @@ following classes from :epkg:`transformers` are registered:
 +-----------------------------+-------------------------------------------------------------+
 
 The flatten functions are defined in
-:mod:`yobx.torch.transformers.flatten_class`.  The module also patches
+:mod:`yobx.torch.in_transformers.flatten_class`.  The module also patches
 registrations that are already present but known to be incompatible with
 :func:`torch.export.export` (see ``WRONG_REGISTRATIONS``).
 
@@ -195,7 +201,7 @@ registrations that are already present but known to be incompatible with
     introduced in **transformers >= 4.50**.  On older versions of
     ``transformers`` the cache is serialized with plain ``key_<i>`` /
     ``value_<i>`` keys and no per-layer type information is preserved.  Use
-    :func:`~yobx.torch.transformers.flatten_class.flatten_dynamic_cache` only
+    :func:`~yobx.torch.in_transformers.flatten_class.flatten_dynamic_cache` only
     with ``transformers >= 4.50`` if you need to round-trip mixed layer types.
 
 A ``DynamicCache`` can contain layers of different types
@@ -214,6 +220,62 @@ correct layer class and its kwargs are recreated on unflatten:
 +-------------------------------+------+
 | ``StaticSlidingWindowLayer``  | X    |
 +-------------------------------+------+
+
+The following example builds a cache whose first layer is a plain
+``DynamicLayer`` and whose second layer is a ``DynamicSlidingWindowLayer``.
+It then round-trips the cache through
+:func:`~yobx.torch.in_transformers.flatten_class.flatten_dynamic_cache` /
+:func:`~yobx.torch.in_transformers.flatten_class.unflatten_dynamic_cache` and
+shows that the layer types **and** the ``sliding_window`` parameter are
+preserved:
+
+.. runpython::
+    :showcode:
+
+    import torch
+    import transformers
+    from yobx.helpers import string_type
+    from yobx.torch.in_transformers.cache_helper import make_dynamic_cache
+    from yobx.torch.in_transformers.flatten_class import (
+        flatten_dynamic_cache,
+        unflatten_dynamic_cache,
+    )
+
+    # DynamicSlidingWindowLayer was added in transformers >= 4.50.
+    if not hasattr(transformers.cache_utils, "DynamicSlidingWindowLayer"):
+        print("DynamicSlidingWindowLayer not available, skipping example.")
+    else:
+        bsize, nheads, slen, dim = 2, 4, 3, 7
+        sliding_window = slen  # sliding_window must be >= the sequence length
+
+        # Build a DynamicCache with two different layer types.
+        cache = make_dynamic_cache(
+            [
+                (
+                    torch.randn(bsize, nheads, slen, dim),
+                    torch.randn(bsize, nheads, slen, dim),
+                ),
+                (
+                    torch.randn(bsize, nheads, slen, dim),
+                    torch.randn(bsize, nheads, slen, dim),
+                ),
+            ],
+            cls_layers=[
+                transformers.cache_utils.DynamicLayer,
+                transformers.cache_utils.DynamicSlidingWindowLayer,
+            ],
+            cls_kwargs=[{}, {"sliding_window": sliding_window}],
+        )
+        print("cache:", string_type(cache, with_shape=True))
+
+        # Flatten (serialize) the cache — the context encodes each layer's type.
+        flat, context = flatten_dynamic_cache(cache)
+        print("context keys:", context)
+
+        # Unflatten (deserialize) the cache — layer types are restored from the context.
+        rebuilt = unflatten_dynamic_cache(flat, context)
+        print("layer types:", [type(layer).__name__ for layer in rebuilt.layers])
+        print("sliding_window:", rebuilt.layers[1].sliding_window)
 
 .. seealso::
 

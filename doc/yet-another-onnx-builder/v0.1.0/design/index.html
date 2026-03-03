@@ -10,7 +10,8 @@
         <title>Elements of Design - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -214,13 +215,16 @@
 <li class="toctree-l2"><a class="reference internal" href="container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="evaluator.html">Evaluators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html">ShapeBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -259,6 +263,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -268,21 +273,29 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
@@ -291,7 +304,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -410,7 +432,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flatten.html">Flattening Functionalities</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="flatten.html">Flattening Functionalities (torch)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="flatten.html#why-flattening-matters">Why flattening matters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flatten.html#core-helpers">Core helpers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="flatten.html#register-class-flattening">register_class_flattening</a></li>
@@ -424,12 +446,44 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="graph_builder.html">GraphBuilder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#building-a-graph-from-scratch">Building a graph from scratch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#loading-an-existing-model">Loading an existing model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#initializers">Initializers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#shape-and-type-tracking">Shape and type tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#dynamic-shapes">Dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#optimizations">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#local-functions">Local functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html#debugging">Debugging</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">Interesting Helpers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html#onnx-serialization-of-nested-structured-with-tensors">ONNX Serialization of Nested Structured with Tensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html#onnx-graph-visualization">ONNX Graph Visualization</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="patches.html">Patches (torch export)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="patches.html#why-patches-are-needed">Why patches are needed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="patches.html#control-flow-is-the-primary-source-of-failures">Control flow is the primary source of failures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="patches.html#other-common-failure-modes">Other common failure modes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html#core-data-structures">Core data structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="patches.html#patchinfo">PatchInfo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="patches.html#patchdetails">PatchDetails</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html#applying-patches">Applying patches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html#shipped-patches">Shipped patches</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="patches.html#torch-patches">torch patches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="patches.html#transformers-patches">transformers patches</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="shape.html">ShapeBuilder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shape.html#class-hierarchy">Class Hierarchy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html#symbolic-expressions">Symbolic Expressions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="shape.html#supported-operators-in-symbolic-expressions">Supported operators in symbolic expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="shape.html#automatic-simplification">Automatic simplification</a></li>
@@ -438,6 +492,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html#example">Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html#comparison-with-onnx-shape-inference">Comparison with ONNX shape inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape.html#validating-computed-shapes">Validating computed shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape.html#writing-shapes-back-to-a-model">Writing shapes back to a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape.html#implementing-a-new-shape-function">Implementing a new shape function</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="shape.html#shape-functions-signature">Shape functions signature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shape.html#key-methods-available-on-g">Key methods available on <code class="docutils literal notranslate"><span class="pre">g</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="shape.html#example-a-custom-element-wise-scaling-operator">Example: a custom element-wise scaling operator</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="translate.html">Translate</a><ul>
@@ -445,6 +508,7 @@
 <li class="toctree-l2"><a class="reference internal" href="translate.html#available-emitters">Available emitters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html#event-sequence">Event sequence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html#inneremitter">InnerEmitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translate.html#inneremittercompact">InnerEmitterCompact</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html#lightemitter">LightEmitter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html#builderemitter">BuilderEmitter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html#round-trip-verification">Round-trip verification</a></li>
@@ -507,5 +571,7 @@
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

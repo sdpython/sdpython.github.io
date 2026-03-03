@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Translate" href="translate.html"><link rel="prev" title="Interesting Helpers" href="helpers.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Translate" href="translate.html"><link rel="prev" title="Patches (torch export)" href="patches.html">
         <link rel="prefetch" href="../_static/logo.svg" as="image">
 
     <link rel="shortcut icon" href="../_static/logo.svg"><!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>ShapeBuilder - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
@@ -214,13 +215,16 @@
 <li class="toctree-l2"><a class="reference internal" href="container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="evaluator.html">Evaluators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">ShapeBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -259,6 +263,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -268,22 +273,30 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/translate/translate.html">yobx.translate.translate</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/light_emitter.html">yobx.translate.light_emitter</a></li>
@@ -291,7 +304,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -356,7 +378,7 @@
         <article role="main" id="furo-main-content">
           <section id="shapebuilder">
 <span id="l-design-shape"></span><h1>ShapeBuilder<a class="headerlink" href="#shapebuilder" title="Link to this heading">¶</a></h1>
-<p><a class="reference external" href="https://onnx.ai/onnx/api/shape_inference.html#onnx.shape_inference.infer_shapes" title="(in ONNX v1.21.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx.shape_inference.infer_shapes()</span></code></a> tries to infer
+<p><a class="reference external" href="https://onnx.ai/onnx/api/shape_inference.html#onnx.shape_inference.infer_shapes" title="(in ONNX v1.22.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx.shape_inference.infer_shapes()</span></code></a> tries to infer
 shapes and types based on input shapes. It does not
 supports formulas and introduces new symbols.</p>
 <p><a class="reference internal" href="../api/xshape/index.html#yobx.xshape.ShapeBuilder" title="yobx.xshape.ShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xshape.ShapeBuilder</span></code></a>
@@ -370,12 +392,35 @@ called from class <a class="reference internal" href="../api/xshape/_inference_r
 in <a class="reference internal" href="../api/xshape/_builder_runtime.html#yobx.xshape._builder_runtime._BuilderRuntime" title="yobx.xshape._builder_runtime._BuilderRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">_BuilderRuntime</span></code></a>.
 This is used by <a class="reference internal" href="../api/xshape/_shape_runtime.html#yobx.xshape._shape_runtime._ShapeRuntime" title="yobx.xshape._shape_runtime._ShapeRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">_ShapeRuntime</span></code></a>
 to deduce some shapes.</p>
+<section id="class-hierarchy">
+<h2>Class Hierarchy<a class="headerlink" href="#class-hierarchy" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../api/xshape/index.html#yobx.xshape.BasicShapeBuilder" title="yobx.xshape.shape_builder_impl.BasicShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicShapeBuilder</span></code></a>
+is the main concrete implementation and is composed of four cooperative
+base classes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/xshape/index.html#yobx.xshape.ShapeBuilder" title="yobx.xshape.shape_builder.ShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeBuilder</span></code></a> — the public
+API contract: <code class="docutils literal notranslate"><span class="pre">get_shape</span></code>, <code class="docutils literal notranslate"><span class="pre">get_type</span></code>, <code class="docutils literal notranslate"><span class="pre">get_rank</span></code>, <code class="docutils literal notranslate"><span class="pre">has_shape</span></code>,
+<code class="docutils literal notranslate"><span class="pre">has_type</span></code>, <code class="docutils literal notranslate"><span class="pre">has_rank</span></code>, <code class="docutils literal notranslate"><span class="pre">set_shape</span></code>, <code class="docutils literal notranslate"><span class="pre">set_type</span></code>, <code class="docutils literal notranslate"><span class="pre">set_rank</span></code>,
+<code class="docutils literal notranslate"><span class="pre">evaluate_shape</span></code>, <code class="docutils literal notranslate"><span class="pre">compare_with_true_inputs</span></code>, <code class="docutils literal notranslate"><span class="pre">update_shapes</span></code>.</p></li>
+<li><p><a class="reference internal" href="../api/xshape/_inference_runtime.html#yobx.xshape._inference_runtime._InferenceRuntime" title="yobx.xshape._inference_runtime._InferenceRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">_InferenceRuntime</span></code></a>
+— walks the graph node by node, dispatching each node to the matching
+per-operator handler in <a class="reference internal" href="../api/xshape/shape_type_compute.html#module-yobx.xshape.shape_type_compute" title="yobx.xshape.shape_type_compute"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.xshape.shape_type_compute</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="../api/xshape/_builder_runtime.html#yobx.xshape._builder_runtime._BuilderRuntime" title="yobx.xshape._builder_runtime._BuilderRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">_BuilderRuntime</span></code></a>
+— evaluates small constant sub-expressions (e.g. the <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">-1]</span></code>
+passed to a <code class="docutils literal notranslate"><span class="pre">Reshape</span></code> node) so the builder can resolve <code class="docutils literal notranslate"><span class="pre">-1</span></code> to the
+correct symbolic formula.</p></li>
+<li><p><a class="reference internal" href="../api/xshape/_shape_runtime.html#yobx.xshape._shape_runtime._ShapeRuntime" title="yobx.xshape._shape_runtime._ShapeRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">_ShapeRuntime</span></code></a>
+— handles the special <em>value-as-shape</em> tracking needed by operators such
+as <code class="docutils literal notranslate"><span class="pre">Shape</span></code>, <code class="docutils literal notranslate"><span class="pre">Gather</span></code>, <code class="docutils literal notranslate"><span class="pre">Concat</span></code>, and <code class="docutils literal notranslate"><span class="pre">Slice</span></code> when their output
+feeds directly into a <code class="docutils literal notranslate"><span class="pre">Reshape</span></code>.</p></li>
+</ul>
 <p>For example, if <strong>X</strong> has shape <code class="docutils literal notranslate"><span class="pre">(&quot;d1&quot;,</span> <span class="pre">2)</span></code> then <code class="docutils literal notranslate"><span class="pre">Shape(X,</span> <span class="pre">start=1)</span></code> is constant <code class="docutils literal notranslate"><span class="pre">[2]</span></code>.
 This can be later used to infer the shape after a reshape.</p>
 <p>After getting an expression, a few postprocessing are applied to reduce
 its complexity. This relies on <a class="reference external" href="https://docs.python.org/3/library/ast.html#module-ast" title="(in Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ast</span></code></a>. It is done by function
 <code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_expression</span></code>.
 <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">+</span> <span class="pre">f</span> <span class="pre">-</span> <span class="pre">f</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">d</span></code>.</p>
+</section>
 <section id="symbolic-expressions">
 <h2>Symbolic Expressions<a class="headerlink" href="#symbolic-expressions" title="Link to this heading">¶</a></h2>
 <p>When input shapes contain unknown (dynamic) dimensions, <a class="reference internal" href="../api/xshape/index.html#yobx.xshape.ShapeBuilder" title="yobx.xshape.ShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeBuilder</span></code></a> represents each dimension as either:</p>
@@ -528,7 +573,7 @@ on it, and prints the inferred shapes and types.</p>
 </section>
 <section id="comparison-with-onnx-shape-inference">
 <h2>Comparison with ONNX shape inference<a class="headerlink" href="#comparison-with-onnx-shape-inference" title="Link to this heading">¶</a></h2>
-<p><a class="reference external" href="https://onnx.ai/onnx/api/shape_inference.html#onnx.shape_inference.infer_shapes" title="(in ONNX v1.21.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx.shape_inference.infer_shapes()</span></code></a> is ONNX’s built-in shape
+<p><a class="reference external" href="https://onnx.ai/onnx/api/shape_inference.html#onnx.shape_inference.infer_shapes" title="(in ONNX v1.22.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx.shape_inference.infer_shapes()</span></code></a> is ONNX’s built-in shape
 propagation pass.  It works well for models with fully static dimensions but
 loses symbolic relationships when dimensions are dynamic: intermediate results
 receive freshly generated, unrelated symbols (e.g. <code class="docutils literal notranslate"><span class="pre">unk__0</span></code>, <code class="docutils literal notranslate"><span class="pre">unk__1</span></code>)
@@ -579,6 +624,312 @@ before being stored (<code class="docutils literal notranslate"><span class="pre
 <p>See <a class="reference internal" href="../auto_examples/plot_computed_shapes.html#l-plot-computed-shapes"><span class="std std-ref">Computed Shapes: Add + Concat + Reshape</span></a> for a runnable example that demonstrates
 this comparison step by step.</p>
 </section>
+<section id="validating-computed-shapes">
+<h2>Validating computed shapes<a class="headerlink" href="#validating-computed-shapes" title="Link to this heading">¶</a></h2>
+<p>Once the model has been run with concrete inputs you can verify that the
+symbolic shapes predicted by
+<a class="reference internal" href="../api/xshape/index.html#yobx.xshape.BasicShapeBuilder" title="yobx.xshape.shape_builder_impl.BasicShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicShapeBuilder</span></code></a>
+agree with the actual tensor shapes using
+<a class="reference internal" href="../api/xshape/index.html#yobx.xshape.ShapeBuilder.compare_with_true_inputs" title="yobx.xshape.ShapeBuilder.compare_with_true_inputs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compare_with_true_inputs</span></code></a>.
+The method accepts the concrete input and output dictionaries (or lists) and
+returns, for every output result, the list of <code class="docutils literal notranslate"><span class="pre">(symbolic_expr,</span> <span class="pre">expected,</span> <span class="pre">computed)</span></code>
+triples.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedReferenceEvaluator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xshape</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicShapeBuilder</span>
+
+<span class="n">TFLOAT</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+    <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Add&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Concat&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;add_concat&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="s2">&quot;d_model&quot;</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="s2">&quot;d_model&quot;</span><span class="p">]),</span>
+        <span class="p">],</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])],</span>
+    <span class="p">),</span>
+    <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)],</span>
+    <span class="n">ir_version</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">builder</span> <span class="o">=</span> <span class="n">BasicShapeBuilder</span><span class="p">()</span>
+<span class="n">builder</span><span class="o">.</span><span class="n">run_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="n">feeds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">ExtendedReferenceEvaluator</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">compare_with_true_inputs</span><span class="p">(</span><span class="n">feeds</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">dims</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">dims</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Z</span><span class="p">:</span> <span class="p">((</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;seq&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;2*d_model&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Each triple <code class="docutils literal notranslate"><span class="pre">(expr,</span> <span class="pre">expected,</span> <span class="pre">computed)</span></code> confirms that evaluating the
+symbolic expression with the concrete dimension values yields the same size as
+the tensor produced by the runtime.</p>
+</section>
+<section id="writing-shapes-back-to-a-model">
+<h2>Writing shapes back to a model<a class="headerlink" href="#writing-shapes-back-to-a-model" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../api/xshape/index.html#yobx.xshape.ShapeBuilder.update_shapes" title="yobx.xshape.ShapeBuilder.update_shapes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_shapes</span></code></a> writes the
+inferred shapes and types back into the <code class="docutils literal notranslate"><span class="pre">value_info</span></code> section of the
+<code class="docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code>.  Inputs, outputs, and initializers are left untouched;
+only intermediate results (node outputs that are neither inputs, outputs, nor
+initializers) are annotated.</p>
+<p>This is useful for visualisation tools and downstream passes that rely on
+<code class="docutils literal notranslate"><span class="pre">value_info</span></code> being populated.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xshape</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicShapeBuilder</span>
+
+<span class="n">TFLOAT</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+    <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Add&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;MatMul&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]),</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;add_matmul&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="mi">64</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="mi">64</span><span class="p">]),</span>
+        <span class="p">],</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])],</span>
+        <span class="p">[</span><span class="n">onh</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;W&quot;</span><span class="p">)],</span>
+    <span class="p">),</span>
+    <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)],</span>
+    <span class="n">ir_version</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">builder</span> <span class="o">=</span> <span class="n">BasicShapeBuilder</span><span class="p">()</span>
+<span class="n">builder</span><span class="o">.</span><span class="n">run_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;value_info before:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">vi</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="p">])</span>
+<span class="n">builder</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;value_info after :&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">vi</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="p">])</span>
+
+<span class="n">vi</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">vi</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_value</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">vi</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: dtype=</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">elem_type</span><span class="si">}</span><span class="s2">  shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">value_info</span> <span class="n">before</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="n">value_info</span> <span class="n">after</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;added&#39;</span><span class="p">]</span>
+      <span class="n">added</span><span class="p">:</span> <span class="n">dtype</span><span class="o">=</span><span class="mi">1</span>  <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="s1">&#39;seq&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../api/xshape/index.html#yobx.xshape.BasicShapeBuilder" title="yobx.xshape.shape_builder_impl.BasicShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicShapeBuilder</span></code></a>
+respects several environment variables that help narrow down shape-inference
+problems:</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Environment variable</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ONNXSTOPSHAPE=&lt;name&gt;</span></code></p></td>
+<td><p>Raises an exception the moment result <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> receives a shape.
+Useful for finding the first place where a wrong shape is assigned.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ONNXSTOPTYPE=&lt;name&gt;</span></code></p></td>
+<td><p>Raises an exception the moment result <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> receives a type.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ONNXDYNDIM=&lt;name&gt;</span></code></p></td>
+<td><p>Prints a message every time the dynamic dimension <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> is
+encountered during shape propagation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ONNXCST=1</span></code></p></td>
+<td><p>Prints which constant value is being requested during inference.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ONNXSHAPECOMPUTE=1</span></code></p></td>
+<td><p>Raises an exception when a shape is missing for a result that should
+have one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ONNXSTOPVALUESHAPE=&lt;name&gt;</span></code></p></td>
+<td><p>Prints extra information inside the function that tracks shapes of
+results used as shape arguments (e.g. inputs to <code class="docutils literal notranslate"><span class="pre">Reshape</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In addition, <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_debug_msg</span></code> returns a
+detailed text dump of the builder’s internal state (known shapes, types,
+constants, ranks, and the sequence of calls) which can be printed or logged
+whenever an assertion fails.</p>
+</section>
+<section id="implementing-a-new-shape-function">
+<h2>Implementing a new shape function<a class="headerlink" href="#implementing-a-new-shape-function" title="Link to this heading">¶</a></h2>
+<p>Adding support for a new operator (or overriding an existing one) requires
+writing a small function and registering it in
+<a class="reference internal" href="../api/xshape/shape_type_compute.html#module-yobx.xshape.shape_type_compute" title="yobx.xshape.shape_type_compute"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.xshape.shape_type_compute</span></code></a>.</p>
+<section id="shape-functions-signature">
+<h3>Shape functions signature<a class="headerlink" href="#shape-functions-signature" title="Link to this heading">¶</a></h3>
+<p>Every shape function receives two arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">g</span></code> — the <a class="reference internal" href="../api/xshape/index.html#yobx.xshape.ShapeBuilder" title="yobx.xshape.shape_builder.ShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeBuilder</span></code></a>
+instance that holds all currently known shapes, types, ranks, and devices.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node</span></code> — the <a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.NodeProto</span></code></a> being processed.</p></li>
+</ul>
+<p>The function must call the appropriate setters on <code class="docutils literal notranslate"><span class="pre">g</span></code> for every output of
+the node, then return a truthy value (typically the computed shape or
+<code class="docutils literal notranslate"><span class="pre">True</span></code>) to signal success, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to signal that no shape could be
+determined.</p>
+</section>
+<section id="key-methods-available-on-g">
+<h3>Key methods available on <code class="docutils literal notranslate"><span class="pre">g</span></code><a class="headerlink" href="#key-methods-available-on-g" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g.has_shape(name)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the shape is known for result <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g.get_shape(name)</span></code></p></td>
+<td><p>Returns the shape as a tuple of integers / symbolic strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g.set_shape(name,</span> <span class="pre">shape)</span></code></p></td>
+<td><p>Stores the computed shape for result <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g.has_type(name)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the element type is known for result <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g.get_type(name)</span></code></p></td>
+<td><p>Returns the element type as an ONNX integer
+(e.g. <code class="docutils literal notranslate"><span class="pre">onnx.TensorProto.FLOAT</span> <span class="pre">==</span> <span class="pre">1</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g.set_type(name,</span> <span class="pre">itype)</span></code></p></td>
+<td><p>Stores the element type for result <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g.has_rank(name)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the rank (number of dimensions) is known.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g.get_rank(name)</span></code></p></td>
+<td><p>Returns the rank as an integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g.set_rank(name,</span> <span class="pre">rank)</span></code></p></td>
+<td><p>Stores the rank when the full shape is not yet known.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g.has_device(name)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if a device is known for result <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g.get_device(name)</span></code></p></td>
+<td><p>Returns the device as an integer (<code class="docutils literal notranslate"><span class="pre">-1</span></code> for CPU, index for GPU).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g.set_device(name,</span> <span class="pre">device)</span></code></p></td>
+<td><p>Propagates the device to result <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g.get_attribute_with_default(node,</span> <span class="pre">attr,</span> <span class="pre">default)</span></code></p></td>
+<td><p>Convenience helper to read a node attribute with a fallback default.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A minimal shape function should:</p>
+<ol class="arabic simple">
+<li><p><strong>Propagate device</strong> — if <code class="docutils literal notranslate"><span class="pre">g.has_device(input)</span></code> is true, copy the
+device to the output with <code class="docutils literal notranslate"><span class="pre">set_device</span></code>.</p></li>
+<li><p><strong>Propagate type</strong> — guard with <code class="docutils literal notranslate"><span class="pre">g.has_type(input)</span></code> before calling
+<code class="docutils literal notranslate"><span class="pre">set_type</span></code> on every output; return <code class="docutils literal notranslate"><span class="pre">None</span></code> early if the type is not yet
+known.</p></li>
+<li><p><strong>Compute and set the shape</strong> — guard with <code class="docutils literal notranslate"><span class="pre">g.has_shape(input)</span></code> before
+deriving the output shape and calling <code class="docutils literal notranslate"><span class="pre">set_shape</span></code>.  When the full shape
+is unavailable, fall back to <code class="docutils literal notranslate"><span class="pre">g.has_rank</span></code> / <code class="docutils literal notranslate"><span class="pre">set_rank</span></code>.</p></li>
+<li><p><strong>Return the shape</strong> (or <code class="docutils literal notranslate"><span class="pre">True</span></code> if only a rank was set, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
+nothing could be done).</p></li>
+</ol>
+</section>
+<section id="example-a-custom-element-wise-scaling-operator">
+<h3>Example: a custom element-wise scaling operator<a class="headerlink" href="#example-a-custom-element-wise-scaling-operator" title="Link to this heading">¶</a></h3>
+<p>The following example shows a shape function for a hypothetical <code class="docutils literal notranslate"><span class="pre">Scale</span></code>
+operator (domain <code class="docutils literal notranslate"><span class="pre">&quot;my.domain&quot;</span></code>) that multiplies its first input <code class="docutils literal notranslate"><span class="pre">X</span></code> by a
+scalar <code class="docutils literal notranslate"><span class="pre">scale</span></code> and returns a result with the same shape and type as <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xshape.shape_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeBuilder</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_scale</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+    <span class="s2">&quot;Shape function for the custom Scale operator.&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># 1. propagate device</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_device</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># 2. propagate element type</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># 3. compute output shape (same shape as input)</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">shape</span>
+
+    <span class="c1"># fallback: propagate rank only</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>To register the function so that
+<a class="reference internal" href="../api/xshape/index.html#yobx.xshape.BasicShapeBuilder" title="yobx.xshape.shape_builder_impl.BasicShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicShapeBuilder</span></code></a>
+calls it automatically, add it to the appropriate registry dictionary in
+<a class="reference internal" href="../api/xshape/shape_type_compute.html#module-yobx.xshape.shape_type_compute" title="yobx.xshape.shape_type_compute"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.xshape.shape_type_compute</span></code></a>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_set_shape_type_op_any_known</span></code> — for standard ONNX operators
+(domain <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_set_shape_type_op_any_custom</span></code> — for operators in non-standard domains
+(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;com.microsoft&quot;</span></code>).</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In yobx/xshape/shape_type_compute.py:</span>
+<span class="n">_set_shape_type_op_any_custom</span><span class="p">[</span><span class="s2">&quot;Scale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_set_shape_type_scale</span>
+</pre></div>
+</div>
+<p>The function will then be called automatically whenever
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">run_node</span></code>
+processes a <code class="docutils literal notranslate"><span class="pre">Scale</span></code> node.</p>
+</section>
+</section>
 </section>
 
         </article>
@@ -595,14 +946,14 @@ this comparison step by step.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="helpers.html">
+          <a class="prev-page" href="patches.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Interesting Helpers</div>
+                <div class="title">Patches (torch export)</div>
                 
               </div>
             </a>
@@ -637,6 +988,7 @@ this comparison step by step.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">ShapeBuilder</a><ul>
+<li><a class="reference internal" href="#class-hierarchy">Class Hierarchy</a></li>
 <li><a class="reference internal" href="#symbolic-expressions">Symbolic Expressions</a><ul>
 <li><a class="reference internal" href="#supported-operators-in-symbolic-expressions">Supported operators in symbolic expressions</a></li>
 <li><a class="reference internal" href="#automatic-simplification">Automatic simplification</a></li>
@@ -645,6 +997,15 @@ this comparison step by step.</p>
 </li>
 <li><a class="reference internal" href="#example">Example</a></li>
 <li><a class="reference internal" href="#comparison-with-onnx-shape-inference">Comparison with ONNX shape inference</a></li>
+<li><a class="reference internal" href="#validating-computed-shapes">Validating computed shapes</a></li>
+<li><a class="reference internal" href="#writing-shapes-back-to-a-model">Writing shapes back to a model</a></li>
+<li><a class="reference internal" href="#debugging">Debugging</a></li>
+<li><a class="reference internal" href="#implementing-a-new-shape-function">Implementing a new shape function</a><ul>
+<li><a class="reference internal" href="#shape-functions-signature">Shape functions signature</a></li>
+<li><a class="reference internal" href="#key-methods-available-on-g">Key methods available on <code class="docutils literal notranslate"><span class="pre">g</span></code></a></li>
+<li><a class="reference internal" href="#example-a-custom-element-wise-scaling-operator">Example: a custom element-wise scaling operator</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -660,5 +1021,7 @@ this comparison step by step.</p>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

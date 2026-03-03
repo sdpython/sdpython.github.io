@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Interesting Helpers" href="helpers.html"><link rel="prev" title="Evaluators" href="evaluator.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="GraphBuilder" href="graph_builder.html"><link rel="prev" title="Evaluators" href="evaluator.html">
         <link rel="prefetch" href="../_static/logo.svg" as="image">
 
     <link rel="shortcut icon" href="../_static/logo.svg"><!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Flattening Functionalities - yet-another-onnx-builder 0.1.0 documentation</title>
+        <title>Flattening Functionalities (torch) - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
@@ -214,13 +215,16 @@
 <li class="toctree-l2"><a class="reference internal" href="container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="evaluator.html">Evaluators</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Flattening Functionalities</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shape.html">ShapeBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -259,6 +263,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -268,22 +273,30 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/translate/translate.html">yobx.translate.translate</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/light_emitter.html">yobx.translate.light_emitter</a></li>
@@ -291,7 +304,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -354,13 +376,20 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="flattening-functionalities">
-<span id="l-design-flatten"></span><h1>Flattening Functionalities<a class="headerlink" href="#flattening-functionalities" title="Link to this heading">¶</a></h1>
+          <section id="flattening-functionalities-torch">
+<span id="l-design-flatten"></span><h1>Flattening Functionalities (torch)<a class="headerlink" href="#flattening-functionalities-torch" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section covers functionality that is <strong>specific to PyTorch</strong>.
+It is only relevant when exporting <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> models with
+<a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> and has no bearing on ONNX models built
+directly with the builder APIs.</p>
+</div>
 <p><a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> and the <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html">torch</a> pytree machinery require every
 Python object that appears as a model input or output to be <strong>registered</strong> as a
 pytree node.  When a class is not registered, exporting fails with a cryptic
 error.</p>
-<p><a class="reference internal" href="../api/torch/flatten_helper.html#module-yobx.torch.flatten_helper" title="yobx.torch.flatten_helper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.flatten_helper</span></code></a> provides utilities to register, unregister,
+<p><a class="reference internal" href="../api/torch/flatten.html#module-yobx.torch.flatten" title="yobx.torch.flatten"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.flatten</span></code></a> provides utilities to register, unregister,
 and compose such registrations cleanly.</p>
 <section id="why-flattening-matters">
 <h2>Why flattening matters<a class="headerlink" href="#why-flattening-matters" title="Link to this heading">¶</a></h2>
@@ -386,7 +415,7 @@ a <code class="xref py py-class docutils literal notranslate"><span class="pre">
 <h2>Core helpers<a class="headerlink" href="#core-helpers" title="Link to this heading">¶</a></h2>
 <section id="register-class-flattening">
 <h3>register_class_flattening<a class="headerlink" href="#register-class-flattening" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../api/torch/flatten_helper.html#yobx.torch.flatten_helper.register_class_flattening" title="yobx.torch.flatten_helper.register_class_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten_helper.register_class_flattening()</span></code></a> is a thin wrapper
+<p><a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.register_class_flattening" title="yobx.torch.flatten.register_class_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten.register_class_flattening()</span></code></a> is a thin wrapper
 around <code class="docutils literal notranslate"><span class="pre">torch.utils._pytree.register_pytree_node</span></code> that:</p>
 <ul class="simple">
 <li><p>skips the registration silently when the class is already registered (avoids
@@ -398,7 +427,7 @@ immediately after registration.</p></li>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.flatten_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.flatten</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">register_class_flattening</span><span class="p">,</span>
     <span class="n">unregister_class_flattening</span><span class="p">,</span>
 <span class="p">)</span>
@@ -451,13 +480,13 @@ immediately after registration.</p></li>
 </section>
 <section id="make-flattening-function-for-dataclass">
 <h3>make_flattening_function_for_dataclass<a class="headerlink" href="#make-flattening-function-for-dataclass" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../api/torch/flatten_helper.html#yobx.torch.flatten_helper.make_flattening_function_for_dataclass" title="yobx.torch.flatten_helper.make_flattening_function_for_dataclass"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten_helper.make_flattening_function_for_dataclass()</span></code></a>
+<p><a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.make_flattening_function_for_dataclass" title="yobx.torch.flatten.make_flattening_function_for_dataclass"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten.make_flattening_function_for_dataclass()</span></code></a>
 auto-generates the three required callables for any class that exposes
 <code class="docutils literal notranslate"><span class="pre">.keys()</span></code> / <code class="docutils literal notranslate"><span class="pre">.values()</span></code> like a mapping (e.g. <code class="docutils literal notranslate"><span class="pre">transformers.ModelOutput</span></code>
 subclasses).</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.flatten_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.flatten</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">make_flattening_function_for_dataclass</span><span class="p">,</span>
     <span class="n">register_class_flattening</span><span class="p">,</span>
     <span class="n">unregister_class_flattening</span><span class="p">,</span>
@@ -497,11 +526,11 @@ subclasses).</p>
 </section>
 <section id="register-cache-flattening-and-the-context-manager">
 <h3>register_cache_flattening and the context manager<a class="headerlink" href="#register-cache-flattening-and-the-context-manager" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../api/torch/flatten_helper.html#yobx.torch.flatten_helper.register_cache_flattening" title="yobx.torch.flatten_helper.register_cache_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten_helper.register_cache_flattening()</span></code></a> registers a
+<p><a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.register_cache_flattening" title="yobx.torch.flatten.register_cache_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten.register_cache_flattening()</span></code></a> registers a
 collection of classes in one call and returns a <code class="docutils literal notranslate"><span class="pre">dict</span></code> that can be passed to
-<a class="reference internal" href="../api/torch/flatten_helper.html#yobx.torch.flatten_helper.unregister_cache_flattening" title="yobx.torch.flatten_helper.unregister_cache_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten_helper.unregister_cache_flattening()</span></code></a> to undo every
+<a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.unregister_cache_flattening" title="yobx.torch.flatten.unregister_cache_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten.unregister_cache_flattening()</span></code></a> to undo every
 registration.</p>
-<p><a class="reference internal" href="../api/torch/flatten_helper.html#yobx.torch.flatten_helper.register_flattening_functions" title="yobx.torch.flatten_helper.register_flattening_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten_helper.register_flattening_functions()</span></code></a> wraps both in
+<p><a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.register_flattening_functions" title="yobx.torch.flatten.register_flattening_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten.register_flattening_functions()</span></code></a> wraps both in
 a <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">contextlib.contextmanager()</span></code></a> so that registrations are automatically
 undone when the <code class="docutils literal notranslate"><span class="pre">with</span></code> block exits:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_flattening_functions</span>
@@ -524,8 +553,8 @@ undone when the <code class="docutils literal notranslate"><span class="pre">wit
 <section id="transformers-specific-registrations">
 <h2>Transformers-specific registrations<a class="headerlink" href="#transformers-specific-registrations" title="Link to this heading">¶</a></h2>
 <p>When <code class="docutils literal notranslate"><span class="pre">patch_transformers=True</span></code> is passed to
-<a class="reference internal" href="../api/torch/flatten_helper.html#yobx.torch.flatten_helper.register_cache_flattening" title="yobx.torch.flatten_helper.register_cache_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_cache_flattening()</span></code></a> (or
-<a class="reference internal" href="../api/torch/flatten_helper.html#yobx.torch.flatten_helper.register_flattening_functions" title="yobx.torch.flatten_helper.register_flattening_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_flattening_functions()</span></code></a>), the
+<a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.register_cache_flattening" title="yobx.torch.flatten.register_cache_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_cache_flattening()</span></code></a> (or
+<a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.register_flattening_functions" title="yobx.torch.flatten.register_flattening_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_flattening_functions()</span></code></a>), the
 following classes from <a class="reference external" href="https://huggingface.co/docs/transformers/en/index">transformers</a> are registered:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -551,7 +580,7 @@ following classes from <a class="reference external" href="https://huggingface.c
 </table>
 </div>
 <p>The flatten functions are defined in
-<a class="reference internal" href="../api/torch/transformers/flatten_class.html#module-yobx.torch.transformers.flatten_class" title="yobx.torch.transformers.flatten_class"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.transformers.flatten_class</span></code></a>.  The module also patches
+<a class="reference internal" href="../api/torch/in_transformers/flatten_class.html#module-yobx.torch.in_transformers.flatten_class" title="yobx.torch.in_transformers.flatten_class"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_transformers.flatten_class</span></code></a>.  The module also patches
 registrations that are already present but known to be incompatible with
 <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> (see <code class="docutils literal notranslate"><span class="pre">WRONG_REGISTRATIONS</span></code>).</p>
 <section id="dynamiccache-layers">
@@ -563,7 +592,7 @@ attribute of <code class="xref py py-class docutils literal notranslate"><span c
 introduced in <strong>transformers &gt;= 4.50</strong>.  On older versions of
 <code class="docutils literal notranslate"><span class="pre">transformers</span></code> the cache is serialized with plain <code class="docutils literal notranslate"><span class="pre">key_&lt;i&gt;</span></code> /
 <code class="docutils literal notranslate"><span class="pre">value_&lt;i&gt;</span></code> keys and no per-layer type information is preserved.  Use
-<a class="reference internal" href="../api/torch/transformers/flatten_class.html#yobx.torch.transformers.flatten_class.flatten_dynamic_cache" title="yobx.torch.transformers.flatten_class.flatten_dynamic_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">flatten_dynamic_cache()</span></code></a> only
+<a class="reference internal" href="../api/torch/in_transformers/flatten_class.html#yobx.torch.in_transformers.flatten_class.flatten_dynamic_cache" title="yobx.torch.in_transformers.flatten_class.flatten_dynamic_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">flatten_dynamic_cache()</span></code></a> only
 with <code class="docutils literal notranslate"><span class="pre">transformers</span> <span class="pre">&gt;=</span> <span class="pre">4.50</span></code> if you need to round-trip mixed layer types.</p>
 </div>
 <p>A <code class="docutils literal notranslate"><span class="pre">DynamicCache</span></code> can contain layers of different types
@@ -593,6 +622,67 @@ correct layer class and its kwargs are recreated on unflatten:</p>
 </tbody>
 </table>
 </div>
+<p>The following example builds a cache whose first layer is a plain
+<code class="docutils literal notranslate"><span class="pre">DynamicLayer</span></code> and whose second layer is a <code class="docutils literal notranslate"><span class="pre">DynamicSlidingWindowLayer</span></code>.
+It then round-trips the cache through
+<a class="reference internal" href="../api/torch/in_transformers/flatten_class.html#yobx.torch.in_transformers.flatten_class.flatten_dynamic_cache" title="yobx.torch.in_transformers.flatten_class.flatten_dynamic_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">flatten_dynamic_cache()</span></code></a> /
+<a class="reference internal" href="../api/torch/in_transformers/flatten_class.html#yobx.torch.in_transformers.flatten_class.unflatten_dynamic_cache" title="yobx.torch.in_transformers.flatten_class.unflatten_dynamic_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">unflatten_dynamic_cache()</span></code></a> and
+shows that the layer types <strong>and</strong> the <code class="docutils literal notranslate"><span class="pre">sliding_window</span></code> parameter are
+preserved:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_transformers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_dynamic_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_transformers.flatten_class</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">flatten_dynamic_cache</span><span class="p">,</span>
+    <span class="n">unflatten_dynamic_cache</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># DynamicSlidingWindowLayer was added in transformers &gt;= 4.50.</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="p">,</span> <span class="s2">&quot;DynamicSlidingWindowLayer&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DynamicSlidingWindowLayer not available, skipping example.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span>
+    <span class="n">sliding_window</span> <span class="o">=</span> <span class="n">slen</span>  <span class="c1"># sliding_window must be &gt;= the sequence length</span>
+
+    <span class="c1"># Build a DynamicCache with two different layer types.</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">make_dynamic_cache</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">cls_layers</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicLayer</span><span class="p">,</span>
+            <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicSlidingWindowLayer</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">cls_kwargs</span><span class="o">=</span><span class="p">[{},</span> <span class="p">{</span><span class="s2">&quot;sliding_window&quot;</span><span class="p">:</span> <span class="n">sliding_window</span><span class="p">}],</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cache:&quot;</span><span class="p">,</span> <span class="n">string_type</span><span class="p">(</span><span class="n">cache</span><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="c1"># Flatten (serialize) the cache — the context encodes each layer&#39;s type.</span>
+    <span class="n">flat</span><span class="p">,</span> <span class="n">context</span> <span class="o">=</span> <span class="n">flatten_dynamic_cache</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;context keys:&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+    <span class="c1"># Unflatten (deserialize) the cache — layer types are restored from the context.</span>
+    <span class="n">rebuilt</span> <span class="o">=</span> <span class="n">unflatten_dynamic_cache</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;layer types:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">rebuilt</span><span class="o">.</span><span class="n">layers</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sliding_window:&quot;</span><span class="p">,</span> <span class="n">rebuilt</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sliding_window</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">cache</span><span class="p">:</span> <span class="n">DynamicCache</span><span class="p">(</span><span class="n">DynamicLayer</span><span class="p">(</span><span class="n">T1s2x4x3x7</span><span class="p">,</span> <span class="n">T1s2x4x3x7</span><span class="p">),</span> <span class="n">DynamicSlidingWindowLayer</span><span class="p">(</span><span class="n">T1s2x4x3x7</span><span class="p">,</span> <span class="n">T1s2x4x3x7</span><span class="p">))</span>
+    <span class="n">context</span> <span class="n">keys</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;key_D_0&#39;</span><span class="p">,</span> <span class="s1">&#39;value_D_0&#39;</span><span class="p">,</span> <span class="s1">&#39;key_W3_1&#39;</span><span class="p">,</span> <span class="s1">&#39;value_W3_1&#39;</span><span class="p">]</span>
+    <span class="n">layer</span> <span class="n">types</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;DynamicLayer&#39;</span><span class="p">,</span> <span class="s1">&#39;DynamicSlidingWindowLayer&#39;</span><span class="p">]</span>
+    <span class="n">sliding_window</span><span class="p">:</span> <span class="mi">3</span>
+</pre></div>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="../auto_examples/plot_flattening.html#l-plot-flattening"><span class="std std-ref">Registering a custom class as a pytree node</span></a> — sphinx-gallery example demonstrating
@@ -609,12 +699,12 @@ pytree-flattened tensors to ONNX.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="helpers.html">
+          <a class="next-page" href="graph_builder.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Interesting Helpers</div>
+                <div class="title">GraphBuilder</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -659,7 +749,7 @@ pytree-flattened tensors to ONNX.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Flattening Functionalities</a><ul>
+<li><a class="reference internal" href="#">Flattening Functionalities (torch)</a><ul>
 <li><a class="reference internal" href="#why-flattening-matters">Why flattening matters</a></li>
 <li><a class="reference internal" href="#core-helpers">Core helpers</a><ul>
 <li><a class="reference internal" href="#register-class-flattening">register_class_flattening</a></li>
@@ -686,5 +776,7 @@ pytree-flattened tensors to ONNX.</p>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

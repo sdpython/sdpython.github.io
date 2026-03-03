@@ -9,6 +9,7 @@
         <title>yobx.xshape._inference_runtime - yet-another-onnx-builder 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
@@ -213,13 +214,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../design/container.html">ExtendedModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/cube.html">Statistics on Logs Through a Cube of Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/evaluator.html">Evaluators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../design/flatten.html">Flattening Functionalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/shape.html">ShapeBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/translate.html">Translate</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a><input aria-label="Toggle navigation of Gallery of Examples" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
@@ -258,6 +262,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/reference/index.html">yobx.reference</a><input aria-label="Toggle navigation of yobx.reference" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -267,22 +272,30 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch/index.html">yobx.torch</a><input aria-label="Toggle navigation of yobx.torch" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/flatten.html">yobx.torch.flatten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch/input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch/tiny_models.html">yobx.torch.tiny_models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch/torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/transformers/index.html">yobx.torch.transformers</a><input aria-label="Toggle navigation of yobx.torch.transformers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/transformers/cache_helper.html">yobx.torch.transformers.cache_helper</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/transformers/flatten_class.html">yobx.torch.transformers.flatten_class</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../api/torch/transformers/models/index.html">yobx.torch.transformers.models</a><input aria-label="Toggle navigation of yobx.torch.transformers.models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l5"><a class="reference internal" href="../../../api/torch/transformers/models/configs.html">yobx.torch.transformers.models.configs</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/in_torch/index.html">yobx.torch.in_torch</a><input aria-label="Toggle navigation of yobx.torch.in_torch" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch/in_transformers/index.html">yobx.torch.in_transformers</a><input aria-label="Toggle navigation of yobx.torch.in_transformers" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/cache_helper.html">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch/in_transformers/patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../api/torch/in_transformers/models/index.html">yobx.torch.in_transformers.models</a><input aria-label="Toggle navigation of yobx.torch.in_transformers.models" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../api/torch/in_transformers/models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/translate/translate.html">yobx.translate.translate</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/translate/index.html">yobx.translate</a><input aria-label="Toggle navigation of yobx.translate" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/translate/translator.html">yobx.translate.translator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/base_emitter.html">yobx.translate.base_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/light_emitter.html">yobx.translate.light_emitter</a></li>
@@ -290,7 +303,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/translate/make_helper.html">yobx.translate.make_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xbuilder/index.html">yobx.xbuilder</a><input aria-label="Toggle navigation of yobx.xbuilder" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">yobx.xshape</a><input aria-label="Toggle navigation of yobx.xshape" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/expressions_torch.html">yobx.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">yobx.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">yobx.xshape.rename_expressions</a></li>
@@ -356,6 +378,7 @@
     <span class="n">_reshape_shape</span><span class="p">,</span>
     <span class="n">is_static_shape</span><span class="p">,</span>
     <span class="n">reshape_implementation_with_zero</span><span class="p">,</span>
+    <span class="n">STATIC_SHAPE</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.shape_type_compute</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_shape_type_op_any</span><span class="p">,</span> <span class="n">set_shape_type_custom</span>
 
@@ -393,43 +416,46 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="_InferenceRuntime._get_tensor_shape">
-<a class="viewcode-back" href="../../../api/xshape/_inference_runtime.html#yobx.xshape._inference_runtime._InferenceRuntime._get_tensor_shape">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_tensor_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape of the tensor produced by a Constant node.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">()</span>
-        <span class="n">attr</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;value_float&quot;</span><span class="p">,</span> <span class="s2">&quot;value_int&quot;</span><span class="p">,</span> <span class="s2">&quot;value_string&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">()</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_floats&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">floats</span><span class="p">),)</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_ints&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">ints</span><span class="p">),)</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_strings&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">strings</span><span class="p">),)</span>
-        <span class="k">return</span> <span class="p">()</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_tensor_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">STATIC_SHAPE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected attribute type for attribute </span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;attribute list is </span><span class="si">{</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">proto</span><span class="o">.</span><span class="n">attribute</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;in node type </span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">, name=</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;doc_string=</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">doc_string</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;value_float&quot;</span><span class="p">,</span> <span class="s2">&quot;value_int&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="nb">tuple</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_floats&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">floats</span><span class="p">),)</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_ints&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">ints</span><span class="p">),)</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unexpected or unsupported scenario type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span><span class="si">}</span><span class="s2">: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">proto</span><span class="si">}</span><span class="s2">, attribute=</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">attribute</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
-
-<div class="viewcode-block" id="_InferenceRuntime._get_tensor_type">
-<a class="viewcode-back" href="../../../api/xshape/_inference_runtime.html#yobx.xshape._inference_runtime._InferenceRuntime._get_tensor_type">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_tensor_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the element type of the tensor produced by a Constant node.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
-        <span class="n">attr</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">data_type</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;value_float&quot;</span><span class="p">,</span> <span class="s2">&quot;value_floats&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;value_int&quot;</span><span class="p">,</span> <span class="s2">&quot;value_ints&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
-        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;value_string&quot;</span><span class="p">,</span> <span class="s2">&quot;value_strings&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span>
-        <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span></div>
-
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_tensor_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">proto</span><span class="o">.</span><span class="n">data_type</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_float&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_int&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_floats&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value_ints&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">data_type</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type or value </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">proto</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="_InferenceRuntime.make_dimension_name_if_necessary">
 <a class="viewcode-back" href="../../../api/xshape/_inference_runtime.html#yobx.xshape._inference_runtime._InferenceRuntime.make_dimension_name_if_necessary">[docs]</a>
@@ -728,7 +754,7 @@
 <a class="viewcode-back" href="../../../api/xshape/_inference_runtime.html#yobx.xshape._inference_runtime._InferenceRuntime.compute_constant">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_constant</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">only_array</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">allow_empty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes a constant.</span>
 
@@ -1003,5 +1029,7 @@
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>
