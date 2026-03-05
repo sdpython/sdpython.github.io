@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using sklearn-onnx to convert any scikit-learn estimator &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d0ff0132" />
+    <script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <script src="../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../api/index.html" />
+    <link rel="prev" title="Registering a custom class as a pytree node" href="plot_flattening.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../index.html" title="Go to homepage"><img src="../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../design/index.html">Elements of Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cmds/index.html">Command Lines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery of Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_patch_model.html">Applying patches to a model and displaying the diff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_sklearn_pipeline.html">Converting a scikit-learn Pipeline to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_shape_expressions.html">Expressions in Shape Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_extended_reference_evaluator.html">ExtendedReferenceEvaluator: running models with contrib operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_input_observer_transformers.html">InputObserver with Transformers Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_input_observer.html">InputObserver: recording inputs for ONNX export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mini_onnx_builder.html">MiniOnnxBuilder: serialize tensors to an ONNX model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_dot_graph.html">ONNX Graph Visualization with to_dot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_flattening.html">Registering a custom class as a pytree node</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Using sklearn-onnx to convert any scikit-learn estimator</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-sklearn-with-sklearn-onnx-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="using-sklearn-onnx-to-convert-any-scikit-learn-estimator">
+<span id="l-plot-sklearn-with-sklearn-onnx"></span><span id="sphx-glr-auto-examples-plot-sklearn-with-sklearn-onnx-py"></span><h1>Using sklearn-onnx to convert any scikit-learn estimator<a class="headerlink" href="#using-sklearn-onnx-to-convert-any-scikit-learn-estimator" title="Link to this heading">¶</a></h1>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code> ships with built-in converters for a curated
+set of <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> estimators (<code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code>,
+<code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>, <code class="docutils literal notranslate"><span class="pre">DecisionTree*</span></code>, <code class="docutils literal notranslate"><span class="pre">MLP*</span></code>, and <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code>).
+For any estimator that is <em>not</em> covered by the built-in registry, you can
+supply your own converter through the <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code> keyword argument.</p>
+<p>This example shows how to write such a custom converter for
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPClassifier</span></code></a> using
+<a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a> (<code class="docutils literal notranslate"><span class="pre">skl2onnx</span></code>) as the conversion back-end.  The
+approach generalises to any scikit-learn estimator that <code class="docutils literal notranslate"><span class="pre">skl2onnx</span></code>
+supports.</p>
+<section id="the-strategy">
+<h2>The strategy<a class="headerlink" href="#the-strategy" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Call <a class="reference external" href="https://onnx.ai/sklearn-onnx/api_summary.html#skl2onnx.convert_sklearn" title="(in sklearn-onnx v1.20.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">skl2onnx.convert_sklearn()</span></code></a> to obtain a self-contained
+<a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> for the estimator alone.</p></li>
+<li><p>Wrap that sub-model as a <strong>local ONNX function</strong> inside the
+enclosing <a class="reference internal" href="../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a> using
+<a class="reference internal" href="../api/xbuilder/index.html#yobx.xbuilder.FunctionOptions" title="yobx.xbuilder.FunctionOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionOptions</span></code></a>.  The function groups the MLP
+nodes under a single named call during graph <em>construction</em>, and its
+weight tensors are stored as <code class="docutils literal notranslate"><span class="pre">Constant</span></code> nodes inside the function body
+rather than as top-level graph initializers.</p></li>
+<li><p>Emit a <code class="docutils literal notranslate"><span class="pre">make_node</span></code> call for the freshly registered function so the
+MLP plugs into the rest of the pipeline graph.</p></li>
+</ol>
+<p>The yobx optimizer (invoked by <code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code> at export
+time) inlines local functions into the enclosing graph, so the final
+<a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> contains the individual <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">Add</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Relu</span></code>, and <code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code> nodes rather than a single call-node.  The
+local-function wrapping is therefore a <em>construction-time</em> organisational
+pattern that keeps converter code clean and composable even when the
+emitted sub-graph is ultimately inlined.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Dict" title="typing.Dict" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Dict</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/typing.html#typing.List" title="typing.List" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">List</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="typing.Tuple" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-data"><span class="n">Tuple</span></a>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neural_network</span><span class="w"> </span><span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-class"><span class="n">MLPClassifier</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skl2onnx</span><span class="w"> </span><span class="kn">import</span> <a href="https://onnx.ai/sklearn-onnx/api_summary.html#skl2onnx.convert_sklearn" title="skl2onnx.convert_sklearn" class="sphx-glr-backref-module-skl2onnx sphx-glr-backref-type-py-function"><span class="n">convert_sklearn</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skl2onnx.common.data_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">DoubleTensorType</span><span class="p">,</span> <span class="n">FloatTensorType</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">doc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionOptions</span><span class="p">,</span> <span class="n">GraphBuilder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+</pre></div>
+</div>
+</section>
+<section id="helper-map-onnx-element-type-to-a-skl2onnx-input-type-descriptor">
+<h2>Helper: map ONNX element type to a skl2onnx input-type descriptor<a class="headerlink" href="#helper-map-onnx-element-type-to-a-skl2onnx-input-type-descriptor" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://onnx.ai/sklearn-onnx/api_summary.html#skl2onnx.convert_sklearn" title="(in sklearn-onnx v1.20.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">skl2onnx.convert_sklearn()</span></code></a> requires an <code class="docutils literal notranslate"><span class="pre">initial_types</span></code> list that
+describes the shape and dtype of each model input using skl2onnx
+type objects such as <code class="xref py py-class docutils literal notranslate"><span class="pre">FloatTensorType</span></code>.
+The helper below translates an ONNX <code class="docutils literal notranslate"><span class="pre">elem_type</span></code> integer (as returned by
+<a class="reference internal" href="../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.get_type" title="yobx.xbuilder.GraphBuilder.get_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_type()</span></code></a>) into the matching skl2onnx
+descriptor.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">to_skl2onnx_input_type</span><span class="p">(</span><span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert an ONNX ``TensorProto`` element-type code into the matching</span>
+<span class="sd">    :epkg:`sklearn-onnx` input-type object.</span>
+
+<span class="sd">    :param elem_type: ONNX element type integer (e.g.</span>
+<span class="sd">        ``onnx.TensorProto.FLOAT == 1``).</span>
+<span class="sd">    :param n_features: number of input features (second dimension of the</span>
+<span class="sd">        2-D feature matrix).</span>
+<span class="sd">    :return: a skl2onnx type descriptor suitable for ``initial_types``.</span>
+<span class="sd">    :raises NotImplementedError: for element types other than ``FLOAT``</span>
+<span class="sd">        and ``DOUBLE``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">elem_type</span> <span class="o">==</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span></a><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FloatTensorType</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_features</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">elem_type</span> <span class="o">==</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span></a><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DoubleTensorType</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_features</span><span class="p">])</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Input elem_type </span><span class="si">{</span><span class="n">elem_type</span><span class="si">}</span><span class="s2"> is not supported. &quot;</span>
+        <span class="s2">&quot;Only FLOAT (1) and DOUBLE (11) are supported by the skl2onnx MLP converter.&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-converter-mlpclassifier-via-skl2onnx-local-function">
+<h2>Custom converter: MLPClassifier via skl2onnx + local function<a class="headerlink" href="#custom-converter-mlpclassifier-via-skl2onnx-local-function" title="Link to this heading">¶</a></h2>
+<p>A yobx <em>converter</em> is a plain Python function that receives the active
+<a class="reference internal" href="../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>, a shape-tracking dict (<em>sts</em>), the
+desired output tensor names, the fitted estimator, and the name of the
+input tensor already present in the graph.  It must emit all necessary
+ONNX nodes into <em>g</em> and return the name(s) of the produced output tensors.</p>
+<p>Here we implement this contract by:</p>
+<ol class="arabic simple">
+<li><p>Asking skl2onnx to convert the estimator to a stand-alone ONNX model
+(<code class="docutils literal notranslate"><span class="pre">zipmap=False</span></code> so probabilities come out as a plain float tensor
+instead of a sequence-of-maps).</p></li>
+<li><p>Fixing the opset version in the generated model to match the opset
+already in use by the enclosing graph — skl2onnx may pick a lower
+version than the one we need.</p></li>
+<li><p>Loading the generated model into a temporary <code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code>,
+then registering it as a <strong>local ONNX function</strong> in the enclosing
+graph via <a class="reference internal" href="../api/xbuilder/index.html#yobx.xbuilder.FunctionOptions" title="yobx.xbuilder.FunctionOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionOptions</span></code></a>.</p></li>
+<li><p>Emitting a single call-node for that function.</p></li>
+</ol>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">convert_sklearn_mlp_classifier</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <a href="https://docs.python.org/3/library/typing.html#typing.Dict" title="typing.Dict" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Dict</span></a><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <a href="https://docs.python.org/3/library/typing.html#typing.List" title="typing.List" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">List</span></a><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">estimator</span><span class="p">:</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-class"><span class="n">MLPClassifier</span></a><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mlp_classifier&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <a href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="typing.Tuple" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-data"><span class="n">Tuple</span></a><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a fitted :class:`~sklearn.neural_network.MLPClassifier` into</span>
+<span class="sd">    ONNX nodes inside an existing :class:`~yobx.xbuilder.GraphBuilder`.</span>
+
+<span class="sd">    The conversion delegates to :func:`skl2onnx.convert_sklearn` for the</span>
+<span class="sd">    actual graph construction, wraps the result in a local ONNX function</span>
+<span class="sd">    to keep the converter code composable, and emits a single call-node</span>
+<span class="sd">    for that function.  The yobx optimizer will inline the function when</span>
+<span class="sd">    :func:`~yobx.sklearn.to_onnx` finalises the model.</span>
+
+<span class="sd">    :param g: the :class:`~yobx.xbuilder.GraphBuilder` that is currently</span>
+<span class="sd">        being populated.</span>
+<span class="sd">    :param sts: shape-tracking dictionary populated by the yobx converter</span>
+<span class="sd">        framework (passed through unchanged).</span>
+<span class="sd">    :param outputs: list of desired output tensor names</span>
+<span class="sd">        ``[label, probabilities]``.</span>
+<span class="sd">    :param estimator: a fitted ``MLPClassifier`` instance.</span>
+<span class="sd">    :param X: name of the input tensor already present in *g*.</span>
+<span class="sd">    :param name: base name used for the emitted call-node.</span>
+<span class="sd">    :return: tuple ``(label_name, probabilities_name)`` — the names of the</span>
+<span class="sd">        two output tensors in *g*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">estimator</span><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-class"><span class="n">MLPClassifier</span></a>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span><span class="si">}</span><span class="s2"> for estimator.&quot;</span>
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Missing type for </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">)</span>
+    <span class="n">n_features</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">coefs_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Step 1 — obtain a stand-alone ONNX model from skl2onnx.</span>
+    <span class="c1"># ``zipmap=False`` makes the probability output a plain [N, n_classes]</span>
+    <span class="c1"># float tensor instead of the default sequence-of-maps representation.</span>
+    <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <a href="https://onnx.ai/sklearn-onnx/api_summary.html#skl2onnx.convert_sklearn" title="skl2onnx.convert_sklearn" class="sphx-glr-backref-module-skl2onnx sphx-glr-backref-type-py-function"><span class="n">convert_sklearn</span></a><span class="p">(</span>
+        <span class="n">estimator</span><span class="p">,</span>
+        <span class="n">initial_types</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">to_skl2onnx_input_type</span><span class="p">(</span><span class="n">itype</span><span class="p">,</span> <span class="n">n_features</span><span class="p">))],</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;zipmap&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+        <span class="n">target_opset</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">main_opset</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Step 2 — normalise the opset version.</span>
+    <span class="c1"># skl2onnx may select a lower opset than the one required by the</span>
+    <span class="c1"># enclosing graph (it picks the lowest version whose op-set covers</span>
+    <span class="c1"># every node it emitted).  Overwrite it so the sub-model is compatible.</span>
+    <span class="k">del</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">opset_import</span><span class="p">[:]</span>
+    <span class="n">d</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">main_opset</span>
+
+    <span class="c1"># Step 3 — load the sub-model into a temporary GraphBuilder, then</span>
+    <span class="c1"># register it as a local ONNX function inside *g*.</span>
+    <span class="c1"># ``move_initializer_to_constant=True`` converts weight initializers</span>
+    <span class="c1"># into ``Constant`` nodes so they travel with the function definition</span>
+    <span class="c1"># rather than being stored as top-level graph initializers.</span>
+    <span class="n">builder</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="p">)</span>
+    <span class="n">f_options</span> <span class="o">=</span> <span class="n">FunctionOptions</span><span class="p">(</span>
+        <span class="n">export_as_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">unique_function_name</span><span class="p">(</span><span class="s2">&quot;MLPClassifier&quot;</span><span class="p">),</span>
+        <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;sklearn_onnx_functions&quot;</span><span class="p">,</span>
+        <span class="n">move_initializer_to_constant</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_local_function</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">f_options</span><span class="p">)</span>
+
+    <span class="c1"># Step 4 — emit a single call-node for the registered function.</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="n">f_options</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">f_options</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="train-a-simple-mlpclassifier">
+<h2>1. Train a simple MLPClassifier<a class="headerlink" href="#train-a-simple-mlpclassifier" title="Link to this heading">¶</a></h2>
+<p>We use a tiny dataset (four samples, two features, binary labels) so the
+example runs instantly.  The same API works for larger datasets and deeper
+networks.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mlp</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-class"><span class="n">MLPClassifier</span></a><span class="p">(</span><span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+<a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier.fit" title="sklearn.neural_network.MLPClassifier.fit" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-method"><span class="n">mlp</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MLPClassifier architecture:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  hidden layers : </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mlp</span><span class="o">.</span><span class="n">hidden_layer_sizes</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  activation    : </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mlp</span><span class="o">.</span><span class="n">activation</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  n_layers_     : </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mlp</span><span class="o">.</span><span class="n">n_layers_</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>MLPClassifier architecture:
+  hidden layers : (4,)
+  activation    : relu
+  n_layers_     : 3
+</pre></div>
+</div>
+</section>
+<section id="convert-to-onnx-using-the-custom-converter">
+<h2>2. Convert to ONNX using the custom converter<a class="headerlink" href="#convert-to-onnx-using-the-custom-converter" title="Link to this heading">¶</a></h2>
+<p>We pass our custom converter function through <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code>.
+The yobx framework will call it whenever it encounters an
+<code class="docutils literal notranslate"><span class="pre">MLPClassifier</span></code> instance while traversing the estimator (or pipeline).</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mlp</span></a><span class="p">,</span> <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,),</span> <span class="n">extra_converters</span><span class="o">=</span><span class="p">{</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-class"><span class="n">MLPClassifier</span></a><span class="p">:</span> <span class="n">convert_sklearn_mlp_classifier</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Top-level graph nodes:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <a href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="onnx.NodeProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">node</span></a> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><a href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="onnx.NodeProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">node</span></a><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  op_type=</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">node</span><span class="o">.</span><span class="n">op_type</span></a><span class="si">!r}</span><span class="s2">  domain=</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">node</span><span class="o">.</span><span class="n">domain</span></a><span class="si">!r}</span><span class="s2">  name=</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">node</span><span class="o">.</span><span class="n">name</span></a><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Local functions defined in the model:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">functions</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="n">domain</span><span class="si">}</span><span class="s2">::</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><a href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="onnx.NodeProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">node</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> nodes)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Top-level graph nodes:
+  op_type=&#39;MatMul&#39;  domain=&#39;&#39;  name=&#39;MatMul&#39;
+  op_type=&#39;Add&#39;  domain=&#39;&#39;  name=&#39;Add&#39;
+  op_type=&#39;Relu&#39;  domain=&#39;&#39;  name=&#39;Relu&#39;
+  op_type=&#39;MatMul&#39;  domain=&#39;&#39;  name=&#39;MatMul1&#39;
+  op_type=&#39;Add&#39;  domain=&#39;&#39;  name=&#39;Add1&#39;
+  op_type=&#39;Sigmoid&#39;  domain=&#39;&#39;  name=&#39;Relu1&#39;
+  op_type=&#39;Sub&#39;  domain=&#39;&#39;  name=&#39;Sub&#39;
+  op_type=&#39;Concat&#39;  domain=&#39;&#39;  name=&#39;Concat&#39;
+  op_type=&#39;ArgMax&#39;  domain=&#39;&#39;  name=&#39;ArgMax&#39;
+  op_type=&#39;ArrayFeatureExtractor&#39;  domain=&#39;ai.onnx.ml&#39;  name=&#39;ArrayFeatureExtractor&#39;
+  op_type=&#39;Reshape&#39;  domain=&#39;&#39;  name=&#39;Reshape&#39;
+  op_type=&#39;Cast&#39;  domain=&#39;&#39;  name=&#39;Cast1&#39;
+
+Local functions defined in the model:
+</pre></div>
+</div>
+</section>
+<section id="run-with-onnx-runtime-and-verify">
+<h2>3. Run with ONNX Runtime and verify<a class="headerlink" href="#run-with-onnx-runtime-and-verify" title="Link to this heading">¶</a></h2>
+<p>We execute the exported model with <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> and compare its
+predictions to scikit-learn’s.  Both the class labels and the
+class-probability matrix must match within floating-point tolerance.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://onnxruntime.ai/docs/api/python/api_summary.html#onnxruntime.InferenceSession" title="onnxruntime.capi.onnxruntime_inference_collection.InferenceSession" class="sphx-glr-backref-module-onnxruntime-capi-onnxruntime_inference_collection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ref</span></a> <span class="o">=</span> <a href="https://onnxruntime.ai/docs/api/python/api_summary.html#onnxruntime.InferenceSession" title="onnxruntime.capi.onnxruntime_inference_collection.InferenceSession" class="sphx-glr-backref-module-onnxruntime-capi-onnxruntime_inference_collection sphx-glr-backref-type-py-class"><span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">results</span></a> <span class="o">=</span> <a href="https://onnxruntime.ai/docs/api/python/api_summary.html#onnxruntime.InferenceSession.run" title="onnxruntime.InferenceSession.run" class="sphx-glr-backref-module-onnxruntime sphx-glr-backref-type-py-method"><span class="n">ref</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">})</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">label_onnx</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">proba_onnx</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">results</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">results</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">label_sk</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier.predict" title="sklearn.neural_network.MLPClassifier.predict" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-method"><span class="n">mlp</span><span class="o">.</span><span class="n">predict</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">proba_sk</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier.predict_proba" title="sklearn.neural_network.MLPClassifier.predict_proba" class="sphx-glr-backref-module-sklearn-neural_network sphx-glr-backref-type-py-method"><span class="n">mlp</span><span class="o">.</span><span class="n">predict_proba</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Predicted labels  (sklearn):&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">label_sk</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predicted labels  (ONNX)   :&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">label_onnx</span></a><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.testing.assert_array_equal.html#numpy.testing.assert_array_equal" title="numpy.testing.assert_array_equal" class="sphx-glr-backref-module-numpy-testing sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">label_sk</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">label_onnx</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.testing.assert_allclose.html#numpy.testing.assert_allclose" title="numpy.testing.assert_allclose" class="sphx-glr-backref-module-numpy-testing sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">proba_sk</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">proba_onnx</span></a><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">All predictions match ✓&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Predicted labels  (sklearn): [0 0 1 1]
+Predicted labels  (ONNX)   : [0 0 1 1]
+
+All predictions match ✓
+</pre></div>
+</div>
+</section>
+<section id="visualise-the-exported-onnx-graph">
+<h2>4. Visualise the exported ONNX graph<a class="headerlink" href="#visualise-the-exported-onnx-graph" title="Link to this heading">¶</a></h2>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.doc.plot_dot()</span></code> renders the <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> as a
+directed graph using Graphviz.  The yobx optimizer inlines the local
+function during export, so the graph shows the individual <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Add</span></code>, <code class="docutils literal notranslate"><span class="pre">Relu</span></code>, and <code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code> nodes that make up the MLP rather
+than a single call-node.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_dot</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_sklearn_with_sklearn_onnx_001.png" srcset="../_images/sphx_glr_plot_sklearn_with_sklearn_onnx_001.png" alt="plot sklearn with sklearn onnx" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.842 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-sklearn-with-sklearn-onnx-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/63e8d91eb95be50c082b16f2a6c0d62f/plot_sklearn_with_sklearn_onnx.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_sklearn_with_sklearn_onnx.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/31f0bfcf33bf00c06bf32126ac865f1b/plot_sklearn_with_sklearn_onnx.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_sklearn_with_sklearn_onnx.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a9de3c00467ca5567e68fdd120cf8ece/plot_sklearn_with_sklearn_onnx.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_sklearn_with_sklearn_onnx.zip</span></code></a></p>
+</div>
+</div>
+<p class="rubric">Related examples</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="yobx.sklearn.to_onnx converts fitted scikit-learn estimators and pipelines into onnx.ModelProto objects that can be executed with any ONNX-compatible runtime."><img alt="" src="../_images/sphx_glr_plot_sklearn_pipeline_thumb.png" />
+<p><a class="reference internal" href="plot_sklearn_pipeline.html"><span class="doc">Converting a scikit-learn Pipeline to ONNX</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Converting a scikit-learn Pipeline to ONNX</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="yobx.helpers.dot_helper.to_dot converts an onnx.ModelProto into a DOT string that can be rendered by Graphviz."><img alt="" src="../_images/sphx_glr_plot_dot_graph_thumb.png" />
+<p><a class="reference internal" href="plot_dot_graph.html"><span class="doc">ONNX Graph Visualization with to_dot</span></a></p>
+  <div class="sphx-glr-thumbnail-title">ONNX Graph Visualization with to_dot</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="yobx.translate.translate converts an onnx.ModelProto into Python source code that, when executed, recreates the same model.  Four output APIs are available:"><img alt="" src="../_images/sphx_glr_plot_translate_comparison_thumb.png" />
+<p><a class="reference internal" href="plot_translate_comparison.html"><span class="doc">Comparing the four ONNX translation APIs</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Comparing the four ONNX translation APIs</div>
+</div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">Using sklearn-onnx to convert any scikit-learn estimator</a><ul>
+<li><a class="reference internal" href="#the-strategy">The strategy</a></li>
+<li><a class="reference internal" href="#helper-map-onnx-element-type-to-a-skl2onnx-input-type-descriptor">Helper: map ONNX element type to a skl2onnx input-type descriptor</a></li>
+<li><a class="reference internal" href="#custom-converter-mlpclassifier-via-skl2onnx-local-function">Custom converter: MLPClassifier via skl2onnx + local function</a></li>
+<li><a class="reference internal" href="#train-a-simple-mlpclassifier">1. Train a simple MLPClassifier</a></li>
+<li><a class="reference internal" href="#convert-to-onnx-using-the-custom-converter">2. Convert to ONNX using the custom converter</a></li>
+<li><a class="reference internal" href="#run-with-onnx-runtime-and-verify">3. Run with ONNX Runtime and verify</a></li>
+<li><a class="reference internal" href="#visualise-the-exported-onnx-graph">4. Visualise the exported ONNX graph</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="plot_flattening.html">
+                    <span class="icon">&lt;</span><span>Registering a custom class as a pytree node</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="../api/index.html"><span>API Reference</span><span class="icon">&gt;</span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>

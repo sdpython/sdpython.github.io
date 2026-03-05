@@ -24,17 +24,35 @@ Données parcours-sup 2021-2025
 .. GENERATED FROM PYTHON SOURCE LINES 6-125
 
 
-
-
 .. rst-class:: sphx-glr-script-out
 
- .. code-block:: none
+.. code-block:: pytb
 
-    loading '2021'
-    loading '2022'
-    loading '2023'
-    loading '2024'
-    loading '2025'
+    Traceback (most recent call last):
+      File "/home/xadupre/github/teachpyx/_doc/examples/ml/plot_template_data.py", line 119, in <module>
+        oracle = compute_oracle(table, cible)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/xadupre/github/teachpyx/_doc/examples/ml/plot_template_data.py", line 78, in compute_oracle
+        return mean_absolute_error(piv[2025], piv[2024])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+        return func(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/metrics/_regression.py", line 283, in mean_absolute_error
+        _check_reg_targets_with_floating_dtype(
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/metrics/_regression.py", line 208, in _check_reg_targets_with_floating_dtype
+        y_type, y_true, y_pred, sample_weight, multioutput = _check_reg_targets(
+                                                             ^^^^^^^^^^^^^^^^^^^
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/metrics/_regression.py", line 114, in _check_reg_targets
+        y_true = check_array(y_true, ensure_2d=False, dtype=dtype)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1074, in check_array
+        _assert_all_finite(
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/validation.py", line 133, in _assert_all_finite
+        _assert_all_finite_element_wise(
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/validation.py", line 182, in _assert_all_finite_element_wise
+        raise ValueError(msg_err)
+    ValueError: Input contains NaN.
 
 
 
@@ -158,8 +176,8 @@ Données parcours-sup 2021-2025
 
     data = get_data()
     table, cible = select_variables_and_clean(data)
-    # oracle = compute_oracle(table, cible)
-    # print(f"oracle : {oracle}")
+    oracle = compute_oracle(table, cible)
+    print(f"oracle : {oracle}")
 
     # train_X, test_X, train_y, test_y = split_train_test(table, cible)
     # model = make_pipeline(table, cible)
@@ -168,7 +186,7 @@ Données parcours-sup 2021-2025
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.116 seconds)
+   **Total running time of the script:** (0 minutes 3.949 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ml_plot_template_data.py:
