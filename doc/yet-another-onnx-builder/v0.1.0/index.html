@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -26,7 +26,7 @@
     <link rel="icon" href="_static/logo.svg"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Command Lines" href="cmds/index.html" /> 
+    <link rel="next" title="Elements of Design" href="design/index.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
 <div id="top_nav">
@@ -138,8 +138,8 @@
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="cmds/index.html">Command Lines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="design/index.html">Elements of Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmds/index.html">Command Lines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
@@ -175,9 +175,28 @@
 <a class="reference external image-reference" href="https://github.com/xadupre/yet-another-onnx-builder"><img alt="https://img.shields.io/github/repo-size/xadupre/yet-another-onnx-builder" src="https://img.shields.io/github/repo-size/xadupre/yet-another-onnx-builder" />
 </a>
 <p><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder">yet-another-onnx-builder on GitHub</a></p>
+<p><strong>yet-another-onnx-builder</strong> (<code class="docutils literal notranslate"><span class="pre">yobx</span></code>) is a toolkit for converting machine learning models
+to <a class="reference external" href="https://onnx.ai">ONNX</a> format and manipulating ONNX graphs programmatically.
+It provides:</p>
+<ul class="simple">
+<li><p>A <a class="reference internal" href="design/builder/graph_builder.html#l-design-graph-builder"><span class="std std-ref">graph builder API</span></a> for constructing and optimizing ONNX graphs,
+with built-in shape inference and a pattern-based
+<a class="reference internal" href="design/builder/optimizer_patterns.html#l-design-pattern-optimizer-patterns"><span class="std std-ref">graph optimizer</span></a>.</p></li>
+<li><p>Converters for <strong>scikit-learn</strong> estimators and pipelines (<code class="docutils literal notranslate"><span class="pre">yobx.sklearn</span></code>).</p></li>
+<li><p>Utilities for <strong>PyTorch</strong> export, including model patching and input flattening (<code class="docutils literal notranslate"><span class="pre">yobx.torch</span></code>).</p></li>
+<li><p>A symbolic <a class="reference internal" href="design/builder/shape.html#l-design-shape"><span class="std std-ref">shape expression system</span></a> for dynamic shape handling at export time.</p></li>
+<li><p>A <a class="reference internal" href="design/misc/translate.html#l-design-translate"><span class="std std-ref">translation tool</span></a> that converts ONNX graphs back to executable Python code.</p></li>
+</ul>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="design/index.html">Elements of Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design/misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/torch/index.html">Torch Export to ONNX</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="cmds/index.html">Command Lines</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cmds/agg.html">-m yobx agg … aggregate statistics from benchmark runs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmds/copilot_draft.html">-m yobx copilot-draft … draft a sklearn→ONNX converter via GitHub Copilot</a></li>
@@ -185,13 +204,6 @@
 <li class="toctree-l2"><a class="reference internal" href="cmds/find.html">-m yobx find … find nodes consuming or producing a result</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmds/partition.html">-m yobx partition … move layer nodes in local functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmds/print.html">-m yobx print … print an onnx model on standard output</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="design/index.html">Elements of Design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="design/misc/index.html">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/sklearn/index.html">Scikit-learn Export to ONNX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/torch/index.html">Torch Export to ONNX</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of Examples</a></li>
@@ -272,7 +284,7 @@
 
             <div class="right">
                 
-                    <a href="cmds/index.html"><span>Command Lines</span><span class="icon">&gt;</span></a>
+                    <a href="design/index.html"><span>Elements of Design</span><span class="icon">&gt;</span></a>
                 
             </div>
         </div>

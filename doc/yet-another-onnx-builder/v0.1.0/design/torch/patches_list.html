@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Patches List &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d0ff0132" />
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <script src="../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Command Lines" href="../../cmds/index.html" />
+    <link rel="prev" title="Patches (torch export)" href="patches.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../index.html" title="Go to homepage"><img src="../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Torch Export to ONNX</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flatten_list.html">Flattening List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_observer.html">InputObserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="patches.html">Patches (torch export)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Patches List</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="patches-list">
+<span id="patches-torch"></span><h1>Patches List<a class="headerlink" href="#patches-list" title="Link to this heading">¶</a></h1>
+<section id="torch">
+<h2>torch<a class="headerlink" href="#torch" title="Link to this heading">¶</a></h2>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_patches_for_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_torch.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">PATCHES</span>
+
+<span class="k">with</span> <span class="n">apply_patches_for_model</span><span class="p">(</span><span class="n">patch_torch</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">patch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">PATCHES</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;patch-torch-</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* :ref:`</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;.. _</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">patch</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+                <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">patch</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">),</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;::&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">patch</span><span class="o">.</span><span class="n">format_diff</span><span class="p">(),</span> <span class="s2">&quot;    &quot;</span><span class="p">),</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="o">*</span><span class="n">link</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">rows</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#patch-torch-1"><span class="std std-ref">patched_DynamicDimConstraintPrinter._print_Symbol</span></a></p></li>
+<li><p><a class="reference internal" href="#patch-torch-2"><span class="std std-ref">patched_infer_size</span></a></p></li>
+<li><p><a class="reference internal" href="#patch-torch-3"><span class="std std-ref">patched__broadcast_shapes</span></a></p></li>
+<li><p><a class="reference internal" href="#patch-torch-4"><span class="std std-ref">patched__get_range_constraints</span></a></p></li>
+<li><p><a class="reference internal" href="#patch-torch-5"><span class="std std-ref">patched__maybe_broadcast</span></a></p></li>
+</ul>
+<section id="patched-dynamicdimconstraintprinter-print-symbol">
+<span id="patch-torch-1"></span><h3>patched_DynamicDimConstraintPrinter._print_Symbol<a class="headerlink" href="#patched-dynamicdimconstraintprinter-print-symbol" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">DynamicDimConstraintPrinter</span><span class="o">.</span><span class="n">_print_Symbol</span> <span class="o">-&gt;</span> <span class="n">patched_DynamicDimConstraintPrinter</span><span class="o">.</span><span class="n">_print_Symbol</span>
+<span class="o">---</span> <span class="n">original</span>
+<span class="o">+++</span> <span class="n">rewritten</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span> <span class="o">@@</span>
+ <span class="k">def</span><span class="w"> </span><span class="nf">_print_Symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">-</span>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">):</span>
+<span class="o">-</span>        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected sympy.Symbol, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">-</span>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>
+<span class="o">-</span>        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown symbol </span><span class="si">{</span><span class="n">expr</span><span class="si">}</span><span class="s2"> created by constraints solver&quot;</span><span class="p">)</span>
+<span class="o">-</span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="p">[</span><span class="n">expr</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="o">+</span>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">))</span>
+<span class="o">+</span>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+<span class="o">+</span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="p">[</span><span class="n">expr</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># type: ignore</span>
+<span class="o">+</span>    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="patched-infer-size">
+<span id="patch-torch-2"></span><h3>patched_infer_size<a class="headerlink" href="#patched-infer-size" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">infer_size</span> <span class="o">-&gt;</span> <span class="n">patched_infer_size</span>
+<span class="o">---</span> <span class="n">original</span>
+<span class="o">+++</span> <span class="n">rewritten</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span> <span class="o">@@</span>
+<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">infer_size</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">],</span> <span class="n">b</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="o">-</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="n">guard_or_false</span>
+<span class="o">-</span>
+<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched_infer_size</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">+    Patches ``torch._subclasses.fake_impls.infer_size``.</span>
+<span class="s2">+    This patch is needed to export</span>
+<span class="s2">+    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.</span>
+<span class="s2">+    &quot;&quot;&quot;</span>
+     <span class="n">dimsA</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+     <span class="n">dimsB</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+     <span class="n">ndim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dimsA</span><span class="p">,</span> <span class="n">dimsB</span><span class="p">)</span>
+<span class="o">-</span>    <span class="n">expandedSizes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
+<span class="o">+</span>    <span class="n">expandedSizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
+     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+         <span class="n">offset</span> <span class="o">=</span> <span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
+         <span class="n">dimA</span> <span class="o">=</span> <span class="n">dimsA</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">offset</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">23</span><span class="p">,</span><span class="mi">11</span> <span class="o">+</span><span class="mi">26</span><span class="p">,</span><span class="mi">21</span> <span class="o">@@</span>
+         <span class="c1"># expression of an or statement as-is, without bool()&#39;ing it; if this</span>
+         <span class="c1"># were not the case, we&#39;d need to write this using torch.sym_or() or</span>
+         <span class="c1"># something like that).</span>
+<span class="o">-</span>        <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+<span class="o">-</span>            <span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeB</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">sizeA</span> <span class="o">==</span> <span class="n">sizeB</span><span class="p">,</span>
+<span class="o">-</span>            <span class="k">lambda</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;The size of tensor a (</span><span class="si">{</span><span class="n">sizeA</span><span class="si">}</span><span class="s2">) &quot;</span>
+<span class="o">-</span>            <span class="sa">f</span><span class="s2">&quot;must match the size of tensor b (</span><span class="si">{</span><span class="n">sizeB</span><span class="si">}</span><span class="s2">) &quot;</span>
+<span class="o">-</span>            <span class="sa">f</span><span class="s2">&quot;at non-singleton dimension </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+<span class="o">-</span>        <span class="p">)</span>
+<span class="o">-</span>        <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizeB</span> <span class="k">if</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">sizeA</span>
+<span class="o">+</span>        <span class="k">try</span><span class="p">:</span>
+<span class="o">+</span>            <span class="n">b1</span> <span class="o">=</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">+</span>        <span class="k">except</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
+<span class="o">+</span>            <span class="n">b1</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="o">+</span>        <span class="k">try</span><span class="p">:</span>
+<span class="o">+</span>            <span class="n">b2</span> <span class="o">=</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeB</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">+</span>        <span class="k">except</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
+<span class="o">+</span>            <span class="n">b2</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="o">+</span>        <span class="k">try</span><span class="p">:</span>
+<span class="o">+</span>            <span class="n">b3</span> <span class="o">=</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="n">sizeB</span><span class="p">)</span>
+<span class="o">+</span>        <span class="k">except</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
+<span class="o">+</span>            <span class="n">b3</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="o">+</span>        <span class="k">if</span> <span class="n">b1</span> <span class="ow">or</span> <span class="n">b2</span> <span class="ow">or</span> <span class="n">b3</span><span class="p">:</span>
+<span class="o">+</span>            <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizeB</span> <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">sizeA</span>
+<span class="o">+</span>        <span class="k">else</span><span class="p">:</span>
+<span class="o">+</span>            <span class="c1"># PATCHED: generic case, the dimension is known, no need to assert</span>
+<span class="o">+</span>            <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sym_max</span><span class="p">(</span><span class="n">sizeA</span><span class="p">,</span> <span class="n">sizeB</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">expandedSizes</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="patched-broadcast-shapes">
+<span id="patch-torch-3"></span><h3>patched__broadcast_shapes<a class="headerlink" href="#patched-broadcast-shapes" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">_broadcast_shapes</span> <span class="o">-&gt;</span> <span class="n">patched__broadcast_shapes</span>
+<span class="o">---</span> <span class="n">original</span>
+<span class="o">+++</span> <span class="n">rewritten</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span> <span class="o">@@</span>
+<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
+<span class="o">-</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="o">-</span>        <span class="n">guard_or_false</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">has_hint</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">is_nested_int</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">size_hint</span><span class="p">,</span>
+<span class="o">-</span>    <span class="p">)</span>
+<span class="o">-</span>
+<span class="o">-</span>    <span class="n">backed_so</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">backed_size_oblivious</span>
+<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched__broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
+<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">+    Patches ``torch._refs._broadcast_shapes``.</span>
+<span class="s2">+    This patch is needed to export</span>
+<span class="s2">+    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.</span>
+<span class="s2">+    &quot;&quot;&quot;</span>
+<span class="o">+</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
+<span class="o">+</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch._prims_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntLike</span>
+
+     <span class="n">shapes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+         <span class="p">(</span><span class="n">x</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">IntLike</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_shapes</span><span class="p">)</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">19</span><span class="p">,</span><span class="mi">59</span> <span class="o">+</span><span class="mi">18</span><span class="p">,</span><span class="mi">36</span> <span class="o">@@</span>
+     <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+<span class="o">-</span>                <span class="s2">&quot;Input shapes should be of type ints, a tuple of ints, or a list of ints, got &quot;</span><span class="p">,</span>
+<span class="o">+</span>                <span class="s2">&quot;Input shapes should be of type ints, a tuple of ints, &quot;</span>
+<span class="o">+</span>                <span class="s2">&quot;or a list of ints, got &quot;</span><span class="p">,</span>
+                 <span class="n">shape</span><span class="p">,</span>
+             <span class="p">)</span>
+
+     <span class="c1"># Computes common shape</span>
+<span class="o">-</span>    <span class="n">common_shape</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">-</span>        <span class="mi">1</span><span class="p">,</span>
+<span class="o">-</span>    <span class="p">]</span> <span class="o">*</span> <span class="n">reduce</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">))</span>
+<span class="o">-</span>    <span class="k">for</span> <span class="n">arg_idx</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shapes</span><span class="p">):</span>
+<span class="o">+</span>    <span class="n">common_shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">reduce</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">))</span>
+<span class="o">+</span>    <span class="k">for</span> <span class="n">_arg_idx</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shapes</span><span class="p">):</span>
+         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<span class="o">-</span>            <span class="c1"># NB: handle nested ints specially to avoid invalid guarding on Ne(j0, 1).</span>
+<span class="o">-</span>            <span class="k">if</span> <span class="n">is_nested_int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
+<span class="o">+</span>            <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">is_nested_int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
+                 <span class="c1"># Broadcasting is allowed for (j0, 1) or (j0, j0);</span>
+                 <span class="c1"># not (j0, j1), (j0, 5), etc.</span>
+<span class="o">-</span>                <span class="k">if</span> <span class="n">is_nested_int</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="ow">and</span> <span class="n">guard_or_false</span><span class="p">(</span>
+<span class="o">-</span>                    <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="o">-</span>                <span class="p">):</span>
+<span class="o">+</span>                <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">is_nested_int</span><span class="p">(</span>
+<span class="o">+</span>                    <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="o">+</span>                <span class="p">)</span> <span class="ow">and</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
+                     <span class="k">continue</span>
+             <span class="k">else</span><span class="p">:</span>
+<span class="o">-</span>                <span class="c1"># When backed size oblivious is used, we specialize for broadcasting</span>
+<span class="o">-</span>                <span class="c1"># if its the only way to compile the example input.</span>
+<span class="o">-</span>                <span class="c1"># i.e: s0:1, s1:1 ==&gt;</span>
+<span class="o">-</span>                <span class="c1">#           assert s0==s1, no specialization on ==1 or !=1.</span>
+<span class="o">-</span>                <span class="c1">#            The non-broadcast path is picked</span>
+<span class="o">-</span>                <span class="c1">#      s0:1, s1:4 ==&gt;</span>
+<span class="o">-</span>                <span class="c1">#           specialize(s0) to be 1.</span>
+<span class="o">-</span>                <span class="c1">#      s0:4, s1:1 ==&gt;</span>
+<span class="o">-</span>                <span class="c1">#           specialize(s1) to be 1.</span>
+<span class="o">-</span>                <span class="k">if</span> <span class="n">backed_so</span> <span class="ow">and</span> <span class="n">has_hint</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="ow">and</span> <span class="n">has_hint</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
+<span class="o">-</span>                    <span class="n">a</span> <span class="o">=</span> <span class="n">size_hint</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+<span class="o">-</span>                    <span class="n">b</span> <span class="o">=</span> <span class="n">size_hint</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+<span class="o">-</span>                    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+<span class="o">-</span>                        <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">-</span>                    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+<span class="o">-</span>                        <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">-</span>                <span class="k">if</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
+<span class="o">+</span>                <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
+                     <span class="k">continue</span>
+<span class="o">-</span>
+<span class="o">-</span>            <span class="k">if</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+<span class="o">+</span>            <span class="c1"># PATCHED: two cases, if == for sure, no broadcast,</span>
+<span class="o">+</span>            <span class="c1"># otherwise maybe broadcast with max(dimensions)</span>
+<span class="o">+</span>            <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="o">+</span>                <span class="k">pass</span>
+<span class="o">+</span>            <span class="k">elif</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span>
+<span class="o">+</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="o">+</span>            <span class="p">)</span> <span class="ow">or</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
+                 <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Attempting to broadcast a dimension with negative length!&quot;</span><span class="p">)</span>
+<span class="o">-</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="o">-</span>
+<span class="o">-</span>            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_nested_int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="ow">and</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+<span class="o">-</span>                <span class="c1"># broadcast case .</span>
+<span class="o">-</span>                <span class="k">continue</span>
+<span class="o">+</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+             <span class="k">else</span><span class="p">:</span>
+<span class="o">-</span>                <span class="c1"># If broadcasting is undecided we pick non-broadcast path and add runtime assertion.</span>
+<span class="o">-</span>                <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+<span class="o">-</span>                    <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+<span class="o">-</span>                    <span class="k">lambda</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Attempting to broadcast a dimension of length </span><span class="si">{</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">! &quot;</span>
+<span class="o">-</span>                    <span class="sa">f</span><span class="s2">&quot;Mismatching argument at index </span><span class="si">{</span><span class="n">arg_idx</span><span class="si">}</span><span class="s2"> had </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">; but expected shape &quot;</span>
+<span class="o">-</span>                    <span class="sa">f</span><span class="s2">&quot;should be broadcastable to </span><span class="si">{</span><span class="n">common_shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="o">-</span>                <span class="p">)</span>
+<span class="o">+</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sym_max</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+
+     <span class="k">return</span> <span class="n">common_shape</span>
+</pre></div>
+</div>
+</section>
+<section id="patched-get-range-constraints">
+<span id="patch-torch-4"></span><h3>patched__get_range_constraints<a class="headerlink" href="#patched-get-range-constraints" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">_get_range_constraints</span> <span class="o">-&gt;</span> <span class="n">patched__get_range_constraints</span>
+<span class="o">---</span> <span class="n">original</span>
+<span class="o">+++</span> <span class="n">rewritten</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">42</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">36</span> <span class="o">@@</span>
+<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_get_range_constraints</span><span class="p">(</span>
+<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched__get_range_constraints</span><span class="p">(</span>
+     <span class="n">mod</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
+<span class="o">-</span>    <span class="n">export_artifact</span><span class="p">:</span> <span class="n">ExportArtifact</span><span class="p">,</span>
+<span class="o">+</span>    <span class="n">export_artifact</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">_trace</span><span class="o">.</span><span class="n">ExportArtifact</span><span class="p">,</span>
+     <span class="n">args</span><span class="p">,</span>
+     <span class="n">kwargs</span><span class="p">,</span>
+     <span class="n">dynamic_shapes</span><span class="p">,</span>
+ <span class="p">):</span>
+<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">+    Patches ``torch.export._trace._get_range_constraints``.</span>
+<span class="s2">+    See PR `#174593 &lt;https://github.com/pytorch/pytorch/pull/174593&gt;`_.</span>
+<span class="s2">+    &quot;&quot;&quot;</span>
+     <span class="n">gm</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span> <span class="o">=</span> <span class="n">export_artifact</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">gm</span>
+<span class="o">-</span>    <span class="n">export_graph_signature</span><span class="p">:</span> <span class="n">ExportGraphSignature</span> <span class="o">=</span> <span class="n">export_artifact</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">sig</span>
+<span class="o">+</span>    <span class="n">export_graph_signature</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">graph_signature</span><span class="o">.</span><span class="n">ExportGraphSignature</span> <span class="o">=</span> <span class="p">(</span>
+<span class="o">+</span>        <span class="n">export_artifact</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">sig</span>
+<span class="o">+</span>    <span class="p">)</span>
+     <span class="n">fake_mode</span><span class="p">:</span> <span class="n">FakeTensorMode</span> <span class="o">=</span> <span class="n">export_artifact</span><span class="o">.</span><span class="n">fake_mode</span>
+     <span class="n">num_lifted</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+         <span class="p">(</span>
+             <span class="n">i</span>
+             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">export_graph_signature</span><span class="o">.</span><span class="n">input_specs</span><span class="p">)</span>
+<span class="o">-</span>            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">InputKind</span><span class="o">.</span><span class="n">USER_INPUT</span>
+<span class="o">+</span>            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">graph_signature</span><span class="o">.</span><span class="n">InputKind</span><span class="o">.</span><span class="n">USER_INPUT</span>
+         <span class="p">),</span>
+         <span class="nb">len</span><span class="p">(</span><span class="n">export_graph_signature</span><span class="o">.</span><span class="n">input_specs</span><span class="p">),</span>
+     <span class="p">)</span>
+<span class="o">-</span>    <span class="n">combined_args</span> <span class="o">=</span> <span class="n">_combine_args</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+<span class="o">-</span>    <span class="c1"># This is because we trace based on the kwargs passed in from user</span>
+<span class="o">+</span>    <span class="c1"># preserve_order=True:</span>
+<span class="o">+</span>    <span class="c1"># this is because we trace based on the kwargs passed in from user</span>
+     <span class="c1"># not based on the signature. I feel it would be better to just enforce</span>
+     <span class="c1"># one ordering at the start of tracing to avoid confusions, but that is</span>
+     <span class="c1"># bigger refactor, so do this to unblock for now.</span>
+<span class="o">-</span>    <span class="n">combined_args_traced_order</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="o">-</span>    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">combined_args</span><span class="p">:</span>
+<span class="o">-</span>        <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+<span class="o">-</span>            <span class="n">combined_args_traced_order</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_args</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+<span class="o">+</span>    <span class="n">combined_args</span> <span class="o">=</span> <span class="n">_combine_args</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">preserve_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="o">-</span>    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+<span class="o">-</span>        <span class="n">combined_args_traced_order</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="o">-</span>
+<span class="o">-</span>    <span class="n">combined_args</span> <span class="o">=</span> <span class="n">combined_args_traced_order</span>
+<span class="o">-</span>
+<span class="o">-</span>    <span class="n">range_constraints</span> <span class="o">=</span> <span class="n">make_constraints</span><span class="p">(</span>
+<span class="o">-</span>        <span class="n">fake_mode</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">gm</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">combined_args</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">dynamic_shapes</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">num_lifted</span><span class="p">,</span>
+<span class="o">+</span>    <span class="n">range_constraints</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">make_constraints</span><span class="p">(</span>
+<span class="o">+</span>        <span class="n">fake_mode</span><span class="p">,</span> <span class="n">gm</span><span class="p">,</span> <span class="n">combined_args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">num_lifted</span>
+     <span class="p">)</span>
+     <span class="k">return</span> <span class="n">range_constraints</span>
+</pre></div>
+</div>
+</section>
+<section id="patched-maybe-broadcast">
+<span id="patch-torch-5"></span><h3>patched__maybe_broadcast<a class="headerlink" href="#patched-maybe-broadcast" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">_maybe_broadcast</span> <span class="o">-&gt;</span> <span class="n">patched__maybe_broadcast</span>
+<span class="o">---</span> <span class="n">original</span>
+<span class="o">+++</span> <span class="n">rewritten</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span> <span class="o">@@</span>
+<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_maybe_broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">preserve_cpu_scalar_tensors</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched__maybe_broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">preserve_cpu_scalar_tensors</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">+    Patches ``torch._refs._maybe_broadcast``.</span>
+<span class="s2">+    This patch is needed to export</span>
+<span class="s2">+    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.</span>
+<span class="s2">+    &quot;&quot;&quot;</span>
+<span class="o">+</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch._prims_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeType</span><span class="p">,</span> <span class="n">TensorLike</span><span class="p">,</span> <span class="n">Number</span>
+<span class="o">+</span>
+     <span class="c1"># Computes common shape</span>
+<span class="o">-</span>    <span class="n">common_shape</span> <span class="o">=</span> <span class="n">_broadcast_shapes</span><span class="p">(</span>
+<span class="o">+</span>    <span class="n">common_shape</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span><span class="p">(</span>
+         <span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">TensorLike</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span>
+     <span class="p">)</span>
+
+<span class="o">@@</span> <span class="o">-</span><span class="mi">29</span><span class="p">,</span><span class="mi">10</span> <span class="o">+</span><span class="mi">36</span><span class="p">,</span><span class="mi">15</span> <span class="o">@@</span>
+                 <span class="k">return</span> <span class="kc">True</span>
+
+             <span class="c1"># u0==u1 assume the same, no broadcasting!</span>
+<span class="o">-</span>            <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+<span class="o">-</span>                <span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">,</span>
+<span class="o">-</span>                <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;sizes assumed to be the same due to unbacked broadcasting semantics&quot;</span><span class="p">,</span>
+<span class="o">-</span>            <span class="p">)</span>
+<span class="o">+</span>            <span class="c1"># PATCHED: avoid errors</span>
+<span class="o">+</span>            <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># guard_or_true(x != y)</span>
+<span class="o">+</span>            <span class="c1"># torch._check(</span>
+<span class="o">+</span>            <span class="c1">#    x == y,</span>
+<span class="o">+</span>            <span class="c1">#    lambda x=x, y=y: (</span>
+<span class="o">+</span>            <span class="c1">#        f&quot;sizes assumed to be the same due to unbacked &quot;</span>
+<span class="o">+</span>            <span class="c1">#        f&quot;broadcasting semantics x={x!r}, y={y!r}&quot;</span>
+<span class="o">+</span>            <span class="c1">#    ),</span>
+<span class="o">+</span>            <span class="c1"># )</span>
+
+         <span class="k">return</span> <span class="kc">False</span>
+
+<span class="o">@@</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span><span class="mi">14</span> <span class="o">+</span><span class="mi">54</span><span class="p">,</span><span class="mi">14</span> <span class="o">@@</span>
+         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
+             <span class="k">return</span> <span class="n">x</span>
+         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">TensorLike</span><span class="p">):</span>
+<span class="o">-</span>            <span class="k">if</span> <span class="n">preserve_cpu_scalar_tensors</span> <span class="ow">and</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_cpu_scalar_tensor</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">+</span>            <span class="k">if</span> <span class="n">preserve_cpu_scalar_tensors</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">_prims_common</span><span class="o">.</span><span class="n">is_cpu_scalar_tensor</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                 <span class="k">return</span> <span class="n">x</span>
+
+<span class="o">-</span>            <span class="k">if</span> <span class="n">should_expand</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">common_shape</span><span class="p">):</span>
+<span class="o">-</span>                <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">common_shape</span><span class="p">)</span>
+<span class="o">+</span>            <span class="k">if</span> <span class="n">should_expand</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">common_shape</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+<span class="o">+</span>                <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">common_shape</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+             <span class="k">return</span> <span class="n">x</span>
+         <span class="k">else</span><span class="p">:</span>
+<span class="o">-</span>            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unexpected type when broadcasting: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;!&quot;</span><span class="p">)</span>
+<span class="o">+</span>            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type when broadcasting: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">__maybe_broadcast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">common_shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="transformers">
+<h2>transformers<a class="headerlink" href="#transformers" title="Link to this heading">¶</a></h2>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_patches_for_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_torch.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">PATCHES</span>
+
+<span class="k">with</span> <span class="n">apply_patches_for_model</span><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">details</span><span class="p">:</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">patch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">details</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;patch-transformers-</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* :ref:`</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;.. _</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">patch</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+                <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">patch</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">),</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;::&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">patch</span><span class="o">.</span><span class="n">format_diff</span><span class="p">(),</span> <span class="s2">&quot;    &quot;</span><span class="p">),</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="o">*</span><span class="n">link</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">rows</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#patch-transformers-1"><span class="std std-ref">common_RotaryEmbedding.forward</span></a></p></li>
+</ul>
+<section id="common-rotaryembedding-forward">
+<span id="patch-transformers-1"></span><h3>common_RotaryEmbedding.forward<a class="headerlink" href="#common-rotaryembedding-forward" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>transformers: LlamaRotaryEmbedding.forward -&gt; common_RotaryEmbedding.forward
+--- original
++++ rewritten
+@@ -1,18 +1,26 @@
+-@torch.no_grad()
+-@dynamic_rope_update  # power user: used with advanced RoPE types (e.g. dynamic rope)
+-def forward(self, x, position_ids):
++@patched_dynamic_rope_update
++def forward(self, x, position_ids, layer_type=None):
++    if layer_type is not None:
++        # transformers&gt;=5.0
++        inv_freq = getattr(self, f&quot;{layer_type}_inv_freq&quot;)
++        attention_scaling = getattr(self, f&quot;{layer_type}_attention_scaling&quot;)
++    else:
++        # transformers&lt;5.0
++        inv_freq = self.inv_freq
++        attention_scaling = self.attention_scaling
++
+     inv_freq_expanded = (
+-        self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)
++        inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)
+     )
+     position_ids_expanded = position_ids[:, None, :].float()
+
+     device_type = (
+         x.device.type if isinstance(x.device.type, str) and x.device.type != &quot;mps&quot; else &quot;cpu&quot;
+     )
+-    with maybe_autocast(device_type=device_type, enabled=False):  # Force float32
++    with torch.autocast(device_type=device_type, enabled=False):  # Force float32
+         freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(1, 2)
+         emb = torch.cat((freqs, freqs), dim=-1)
+-        cos = emb.cos() * self.attention_scaling
+-        sin = emb.sin() * self.attention_scaling
++        cos = emb.cos() * attention_scaling
++        sin = emb.sin() * attention_scaling
+
+     return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+
+--- original
++++ rewritten
+@@ -1,103 +1,193 @@
+-def dynamic_rope_update(rope_forward):
+-    &quot;&quot;&quot;
+-    Decorator function to update the RoPE parameters in the forward pass, if the model is using a dynamic RoPE
+-    (i.e. a RoPE implementation that may recompute its frequencies in the forward pass).
++def patched_dynamic_rope_update(rope_forward):
++    &quot;&quot;&quot;manual patch: ``[patch:transformers.modeling_rope_utils.dynamic_rope_update]``
+
+-    Args:
+-        rope_forward (Callable):
+-            The forward pass of the RoPE implementation.
++    ``rope_type`` is determined in the constructor of class
++    :class:`transformers.models.phi3.modeling_phi3.Phi3RotaryEmbedding`.
+
+-    Returns:
+-        The decorated forward pass.
++    .. code-block:: python
++
++        if hasattr(config, &quot;rope_scaling&quot;) and config.rope_scaling is not None:
++            self.rope_type = config.rope_scaling.get(
++                &quot;rope_type&quot;, config.rope_scaling.get(&quot;type&quot;))
++        else:
++            self.rope_type = &quot;default&quot;
++
++    The original code of the patched function:
++
++    .. code-block:: python
++
++        def dynamic_rope_update(rope_forward):
++            def longrope_frequency_update(self, position_ids, device):
++                seq_len = torch.max(position_ids) + 1
++                if hasattr(self.config, &quot;original_max_position_embeddings&quot;):
++                    original_max_position_embeddings =
++                        self.config.original_max_position_embeddings
++                else:
++                    original_max_position_embeddings =
++                        self.config.max_position_embeddings
++                if seq_len &gt; original_max_position_embeddings:
++                    if not hasattr(self, &quot;long_inv_freq&quot;):
++                        self.long_inv_freq, _ = self.rope_init_fn(
++                            self.config, device, seq_len=original_max_position_embeddings + 1
++                        )
++                    self.register_buffer(&quot;inv_freq&quot;, self.long_inv_freq, persistent=False)
++                else:
++                    self.original_inv_freq = self.original_inv_freq.to(device)
++                    self.register_buffer(&quot;inv_freq&quot;, self.original_inv_freq, persistent=False)
++
++            def dynamic_frequency_update(self, position_ids, device):
++                seq_len = torch.max(position_ids) + 1
++                if seq_len &gt; self.max_seq_len_cached:  # growth
++                    inv_freq, self.attention_scaling = self.rope_init_fn(
++                        self.config, device, seq_len=seq_len)
++                    self.register_buffer(&quot;inv_freq&quot;, inv_freq, persistent=False)
++                    self.max_seq_len_cached = seq_len
++
++                if seq_len &lt; self.original_max_seq_len and
++                        self.max_seq_len_cached &gt; self.original_max_seq_len:
++                    self.original_inv_freq = self.original_inv_freq.to(device)
++                    self.register_buffer(&quot;inv_freq&quot;, self.original_inv_freq, persistent=False)
++                    self.max_seq_len_cached = self.original_max_seq_len
++
++            @wraps(rope_forward)
++            def wrapper(self, x, position_ids):
++                if &quot;dynamic&quot; in self.rope_type:
++                    dynamic_frequency_update(self, position_ids, device=x.device)
++                elif self.rope_type == &quot;longrope&quot;:
++                    longrope_frequency_update(self, position_ids, device=x.device)
++                return rope_forward(self, x, position_ids)
++
++            return wrapper
++
+     &quot;&quot;&quot;
+
+     def longrope_frequency_update(self, position_ids, device, layer_type=None):
+-        &quot;&quot;&quot;Longrope uses long factor if sequence is larger than original pretraining length, short otherwise.&quot;&quot;&quot;
++        # It is no use to patch the function after the model is created
++        # as rope_init_fn is an attribute set to one function when the model
++        # is created and when no patch is applied yet.
++        # So we select the patched version here.
++        rope_init_fn = _get_rope_init_fn(self, layer_type=layer_type)
+         seq_len = torch.max(position_ids) + 1
++        if hasattr(self.config, &quot;original_max_position_embeddings&quot;):
++            original_max_position_embeddings = self.config.original_max_position_embeddings
++        else:
++            original_max_position_embeddings = self.config.max_position_embeddings
+
+         if layer_type is None:
+-            rope_type = self.rope_type
+-            original_inv_freq = self.original_inv_freq
+-            prefix = &quot;&quot;
+-            original_max_position_embeddings = self.config.rope_parameters[
+-                &quot;original_max_position_embeddings&quot;
+-            ]
+-        else:
+-            rope_type = self.rope_type[layer_type]
+-            original_inv_freq = getattr(self, f&quot;{layer_type}_original_inv_freq&quot;)
+-            prefix = f&quot;{layer_type}_&quot;
+-            original_max_position_embeddings = self.config.rope_parameters[layer_type][
+-                &quot;original_max_position_embeddings&quot;
+-            ]
+-
+-        if seq_len &gt; original_max_position_embeddings:
+-            if not hasattr(self, f&quot;{layer_type}_long_inv_freq&quot;):
+-                rope_init_fn = ROPE_INIT_FUNCTIONS[rope_type]
+-                long_inv_freq, _ = rope_init_fn(
+-                    self.config,
+-                    device,
+-                    seq_len=original_max_position_embeddings + 1,
+-                    layer_type=layer_type,
+-                )
+-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, long_inv_freq, persistent=False)
+-            setattr(self, f&quot;{prefix}long_inv_freq&quot;, long_inv_freq)
+-        else:
+-            # This .to() is needed if the model has been moved to a device after being initialized (because
+-            # the buffer is automatically moved, but not the original copy)
+-            original_inv_freq = original_inv_freq.to(device)
+-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, original_inv_freq, persistent=False)
+-            setattr(self, f&quot;{prefix}original_inv_freq&quot;, original_inv_freq)
+-
+-    def dynamic_frequency_update(self, position_ids, device, layer_type=None):
+-        &quot;&quot;&quot;
+-        dynamic RoPE layers should recompute `inv_freq` in the following situations:
+-        1 - growing beyond the cached sequence length (allow scaling)
+-        2 - the current sequence length is in the original scale (avoid losing precision with small sequences)
+-        &quot;&quot;&quot;
+-        seq_len = torch.max(position_ids) + 1
+-        if layer_type is None:
+-            rope_type = self.rope_type
+-            max_seq_len_cached = self.max_seq_len_cached
++            # rope_type = self.rope_type
+             original_inv_freq = self.original_inv_freq
+             prefix = &quot;&quot;
+         else:
+-            rope_type = self.rope_type[layer_type]
+-            max_seq_len_cached = getattr(
+-                self, f&quot;{layer_type}_max_seq_len_cached&quot;, self.max_seq_len_cached
+-            )
++            # rope_type = self.rope_type[layer_type]
+             original_inv_freq = getattr(self, f&quot;{layer_type}_original_inv_freq&quot;)
+             prefix = f&quot;{layer_type}_&quot;
+
+-        if seq_len &gt; max_seq_len_cached:  # growth
+-            rope_init_fn = ROPE_INIT_FUNCTIONS[rope_type]
+-            inv_freq, self.attention_scaling = rope_init_fn(
+-                self.config,
+-                device,
+-                seq_len=seq_len,
+-                layer_type=layer_type,
+-            )
+-            # TODO joao: may break with compilation
+-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, inv_freq, persistent=False)
+-            setattr(self, f&quot;{layer_type}_max_seq_len_cached&quot;, seq_len)
++        # At export time, seq_len is unknown.
++        long_inv_freq, _ = rope_init_fn(
++            self.config, device, seq_len=original_max_position_embeddings + 1
++        )
++        original_inv_freq = self.original_inv_freq.to(device)
+
+-        if (
+-            seq_len &lt; self.original_max_seq_len and max_seq_len_cached &gt; self.original_max_seq_len
+-        ):  # reset
+-            # This .to() is needed if the model has been moved to a device after being initialized (because
+-            # the buffer is automatically moved, but not the original copy)
+-            original_inv_freq = original_inv_freq.to(device)
+-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, original_inv_freq, persistent=False)
+-            setattr(self, f&quot;{prefix}original_inv_freq&quot;, original_inv_freq)
+-            setattr(self, f&quot;{layer_type}_max_seq_len_cached&quot;, self.original_max_seq_len)
++        # PATCHED: uses torch.cond instead of a test
++        cond = (seq_len &gt; original_max_position_embeddings).item()
++        inv_freq = torch.cond(
++            cond,
++            (lambda x, y: x.clone()),
++            (lambda x, y: y.clone()),
++            [long_inv_freq.to(original_inv_freq.dtype), original_inv_freq],
++        )
++        setattr(self, f&quot;{prefix}inv_freq&quot;, inv_freq)
++        # if seq_len &gt; original_max_position_embeddings:
++        #    self.inv_freq = self.long_inv_freq
++        # else:
++        #    self.inv_freq = self.original_inv_freq
++
++    def dynamic_frequency_update(self, position_ids, device, layer_type=None):
++        # constructor:
++        # - self.max_seq_len_cached = config.max_position_embeddings
++        # - self.original_max_seq_len = config.max_position_embeddings
++        # - inv_freq, self.attention_scaling = self.rope_init_fn(self.config, device)
++
++        # It is no use to patch the function after the model is created
++        # as rope_init_fn is an attribute set to one function when the model
++        # is created and when no patch is applied yet.
++        # So we select the patched version here.
++        rope_init_fn = _get_rope_init_fn(self, layer_type=layer_type)
++
++        # This behaviour is difficult to translate.
++        # The sequence always grows.
++        # The test should always True.
++        # So:  self.max_seq_len_cached = max(self.max_seq_len_cached, seq_len) --&gt; seq_len
++        #
++        # if seq_len &gt; self.max_seq_len_cached:  # growth
++        #    inv_freq, self.attention_scaling = self.rope_init_fn(
++        #        self.config, device, seq_len=seq_len
++        #    )
++        #    self.register_buffer(&quot;inv_freq&quot;, inv_freq, persistent=False)
++        #    self.max_seq_len_cached = seq_len
++        #
++        # So we should not need what follows.
++        #
++        # cond = (seq_len &gt; self.max_seq_len_cached).item()
++        # self.attention_scaling = torch.cond(
++        #    cond,
++        #    (lambda x, y: x.clone()),
++        #    (lambda x, y: y.clone()),
++        #    [attention_scaling, self.attention_scaling],
++        # )
++
++        seq_len = torch.max(position_ids) + 1
++        long_inv_freq, self.attention_scaling = rope_init_fn(self.config, device, seq_len=seq_len)
++
++        if layer_type is None:
++            # rope_type = self.rope_type
++            # max_seq_len_cached = self.max_seq_len_cached
++            original_inv_freq = self.original_inv_freq
++            prefix = &quot;&quot;
++        else:
++            # rope_type = self.rope_type[layer_type]
++            # max_seq_len_cached = getattr(
++            #     self, f&quot;{layer_type}_max_seq_len_cached&quot;, self.max_seq_len_cached
++            # )
++            original_inv_freq = getattr(self, f&quot;{layer_type}_original_inv_freq&quot;)
++            prefix = f&quot;{layer_type}_&quot;
++
++        # Second test to translate.
++        # Let&#39;s keep in mind, self.max_seq_len_cached = seq_len is likely to be True.
++        # But in that case the following condition is a way to restore the original cache.
++
++        # if (
++        #    seq_len &lt; self.original_max_seq_len
++        #    and self.max_seq_len_cached &gt; self.original_max_seq_len
++        # ):
++        #    self.original_inv_freq = self.original_inv_freq.to(device)
++        #    self.register_buffer(&quot;inv_freq&quot;, self.original_inv_freq, persistent=False)
++        #    self.max_seq_len_cached = self.original_max_seq_len
++
++        original_inv_freq = self.original_inv_freq.to(device)
++        cond = (seq_len &gt;= self.original_max_seq_len).item()
++        # PATCHED: uses torch.cond instead of a test
++        inv_freq = torch.cond(
++            cond,
++            (lambda x, y: x.clone()),
++            (lambda x, y: y.clone()),
++            [long_inv_freq.to(original_inv_freq.dtype), original_inv_freq],
++        )
++        setattr(self, f&quot;{prefix}inv_freq&quot;, inv_freq)
+
+     @wraps(rope_forward)
+     def wrapper(self, x, position_ids, layer_type=None):
+-        rope_type = self.rope_type if layer_type is None else self.rope_type[layer_type]
+-        kwargs = {&quot;layer_type&quot;: layer_type} if layer_type is not None else {}
+-        if &quot;dynamic&quot; in rope_type:
+-            dynamic_frequency_update(self, position_ids, device=x.device, **kwargs)
+-        elif rope_type == &quot;longrope&quot;:
+-            longrope_frequency_update(self, position_ids, device=x.device, **kwargs)
+-        return rope_forward(self, x, position_ids, **kwargs)
++        if layer_type is None:
++            if &quot;dynamic&quot; in self.rope_type:
++                dynamic_frequency_update(self, position_ids, device=x.device)
++            elif self.rope_type == &quot;longrope&quot;:
++                longrope_frequency_update(self, position_ids, device=x.device)
++            return rope_forward(self, x, position_ids)
++
++        if &quot;dynamic&quot; in self.rope_type:
++            dynamic_frequency_update(self, position_ids, device=x.device, layer_type=layer_type)
++        elif self.rope_type == &quot;longrope&quot;:
++            longrope_frequency_update(self, position_ids, device=x.device, layer_type=layer_type)
++        return rope_forward(self, x, position_ids, layer_type=layer_type)
+
+     return wrapper
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">Patches List</a><ul>
+<li><a class="reference internal" href="#torch">torch</a></li>
+<li><a class="reference internal" href="#transformers">transformers</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="patches.html">
+                    <span class="icon">&lt;</span><span>Patches (torch export)</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="../../cmds/index.html"><span>Command Lines</span><span class="icon">&gt;</span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>

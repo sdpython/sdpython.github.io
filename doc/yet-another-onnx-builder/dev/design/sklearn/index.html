@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Scikit-learn Export to ONNX &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <title>scikit-learn Export to ONNX &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -139,13 +139,13 @@
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Scikit-learn Export to ONNX</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">scikit-learn Export to ONNX</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="expected_api.html">Expected API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
 </ul>
@@ -153,6 +153,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
@@ -174,15 +175,7 @@
           <div class="body" role="main">
             
   <section id="scikit-learn-export-to-onnx">
-<h1>Scikit-learn Export to ONNX<a class="headerlink" href="#scikit-learn-export-to-onnx" title="Link to this heading">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="expected_api.html">Expected API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
-</ul>
-</div>
+<h1>scikit-learn Export to ONNX<a class="headerlink" href="#scikit-learn-export-to-onnx" title="Link to this heading">¶</a></h1>
 <p>A basic <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> model may look like the following,
 a scaler following by an estimator.</p>
 <style>#sk-container-id-1 {
@@ -1216,7 +1209,61 @@ function forceTheme(elementId) {
     }
 }
 
-forceTheme('sk-container-id-1');</script></body><p>And we expect its conversion into ONNX to look like the following.</p>
+forceTheme('sk-container-id-1');</script></body><p>Models based on <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> are made of a custom collection of known
+transformers or estimators. The main function functions has to call
+every converter for every piece and assembles the result into a single ONNX
+model.</p>
+<p>The custom collection is mainly implemented through the classes
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>, <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.FeatureUnion</span></code></a> and
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.compose.ColumnTransformer</span></code></a>. Everything else is well defined
+and can be mapped to its converted ONNX code. It also implemented through
+meta-estimators combining others such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsRestClassifier.html#sklearn.multiclass.OneVsRestClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.multiclass.OneVsRestClassifier</span></code></a>
+or <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.VotingClassifier</span></code></a>.</p>
+<p><strong>Common API</strong></p>
+<p>Putting ONNX node together in a model is not difficult but almost everybody
+already implemented its own way of doing, <a class="reference external" href="https://onnx.ai/ir-py/">ir-py</a>, <a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a>,
+<a class="reference external" href="https://spox.readthedocs.io/en/latest/">spox</a>. Every converting library has also its own: <a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a>,
+<a class="reference external" href="https://github.com/onnx/tensorflow-onnx">tensorflow-onnx</a>, <a class="reference external" href="https://github.com/onnx/onnxmltools">onnxmltools</a>… The choice was made not to create
+a new one but more to define what the converters expect to find in a class
+classed <code class="docutils literal notranslate"><span class="pre">GraphBuilder</span></code>. It then becomes possible to create a bridge
+such as <code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.builder.onnxscript.OnnxScriptGraphBuilder</span></code> which implements
+this API for every known way. See <a class="reference internal" href="expected_api.html#l-design-expected-api"><span class="std std-ref">Expected API</span></a> for further details.</p>
+<p><strong>AI</strong></p>
+<p>Known LLMs now provides a good first draft when it comes to implement a new converter
+for a model not already covered but this library. This package includes
+a function able to query <em>Copilot</em> to get that first draft.
+That saves quite some time.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="expected_api.html">Expected API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
+</ul>
+</div>
+<p>Finally, the example given at the top of the page would be converted
+into the mode which follows.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.dot_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_dot</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">()),</span>
+<span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DOT-SECTION&quot;</span><span class="p">,</span> <span class="n">to_dot</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
 <div class="graphviz"><object data="../../_images/gdot-c799a5a7df8df5c17330e80409892b2d316142a4.svg" type="image/svg+xml" class="graphviz">
 <p class="warning">digraph {
   graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
@@ -1247,30 +1294,6 @@ forceTheme('sk-container-id-1');</script></body><p>And we expect its conversion 
   O_11 [label=&quot;probabilities\n&quot;, fillcolor=&quot;#aaaaee&quot;];
   Concat_7 -&gt; O_11;
 }</p></object></div>
-<p>Models based on <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> are made of a custom collection of known
-transformers or estimators. The main function functions has to call
-every converter for every piece and assembles the result into a single ONNX
-model.</p>
-<p>The custom collection is mainly implemented through the classes
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>, <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.FeatureUnion</span></code></a> and
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.compose.ColumnTransformer</span></code></a>. Everything else is well defined
-and can be mapped to its converted ONNX code. It also implemented through
-meta-estimators combining others such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsRestClassifier.html#sklearn.multiclass.OneVsRestClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.multiclass.OneVsRestClassifier</span></code></a>
-or <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.VotingClassifier</span></code></a>.</p>
-<p><strong>Common API</strong></p>
-<p>Putting ONNX node together in a model is not difficult but almost everybody
-already implemented its own way of doing, <a class="reference external" href="https://onnx.ai/ir-py/">ir-py</a>, <a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a>,
-<a class="reference external" href="https://spox.readthedocs.io/en/latest/">spox</a>. Every converting library has also its own: <a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a>,
-<a class="reference external" href="https://github.com/onnx/tensorflow-onnx">tensorflow-onnx</a>, <a class="reference external" href="https://github.com/onnx/onnxmltools">onnxmltools</a>… The choice was made not to create
-a new one but more to define what the converters expect to find in a class
-classed <code class="docutils literal notranslate"><span class="pre">GraphBuilder</span></code>. It then becomes possible to create a bridge
-such as <code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.builder.onnxscript.OnnxScriptGraphBuilder</span></code> which implements
-this API for every known way. See <a class="reference internal" href="expected_api.html#l-design-expected-api"><span class="std std-ref">Expected API</span></a> for further details.</p>
-<p><strong>AI</strong></p>
-<p>Known LLMs now provides a good first draft when it comes to implement a new converter
-for a model not already covered but this library. This package includes
-a function able to query <em>Copilot</em> to get that first draft.
-That saves quite some time.</p>
 </section>
 
 
