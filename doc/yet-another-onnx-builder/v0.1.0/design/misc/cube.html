@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Statistics on Logs Through a Cube of Data &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d0ff0132" />
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <script src="../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Evaluators" href="evaluator.html" />
+    <link rel="prev" title="ExtendedModelContainer" href="container.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../index.html" title="Go to homepage"><img src="../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Miscellaneous</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="container.html">ExtendedModelContainer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Statistics on Logs Through a Cube of Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="evaluator.html">Evaluators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="onnx_inspection.html">ONNX Inspection Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translate.html">Translate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">Scikit-learn Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="statistics-on-logs-through-a-cube-of-data">
+<span id="l-cube"></span><h1>Statistics on Logs Through a Cube of Data<a class="headerlink" href="#statistics-on-logs-through-a-cube-of-data" title="Link to this heading">¶</a></h1>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs" title="yobx.helpers.cube_helper.CubeLogs"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogs</span></code></a> is a lightweight
+data-analysis layer built on top of <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v3.0.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a>.  It treats experiment
+logs as a <em>cube</em> — a structured table whose columns play one of four roles:</p>
+<ul class="simple">
+<li><p><strong>time</strong> — a single date/timestamp column (default <code class="docutils literal notranslate"><span class="pre">&quot;date&quot;</span></code>).  It is
+optional but strongly recommended.</p></li>
+<li><p><strong>keys</strong> — categorical identifiers (model name, exporter, hardware device, …).
+Together with <em>time</em>, the key tuple must uniquely identify every row.</p></li>
+<li><p><strong>values</strong> — numerical or string measurements that can be aggregated
+(latency, memory, error counts, …).</p></li>
+<li><p><strong>ignored</strong> — columns explicitly excluded from all three roles above.</p></li>
+</ul>
+<p>Everything else is silently dropped after loading.</p>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogsPerformance" title="yobx.helpers.cube_helper.CubeLogsPerformance"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogsPerformance</span></code></a>
+is a ready-made subclass whose defaults match the conventions used by
+benchmarking scripts in this project (columns prefixed <code class="docutils literal notranslate"><span class="pre">time_</span></code>, <code class="docutils literal notranslate"><span class="pre">disc_</span></code>,
+<code class="docutils literal notranslate"><span class="pre">onnx_</span></code>, etc.).</p>
+<section id="loading-data">
+<h2>Loading data<a class="headerlink" href="#loading-data" title="Link to this heading">¶</a></h2>
+<p>Pass any of the following to the constructor, then call
+<a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs.load" title="yobx.helpers.cube_helper.CubeLogs.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load</span></code></a>:</p>
+<ul class="simple">
+<li><p>a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p></li>
+<li><p>a list of <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> objects (concatenated automatically)</p></li>
+<li><p>a list of dicts (each dict becomes one row)</p></li>
+<li><p>a list of file paths / directory paths to CSV files</p></li>
+</ul>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.cube_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CubeLogs</span>
+
+<span class="n">raw</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            date,version_python,model_name,model_exporter,time_latency,time_baseline</span>
+<span class="s2">            2025/01/01,3.13,phi3,export,0.10,0.10</span>
+<span class="s2">            2025/01/02,3.13,phi3,export,0.11,0.10</span>
+<span class="s2">            2025/01/01,3.13,phi4,export,0.10,0.105</span>
+<span class="s2">            2025/01/01,3.12,phi4,onnx-dynamo,0.14,0.999</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)))</span>
+
+<span class="n">cube</span> <span class="o">=</span> <span class="n">CubeLogs</span><span class="p">(</span>
+    <span class="n">raw</span><span class="p">,</span>
+    <span class="n">time</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;version_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;model_.*&quot;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time_.*&quot;</span><span class="p">],</span>
+    <span class="n">recent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># keep only the most recent row per key tuple</span>
+<span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shape :&quot;</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;time  :&quot;</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;keys  :&quot;</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">keys_no_time</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;values:&quot;</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">shape</span> <span class="p">:</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">time</span>  <span class="p">:</span> <span class="n">date</span>
+    <span class="n">keys</span>  <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;model_exporter&#39;</span><span class="p">,</span> <span class="s1">&#39;model_name&#39;</span><span class="p">,</span> <span class="s1">&#39;version_python&#39;</span><span class="p">]</span>
+    <span class="n">values</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;time_baseline&#39;</span><span class="p">,</span> <span class="s1">&#39;time_latency&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">recent=True</span></code> the cube keeps only the most recent row (highest <em>time</em>
+value) for each combination of key columns.  This is useful when experiment
+logs are appended over time and you only care about the latest run.</p>
+<section id="column-patterns">
+<h3>Column patterns<a class="headerlink" href="#column-patterns" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">keys</span></code>, <code class="docutils literal notranslate"><span class="pre">values</span></code>, and <code class="docutils literal notranslate"><span class="pre">ignored</span></code> arguments accept plain column names
+<strong>or</strong> Python regular expressions.  A string is treated as a regular
+expression when it contains any of the characters <code class="docutils literal notranslate"><span class="pre">&quot;^.*+{}&quot;</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CubeLogs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;^version_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">],</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="adding-computed-columns-formulas">
+<h2>Adding computed columns (formulas)<a class="headerlink" href="#adding-computed-columns-formulas" title="Link to this heading">¶</a></h2>
+<p>Pass a dictionary of <code class="docutils literal notranslate"><span class="pre">{new_column_name:</span> <span class="pre">callable}</span></code> as the <code class="docutils literal notranslate"><span class="pre">formulas</span></code>
+argument.  Each callable receives the full <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> and
+must return a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a>.  Computed columns are appended to the
+<em>values</em> list.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.cube_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CubeLogs</span>
+
+<span class="n">raw</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            date,version_python,model_name,model_exporter,time_latency,time_baseline</span>
+<span class="s2">            2025/01/01,3.13,phi3,export,0.10,0.12</span>
+<span class="s2">            2025/01/01,3.13,phi4,export,0.10,0.105</span>
+<span class="s2">            2025/01/01,3.12,phi4,onnx-dynamo,0.14,0.999</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)))</span>
+
+<span class="n">cube</span> <span class="o">=</span> <span class="n">CubeLogs</span><span class="p">(</span>
+    <span class="n">raw</span><span class="p">,</span>
+    <span class="n">time</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;version_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;model_.*&quot;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time_.*&quot;</span><span class="p">],</span>
+    <span class="n">formulas</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;speedup&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;time_baseline&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;time_latency&quot;</span><span class="p">]},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;values:&quot;</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="s2">&quot;model_exporter&quot;</span><span class="p">,</span> <span class="s2">&quot;speedup&quot;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">values</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;time_baseline&#39;</span><span class="p">,</span> <span class="s1">&#39;time_latency&#39;</span><span class="p">,</span> <span class="s1">&#39;speedup&#39;</span><span class="p">]</span>
+      <span class="n">model_name</span> <span class="n">model_exporter</span>   <span class="n">speedup</span>
+    <span class="mi">0</span>       <span class="n">phi3</span>         <span class="n">export</span>  <span class="mf">1.200000</span>
+    <span class="mi">1</span>       <span class="n">phi4</span>         <span class="n">export</span>  <span class="mf">1.050000</span>
+    <span class="mi">2</span>       <span class="n">phi4</span>    <span class="n">onnx</span><span class="o">-</span><span class="n">dynamo</span>  <span class="mf">7.135714</span>
+</pre></div>
+</div>
+</section>
+<section id="pivot-views">
+<h2>Pivot views<a class="headerlink" href="#pivot-views" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs.view" title="yobx.helpers.cube_helper.CubeLogs.view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CubeLogs.view</span></code></a> creates a
+pivot table from the cube.  Rows and columns of the pivot are controlled by a
+<a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeViewDef" title="yobx.helpers.cube_helper.CubeViewDef"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeViewDef</span></code></a> object.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.cube_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CubeLogs</span><span class="p">,</span> <span class="n">CubeViewDef</span>
+
+<span class="n">raw</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            date,version_python,model_name,model_exporter,time_latency,time_baseline</span>
+<span class="s2">            2025/01/01,3.13,phi3,export,0.10,0.12</span>
+<span class="s2">            2025/01/01,3.13,phi4,export,0.10,0.105</span>
+<span class="s2">            2025/01/01,3.12,phi4,onnx-dynamo,0.14,0.999</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)))</span>
+
+<span class="n">cube</span> <span class="o">=</span> <span class="n">CubeLogs</span><span class="p">(</span>
+    <span class="n">raw</span><span class="p">,</span>
+    <span class="n">time</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;version_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;model_.*&quot;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time_latency&quot;</span><span class="p">,</span> <span class="s2">&quot;time_baseline&quot;</span><span class="p">],</span>
+<span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<span class="n">view</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+    <span class="n">CubeViewDef</span><span class="p">(</span>
+        <span class="n">key_index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;version_python&quot;</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
+        <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time_latency&quot;</span><span class="p">,</span> <span class="s2">&quot;time_baseline&quot;</span><span class="p">],</span>
+        <span class="n">ignore_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">view</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">yet</span><span class="o">-</span><span class="n">another</span><span class="o">-</span><span class="n">onnx</span><span class="o">-</span><span class="n">builder</span><span class="o">/</span><span class="n">yobx</span><span class="o">/</span><span class="n">helpers</span><span class="o">/</span><span class="n">cube_helper</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1093</span><span class="p">:</span> <span class="n">Pandas4Warning</span><span class="p">:</span> <span class="n">Starting</span> <span class="k">with</span> <span class="n">pandas</span> <span class="n">version</span> <span class="mf">4.0</span> <span class="nb">all</span> <span class="n">arguments</span> <span class="n">of</span> <span class="nb">all</span> <span class="n">will</span> <span class="n">be</span> <span class="n">keyword</span><span class="o">-</span><span class="n">only</span><span class="o">.</span>
+      <span class="n">new_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">~</span><span class="n">v</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="n">METRICS</span>                   <span class="n">time_baseline</span>             <span class="n">time_latency</span>            
+    <span class="n">model_exporter</span>                   <span class="n">export</span> <span class="n">onnx</span><span class="o">-</span><span class="n">dynamo</span>       <span class="n">export</span> <span class="n">onnx</span><span class="o">-</span><span class="n">dynamo</span>
+    <span class="n">version_python</span> <span class="n">model_name</span>                                                   
+    <span class="mf">3.12</span>           <span class="n">phi4</span>                 <span class="n">NaN</span>       <span class="mf">0.999</span>          <span class="n">NaN</span>        <span class="mf">0.14</span>
+    <span class="mf">3.13</span>           <span class="n">phi3</span>               <span class="mf">0.120</span>         <span class="n">NaN</span>          <span class="mf">0.1</span>         <span class="n">NaN</span>
+                   <span class="n">phi4</span>               <span class="mf">0.105</span>         <span class="n">NaN</span>          <span class="mf">0.1</span>         <span class="n">NaN</span>
+</pre></div>
+</div>
+<p>The result is a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> with a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.MultiIndex.html#pandas.MultiIndex" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiIndex</span></code></a>
+on both the row index (<code class="docutils literal notranslate"><span class="pre">key_index</span></code>) and the columns
+(metrics × remaining key values).</p>
+<section id="cubeviewdef-options">
+<h3>CubeViewDef options<a class="headerlink" href="#cubeviewdef-options" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">key_index</span></code></p></td>
+<td><p>Key columns placed in the row index of the pivot table</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">values</span></code></p></td>
+<td><p>Metric columns to include in the pivot</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ignore_unique</span></code></p></td>
+<td><p>Drop key columns that have only one distinct value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">key_agg</span></code></p></td>
+<td><p>Keys to aggregate away before pivoting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">agg_args</span></code></p></td>
+<td><p>Aggregation function(s) passed to <code class="docutils literal notranslate"><span class="pre">groupby(...).agg()</span></code>
+(can be a callable <code class="docutils literal notranslate"><span class="pre">column_name</span> <span class="pre">→</span> <span class="pre">agg_func</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">agg_multi</span></code></p></td>
+<td><p>Extra aggregations over multiple columns simultaneously</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">order</span></code></p></td>
+<td><p>Explicit ordering of column levels</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ignore_columns</span></code></p></td>
+<td><p>Columns to exclude from the view</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">keep_columns_in_index</span></code></p></td>
+<td><p>Keep a column even if it has only one distinct value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">transpose</span></code></p></td>
+<td><p>Transpose rows and columns</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plots</span></code></p></td>
+<td><p>Attach a <code class="xref py py-class docutils literal notranslate"><span class="pre">CubePlot</span></code> to this view in Excel export</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">no_index</span></code></p></td>
+<td><p>Reset the index, returning a flat DataFrame</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aggregated-views">
+<h3>Aggregated views<a class="headerlink" href="#aggregated-views" title="Link to this heading">¶</a></h3>
+<p>Set <code class="docutils literal notranslate"><span class="pre">key_agg</span></code> to collapse one or more key dimensions before building the
+pivot.  This is useful for summarising across all models or all dates:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">view</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+    <span class="n">CubeViewDef</span><span class="p">(</span>
+        <span class="n">key_index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;version_python&quot;</span><span class="p">],</span>
+        <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time_latency&quot;</span><span class="p">],</span>
+        <span class="n">key_agg</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">],</span>
+        <span class="n">agg_args</span><span class="o">=</span><span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;aggregated&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="describing-the-cube">
+<h2>Describing the cube<a class="headerlink" href="#describing-the-cube" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs.describe" title="yobx.helpers.cube_helper.CubeLogs.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CubeLogs.describe</span></code></a> returns
+a summary <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> with one row per column, showing its
+role (time / keys / values / ignored), dtype, missing-value count, and basic
+statistics:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.cube_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CubeLogs</span>
+
+<span class="n">raw</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            date,version_python,model_name,model_exporter,time_latency,time_baseline</span>
+<span class="s2">            2025/01/01,3.13,phi3,export,0.10,0.12</span>
+<span class="s2">            2025/01/01,3.13,phi4,export,0.10,0.105</span>
+<span class="s2">            2025/01/01,3.12,phi4,onnx-dynamo,0.14,0.999</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)))</span>
+
+<span class="n">cube</span> <span class="o">=</span> <span class="n">CubeLogs</span><span class="p">(</span>
+    <span class="n">raw</span><span class="p">,</span>
+    <span class="n">time</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;version_.*&quot;</span><span class="p">,</span> <span class="s2">&quot;model_.*&quot;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time_.*&quot;</span><span class="p">],</span>
+<span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">describe</span><span class="p">()[[</span><span class="s2">&quot;kind&quot;</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="s2">&quot;missing&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                      <span class="n">kind</span>           <span class="n">dtype</span>  <span class="n">missing</span>                  <span class="nb">min</span>                  <span class="nb">max</span>
+    <span class="n">name</span>                                                                                     
+    <span class="n">date</span>              <span class="n">time</span>  <span class="n">datetime64</span><span class="p">[</span><span class="n">us</span><span class="p">]</span>        <span class="mi">0</span>  <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+    <span class="n">version_python</span>    <span class="n">keys</span>         <span class="n">float64</span>        <span class="mi">0</span>                 <span class="mf">3.12</span>                 <span class="mf">3.13</span>
+    <span class="n">model_name</span>        <span class="n">keys</span>             <span class="nb">str</span>        <span class="mi">0</span>                  <span class="n">NaN</span>                  <span class="n">NaN</span>
+    <span class="n">model_exporter</span>    <span class="n">keys</span>             <span class="nb">str</span>        <span class="mi">0</span>                  <span class="n">NaN</span>                  <span class="n">NaN</span>
+    <span class="n">time_latency</span>    <span class="n">values</span>         <span class="n">float64</span>        <span class="mi">0</span>                  <span class="mf">0.1</span>                 <span class="mf">0.14</span>
+    <span class="n">time_baseline</span>   <span class="n">values</span>         <span class="n">float64</span>        <span class="mi">0</span>                <span class="mf">0.105</span>                <span class="mf">0.999</span>
+</pre></div>
+</div>
+</section>
+<section id="exporting-to-excel">
+<h2>Exporting to Excel<a class="headerlink" href="#exporting-to-excel" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs.to_excel" title="yobx.helpers.cube_helper.CubeLogs.to_excel"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CubeLogs.to_excel</span></code></a> writes
+an <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> workbook.  Each view is placed on its own sheet.  A <em>raw</em> sheet
+with the full cube data and a <em>main</em> sheet with per-column statistics can be
+added automatically.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cube</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span>
+    <span class="s2">&quot;results.xlsx&quot;</span><span class="p">,</span>
+    <span class="n">views</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;latency&quot;</span><span class="p">:</span> <span class="n">CubeViewDef</span><span class="p">(</span>
+            <span class="n">key_index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;version_python&quot;</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
+            <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time_latency&quot;</span><span class="p">],</span>
+            <span class="n">ignore_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;latency&quot;</span><span class="p">,</span>
+            <span class="n">plots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;baseline&quot;</span><span class="p">:</span> <span class="s2">&quot;time_baseline&quot;</span><span class="p">,</span>   <span class="c1"># shorthand: auto-generated view</span>
+    <span class="p">},</span>
+    <span class="n">main</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>    <span class="c1"># sheet with per-column statistics</span>
+    <span class="n">raw</span><span class="o">=</span><span class="s2">&quot;raw&quot;</span><span class="p">,</span>      <span class="c1"># sheet with the complete cube data</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Passing a plain string as a view is a shorthand: the cube calls
+<a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs.make_view_def" title="yobx.helpers.cube_helper.CubeLogs.make_view_def"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_view_def</span></code></a> to
+produce a sensible default view for that metric.</p>
+<p>The resulting workbook contains one sheet per view plus the optional <em>main</em>
+(column statistics) and <em>raw</em> (full data) sheets:</p>
+<img alt="Excel workbook produced by CubeLogs.to_excel(), showing the main statistics sheet, a pivot-view sheet, and the raw-data sheet" src="../../_images/_img_cube_excel.png" />
+</section>
+<section id="cubelogsperformance">
+<h2>CubeLogsPerformance<a class="headerlink" href="#cubelogsperformance" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogsPerformance" title="yobx.helpers.cube_helper.CubeLogsPerformance"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogsPerformance</span></code></a>
+is a subclass of <a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs" title="yobx.helpers.cube_helper.CubeLogs"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogs</span></code></a> with
+defaults tuned for ML benchmarking logs.  Its constructor pre-configures:</p>
+<ul class="simple">
+<li><p><strong>time</strong> column: <code class="docutils literal notranslate"><span class="pre">&quot;DATE&quot;</span></code> (uppercase; contrast with the <code class="docutils literal notranslate"><span class="pre">&quot;date&quot;</span></code>
+default in the base <a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs" title="yobx.helpers.cube_helper.CubeLogs"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogs</span></code></a>)</p></li>
+<li><p><strong>key</strong> patterns: <code class="docutils literal notranslate"><span class="pre">version_.*</span></code>, <code class="docutils literal notranslate"><span class="pre">model_.*</span></code>, <code class="docutils literal notranslate"><span class="pre">device</span></code>, <code class="docutils literal notranslate"><span class="pre">exporter</span></code>,
+<code class="docutils literal notranslate"><span class="pre">suite</span></code>, <code class="docutils literal notranslate"><span class="pre">machine</span></code>, <code class="docutils literal notranslate"><span class="pre">dtype</span></code>, <code class="docutils literal notranslate"><span class="pre">architecture</span></code>, and several others.</p></li>
+<li><p><strong>value</strong> patterns: <code class="docutils literal notranslate"><span class="pre">time_.*</span></code>, <code class="docutils literal notranslate"><span class="pre">disc.*</span></code>, <code class="docutils literal notranslate"><span class="pre">ERR_.*</span></code>, <code class="docutils literal notranslate"><span class="pre">onnx_.*</span></code>, and
+related prefixes.</p></li>
+<li><p><strong>formulas</strong>: <code class="docutils literal notranslate"><span class="pre">speedup</span></code>, <code class="docutils literal notranslate"><span class="pre">ERR1</span></code>, <code class="docutils literal notranslate"><span class="pre">n_models</span></code>, <code class="docutils literal notranslate"><span class="pre">n_model_faster</span></code>, a
+full suite of <code class="docutils literal notranslate"><span class="pre">n_node_*</span></code> counts, and more — all computed automatically
+from the raw columns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">recent=True</span></code>: only the most recent row per key tuple is kept.</p></li>
+</ul>
+<p>Usage is identical to <a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs" title="yobx.helpers.cube_helper.CubeLogs"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogs</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.cube_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CubeLogsPerformance</span>
+
+<span class="n">cube</span> <span class="o">=</span> <span class="n">CubeLogsPerformance</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="n">view</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">CubeViewDef</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs" title="yobx.helpers.cube_helper.CubeLogs"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogs</span> <span class="pre">API</span></code></a> —
+full API reference generated from docstrings.</p>
+<p><a class="reference internal" href="../../api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogsPerformance" title="yobx.helpers.cube_helper.CubeLogsPerformance"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubeLogsPerformance</span> <span class="pre">API</span></code></a> —
+subclass pre-configured for ML performance logs.</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">Statistics on Logs Through a Cube of Data</a><ul>
+<li><a class="reference internal" href="#loading-data">Loading data</a><ul>
+<li><a class="reference internal" href="#column-patterns">Column patterns</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-computed-columns-formulas">Adding computed columns (formulas)</a></li>
+<li><a class="reference internal" href="#pivot-views">Pivot views</a><ul>
+<li><a class="reference internal" href="#cubeviewdef-options">CubeViewDef options</a></li>
+<li><a class="reference internal" href="#aggregated-views">Aggregated views</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#describing-the-cube">Describing the cube</a></li>
+<li><a class="reference internal" href="#exporting-to-excel">Exporting to Excel</a></li>
+<li><a class="reference internal" href="#cubelogsperformance">CubeLogsPerformance</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="container.html">
+                    <span class="icon">&lt;</span><span>ExtendedModelContainer</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="evaluator.html"><span>Evaluators</span><span class="icon">&gt;</span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>

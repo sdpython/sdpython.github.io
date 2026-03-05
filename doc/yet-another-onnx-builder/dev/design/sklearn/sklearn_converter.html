@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Sklearn Converter &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d0ff0132" />
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <script src="../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Custom Converter" href="custom_converter.html" />
+    <link rel="prev" title="Expected API" href="expected_api.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../index.html" title="Go to homepage"><img src="../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Scikit-learn Export to ONNX</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="expected_api.html">Expected API</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sklearn Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sklearn-converter">
+<span id="l-design-sklearn-converter"></span><h1>Sklearn Converter<a class="headerlink" href="#sklearn-converter" title="Link to this heading">¶</a></h1>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code> converts a fitted <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>
+estimator into an <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a>.  The conversion is
+powered by <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xbuilder.GraphBuilder</span></code></a> and follows a
+<strong>registry-based</strong> design: each estimator class maps to a dedicated
+converter function that emits the required ONNX nodes.</p>
+<section id="high-level-workflow">
+<h2>High-level workflow<a class="headerlink" href="#high-level-workflow" title="Link to this heading">¶</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fitted estimator
+      │
+      ▼
+  to_onnx()          ← builds GraphBuilder, looks up converter
+      │
+      ▼
+converter function   ← adds ONNX nodes via GraphBuilder.op.*
+      │
+      ▼
+  GraphBuilder.to_onnx()   ← validates and returns ModelProto
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code> accepts the fitted estimator,
+representative dummy inputs (used to infer dtype and shape), and
+optional <code class="docutils literal notranslate"><span class="pre">input_names</span></code> / <code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code>.</p></li>
+<li><p>It calls <a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.register_sklearn_converters" title="yobx.sklearn.register_sklearn_converters"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_sklearn_converters</span></code></a> (idempotent) to populate
+the global registry on first use.</p></li>
+<li><p>It constructs a <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a> and
+declares one graph input per dummy array via
+<a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.make_tensor_input" title="yobx.xbuilder.GraphBuilder.make_tensor_input"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_tensor_input</span></code></a>.</p></li>
+<li><p>It looks up the converter for <code class="docutils literal notranslate"><span class="pre">type(estimator)</span></code> and calls it.</p></li>
+<li><p>Each graph output is declared with
+<a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.make_tensor_output" title="yobx.xbuilder.GraphBuilder.make_tensor_output"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_tensor_output</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.to_onnx" title="yobx.xbuilder.GraphBuilder.to_onnx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GraphBuilder.to_onnx</span></code></a>
+finalises and returns the model.</p></li>
+</ol>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">scaler</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.448</span><span class="p">,</span>  <span class="mf">0.052</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.093</span><span class="p">,</span>  <span class="mf">0.247</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4_2&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">0.774</span><span class="p">,</span> <span class="mf">0.641</span><span class="p">,</span> <span class="mf">0.825</span><span class="p">,</span> <span class="mf">0.728</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
+    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s4_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_sub_X</span>
+      <span class="n">Div</span><span class="p">(</span><span class="n">_onx_sub_X</span><span class="p">,</span> <span class="n">init1_s4_2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+</pre></div>
+</div>
+</section>
+<section id="converter-registry">
+<h2>Converter registry<a class="headerlink" href="#converter-registry" title="Link to this heading">¶</a></h2>
+<p>The registry is a plain module-level dictionary
+<code class="docutils literal notranslate"><span class="pre">SKLEARN_CONVERTERS:</span> <span class="pre">Dict[type,</span> <span class="pre">Callable]</span></code> defined in
+<a class="reference internal" href="../../api/sklearn/register.html#module-yobx.sklearn.register" title="yobx.sklearn.register"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.sklearn.register</span></code></a>.</p>
+<section id="registering-a-converter">
+<h3>Registering a converter<a class="headerlink" href="#registering-a-converter" title="Link to this heading">¶</a></h3>
+<p>Use the <code class="xref py py-func docutils literal notranslate"><span class="pre">register_sklearn_converter</span></code> decorator.
+Pass a single class or a tuple of classes as the first argument:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn.register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
+
+<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">MyEstimator</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_my_estimator</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">estimator</span><span class="p">:</span> <span class="n">MyEstimator</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;my_estimator&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>The decorator raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeError</span></code></a> if a converter is already
+registered for the same class, preventing accidental double-registration.</p>
+</section>
+<section id="looking-up-a-converter">
+<h3>Looking up a converter<a class="headerlink" href="#looking-up-a-converter" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/sklearn/register.html#yobx.sklearn.register.get_sklearn_converter" title="yobx.sklearn.register.get_sklearn_converter"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_sklearn_converter</span></code></a>
+takes a class and returns the registered callable, raising
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if none is found.</p>
+</section>
+</section>
+<section id="converter-function-signature">
+<h2>Converter function signature<a class="headerlink" href="#converter-function-signature" title="Link to this heading">¶</a></h2>
+<p>Every converter follows the same contract:</p>
+<p><code class="docutils literal notranslate"><span class="pre">(g,</span> <span class="pre">sts,</span> <span class="pre">outputs,</span> <span class="pre">estimator,</span> <span class="pre">*input_names,</span> <span class="pre">name)</span> <span class="pre">→</span> <span class="pre">output_name(s)</span></code></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g</span></code></p></td>
+<td><p><a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>
+— call <code class="docutils literal notranslate"><span class="pre">g.op.&lt;OpType&gt;(…)</span></code> to emit ONNX nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sts</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Dict</span></code> of shape/type metadata provided by
+<a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> (empty <code class="docutils literal notranslate"><span class="pre">{}</span></code> in the default
+path; reserved for future shape propagation).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">outputs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> of pre-allocated output tensor names
+that the converter <strong>must</strong> write to.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">estimator</span></code></p></td>
+<td><p>The fitted <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">*inputs</span></code></p></td>
+<td><p>One positional <code class="docutils literal notranslate"><span class="pre">str</span></code> argument per graph input
+(the tensor name in the graph).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>String prefix used when generating unique node names
+via <code class="docutils literal notranslate"><span class="pre">g.op</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The function must return the output tensor name (<code class="docutils literal notranslate"><span class="pre">str</span></code>) for
+single-output estimators, or a tuple of names for multi-output ones
+(e.g. classifiers that produce both a label and probabilities).</p>
+</section>
+<section id="output-naming">
+<h2>Output naming<a class="headerlink" href="#output-naming" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../../api/sklearn/sklearn_helper.html#yobx.sklearn.sklearn_helper.get_output_names" title="yobx.sklearn.sklearn_helper.get_output_names"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_output_names</span></code></a>
+determines the list of output tensor names for an estimator:</p>
+<ul class="simple">
+<li><p><strong>Transformers</strong> that expose <code class="docutils literal notranslate"><span class="pre">get_feature_names_out()</span></code> use those
+names (collapsed to a common prefix via
+<a class="reference internal" href="../../api/sklearn/sklearn_helper.html#yobx.sklearn.sklearn_helper.longest_prefix" title="yobx.sklearn.sklearn_helper.longest_prefix"><code class="xref py py-func docutils literal notranslate"><span class="pre">longest_prefix</span></code></a>
+when more than one output is expected).</p></li>
+<li><p><strong>Classifiers</strong> default to <code class="docutils literal notranslate"><span class="pre">[&quot;label&quot;,</span> <span class="pre">&quot;probabilities&quot;]</span></code>.</p></li>
+<li><p><strong>Regressors</strong> default to <code class="docutils literal notranslate"><span class="pre">[&quot;predictions&quot;]</span></code>.</p></li>
+<li><p>Everything else defaults to <code class="docutils literal notranslate"><span class="pre">[&quot;Y&quot;]</span></code>.</p></li>
+</ul>
+</section>
+<section id="implemented-converters">
+<h2>Implemented converters<a class="headerlink" href="#implemented-converters" title="Link to this heading">¶</a></h2>
+<section id="standardscaler">
+<h3>StandardScaler<a class="headerlink" href="#standardscaler" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/sklearn/preprocessing/standard_scaler.html#yobx.sklearn.preprocessing.standard_scaler.sklearn_standard_scaler" title="yobx.sklearn.preprocessing.standard_scaler.sklearn_standard_scaler"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_standard_scaler</span></code></a>
+converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code></a>.</p>
+<p>The implementation respects the <code class="docutils literal notranslate"><span class="pre">with_mean</span></code> and <code class="docutils literal notranslate"><span class="pre">with_std</span></code> flags:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Sub(mean)──►  centered  ──Div(scale)──►  output
+     (if with_mean)               (if with_std)
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">with_mean=False</span></code> the <code class="docutils literal notranslate"><span class="pre">Sub</span></code> node is skipped; when
+<code class="docutils literal notranslate"><span class="pre">with_std=False</span></code> the <code class="docutils literal notranslate"><span class="pre">Div</span></code> node is replaced by an <code class="docutils literal notranslate"><span class="pre">Identity</span></code>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(</span><span class="n">with_std</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s3_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.387</span><span class="p">,</span>  <span class="mf">0.435</span><span class="p">,</span>  <span class="mf">0.241</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
+    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s3_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+</pre></div>
+</div>
+</section>
+<section id="logisticregression">
+<h3>LogisticRegression<a class="headerlink" href="#logisticregression" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/sklearn/linear_model/logistic_regression.html#yobx.sklearn.linear_model.logistic_regression.sklearn_logistic_regression" title="yobx.sklearn.linear_model.logistic_regression.sklearn_logistic_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_logistic_regression</span></code></a>
+converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.LogisticRegression</span></code></a> and
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegressionCV.html#sklearn.linear_model.LogisticRegressionCV" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.LogisticRegressionCV</span></code></a>.</p>
+<p>The graph structure depends on the number of classes:</p>
+<p><strong>Binary classification</strong> (<code class="docutils literal notranslate"><span class="pre">coef_.shape[0]</span> <span class="pre">==</span> <span class="pre">1</span></code>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Gemm(coef, intercept)──►  decision
+                                   │
+                          ┌────────┴────────┐
+                       Sigmoid           Sub(1, ·)
+                          │                  │
+                       proba_pos          proba_neg
+                          └────────┬────────┘
+                                Concat  ──►  probabilities
+                                   │
+                                ArgMax ──Cast──Gather(classes) ──►  label
+</pre></div>
+</div>
+<p><strong>Multiclass</strong> (<code class="docutils literal notranslate"><span class="pre">coef_.shape[0]</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Gemm(coef, intercept)──►  decision
+                                   │
+                               Softmax  ──►  probabilities
+                                   │
+                               ArgMax ──Cast──Gather(classes)  ──►  label
+</pre></div>
+</div>
+</section>
+<section id="pipeline">
+<h3>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/sklearn/pipeline/pipeline.html#yobx.sklearn.pipeline.pipeline.sklearn_pipeline" title="yobx.sklearn.pipeline.pipeline.sklearn_pipeline"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_pipeline</span></code></a>
+converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> by iterating over the
+pipeline steps and chaining each step’s converter output into the
+next step’s input.  Intermediate tensor names are generated with
+<a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.unique_name" title="yobx.xbuilder.GraphBuilder.unique_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GraphBuilder.unique_name</span></code></a>
+to avoid collisions.</p>
+<div class="graphviz"><object data="../../_images/gdot-02fed7aa882674272c3e9f52efeed64b452c0ce4.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
+  I_0 [label=&quot;X\nFLOAT(batch,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
+  i_1 [label=&quot;init1_s1x4_\nFLOAT(1, 4)&quot;, fillcolor=&quot;#cccc00&quot;];
+  Sub_2 [label=&quot;Sub\n(., [0.13506442, 0.30849382, 0.15263239, -0.42686778])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Div_3 [label=&quot;Div\n(., [1.0598633, 0.91415834, 0.83482164, 1.0283957])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Gemm_4 [label=&quot;Gemm(., ., [0.64127016])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sigmoid_5 [label=&quot;Sigmoid(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sub_6 [label=&quot;Sub([1.0], .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Concat_7 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ArgMax_8 [label=&quot;ArgMax(., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Gather_9 [label=&quot;Gather([0, 1], ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_0 -&gt; Sub_2 [label=&quot;FLOAT(batch,4)&quot;];
+  Sub_2 -&gt; Div_3;
+  Div_3 -&gt; Gemm_4;
+  i_1 -&gt; Gemm_4 [label=&quot;FLOAT(1, 4)&quot;];
+  Gemm_4 -&gt; Sigmoid_5;
+  Sigmoid_5 -&gt; Sub_6;
+  Sub_6 -&gt; Concat_7;
+  Sigmoid_5 -&gt; Concat_7;
+  Concat_7 -&gt; ArgMax_8;
+  ArgMax_8 -&gt; Gather_9;
+  O_10 [label=&quot;label\n&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gather_9 -&gt; O_10;
+  O_11 [label=&quot;probabilities\n&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Concat_7 -&gt; O_11;
+}</p></object></div>
+</section>
+</section>
+<section id="adding-a-new-converter">
+<h2>Adding a new converter<a class="headerlink" href="#adding-a-new-converter" title="Link to this heading">¶</a></h2>
+<p>To support a new <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> estimator:</p>
+<ol class="arabic simple">
+<li><p>Create a new file (e.g. <code class="docutils literal notranslate"><span class="pre">yobx/sklearn/ensemble/random_forest.py</span></code>).</p></li>
+<li><p>Implement a converter function following the signature described above.</p></li>
+<li><p>Decorate it with <code class="docutils literal notranslate"><span class="pre">&#64;register_sklearn_converter(MyEstimator)</span></code>.</p></li>
+<li><p>Add an import in the matching <code class="docutils literal notranslate"><span class="pre">register()</span></code> function so the converter
+is loaded when <a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.register_sklearn_converters" title="yobx.sklearn.register_sklearn_converters"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_sklearn_converters</span></code></a> is called.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># yobx/sklearn/ensemble/random_forest.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
+
+
+<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_random_forest_classifier</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">estimator</span><span class="p">:</span> <span class="n">RandomForestClassifier</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;random_forest&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="c1"># ... emit ONNX nodes via g.op.*</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">Sklearn Converter</a><ul>
+<li><a class="reference internal" href="#high-level-workflow">High-level workflow</a></li>
+<li><a class="reference internal" href="#converter-registry">Converter registry</a><ul>
+<li><a class="reference internal" href="#registering-a-converter">Registering a converter</a></li>
+<li><a class="reference internal" href="#looking-up-a-converter">Looking up a converter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#converter-function-signature">Converter function signature</a></li>
+<li><a class="reference internal" href="#output-naming">Output naming</a></li>
+<li><a class="reference internal" href="#implemented-converters">Implemented converters</a><ul>
+<li><a class="reference internal" href="#standardscaler">StandardScaler</a></li>
+<li><a class="reference internal" href="#logisticregression">LogisticRegression</a></li>
+<li><a class="reference internal" href="#pipeline">Pipeline</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-a-new-converter">Adding a new converter</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="expected_api.html">
+                    <span class="icon">&lt;</span><span>Expected API</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="custom_converter.html"><span>Custom Converter</span><span class="icon">&gt;</span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>

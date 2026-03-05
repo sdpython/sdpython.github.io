@@ -18,7 +18,7 @@
 .. _sphx_glr_auto_examples_plot_patch_model.py:
 
 
-.. _l-plot-patch-model:
+.. _l-plot-patch-model-diff:
 
 Applying patches to a model and displaying the diff
 =====================================================
@@ -91,11 +91,12 @@ The context manager yields a :class:`PatchDetails` instance that lists every
 
  .. code-block:: none
 
-    Number of patches applied: 4
+    Number of patches applied: 5
       [torch] _print_Symbol
       [torch] patched_infer_size
       [torch] patched__broadcast_shapes
       [torch] patched__get_range_constraints
+      [torch] patched__maybe_broadcast
 
 
 
@@ -148,12 +149,16 @@ version.
     torch: infer_size -> patched_infer_size
     --- original
     +++ rewritten
-    @@ -1,10 +1,9 @@
+    @@ -1,10 +1,13 @@
     -def infer_size(a: Sequence[IntLikeType], b: Sequence[IntLikeType]) -> tuple[IntLikeType, ...]:
     -    from torch.fx.experimental.symbolic_shapes import guard_or_false
     -
     +def patched_infer_size(a, b):
-    +    """Patches ``torch._subclasses.fake_impls.infer_size``."""
+    +    """
+    +    Patches ``torch._subclasses.fake_impls.infer_size``.
+    +    This patch is needed to export
+    +    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.
+    +    """
          dimsA = len(a)
          dimsB = len(b)
          ndim = max(dimsA, dimsB)
@@ -162,7 +167,7 @@ version.
          for i in range(ndim - 1, -1, -1):
              offset = ndim - 1 - i
              dimA = dimsA - 1 - offset
-    @@ -23,11 +22,21 @@
+    @@ -23,11 +26,21 @@
              # expression of an or statement as-is, without bool()'ing it; if this
              # were not the case, we'd need to write this using torch.sym_or() or
              # something like that).
@@ -195,7 +200,7 @@ version.
     torch: _broadcast_shapes -> patched__broadcast_shapes
     --- original
     +++ rewritten
-    @@ -1,12 +1,7 @@
+    @@ -1,12 +1,11 @@
     -def _broadcast_shapes(*_shapes):
     -    from torch.fx.experimental.symbolic_shapes import (
     -        guard_or_false,
@@ -206,13 +211,17 @@ version.
     -
     -    backed_so = torch.fx.experimental._config.backed_size_oblivious
     +def patched__broadcast_shapes(*_shapes):
-    +    """Patches ``torch._refs._broadcast_shapes``."""
+    +    """
+    +    Patches ``torch._refs._broadcast_shapes``.
+    +    This patch is needed to export
+    +    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.
+    +    """
     +    from functools import reduce
     +    from torch._prims_common import IntLike
  
          shapes = tuple(
              (x,) if isinstance(x, IntLike) else x for x in filter(lambda x: x is not None, _shapes)
-    @@ -19,59 +14,36 @@
+    @@ -19,59 +18,36 @@
          for shape in shapes:
              if not isinstance(shape, Sequence):
                  raise RuntimeError(
@@ -223,7 +232,7 @@ version.
                  )
  
          # Computes common shape
-    -    common_shape: list[Union[int, torch.SymInt]] = [
+    -    common_shape: list[int | torch.SymInt] = [
     -        1,
     -    ] * reduce(max, (len(shape) for shape in shapes))
     -    for arg_idx, shape in enumerate(shapes):
@@ -352,6 +361,65 @@ version.
     +        fake_mode, gm, combined_args, dynamic_shapes, num_lifted
          )
          return range_constraints
+
+    torch: _maybe_broadcast -> patched__maybe_broadcast
+    --- original
+    +++ rewritten
+    @@ -1,6 +1,13 @@
+    -def _maybe_broadcast(*args, preserve_cpu_scalar_tensors=True):
+    +def patched__maybe_broadcast(*args, preserve_cpu_scalar_tensors=True):
+    +    """
+    +    Patches ``torch._refs._maybe_broadcast``.
+    +    This patch is needed to export
+    +    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.
+    +    """
+    +    from torch._prims_common import ShapeType, TensorLike, Number
+    +
+         # Computes common shape
+    -    common_shape = _broadcast_shapes(
+    +    common_shape = patched__broadcast_shapes(
+             *(t.shape if isinstance(t, TensorLike) else None for t in args)
+         )
+ 
+    @@ -29,10 +36,15 @@
+                     return True
+ 
+                 # u0==u1 assume the same, no broadcasting!
+    -            torch._check(
+    -                x == y,
+    -                lambda: "sizes assumed to be the same due to unbacked broadcasting semantics",
+    -            )
+    +            # PATCHED: avoid errors
+    +            return True  # guard_or_true(x != y)
+    +            # torch._check(
+    +            #    x == y,
+    +            #    lambda x=x, y=y: (
+    +            #        f"sizes assumed to be the same due to unbacked "
+    +            #        f"broadcasting semantics x={x!r}, y={y!r}"
+    +            #    ),
+    +            # )
+ 
+             return False
+ 
+    @@ -42,14 +54,14 @@
+             elif isinstance(x, Number):
+                 return x
+             elif isinstance(x, TensorLike):
+    -            if preserve_cpu_scalar_tensors and utils.is_cpu_scalar_tensor(x):
+    +            if preserve_cpu_scalar_tensors and torch._prims_common.is_cpu_scalar_tensor(x):  # type: ignore
+                     return x
+ 
+    -            if should_expand(x.shape, common_shape):
+    -                return x.expand(common_shape)
+    +            if should_expand(x.shape, common_shape):  # type: ignore
+    +                return x.expand(common_shape)  # type: ignore
+ 
+                 return x
+             else:
+    -            raise RuntimeError("Unexpected type when broadcasting: " + str(type(x)) + "!")
+    +            raise RuntimeError(f"Unexpected type when broadcasting: {str(type(x))}!")
+ 
+         return tuple(__maybe_broadcast(x, common_shape) for x in args)
 
 
 
@@ -743,7 +811,7 @@ exporter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.371 seconds)
+   **Total running time of the script:** (0 minutes 7.916 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_patch_model.py:

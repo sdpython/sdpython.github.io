@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>yobx.xoptim.patterns &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d0ff0132" />
+    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <script src="../../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="yobx.xoptim.patterns.onnx_any" href="onnx_any.html" />
+    <link rel="prev" title="yobx.xoptim.patterns_api" href="../patterns_api.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../../index.html" title="Go to homepage"><img src="../../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../builder/index.html">yobx.builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../container/index.html">yobx.container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/index.html">yobx.helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/index.html">yobx.reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sklearn/index.html">yobx.sklearn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../torch/index.html">yobx.torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/index.html">yobx.translate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/index.html">yobx.xbuilder</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">yobx.xoptim</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../graph_builder_optim.html">yobx.xoptim.graph_builder_optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_api.html">yobx.xoptim.patterns_api</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">yobx.xoptim.patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_exp/index.html">yobx.xoptim.patterns_exp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_fix/index.html">yobx.xoptim.patterns_fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_investigation/index.html">yobx.xoptim.patterns_investigation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_ml/index.html">yobx.xoptim.patterns_ml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_ort/index.html">yobx.xoptim.patterns_ort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../repeated_optim.html">yobx.xoptim.repeated_optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unfused.html">yobx.xoptim.unfused</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/index.html">yobx.xshape</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="yobx-xoptim-patterns">
+<h1>yobx.xoptim.patterns<a class="headerlink" href="#yobx-xoptim-patterns" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="onnx_any.html">yobx.xoptim.patterns.onnx_any</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_attention.html">yobx.xoptim.patterns.onnx_attention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_cast.html">yobx.xoptim.patterns.onnx_cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_clip.html">yobx.xoptim.patterns.onnx_clip</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_concat.html">yobx.xoptim.patterns.onnx_concat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_constants.html">yobx.xoptim.patterns.onnx_constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_conv.html">yobx.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_dropout.html">yobx.xoptim.patterns.onnx_dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_equal.html">yobx.xoptim.patterns.onnx_equal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_expand.html">yobx.xoptim.patterns.onnx_expand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_functions.html">yobx.xoptim.patterns.onnx_functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_layer_normalization.html">yobx.xoptim.patterns.onnx_layer_normalization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_matmul.html">yobx.xoptim.patterns.onnx_matmul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_mul.html">yobx.xoptim.patterns.onnx_mul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_range.html">yobx.xoptim.patterns.onnx_range</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_reduce.html">yobx.xoptim.patterns.onnx_reduce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_reshape.html">yobx.xoptim.patterns.onnx_reshape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_rotary.html">yobx.xoptim.patterns.onnx_rotary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_sequence.html">yobx.xoptim.patterns.onnx_sequence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_shape.html">yobx.xoptim.patterns.onnx_shape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_slice.html">yobx.xoptim.patterns.onnx_slice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_split.html">yobx.xoptim.patterns.onnx_split</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_sub.html">yobx.xoptim.patterns.onnx_sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_transpose.html">yobx.xoptim.patterns.onnx_transpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_unsqueeze.html">yobx.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_where.html">yobx.xoptim.patterns.onnx_where</a></li>
+</ul>
+</div>
+<section id="get-default-patterns">
+<h2>get_default_patterns<a class="headerlink" href="#get-default-patterns" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.get_default_patterns">
+<span class="sig-prename descclassname"><span class="pre">yobx.xoptim.patterns.</span></span><span class="sig-name descname"><span class="pre">get_default_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#yobx.xoptim.PatternOptimization" title="yobx.xoptim.patterns_api.PatternOptimization"><span class="pre">PatternOptimization</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/c80c8fe/yobx/xoptim/patterns/__init__.py#L151"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/xoptim/patterns.html#get_default_patterns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.get_default_patterns" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a default list of optimization patterns.
+It is equal to the following list.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xoptim.patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">pattern_table_doc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xoptim.patterns</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_default_patterns</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">pattern_table_doc</span><span class="p">(</span><span class="n">get_default_patterns</span><span class="p">(),</span> <span class="n">as_rst</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>name</p></th>
+<th class="head"><p>short_name</p></th>
+<th class="head"><p>priority</p></th>
+<th class="head"><p>doc</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>BatchNormalizationPattern</p></td>
+<td><p>BatchNormalization</p></td>
+<td><p>0</p></td>
+<td><p>Checks that a BatchNormalization is really needed.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>BatchNormalizationTrainingPattern</p></td>
+<td><p>BatchNormalizationTraining</p></td>
+<td><p>0</p></td>
+<td><p>Checks that a BatchNormalization in training mode can be avoided.</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>CastLayerNormalizationCastPattern</p></td>
+<td><p>CastLayerNormalizationCast</p></td>
+<td><p>1</p></td>
+<td><p>Checks that a Cast is really needed around     GroupNormalization, LayerNormalization, RMSNormalization.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>CastPattern</p></td>
+<td><p>Cast</p></td>
+<td><p>0</p></td>
+<td><p>Checks that a Cast is really needed.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>CastCastBinaryPattern</p></td>
+<td><p>CastCastBinary</p></td>
+<td><p>1</p></td>
+<td><p>Moves two cast operators beyond a binary operator     The cast must cast from a float type to another float type.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>CastCastPattern</p></td>
+<td><p>CastCast</p></td>
+<td><p>0</p></td>
+<td><p>Checks that two consecutive cast can be avoided.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>CastOpCastPattern</p></td>
+<td><p>CastOpCast</p></td>
+<td><p>1</p></td>
+<td><p>Removes two cast surrounding another operator.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>ClipClipPattern</p></td>
+<td><p>ClipClip</p></td>
+<td><p>1</p></td>
+<td><p>Merges consecutive clips if one is defining min and the other max.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>ConcatEmptyPattern</p></td>
+<td><p>ConcatEmpty</p></td>
+<td><p>1</p></td>
+<td><p>Checks if one of the concatenated values is empty.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>ConcatGatherPattern</p></td>
+<td><p>ConcatGather</p></td>
+<td><p>0</p></td>
+<td><p>Checks if Gather(Concat) can be replaced by Identity.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>ConcatReshapePattern</p></td>
+<td><p>ConcatReshape</p></td>
+<td><p>0</p></td>
+<td><p>Tries to reduce the number of nodes in the sequence Concat + Reshape     by replacing one of the dimension by -1.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>ConcatTwiceUnaryPattern</p></td>
+<td><p>ConcatTwiceUnary</p></td>
+<td><p>1</p></td>
+<td><p>Sin(Concat(x,x)) -&gt; Concat(Sin(x), Sin(x)).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>ConstantToInitializerPattern</p></td>
+<td><p>ConstantToInitializer</p></td>
+<td><p>1</p></td>
+<td><p>Replaces a node Constant by an initializer and a node Identity.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>ConvBiasNullPattern</p></td>
+<td><p>ConvBiasNull</p></td>
+<td><p>0</p></td>
+<td><p>Checks that a Conv has a null bias.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>DropoutPattern</p></td>
+<td><p>Dropout</p></td>
+<td><p>1</p></td>
+<td><p>Checks that a Cast is really needed.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>ExpandPattern</p></td>
+<td><p>Expand</p></td>
+<td><p>0</p></td>
+<td><p>Checks that a Expand is really needed.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>ExpandBroadcastPattern</p></td>
+<td><p>ExpandBroadcast</p></td>
+<td><p>1</p></td>
+<td><p>Checks that a Expand is really needed before an element wise operator.     The objective is to save one allocation and let the next operator     do the expansion by broadcasting one input.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>ExpandSwapPattern</p></td>
+<td><p>ExpandSwap</p></td>
+<td><p>1</p></td>
+<td><p>Tries to move a node Expand forward in the graph.     Expand + Exp can be changed into Exp + Expand.     Then Exp applies on a tensor of a smaller or equal size.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>GathersSplitPattern</p></td>
+<td><p>GathersSplit</p></td>
+<td><p>1</p></td>
+<td><p>Merges multiple parallel gather into a split followed by unsqueeze.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>GeluPattern</p></td>
+<td><p>Gelu</p></td>
+<td><p>0</p></td>
+<td><p>Detects the decomposed version of Gelu with Tanh</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>IdentityPattern</p></td>
+<td><p>Identity</p></td>
+<td><p>0</p></td>
+<td><p>Replaces operator such as     Div(X, 1), Mul(X, 1), Add(X, 0), Sub(X, 0), Transpose(X, [0, 1, 2, …])     by identity nodes. It looks into patterns involving the following operators…</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>LayerNormalizationPattern</p></td>
+<td><p>LayerNormalization</p></td>
+<td><p>1</p></td>
+<td><p>Fuses nodes of a LayerNormalization.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>LayerNormalizationScalePattern</p></td>
+<td><p>LayerNormalizationScale</p></td>
+<td><p>1</p></td>
+<td><p>Fused LayerNormalization, scale, bias just after.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>LeakyReluPattern</p></td>
+<td><p>LeakyRelu</p></td>
+<td><p>0</p></td>
+<td><p>Detects the decomposed version of LeakyRelu.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>24</p></td>
+<td><p>MulMulMulScalarPattern</p></td>
+<td><p>MulMulMulScalar</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence {Div | Mul} and {Div | Mul} + {Div | Mul} with {Div | Mul} Mul.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>25</p></td>
+<td><p>NotNotPattern</p></td>
+<td><p>NotNot</p></td>
+<td><p>1</p></td>
+<td><p>Fuses Not + Not into Identity.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>26</p></td>
+<td><p>NotWherePattern</p></td>
+<td><p>NotWhere</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence Where(Not(cond), X, Y) -&gt; Where(cond, Y, X).</p></td>
+</tr>
+<tr class="row-odd"><td><p>27</p></td>
+<td><p>ReduceArgTopKPattern</p></td>
+<td><p>ReduceArgTopK</p></td>
+<td><p>1</p></td>
+<td><p>Fuses ReduceMin(X, axis), ArgMin(X, axis) into TopK(, k=1).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>28</p></td>
+<td><p>ReduceReshapePattern</p></td>
+<td><p>ReduceReshape</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence Reduce* Reshape if reshape is only     introduces to deal with a dimension kept because keepdims=1.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>29</p></td>
+<td><p>ReduceSumNormalizePattern</p></td>
+<td><p>ReduceSumNormalize</p></td>
+<td><p>1</p></td>
+<td><p>Nodes equivalent to a reduction.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>30</p></td>
+<td><p>ReshapePattern</p></td>
+<td><p>Reshape</p></td>
+<td><p>0</p></td>
+<td><p>Checks that a Reshape is really needed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>31</p></td>
+<td><p>ReshapeMatMulReshapePattern</p></td>
+<td><p>ReshapeMatMulReshape</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence Reshape, Matmul, Reshape by Matmul.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>32</p></td>
+<td><p>Reshape2Of3Pattern</p></td>
+<td><p>Reshape2Of3</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the reshapes around element-wise operators.     It can be 3 or 2 out of 3.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>33</p></td>
+<td><p>ReshapeReshapeBinaryPattern</p></td>
+<td><p>ReshapeReshapeBinary</p></td>
+<td><p>1</p></td>
+<td><p>Moves two reshape operators beyond a binary operator     if it is possible.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>34</p></td>
+<td><p>MatMulAddPattern</p></td>
+<td><p>MatMulAdd</p></td>
+<td><p>3</p></td>
+<td><p>Replaces the sequence MatMul, Add into Gemm.     By default, no reshape is allowed this happens only it is two dimensions.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>35</p></td>
+<td><p>GemmTransposePattern</p></td>
+<td><p>GemmTranspose</p></td>
+<td><p>1</p></td>
+<td><p>Replaces Gemm (., constant) by Gemm(., constant’, transB=1)      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>36</p></td>
+<td><p>MatMulReshape2Of3Pattern</p></td>
+<td><p>MatMulReshape2Of3</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the reshapes around a matmul     It can be 3 or 2 out of 3.     It is similar to     <a class="reference internal" href="onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern" title="yobx.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern</span></code></a>.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>37</p></td>
+<td><p>MulMulMatMulPattern</p></td>
+<td><p>MulMulMatMul</p></td>
+<td><p>1</p></td>
+<td><p>Replaces <code class="docutils literal notranslate"><span class="pre">MatMul(a*c,</span> <span class="pre">b*d)</span></code>     where c and d are constant scalar     by <code class="docutils literal notranslate"><span class="pre">MatMul(a,b)</span> <span class="pre">*</span> <span class="pre">(c,d)</span></code>.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>38</p></td>
+<td><p>ShapeBasedReshapeIsSqueezePattern</p></td>
+<td><p>ShapeBasedReshapeIsSqueeze</p></td>
+<td><p>0</p></td>
+<td><p>Replaces a replaces by a squeeze or unsqueeze pattern if possible.     It is only available for <code class="docutils literal notranslate"><span class="pre">opset</span> <span class="pre">&gt;=</span> <span class="pre">18</span></code>.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>39</p></td>
+<td><p>ShapeBasedStaticExpandPattern</p></td>
+<td><p>ShapeBasedStaticExpand</p></td>
+<td><p>0</p></td>
+<td><p>Compares input and output shapes to tell if the expand     can uses a constant as a second input.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>40</p></td>
+<td><p>ShapeBasedConcatExpandPattern</p></td>
+<td><p>ShapeBasedConcatExpand</p></td>
+<td><p>1</p></td>
+<td><p>Rewrites Expand(X, concat(…)) if possible.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>41</p></td>
+<td><p>ShapeBasedEditDistanceReshapePattern</p></td>
+<td><p>ShapeBasedEditDistanceReshape</p></td>
+<td><p>0</p></td>
+<td><p>Tries to reduce the number of nodes in the sequence Concat + Reshape     by replacing one of the dimension by -1 or 0.     The pattern tries to align shape information to infer a static shape.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>42</p></td>
+<td><p>ShapeBasedIdentityPattern</p></td>
+<td><p>ShapeBasedIdentity</p></td>
+<td><p>0</p></td>
+<td><p>If a slice leads to the same shape and the step is 1 then it is identity.     In some cases, just known the same is enough to replace them.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>43</p></td>
+<td><p>ShapeBasedExpandBroadcastPattern</p></td>
+<td><p>ShapeBasedExpandBroadcast</p></td>
+<td><p>1</p></td>
+<td><p>Similar to     <a class="reference internal" href="onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ExpandBroadcastPattern" title="yobx.xoptim.patterns.onnx_expand.ExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xoptim.patterns.onnx_expand.ExpandBroadcastPattern</span></code></a>,     but it allows dynamic shapes as well. It does not look into the second     argument of Expand, it just infers than an expand is not needed for     a binary operator following just after.</p></td>
+</tr>
+<tr class="row-even"><td><p>44</p></td>
+<td><p>ShapeBasedExpandBroadcastMatMulPattern</p></td>
+<td><p>ShapeBasedExpandBroadcastMatMul</p></td>
+<td><p>1</p></td>
+<td><p>Similar to     <a class="reference internal" href="onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern" title="yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern</span></code></a>,     but works only with MatMul.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>45</p></td>
+<td><p>ShapeBasedExpandCastWhereSwapPattern</p></td>
+<td><p>ShapeBasedExpandCastWhereSwap</p></td>
+<td><p>1</p></td>
+<td><p>Rewrites Where(Cast(X), X, cond).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>46</p></td>
+<td><p>ShapeBasedExpandSwapPattern</p></td>
+<td><p>ShapeBasedExpandSwap</p></td>
+<td><p>1</p></td>
+<td><p>Tries to move a node Expand forward in the graph     for a binary operator. The code is similar to     <a class="reference internal" href="onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern" title="yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern</span></code></a>      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>47</p></td>
+<td><p>ShapeBasedMatMulToMulPattern</p></td>
+<td><p>ShapeBasedMatMulToMul</p></td>
+<td><p>1</p></td>
+<td><p>MatMul can be replaced by Mul with broadcast. It makes it easier     to detect optimization pattern with Expand operators.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>48</p></td>
+<td><p>ShapedBasedReshapePattern</p></td>
+<td><p>ShapedBasedReshape</p></td>
+<td><p>0</p></td>
+<td><p>Checks that a Reshape is really needed based on the input shape.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>49</p></td>
+<td><p>ShapeBasedSameChildrenPattern</p></td>
+<td><p>ShapeBasedSameChildren</p></td>
+<td><p>0</p></td>
+<td><p>Checks there is no duplicated node doing the same than another one beside.     <a class="reference internal" href="onnx_any.html#yobx.xoptim.patterns.onnx_any.SameChildrenPattern" title="yobx.xoptim.patterns.onnx_any.SameChildrenPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xoptim.patterns.onnx_any.SameChildrenPattern</span></code></a>     checks it is exactly the same.     This one assumes it is exactly the same in some cases such     expand (X, sh1) = expand(X, sh2) if the output shapes are the same.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>50</p></td>
+<td><p>ShapeBasedShapeShapeAddPattern</p></td>
+<td><p>ShapeBasedShapeShapeAdd</p></td>
+<td><p>0</p></td>
+<td><p>Tries to find another way to get a dimension obtained with the addition of two.</p></td>
+</tr>
+<tr class="row-odd"><td><p>51</p></td>
+<td><p>ReshapeReshapePattern</p></td>
+<td><p>ReshapeReshape</p></td>
+<td><p>0</p></td>
+<td><p>Replaces the sequence Reshape, Reshape by Reshape.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>52</p></td>
+<td><p>RotaryEmbeddingPattern</p></td>
+<td><p>RotaryEmbedding</p></td>
+<td><p>1</p></td>
+<td><p>Fuses nodes matching RotaryEmbedding(23).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>53</p></td>
+<td><p>SameChildrenPattern</p></td>
+<td><p>SameChildren</p></td>
+<td><p>0</p></td>
+<td><p>Checks there is no duplicated node doing the same than another one beside.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>54</p></td>
+<td><p>SameChildrenFromInputPattern</p></td>
+<td><p>SameChildrenFromInput</p></td>
+<td><p>0</p></td>
+<td><p>Checks there is no duplicated node doing the same than another     one beside and taking a model input as input.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>55</p></td>
+<td><p>SequenceConstructAtPattern</p></td>
+<td><p>SequenceConstructAt</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence <code class="docutils literal notranslate"><span class="pre">SequenceConstruct(x1,</span> <span class="pre">x2,</span> <span class="pre">...)</span></code> followed     by <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">0)</span></code>, <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">1)</span></code>, …      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>56</p></td>
+<td><p>SliceSlicePattern</p></td>
+<td><p>SliceSlice</p></td>
+<td><p>1</p></td>
+<td><p>Merges consecutive slices if axis are disjoints.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>57</p></td>
+<td><p>SlicesSplitPattern</p></td>
+<td><p>SlicesSplit</p></td>
+<td><p>1</p></td>
+<td><p>Merges multiple parallel slices into a split.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>58</p></td>
+<td><p>SoftmaxCrossEntropyLossCastPattern</p></td>
+<td><p>SoftmaxCrossEntropyLossCast</p></td>
+<td><p>0</p></td>
+<td><p>Detects one decomposed version of SoftmaxCrossEntropyLoss.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>59</p></td>
+<td><p>SplitConcatPattern</p></td>
+<td><p>SplitConcat</p></td>
+<td><p>1</p></td>
+<td><p>Replaces Split + Concat into identity if this is equivalent.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>60</p></td>
+<td><p>SqueezeAddPattern</p></td>
+<td><p>SqueezeAdd</p></td>
+<td><p>0</p></td>
+<td><p>Replaces the sequence Add(Squeeze, Squeeze) by Squeeze(Add).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>61</p></td>
+<td><p>SqueezeBinaryUnsqueezePattern</p></td>
+<td><p>SqueezeBinaryUnsqueeze</p></td>
+<td><p>0</p></td>
+<td><p>Replaces the sequence Squeeze Binary Unsqueeze) by Binary.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>62</p></td>
+<td><p>SqueezeUnsqueezePattern</p></td>
+<td><p>SqueezeUnsqueeze</p></td>
+<td><p>0</p></td>
+<td><p>Replaces the sequence Squeeze, Unsqueeze by Identity or the other ways around.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>63</p></td>
+<td><p>StaticConcatReshapePattern</p></td>
+<td><p>StaticConcatReshape</p></td>
+<td><p>0</p></td>
+<td><p>Tries to reduce the number of nodes in the sequence Concat + Reshape     by replacing one of the dimension by -1.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>64</p></td>
+<td><p>Sub1MulPattern</p></td>
+<td><p>Sub1Mul</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence <cite>(1 - X) x Y</cite>  by <cite>Y - X x Y</cite> to avoid the creation     of a constant in the graph. <cite>x</cite> means element wise multiplication.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>65</p></td>
+<td><p>SwapExpandReshapePattern</p></td>
+<td><p>SwapExpandReshape</p></td>
+<td><p>0</p></td>
+<td><p>Checks if Expand + Reshape can be swapped.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>66</p></td>
+<td><p>SwapRangeAddScalarPattern</p></td>
+<td><p>SwapRangeAddScalar</p></td>
+<td><p>1</p></td>
+<td><p>Swap Range + Add when a scalar is added.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>67</p></td>
+<td><p>SwapUnaryPattern</p></td>
+<td><p>SwapUnary</p></td>
+<td><p>0</p></td>
+<td><p>Tries to move computation nodes before any transpose or reshape.     That works for unary operator or equivalent to that.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>68</p></td>
+<td><p>SwapUnsqueezeTransposePattern</p></td>
+<td><p>SwapUnsqueezeTranspose</p></td>
+<td><p>0</p></td>
+<td><p>Swaps Unsqueeze and Transpose.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>69</p></td>
+<td><p>SwitchOrderBinaryPattern</p></td>
+<td><p>SwitchOrderBinary</p></td>
+<td><p>1</p></td>
+<td><p>If it makes sense, switches the order of two multiplications     or two additions if the broadcasting reduces one operator to     a an insignificant number.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>70</p></td>
+<td><p>SwitchReshapeActivationPattern</p></td>
+<td><p>SwitchReshapeActivation</p></td>
+<td><p>1</p></td>
+<td><p>Switches Gelu and Reshape after a Gemm or a MatMul.     Gelu can also be Gelu, Exp, Elu, Relu, Tan,     Tanh, Cos, Cosh, Sin, Sinh, Erf, LeakyRelu, PRelu,     Selu, Softmax, Softplus.     Reshape can also be Transpose.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>71</p></td>
+<td><p>TransposeEqualReshapePattern</p></td>
+<td><p>TransposeEqualReshape</p></td>
+<td><p>1</p></td>
+<td><p>Replaces a Transpose by a Reshape when switched dimensions are     all equal to 1 but one.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>72</p></td>
+<td><p>TransposeGatherPattern</p></td>
+<td><p>TransposeGather</p></td>
+<td><p>0</p></td>
+<td><p>Removes one unnecessary transpose followed by Gather with only one index.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>73</p></td>
+<td><p>TransposeMatMulPattern</p></td>
+<td><p>TransposeMatMul</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence Transpose, Matmul or Gemm into Gemm      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>74</p></td>
+<td><p>TransposeReshapeMatMulPattern</p></td>
+<td><p>TransposeReshapeMatMul</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence Transpose, Reshape, Matmul into     Reshape, Transpose, Matmul if possible. Another optimizer     will optimizes this sequence by using Gemm or better.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>75</p></td>
+<td><p>TransposeReshapeTransposePattern</p></td>
+<td><p>TransposeReshapeTranspose</p></td>
+<td><p>0</p></td>
+<td><p>Swaps Reshape and Transpose in a sequence such as this one…</p></td>
+</tr>
+<tr class="row-even"><td><p>76</p></td>
+<td><p>TransposeTransposePattern</p></td>
+<td><p>TransposeTranspose</p></td>
+<td><p>0</p></td>
+<td><p>Removes two consecutive transpose if the second one put the tensor in origin shape.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>77</p></td>
+<td><p>UnsqueezeEqualPattern</p></td>
+<td><p>UnsqueezeEqual</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence R -&gt; Equal -&gt; Unsqueeze, R -&gt; Unsqueeze,     into R -&gt; Unsqueeze -&gt; Equal.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>78</p></td>
+<td><p>UnsqueezeOrSqueezeReshapePattern</p></td>
+<td><p>UnsqueezeOrSqueezeReshape</p></td>
+<td><p>0</p></td>
+<td><p>Replaces the sequence Unsqueeze or Unsqueeze, Reshape by Reshape.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>79</p></td>
+<td><p>UnsqueezeReshapePattern</p></td>
+<td><p>UnsqueezeReshape</p></td>
+<td><p>0</p></td>
+<td><p>Unsqueeze + Reshape into Unsqueeze at a different place if possible.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>80</p></td>
+<td><p>UnsqueezeUnsqueezePattern</p></td>
+<td><p>UnsqueezeUnsqueeze</p></td>
+<td><p>0</p></td>
+<td><p>Replaces the sequence Unsqueeze, Unsqueeze by Unsqueeze.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>81</p></td>
+<td><p>WhereAddPattern</p></td>
+<td><p>WhereAdd</p></td>
+<td><p>1</p></td>
+<td><p>Replaces the sequence Add(X, Where(bool_mask, 0, -inf)) -&gt; Where(bool_mask, X, -inf).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>82</p></td>
+<td><p>RotaryConcatPartPattern</p></td>
+<td><p>RotaryConcatPart</p></td>
+<td><p>1</p></td>
+<td><p>Optimizes the following pattern</p></td>
+</tr>
+<tr class="row-odd"><td><p>83</p></td>
+<td><p>FunctionAttentionPattern</p></td>
+<td><p>FunctionAttention</p></td>
+<td><p>0</p></td>
+<td><p>Merges Attention nodes into a local function.     That includes a version for GroupQueryAttention     (see second pattern).      Main Pattern     ++++++++++++</p></td>
+</tr>
+<tr class="row-even"><td><p>84</p></td>
+<td><p>FunctionAttentionGQAPattern</p></td>
+<td><p>FunctionAttentionGQA</p></td>
+<td><p>0</p></td>
+<td><p>Merges onnx nodes equivalent to repeat interleave followed by function     <code class="docutils literal notranslate"><span class="pre">LocalAttention</span></code> into <code class="docutils literal notranslate"><span class="pre">LocalAttentionGQA</span></code> (GQA for GroupQueryAttention).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>85</p></td>
+<td><p>FunctionCausalMaskPattern</p></td>
+<td><p>FunctionCausalMask</p></td>
+<td><p>1</p></td>
+<td><p>Fuses nodes matching CausalMask into a local function.</p></td>
+</tr>
+<tr class="row-even"><td><p>86</p></td>
+<td><p>FunctionCausalMaskMulAddPattern</p></td>
+<td><p>FunctionCausalMaskMulAdd</p></td>
+<td><p>1</p></td>
+<td><p>Fuses nodes matching CausalMask into a local function.</p></td>
+</tr>
+<tr class="row-odd"><td><p>87</p></td>
+<td><p>FunctionCosSinCachePattern</p></td>
+<td><p>FunctionCosSinCache</p></td>
+<td><p>1</p></td>
+<td><p>Fuses nodes to simplify the creation of cos/sin caches in LLM.</p></td>
+</tr>
+<tr class="row-even"><td><p>88</p></td>
+<td><p>FunctionHalfRotaryEmbeddingPattern</p></td>
+<td><p>FunctionHalfRotaryEmbedding</p></td>
+<td><p>1</p></td>
+<td><p>Fuses nodes matching half RotaryEmbedding(23) into a local function.</p></td>
+</tr>
+<tr class="row-odd"><td><p>89</p></td>
+<td><p>RMSNormalizationPattern</p></td>
+<td><p>RMSNormalization</p></td>
+<td><p>1</p></td>
+<td><p>Fuses the nodes equivalent to RMSNormalization(23).      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-even"><td><p>90</p></td>
+<td><p>RMSNormalizationMulPattern</p></td>
+<td><p>RMSNormalizationMul</p></td>
+<td><p>1</p></td>
+<td><p>Fuses the nodes RMSNormalization(23) + Mul into RMSNormalization.      Model with nodes to be fused…</p></td>
+</tr>
+<tr class="row-odd"><td><p>91</p></td>
+<td><p>AttentionGQAPattern</p></td>
+<td><p>AttentionGQA</p></td>
+<td><p>2</p></td>
+<td><p>Fuses LocalAttention into Attention.     Opset must be &gt;= 23 to do so.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">yobx.xoptim.patterns</a><ul>
+<li><a class="reference internal" href="#get-default-patterns">get_default_patterns</a><ul>
+<li><a class="reference internal" href="#yobx.xoptim.patterns.get_default_patterns"><code class="docutils literal notranslate"><span class="pre">get_default_patterns()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="../patterns_api.html">
+                    <span class="icon">&lt;</span><span>yobx.xoptim.patterns_api</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="onnx_any.html"><span>yobx.xoptim.patterns.onnx_any</span><span class="icon">&gt;</span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>

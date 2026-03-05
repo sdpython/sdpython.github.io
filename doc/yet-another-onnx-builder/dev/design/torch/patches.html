@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Patches (torch export) &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d0ff0132" />
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <script src="../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gallery of Examples" href="../../auto_examples/index.html" />
+    <link rel="prev" title="InputObserver" href="input_observer.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../index.html" title="Go to homepage"><img src="../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">Scikit-learn Export to ONNX</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Torch Export to ONNX</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_observer.html">InputObserver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Patches (torch export)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="patches-torch-export">
+<span id="l-design-patches"></span><h1>Patches (torch export)<a class="headerlink" href="#patches-torch-export" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section covers functionality that is <strong>specific to PyTorch</strong>.
+It is only relevant when exporting <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> models with
+<a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> and has no bearing on ONNX models built
+directly with the builder APIs.</p>
+</div>
+<p>Before exporting a <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> with <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>,
+certain internal functions in <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.10)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">transformers</span></code> must be
+temporarily <strong>replaced</strong> with corrected versions to avoid crashes or incorrect
+behaviour during tracing.  The patching infrastructure in
+<a class="reference internal" href="../../api/helpers/patch_helper.html#module-yobx.helpers.patch_helper" title="yobx.helpers.patch_helper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.helpers.patch_helper</span></code></a> and <a class="reference internal" href="../../api/torch/patch.html#module-yobx.torch.patch" title="yobx.torch.patch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.patch</span></code></a> provides a
+structured, reversible way to apply, track and report such replacements.</p>
+<section id="why-patches-are-needed">
+<h2>Why patches are needed<a class="headerlink" href="#why-patches-are-needed" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> symbolically traces a model, meaning that every
+operation is recorded with <em>symbolic</em> dimension variables rather than concrete
+sizes.  Several low-level torch and transformers helpers were not written to
+cope with symbolic dimensions and raise exceptions or silently return wrong
+results when they encounter them.</p>
+<section id="control-flow-is-the-primary-source-of-failures">
+<h3>Control flow is the primary source of failures<a class="headerlink" href="#control-flow-is-the-primary-source-of-failures" title="Link to this heading">¶</a></h3>
+<p>The most fundamental issue is <strong>Python control flow</strong> inside traced functions.
+During symbolic tracing, dimension values are <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymInt" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.SymInt</span></code></a> objects
+rather than plain integers.  Any code written as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition_on_size</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">SomeError</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will crash the exporter because evaluating the <code class="docutils literal notranslate"><span class="pre">if</span></code> forces the symbolic
+integer to a concrete boolean — a <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymBool" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymBool</span></code></a> — which cannot be
+resolved at trace time, raising <code class="docutils literal notranslate"><span class="pre">GuardOnDataDependentSymNode</span></code>.</p>
+<p>The fix is to replace such guards with <code class="xref py py-func docutils literal notranslate"><span class="pre">torch._check()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">condition_on_size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">torch._check()</span></code> is understood by the exporter and recorded as a
+constraint on the symbolic value instead of executing a branch.  The patches
+shipped with this library systematically replace <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">...</span> <span class="pre">:</span> <span class="pre">raise</span></code> patterns
+in torch and transformers internals with <code class="docutils literal notranslate"><span class="pre">torch._check(...)</span></code> equivalents so
+that symbolic tracing can proceed without crashing.</p>
+</section>
+<section id="other-common-failure-modes">
+<h3>Other common failure modes<a class="headerlink" href="#other-common-failure-modes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GuardOnDataDependentSymNode</span></code> — a symbolic size cannot be evaluated to a
+concrete boolean at trace time, crashing broadcasting helpers such as
+<code class="docutils literal notranslate"><span class="pre">infer_size</span></code> or <code class="docutils literal notranslate"><span class="pre">_broadcast_shapes</span></code>.</p></li>
+<li><p>Incorrect range-constraint computation — <code class="docutils literal notranslate"><span class="pre">_get_range_constraints</span></code> uses the
+wrong argument order, causing dynamic shape constraints to be mis-assigned.</p></li>
+<li><p>Wrapped <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding.forward</span></code> — some transformers model variants wrap
+<code class="docutils literal notranslate"><span class="pre">RotaryEmbedding.forward</span></code> with a decorator that introduces control-flow
+invisible to the exporter; the wrapper must be replaced with a traceable
+version.</p></li>
+</ul>
+<p>Rather than forking torch or transformers, patches swap in corrected
+implementations only for the duration of the export, then restore the originals.
+On that particular topic, <a class="reference internal" href="../../api/torch/tiny_models.html#yobx.torch.tiny_models.TinyBroadcastAddModel" title="yobx.torch.tiny_models.TinyBroadcastAddModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.tiny_models.TinyBroadcastAddModel</span></code></a>
+illustrates what problem a user can run into.
+The exporter makes a strong assumption when it comes to infer
+shapes after a broadcast. Two dimensions are broadcastable
+if they are equal or one of them is equal to 1. But sometimes,
+this assumption cannot be verified in a sense the result is not known.
+In that condition, it is reasonable to assume the model is correct
+and the final dimension is the maximum of the two broadcasted dimensions.
+The patches enables that to be possible as the example
+<a class="reference internal" href="../../api/torch/tiny_models.html#yobx.torch.tiny_models.TinyBroadcastAddModel" title="yobx.torch.tiny_models.TinyBroadcastAddModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.tiny_models.TinyBroadcastAddModel</span></code></a> demonstrates.</p>
+</section>
+</section>
+<section id="core-data-structures">
+<h2>Core data structures<a class="headerlink" href="#core-data-structures" title="Link to this heading">¶</a></h2>
+<section id="patchinfo">
+<h3>PatchInfo<a class="headerlink" href="#patchinfo" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchInfo" title="yobx.helpers.patch_helper.PatchInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PatchInfo</span></code></a> describes a single patch:</p>
+<ul class="simple">
+<li><p><strong>patch</strong> — the replacement callable.</p></li>
+<li><p><strong>do</strong> / <strong>undo</strong> — lambdas that swap the function in and out of the target
+module or class.</p></li>
+<li><p><strong>family</strong> — a free-form category string (<code class="docutils literal notranslate"><span class="pre">&quot;torch&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;transformers&quot;</span></code>) used for reporting.</p></li>
+<li><p><strong>depends_on</strong> — a list of <a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchInfo" title="yobx.helpers.patch_helper.PatchInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PatchInfo</span></code></a>
+objects that must also be applied for this patch to work correctly.</p></li>
+</ul>
+<p>The convenience constructor <a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchInfo.make" title="yobx.helpers.patch_helper.PatchInfo.make"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make()</span></code></a>
+covers the common pattern of replacing an attribute on a module or class:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch._refs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.patch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatchInfo</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_patched_fn</span><span class="p">(</span><span class="o">*</span><span class="n">shapes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimal stand-in that just returns the first non-empty shape.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="n">patch</span> <span class="o">=</span> <span class="n">PatchInfo</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="n">my_patched_fn</span><span class="p">,</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="p">,</span>
+    <span class="s2">&quot;_broadcast_shapes&quot;</span><span class="p">,</span>
+    <span class="n">family</span><span class="o">=</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Apply the patch.</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">do</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;active patch:&quot;</span><span class="p">,</span> <span class="n">patch</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;patched function:&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Restore the original.</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">undo</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;after undo:&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">active</span> <span class="n">patch</span><span class="p">:</span> <span class="n">my_patched_fn</span>
+    <span class="n">patched</span> <span class="n">function</span><span class="p">:</span> <span class="n">my_patched_fn</span>
+    <span class="n">after</span> <span class="n">undo</span><span class="p">:</span> <span class="n">_broadcast_shapes</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchInfo.make_diff" title="yobx.helpers.patch_helper.PatchInfo.make_diff"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_diff()</span></code></a> produces a unified diff
+between the original function and the patched replacement.  Calling this for
+every active patch (or via
+<a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.make_report" title="yobx.helpers.patch_helper.PatchDetails.make_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_report()</span></code></a>) is important
+because it gives an <strong>exhaustive</strong> picture of what changed — including patches
+that are only reachable through a module method (e.g. a <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code>
+variant whose <code class="docutils literal notranslate"><span class="pre">forward</span></code> is called indirectly from the top-level
+<code class="docutils literal notranslate"><span class="pre">nn.Module</span></code>).  Without the full diff it is easy to overlook a patched
+sub-function and miss the reason a particular graph node was introduced:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch._refs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.patch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatchInfo</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_patched_fn</span><span class="p">(</span><span class="o">*</span><span class="n">shapes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the first non-empty shape.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[]</span>
+
+<span class="n">patch</span> <span class="o">=</span> <span class="n">PatchInfo</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="n">my_patched_fn</span><span class="p">,</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="p">,</span>
+    <span class="s2">&quot;_broadcast_shapes&quot;</span><span class="p">,</span>
+    <span class="n">family</span><span class="o">=</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">do</span><span class="p">()</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">make_diff</span><span class="p">()</span>
+<span class="n">patch</span><span class="o">.</span><span class="n">undo</span><span class="p">()</span>
+<span class="c1"># Print the first few lines of the diff.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>That gives:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---</span> <span class="n">original</span>
+<span class="o">+++</span> <span class="n">rewritten</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">77</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span> <span class="o">@@</span>
+<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
+<span class="o">-</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="o">-</span>        <span class="n">guard_or_false</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">has_hint</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">is_nested_int</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">size_hint</span><span class="p">,</span>
+<span class="o">-</span>    <span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Or with <code class="docutils literal notranslate"><span class="pre">diff</span> <span class="pre">=</span> <span class="pre">patch.format_diff(&quot;rst&quot;)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">_patch</span><span class="o">-</span><span class="n">torch</span><span class="o">-</span><span class="n">my_patched_fn</span><span class="p">:</span>
+
+<span class="n">torch</span><span class="p">:</span> <span class="n">_broadcast_shapes</span> <span class="o">-&gt;</span> <span class="n">my_patched_fn</span>
+<span class="o">=========================================</span>
+
+<span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">diff</span>
+    <span class="p">:</span><span class="n">linenos</span><span class="p">:</span>
+
+    <span class="o">---</span> <span class="n">original</span>
+    <span class="o">+++</span> <span class="n">rewritten</span>
+    <span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">77</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span> <span class="o">@@</span>
+    <span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
+    <span class="o">-</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="o">-</span>        <span class="n">guard_or_false</span><span class="p">,</span>
+    <span class="o">-</span>        <span class="n">has_hint</span><span class="p">,</span>
+    <span class="o">-</span>        <span class="n">is_nested_int</span><span class="p">,</span>
+    <span class="o">-</span>        <span class="n">size_hint</span><span class="p">,</span>
+    <span class="o">-</span>    <span class="p">)</span>
+    <span class="o">-</span>
+    <span class="o">-</span>    <span class="n">backed_so</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">backed_size_oblivious</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="patchdetails">
+<h3>PatchDetails<a class="headerlink" href="#patchdetails" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails" title="yobx.helpers.patch_helper.PatchDetails"><code class="xref py py-class docutils literal notranslate"><span class="pre">PatchDetails</span></code></a> is an ordered collection of
+<a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchInfo" title="yobx.helpers.patch_helper.PatchInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">PatchInfo</span></code></a> objects.  It is the object
+yielded by the <a class="reference internal" href="../../api/torch/patch.html#yobx.torch.patch.apply_patches_for_model" title="yobx.torch.patch.apply_patches_for_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_patches_for_model()</span></code></a> context
+manager so that callers can inspect every patch that was active during export.</p>
+<p>Useful methods:</p>
+<ul>
+<li><p><a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.find" title="yobx.helpers.patch_helper.PatchDetails.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a> — look up a patch by
+function name.</p></li>
+<li><p><a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.patches_involved_in_graph" title="yobx.helpers.patch_helper.PatchDetails.patches_involved_in_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">patches_involved_in_graph()</span></code></a>
+— identify which patches contributed nodes to a graph by
+cross-referencing <code class="docutils literal notranslate"><span class="pre">node.meta[&quot;stack_trace&quot;]</span></code> with each patch’s source
+location.  The method is designed for <a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> but accepts
+any object that provides:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">graph.nodes</span></code> — an iterable of node objects;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node.meta</span></code> — a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> on each node;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node.meta[&quot;stack_trace&quot;]</span></code> — the call-stack string captured when the
+node was created.</p></li>
+</ul>
+<p>Any custom graph representation that exposes these three attributes works
+equally well.</p>
+</li>
+<li><p><a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.make_report" title="yobx.helpers.patch_helper.PatchDetails.make_report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_report()</span></code></a> — render a
+human-readable report (raw text or RST) listing each involved patch together
+with its diff and the affected graph nodes.</p></li>
+</ul>
+</section>
+</section>
+<section id="applying-patches">
+<h2>Applying patches<a class="headerlink" href="#applying-patches" title="Link to this heading">¶</a></h2>
+<p>The recommended entry point is the context manager
+<a class="reference internal" href="../../api/torch/patch.html#yobx.torch.patch.apply_patches_for_model" title="yobx.torch.patch.apply_patches_for_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_patches_for_model()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_patches_for_model</span>
+
+<span class="k">with</span> <span class="n">apply_patches_for_model</span><span class="p">(</span>
+    <span class="n">patch_torch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">details</span><span class="p">:</span>
+    <span class="n">ep</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">ds</span><span class="p">)</span>
+
+<span class="c1"># After the `with` block every patch has been restored.</span>
+<span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">details</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">patch</span><span class="o">.</span><span class="n">format_diff</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;raw&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><strong>patch_torch</strong> — applies the four patches in
+<a class="reference internal" href="../../api/torch/in_torch/patches.html#module-yobx.torch.in_torch.patches" title="yobx.torch.in_torch.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_torch.patches</span></code></a> that fix symbolic-shape handling inside
+<a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.10)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a>.</p></li>
+<li><p><strong>patch_transformers</strong> — applies the <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> patches from
+<a class="reference internal" href="../../api/torch/in_transformers/patches.html#module-yobx.torch.in_transformers.patches" title="yobx.torch.in_transformers.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_transformers.patches</span></code></a>.  When <em>model</em> is provided, the
+function inspects each sub-module for wrapped <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding.forward</span></code>
+implementations and adds a model-specific patch automatically.</p></li>
+<li><p><strong>model</strong> — the <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> being exported.  Supplying it
+enables automatic detection of non-standard <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> variants.</p></li>
+<li><p><strong>verbose</strong> — print each patch name as it is applied or removed.</p></li>
+</ul>
+</section>
+<section id="shipped-patches">
+<h2>Shipped patches<a class="headerlink" href="#shipped-patches" title="Link to this heading">¶</a></h2>
+<section id="torch-patches">
+<h3>torch patches<a class="headerlink" href="#torch-patches" title="Link to this heading">¶</a></h3>
+<p>The following patches are registered in <a class="reference internal" href="../../api/torch/in_torch/patches.html#module-yobx.torch.in_torch.patches" title="yobx.torch.in_torch.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_torch.patches</span></code></a>
+(family <code class="docutils literal notranslate"><span class="pre">&quot;torch&quot;</span></code>):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Patch function</p></th>
+<th class="head"><p>What it fixes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">patched_DynamicDimConstraintPrinter</span></code>
+<code class="docutils literal notranslate"><span class="pre">._print_Symbol</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DynamicDimConstraintPrinter._print_Symbol</span></code>
+returns the source name for a symbol rather
+than crashing when <code class="docutils literal notranslate"><span class="pre">symbol_to_source</span></code> does
+not contain the symbol.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">patched_infer_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">torch._subclasses.fake_impls.infer_size</span></code> —
+uses <code class="docutils literal notranslate"><span class="pre">torch.sym_max</span></code> in the generic case
+instead of asserting equality, allowing
+symbolic dimensions to broadcast correctly.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">patched__broadcast_shapes</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">torch._refs._broadcast_shapes</span></code> — replaces
+hard equality guards with <code class="docutils literal notranslate"><span class="pre">sym_max</span></code> so
+that shapes with unknown symbolic dimensions
+can be broadcast without raising
+<code class="docutils literal notranslate"><span class="pre">GuardOnDataDependentSymNode</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">patched__get_range_constraints</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">torch.export._trace._get_range_constraints</span></code>
+— passes <code class="docutils literal notranslate"><span class="pre">preserve_order=True</span></code> to
+<code class="docutils literal notranslate"><span class="pre">_combine_args</span></code> so that dynamic-shape
+constraints are matched to the correct
+arguments (see <a class="reference external" href="https://github.com/pytorch/pytorch/pull/174593">pytorch/pytorch#174593</a>).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="transformers-patches">
+<h3>transformers patches<a class="headerlink" href="#transformers-patches" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/torch/in_transformers/patches.html#yobx.torch.in_transformers.patches.get_patches_for" title="yobx.torch.in_transformers.patches.get_patches_for"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_patches_for()</span></code></a> returns patches for
+the <code class="docutils literal notranslate"><span class="pre">transformers</span></code> library.  When a model is supplied the function walks its
+sub-modules and adds a model-specific patch for every <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> whose
+<code class="docutils literal notranslate"><span class="pre">forward</span></code> method has been wrapped (common in recent <code class="docutils literal notranslate"><span class="pre">transformers</span></code> releases
+where <code class="docutils literal notranslate"><span class="pre">dynamic_rope_update</span></code> is applied via a decorator).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> patch replaces the wrapped <code class="docutils literal notranslate"><span class="pre">forward</span></code> with
+<code class="docutils literal notranslate"><span class="pre">common_RotaryEmbedding.forward</span></code> from
+<a class="reference internal" href="../../api/torch/in_transformers/_patches_model_rope_utils.html#module-yobx.torch.in_transformers._patches_model_rope_utils" title="yobx.torch.in_transformers._patches_model_rope_utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_transformers._patches_model_rope_utils</span></code></a>, and adds a
+dependency patch that replaces
+<code class="docutils literal notranslate"><span class="pre">transformers.modeling_rope_utils.dynamic_rope_update</span></code> with a traceable
+version.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="flatten.html#l-design-flatten"><span class="std std-ref">Flattening Functionalities (torch)</span></a> — registering pytree nodes for <code class="docutils literal notranslate"><span class="pre">DynamicCache</span></code>
+and other transformers classes, which is typically used alongside patches.</p>
+<p><a class="reference internal" href="../../api/helpers/patch_helper.html#module-yobx.helpers.patch_helper" title="yobx.helpers.patch_helper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.helpers.patch_helper</span></code></a> — <code class="xref py py-class docutils literal notranslate"><span class="pre">PatchInfo</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PatchDetails</span></code> API reference.</p>
+<p><a class="reference internal" href="../../api/torch/patch.html#module-yobx.torch.patch" title="yobx.torch.patch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.patch</span></code></a> — <code class="xref py py-func docutils literal notranslate"><span class="pre">apply_patches_for_model()</span></code> API reference.</p>
+<p><a class="reference internal" href="../../api/torch/in_torch/patches.html#module-yobx.torch.in_torch.patches" title="yobx.torch.in_torch.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_torch.patches</span></code></a> — torch patch implementations.</p>
+<p><a class="reference internal" href="../../api/torch/in_transformers/patches.html#module-yobx.torch.in_transformers.patches" title="yobx.torch.in_transformers.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_transformers.patches</span></code></a> — transformers patch
+implementations.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">Patches (torch export)</a><ul>
+<li><a class="reference internal" href="#why-patches-are-needed">Why patches are needed</a><ul>
+<li><a class="reference internal" href="#control-flow-is-the-primary-source-of-failures">Control flow is the primary source of failures</a></li>
+<li><a class="reference internal" href="#other-common-failure-modes">Other common failure modes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#core-data-structures">Core data structures</a><ul>
+<li><a class="reference internal" href="#patchinfo">PatchInfo</a></li>
+<li><a class="reference internal" href="#patchdetails">PatchDetails</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applying-patches">Applying patches</a></li>
+<li><a class="reference internal" href="#shipped-patches">Shipped patches</a><ul>
+<li><a class="reference internal" href="#torch-patches">torch patches</a></li>
+<li><a class="reference internal" href="#transformers-patches">transformers patches</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="input_observer.html">
+                    <span class="icon">&lt;</span><span>InputObserver</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="../../auto_examples/index.html"><span>Gallery of Examples</span><span class="icon">&gt;</span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>
