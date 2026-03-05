@@ -350,10 +350,11 @@ anywhere in the graph.</p></th>
 </tr>
 </tbody>
 </table>
-<p>The API should be extended to support common operations on shapes, <code class="docutils literal notranslate"><span class="pre">+,</span> <span class="pre">-,</span> <span class="pre">//,</span> <span class="pre">*,</span> <span class="pre">%,</span> <span class="pre">min,</span> <span class="pre">max</span></code>,
-to make sure a concatenation leads to the same expression indenpendant from the GraphBuilder
-implementation.</p>
-<p><strong>… in progress…</strong></p>
+<p>The current does not include common operations on shapes, <code class="docutils literal notranslate"><span class="pre">+,</span> <span class="pre">-,</span> <span class="pre">//,</span> <span class="pre">*,</span> <span class="pre">%,</span> <span class="pre">min,</span> <span class="pre">max</span></code>
+or even their simplification. This is usually needed to optimize models
+but not mandatory to write the model itself. This is left to the builder.
+Every converter must usually known the type, the device, the rank
+and sometimes if a dimension is static or dynamic.</p>
 <section id="shape-and-type-representation">
 <h3>Shape and Type representation<a class="headerlink" href="#shape-and-type-representation" title="Link to this heading">¶</a></h3>
 <p>This API follows ONNX standard.</p>
@@ -362,7 +363,7 @@ implementation.</p>
 <li><p>A type is an integer: see <a class="reference external" href="https://onnx.ai/onnx/intro/concepts.html#supported-types">supported types</a>.</p></li>
 <li><p>A shape is a tuple, empty or filled with integers (static dimension) or strings (dynamic dimension).</p></li>
 </ul>
-<p>Additionnaly:</p>
+<p>Additionally:</p>
 <ul class="simple">
 <li><p>A device is an integer, -1 for CPU, a value &gt;= 0 for a CUDA device.</p></li>
 <li><p>A rank is an integer and equal to <code class="docutils literal notranslate"><span class="pre">len(shape)</span></code>.</p></li>
