@@ -138,7 +138,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -182,78 +185,44 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;add_1&quot;, onnx.TensorProto.FLOAT16, shape=(4, 512, 128))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init7_s1_-1&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([-1], dtype=np.int64),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init10_s1_&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([2.0], dtype=np.float16),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init10_s1_2&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([0.0], dtype=np.float16),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;ReduceMean&#39;, [&#39;add_1&#39;, &#39;init7_s1_-1&#39;], [&#39;_onx_reducemean0&#39;],</span>
+<span class="sd">                                 keepdims=1),</span>
+<span class="sd">                    oh.make_node(&#39;Sub&#39;, [&#39;add_1&#39;, &#39;_onx_reducemean0&#39;], [&#39;_onx_sub0&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Pow&#39;, [&#39;_onx_sub0&#39;, &#39;init10_s1_&#39;], [&#39;_onx_pow0&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;ReduceMean&#39;, [&#39;_onx_pow0&#39;, &#39;init7_s1_-1&#39;],</span>
+<span class="sd">                                 [&#39;_onx_reducemean02&#39;], keepdims=1),</span>
+<span class="sd">                    oh.make_node(&#39;Add&#39;, [&#39;_onx_reducemean02&#39;, &#39;init10_s1_2&#39;], [&#39;_onx_add0&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Sqrt&#39;, [&#39;_onx_add0&#39;], [&#39;_onx_sqrt0&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Div&#39;, [&#39;_onx_sub0&#39;, &#39;_onx_sqrt0&#39;], [&#39;_onx_div0&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;add_1&#39;, onnx.TensorProto.FLOAT16, (4, 512, 128)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;_onx_div0&#39;, onnx.TensorProto.FLOAT16,</span>
+<span class="sd">                                              (4, 512, 128)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;init7_s1_-1&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([-1], dtype=np.int64), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;init10_s1_&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([2.0], dtype=np.float16), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;init10_s1_2&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([0.0], dtype=np.float16), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;ReduceMean&quot;, [&quot;add_1&quot;, &quot;init7_s1_-1&quot;], [&quot;_onx_reducemean0&quot;], keepdims=1</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Sub&quot;, [&quot;add_1&quot;, &quot;_onx_reducemean0&quot;], [&quot;_onx_sub0&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Pow&quot;, [&quot;_onx_sub0&quot;, &quot;init10_s1_&quot;], [&quot;_onx_pow0&quot;]))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;ReduceMean&quot;, [&quot;_onx_pow0&quot;, &quot;init7_s1_-1&quot;], [&quot;_onx_reducemean02&quot;], keepdims=1</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(&quot;Add&quot;, [&quot;_onx_reducemean02&quot;, &quot;init10_s1_2&quot;], [&quot;_onx_add0&quot;])</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Sqrt&quot;, [&quot;_onx_add0&quot;], [&quot;_onx_sqrt0&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Div&quot;, [&quot;_onx_sub0&quot;, &quot;_onx_sqrt0&quot;], [&quot;_onx_div0&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(</span>
-<span class="sd">                &quot;_onx_div0&quot;, onnx.TensorProto.FLOAT16, shape=(4, 512, 128)</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -265,337 +234,80 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;add_1&quot;, onnx.TensorProto.FLOAT16, shape=(4, 512, 128))</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;p_model_albert_embeddings_layernorm_weight&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array(</span>
-<span class="sd">                        [</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                        ],</span>
-<span class="sd">                        dtype=np.float16,</span>
-<span class="sd">                    ),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;p_model_albert_embeddings_layernorm_bias&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array(</span>
-<span class="sd">                        [</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                        ],</span>
-<span class="sd">                        dtype=np.float16,</span>
-<span class="sd">                    ),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;LayerNormalization&quot;,</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
 <span class="sd">                [</span>
-<span class="sd">                    &quot;add_1&quot;,</span>
-<span class="sd">                    &quot;p_model_albert_embeddings_layernorm_weight&quot;,</span>
-<span class="sd">                    &quot;p_model_albert_embeddings_layernorm_bias&quot;,</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;p_model_albert_embeddings_layernorm_weight&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0], dtype=np.float16),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;p_model_albert_embeddings_layernorm_bias&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0], dtype=np.float16),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;LayerNormalization&#39;,</span>
+<span class="sd">                        [&#39;add_1&#39;, &#39;p_model_albert_embeddings_layernorm_weight&#39;,</span>
+<span class="sd">                         &#39;p_model_albert_embeddings_layernorm_bias&#39;],</span>
+<span class="sd">                        [&#39;_onx_div0&#39;], axis=-1, epsilon=0.0, stash_type=1),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [&quot;_onx_div0&quot;],</span>
-<span class="sd">                axis=-1,</span>
-<span class="sd">                epsilon=0.0,</span>
-<span class="sd">                stash_type=1,</span>
-<span class="sd">            )</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;add_1&#39;, onnx.TensorProto.FLOAT16, (4, 512, 128)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;_onx_div0&#39;, onnx.TensorProto.FLOAT16,</span>
+<span class="sd">                                              (4, 512, 128)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(</span>
-<span class="sd">                &quot;_onx_div0&quot;, onnx.TensorProto.FLOAT16, shape=(4, 512, 128)</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -798,61 +510,39 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 20),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;scale&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;s0&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;s0&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array(</span>
-<span class="sd">                        [-0.10000000149011612, -0.009999999776482582, -0.05000000074505806],</span>
-<span class="sd">                        dtype=np.float32,</span>
-<span class="sd">                    ),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;s0&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([-0.10000000149011612,</span>
+<span class="sd">                                               -0.009999999776482582,</span>
+<span class="sd">                                               -0.05000000074505806], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;scale&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([2.0, 3.0, 4.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;LayerNormalization&#39;, [&#39;X&#39;, &#39;s0&#39;], [&#39;norm&#39;],</span>
+<span class="sd">                                 epsilon=0.10000000149011612),</span>
+<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;norm&#39;, &#39;scale&#39;], [&#39;Y&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;scale&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;s0&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 20)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;scale&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([2.0, 3.0, 4.0], dtype=np.float32), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;LayerNormalization&quot;, [&quot;X&quot;, &quot;s0&quot;], [&quot;norm&quot;], epsilon=0.10000000149011612</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;norm&quot;, &quot;scale&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -863,45 +553,29 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 20),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;scale&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;s0&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(&quot;Mul&quot;, [&quot;s0&quot;, &quot;scale&quot;], [&quot;LayerNormalizationScalePattern_s0&quot;])</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;s0&#39;, &#39;scale&#39;], [&#39;LayerNormalizationScalePattern_s0&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;LayerNormalization&#39;, [&#39;X&#39;, &#39;LayerNormalizationScalePattern_s0&#39;],</span>
+<span class="sd">                                 [&#39;Y&#39;], epsilon=0.10000000149011612),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;scale&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;s0&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 20)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;LayerNormalization&quot;,</span>
-<span class="sd">                [&quot;X&quot;, &quot;LayerNormalizationScalePattern_s0&quot;],</span>
-<span class="sd">                [&quot;Y&quot;],</span>
-<span class="sd">                epsilon=0.10000000149011612,</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1066,62 +740,43 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;scale&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;bias&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT16, shape=(3, 3)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;scale&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array([0.5, 0.6000000238418579, 0.699999988079071], dtype=np.float32),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;scale&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([0.5,</span>
+<span class="sd">                                               0.6000000238418579,</span>
+<span class="sd">                                               0.699999988079071], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;bias&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([-0.5,</span>
+<span class="sd">                                               -0.6000000238418579,</span>
+<span class="sd">                                               -0.699999988079071], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;X&#39;], [&#39;xc&#39;], to=1),</span>
+<span class="sd">                    oh.make_node(&#39;LayerNormalization&#39;, [&#39;xc&#39;, &#39;scale&#39;, &#39;bias&#39;], [&#39;norm&#39;],</span>
+<span class="sd">                                 stash_type=1),</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;norm&#39;], [&#39;Y&#39;], to=10),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;scale&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;bias&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT16, (3, 3)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (3, 3)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;bias&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array([-0.5, -0.6000000238418579, -0.699999988079071], dtype=np.float32),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;X&quot;], [&quot;xc&quot;], to=1))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;LayerNormalization&quot;, [&quot;xc&quot;, &quot;scale&quot;, &quot;bias&quot;], [&quot;norm&quot;], stash_type=1</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;norm&quot;], [&quot;Y&quot;], to=10))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT16, shape=(3, 3)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -1132,56 +787,34 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;scale&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;bias&quot;, onnx.TensorProto.FLOAT, shape=(3,)))</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT16, shape=(3, 3)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Cast&quot;, [&quot;scale&quot;], [&quot;CastLayerNormalizationCastPattern_scale::C10&quot;], to=10</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Cast&quot;, [&quot;bias&quot;], [&quot;CastLayerNormalizationCastPattern_bias::C10&quot;], to=10</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;LayerNormalization&quot;,</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
 <span class="sd">                [</span>
-<span class="sd">                    &quot;X&quot;,</span>
-<span class="sd">                    &quot;CastLayerNormalizationCastPattern_scale::C10&quot;,</span>
-<span class="sd">                    &quot;CastLayerNormalizationCastPattern_bias::C10&quot;,</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;scale&#39;],</span>
+<span class="sd">                                 [&#39;CastLayerNormalizationCastPattern_scale::C10&#39;], to=10),</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;bias&#39;],</span>
+<span class="sd">                                 [&#39;CastLayerNormalizationCastPattern_bias::C10&#39;], to=10),</span>
+<span class="sd">                    oh.make_node(&#39;LayerNormalization&#39;,</span>
+<span class="sd">                        [&#39;X&#39;, &#39;CastLayerNormalizationCastPattern_scale::C10&#39;,</span>
+<span class="sd">                         &#39;CastLayerNormalizationCastPattern_bias::C10&#39;],</span>
+<span class="sd">                        [&#39;Y&#39;], stash_type=1),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [&quot;Y&quot;],</span>
-<span class="sd">                stash_type=1,</span>
-<span class="sd">            )</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;scale&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;bias&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT16, (3, 3)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (3, 3)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT16, shape=(3, 3)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1287,163 +920,52 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(1024, 16)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;scale&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array(</span>
-<span class="sd">                        [</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                        ],</span>
-<span class="sd">                        dtype=np.float32,</span>
-<span class="sd">                    ),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;scale&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;B&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;input_mean&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0,</span>
+<span class="sd">                                               0.0, 0.0, 0.0, 0.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;input_var&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0,</span>
+<span class="sd">                                               1.0, 1.0, 1.0, 1.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;BatchNormalization&#39;,</span>
+<span class="sd">                                 [&#39;X&#39;, &#39;scale&#39;, &#39;B&#39;, &#39;input_mean&#39;, &#39;input_var&#39;], [&#39;Y&#39;],</span>
+<span class="sd">                                 epsilon=0.0),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (1024, 16)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (1024, 16)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;B&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array(</span>
-<span class="sd">                        [</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                        ],</span>
-<span class="sd">                        dtype=np.float32,</span>
-<span class="sd">                    ),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;input_mean&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array(</span>
-<span class="sd">                        [</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                            0.0,</span>
-<span class="sd">                        ],</span>
-<span class="sd">                        dtype=np.float32,</span>
-<span class="sd">                    ),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;input_var&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array(</span>
-<span class="sd">                        [</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                            1.0,</span>
-<span class="sd">                        ],</span>
-<span class="sd">                        dtype=np.float32,</span>
-<span class="sd">                    ),</span>
-<span class="sd">                    name=&quot;value&quot;,</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;BatchNormalization&quot;,</span>
-<span class="sd">                [&quot;X&quot;, &quot;scale&quot;, &quot;B&quot;, &quot;input_mean&quot;, &quot;input_var&quot;],</span>
-<span class="sd">                [&quot;Y&quot;],</span>
-<span class="sd">                epsilon=0.0,</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(1024, 16)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -1454,33 +976,25 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(1024, 16)))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;X&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(1024, 16)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Identity&#39;, [&#39;X&#39;], [&#39;Y&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (1024, 16)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (1024, 16)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1704,78 +1218,47 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 23),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, &quot;D&quot;))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;exp&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([2.0], dtype=np.float16),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;axis&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([-1], dtype=np.int64),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;eps&#39;],</span>
+<span class="sd">                                 value=onh.from_array(</span>
+<span class="sd">                                     np.array([9.999999974752427e-07], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;one&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([1.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;X&#39;], [&#39;Xc&#39;], to=1),</span>
+<span class="sd">                    oh.make_node(&#39;Pow&#39;, [&#39;Xc&#39;, &#39;exp&#39;], [&#39;x2&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;ReduceMean&#39;, [&#39;x2&#39;, &#39;axis&#39;], [&#39;xr&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Add&#39;, [&#39;xr&#39;, &#39;eps&#39;], [&#39;xa&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Sqrt&#39;, [&#39;xa&#39;], [&#39;xq&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Div&#39;, [&#39;one&#39;, &#39;xq&#39;], [&#39;Z&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;Z&#39;, &#39;Xc&#39;], [&#39;Yc&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;Yc&#39;], [&#39;Y&#39;], to=10),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;D&#39;)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;axis&#39;, onnx.TensorProto.INT64, (1,)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;D&#39;)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 23)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;axis&quot;, onnx.TensorProto.INT64, shape=(1,)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;exp&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([2.0], dtype=np.float16), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;axis&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([-1], dtype=np.int64), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;eps&quot;],</span>
-<span class="sd">                value=onh.from_array(</span>
-<span class="sd">                    np.array([9.999999974752427e-07], dtype=np.float32), name=&quot;value&quot;</span>
-<span class="sd">                ),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;one&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([1.0], dtype=np.float32), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;X&quot;], [&quot;Xc&quot;], to=1))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Pow&quot;, [&quot;Xc&quot;, &quot;exp&quot;], [&quot;x2&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;ReduceMean&quot;, [&quot;x2&quot;, &quot;axis&quot;], [&quot;xr&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Add&quot;, [&quot;xr&quot;, &quot;eps&quot;], [&quot;xa&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Sqrt&quot;, [&quot;xa&quot;], [&quot;xq&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Div&quot;, [&quot;one&quot;, &quot;xq&quot;], [&quot;Z&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;Z&quot;, &quot;Xc&quot;], [&quot;Yc&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;Yc&quot;], [&quot;Y&quot;], to=10))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, &quot;D&quot;))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -1787,56 +1270,34 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 23),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, &quot;D&quot;))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Shape&#39;, [&#39;X&#39;], [&#39;shape-X&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Gather&#39;, [&#39;shape-X&#39;, &#39;axis&#39;], [&#39;gather-shape-X&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;ConstantOfShape&#39;, [&#39;gather-shape-X&#39;],</span>
+<span class="sd">                                 [&#39;constantofshape-gather-shape-X&#39;], value=onh.from_array(</span>
+<span class="sd">                                     np.array([1.0], dtype=np.float16),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;RMSNormalization&#39;, [&#39;X&#39;, &#39;constantofshape-gather-shape-X&#39;],</span>
+<span class="sd">                                 [&#39;Y&#39;], axis=-1, epsilon=9.999999974752427e-07, stash_type=1),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;D&#39;)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;axis&#39;, onnx.TensorProto.INT64, (1,)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;D&#39;)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 23)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;axis&quot;, onnx.TensorProto.INT64, shape=(1,)))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Shape&quot;, [&quot;X&quot;], [&quot;shape-X&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Gather&quot;, [&quot;shape-X&quot;, &quot;axis&quot;], [&quot;gather-shape-X&quot;]))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;ConstantOfShape&quot;,</span>
-<span class="sd">                [&quot;gather-shape-X&quot;],</span>
-<span class="sd">                [&quot;constantofshape-gather-shape-X&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([1.0], dtype=np.float16), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;RMSNormalization&quot;,</span>
-<span class="sd">                [&quot;X&quot;, &quot;constantofshape-gather-shape-X&quot;],</span>
-<span class="sd">                [&quot;Y&quot;],</span>
-<span class="sd">                axis=-1,</span>
-<span class="sd">                epsilon=9.999999974752427e-07,</span>
-<span class="sd">                stash_type=1,</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, &quot;D&quot;))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2030,49 +1491,33 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 23),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;scale&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([3.0, 4.0], dtype=np.float32), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;scale&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([3.0, 4.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;scale2&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([3.0, 4.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;RMSNormalization&#39;, [&#39;X&#39;, &#39;scale&#39;], [&#39;xs&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;xs&#39;, &#39;scale2&#39;], [&#39;Y&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 23)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;scale2&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([3.0, 4.0], dtype=np.float32), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;RMSNormalization&quot;, [&quot;X&quot;, &quot;scale&quot;], [&quot;xs&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;xs&quot;, &quot;scale2&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -2084,40 +1529,29 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 23),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;init1_s2_&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([9.0, 16.0], dtype=np.float32), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init1_s2_&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([9.0, 16.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;RMSNormalization&#39;, [&#39;X&#39;, &#39;init1_s2_&#39;], [&#39;Y&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ),</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 23)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;RMSNormalization&quot;, [&quot;X&quot;, &quot;init1_s2_&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>

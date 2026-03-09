@@ -26,7 +26,7 @@
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Command Lines" href="../../cmds/index.html" />
+    <link rel="next" title="TensorFlow Export to ONNX" href="../tensorflow/index.html" />
     <link rel="prev" title="Patches (torch export)" href="patches.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
@@ -140,6 +140,7 @@
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a></li>
@@ -151,10 +152,17 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Patches List</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -297,9 +305,9 @@
 <span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
 <span class="o">-</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
 <span class="o">-</span>        <span class="n">guard_or_false</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">has_hint</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">guarding_hint_or_throw</span><span class="p">,</span>
+<span class="o">-</span>        <span class="n">has_guarding_hint</span><span class="p">,</span>
 <span class="o">-</span>        <span class="n">is_nested_int</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">size_hint</span><span class="p">,</span>
 <span class="o">-</span>    <span class="p">)</span>
 <span class="o">-</span>
 <span class="o">-</span>    <span class="n">backed_so</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">backed_size_oblivious</span>
@@ -314,7 +322,7 @@
 
      <span class="n">shapes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
          <span class="p">(</span><span class="n">x</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">IntLike</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_shapes</span><span class="p">)</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">19</span><span class="p">,</span><span class="mi">59</span> <span class="o">+</span><span class="mi">18</span><span class="p">,</span><span class="mi">36</span> <span class="o">@@</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">19</span><span class="p">,</span><span class="mi">63</span> <span class="o">+</span><span class="mi">18</span><span class="p">,</span><span class="mi">36</span> <span class="o">@@</span>
      <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
          <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
              <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -354,9 +362,13 @@
 <span class="o">-</span>                <span class="c1">#           specialize(s0) to be 1.</span>
 <span class="o">-</span>                <span class="c1">#      s0:4, s1:1 ==&gt;</span>
 <span class="o">-</span>                <span class="c1">#           specialize(s1) to be 1.</span>
-<span class="o">-</span>                <span class="k">if</span> <span class="n">backed_so</span> <span class="ow">and</span> <span class="n">has_hint</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="ow">and</span> <span class="n">has_hint</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
-<span class="o">-</span>                    <span class="n">a</span> <span class="o">=</span> <span class="n">size_hint</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-<span class="o">-</span>                    <span class="n">b</span> <span class="o">=</span> <span class="n">size_hint</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+<span class="o">-</span>                <span class="k">if</span> <span class="p">(</span>
+<span class="o">-</span>                    <span class="n">backed_so</span>
+<span class="o">-</span>                    <span class="ow">and</span> <span class="n">has_guarding_hint</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+<span class="o">-</span>                    <span class="ow">and</span> <span class="n">has_guarding_hint</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+<span class="o">-</span>                <span class="p">):</span>
+<span class="o">-</span>                    <span class="n">a</span> <span class="o">=</span> <span class="n">guarding_hint_or_throw</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+<span class="o">-</span>                    <span class="n">b</span> <span class="o">=</span> <span class="n">guarding_hint_or_throw</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
 <span class="o">-</span>                    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
 <span class="o">-</span>                        <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 <span class="o">-</span>                    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -558,6 +570,7 @@
 <p>&gt;&gt;&gt;</p>
 <p>&lt;frozen importlib._bootstrap&gt;:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
 &lt;frozen importlib._bootstrap&gt;:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+use_kernel_func_from_hub is not available in the installed kernels version. Please upgrade kernels to use this feature.
 * <a class="reference internal" href="#patch-transformers-1"><span class="std std-ref">common_RotaryEmbedding.forward</span></a></p>
 <section id="common-rotaryembedding-forward">
 <span id="patch-transformers-1"></span><h3>common_RotaryEmbedding.forward<a class="headerlink" href="#common-rotaryembedding-forward" title="Link to this heading">¶</a></h3>
@@ -922,7 +935,7 @@
 
             <div class="right">
                 
-                    <a href="../../cmds/index.html"><span>Command Lines</span><span class="icon">&gt;</span></a>
+                    <a href="../tensorflow/index.html"><span>TensorFlow Export to ONNX</span><span class="icon">&gt;</span></a>
                 
             </div>
         </div>

@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -138,7 +138,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -1801,6 +1807,112 @@
             <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
                     <span class="k">yield from</span> <span class="n">enumerate_nodes</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="type_info">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.type_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">type_info</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">att</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the minimum or maximum value for a type.</span>
+
+<span class="sd">    :param itype: onnx type</span>
+<span class="sd">    :param att: &#39;min&#39; or &#39;max&#39;</span>
+<span class="sd">    :return: value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">itype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT16</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">}:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+        <span class="n">fi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">itype</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">BFLOAT16</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>
+
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+        <span class="n">fi</span> <span class="o">=</span> <span class="n">ml_dtypes</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+        <span class="n">fi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="n">att</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fi</span><span class="o">.</span><span class="n">min</span>
+    <span class="k">if</span> <span class="n">att</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fi</span><span class="o">.</span><span class="n">max</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value </span><span class="si">{</span><span class="n">att</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_onnx_signature">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.get_onnx_signature">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_onnx_signature</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
+    <span class="n">Tuple</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">,</span>
+        <span class="n">Union</span><span class="p">[</span>
+            <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+            <span class="n">List</span><span class="p">[</span>
+                <span class="n">Tuple</span><span class="p">[</span>
+                    <span class="nb">str</span><span class="p">,</span>
+                    <span class="nb">int</span><span class="p">,</span>
+                    <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+                <span class="p">],</span>
+            <span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+    <span class="o">...</span><span class="p">,</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Produces a tuple of tuples corresponding to the signatures.</span>
+
+<span class="sd">    :param model: model</span>
+<span class="sd">    :return: signature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">type</span>
+        <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;sequence_type&quot;</span><span class="p">):</span>
+            <span class="n">dst</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">sequence_type</span><span class="o">.</span><span class="n">elem_type</span>
+            <span class="n">tdt</span> <span class="o">=</span> <span class="n">dst</span><span class="o">.</span><span class="n">tensor_type</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="n">tdt</span><span class="o">.</span><span class="n">elem_type</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="ow">or</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_value</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tdt</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+            <span class="n">sig</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="p">[(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">shape</span><span class="p">)]))</span>
+        <span class="k">elif</span> <span class="n">dt</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;tensor_type&quot;</span><span class="p">):</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="ow">or</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_value</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+            <span class="n">sig</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to interpret dt=</span><span class="si">{</span><span class="n">dt</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="n">i</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="attr_proto_to_python">
+<a class="viewcode-back" href="../../../api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.attr_proto_to_python">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">attr_proto_to_python</span><span class="p">(</span><span class="n">attr</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an :class:`onnx.AttributeProto` to a plain Python value.</span>
+
+<span class="sd">    :param attr: attribute proto to convert</span>
+<span class="sd">    :return: Python value</span>
+
+<span class="sd">    Supported attribute types: FLOAT, INT, STRING, TENSOR, FLOATS, INTS, STRINGS.</span>
+<span class="sd">    Raises :exc:`NotImplementedError` for unsupported types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">f</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">INT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">i</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="n">attr</span><span class="o">.</span><span class="n">s</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSOR</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">onh</span><span class="o">.</span><span class="n">to_array</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOATS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">floats</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">INTS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">ints</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRINGS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">strings</span><span class="p">]</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported AttributeProto type: </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 </pre></div>
 

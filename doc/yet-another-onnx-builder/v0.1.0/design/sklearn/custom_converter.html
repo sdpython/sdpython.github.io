@@ -140,6 +140,7 @@
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">scikit-learn Export to ONNX</a><ul class="current">
@@ -148,13 +149,21 @@
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Custom Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -290,7 +299,8 @@ validates the result numerically.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">3.</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Small</span>
     <span class="n">Mul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s1_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Y</span>
@@ -381,7 +391,8 @@ trivial identity (just to illustrate the override mechanism):</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
     <span class="n">Identity</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
@@ -398,6 +409,7 @@ means you no longer have to pass <code class="docutils literal notranslate"><spa
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn.register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
 
 
@@ -414,7 +426,7 @@ means you no longer have to pass <code class="docutils literal notranslate"><spa
 
 <span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">ScaleByConstant</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_scale_by_constant</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">estimator</span><span class="p">:</span> <span class="n">ScaleByConstant</span><span class="p">,</span>

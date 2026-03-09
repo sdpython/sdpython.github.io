@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -138,7 +138,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -160,8 +163,26 @@
             
   <h1>Source code for yobx.sklearn.sklearn_helper</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">is_classifier</span><span class="p">,</span> <span class="n">is_regressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">,</span> <span class="n">is_classifier</span><span class="p">,</span> <span class="n">is_regressor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_classifier_has_predict_proba</span><span class="p">(</span><span class="n">estimator</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns True when *estimator* is a fitted classifier that genuinely</span>
+<span class="sd">    supports :meth:`predict_proba`.</span>
+
+<span class="sd">    For most classifiers, checking ``hasattr(estimator, &#39;predict_proba&#39;)``</span>
+<span class="sd">    is sufficient.  However, :class:`sklearn.linear_model.SGDClassifier`</span>
+<span class="sd">    (and its subclasses such as :class:`~sklearn.linear_model.Perceptron`)</span>
+<span class="sd">    defines ``predict_proba`` as a method that raises :exc:`AttributeError`</span>
+<span class="sd">    at runtime for non-probabilistic loss functions (e.g. ``&#39;hinge&#39;``).</span>
+<span class="sd">    Because Python&#39;s ``hasattr`` catches :exc:`AttributeError`, it returns</span>
+<span class="sd">    ``False`` in those cases — so the plain ``hasattr`` check already works</span>
+<span class="sd">    correctly for fitted :class:`~sklearn.linear_model.SGDClassifier`</span>
+<span class="sd">    instances.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="s2">&quot;predict_proba&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_n_expected_outputs">
@@ -169,6 +190,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_n_expected_outputs</span><span class="p">(</span><span class="n">estimator</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the number of expected outputs.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_classifier</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">_classifier_has_predict_proba</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="mi">1</span></div>
 
@@ -180,13 +203,15 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns output names for every estimator.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="s2">&quot;get_feature_names_out&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">post_process_output_names</span><span class="p">(</span>
-                    <span class="n">estimator</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="nb">list</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
-                <span class="p">)</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                <span class="k">pass</span>
-        <span class="k">else</span><span class="p">:</span>
+            <span class="n">last_step</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last_step</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">post_process_output_names</span><span class="p">(</span>
+                        <span class="n">last_step</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">last_step</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">post_process_output_names</span><span class="p">(</span>
                     <span class="n">estimator</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
@@ -194,9 +219,14 @@
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">pass</span>
     <span class="k">if</span> <span class="n">is_classifier</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;probabilities&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">_classifier_has_predict_proba</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;probabilities&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">is_regressor</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;predictions&quot;</span><span class="p">]</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">)</span> <span class="k">else</span> <span class="n">estimator</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;distances&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span></div>
 
 

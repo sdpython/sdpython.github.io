@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>yobx.torch.export_options &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d0ff0132" />
+    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <script src="../../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../../index.html" title="Go to homepage"><img src="../../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for yobx.torch.export_options</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">max_diff</span><span class="p">,</span> <span class="n">string_diff</span><span class="p">,</span> <span class="n">string_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers.helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_sig</span><span class="p">,</span> <span class="n">get_sig_kwargs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.torch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.input_observer</span><span class="w"> </span><span class="kn">import</span> <span class="n">InputCandidate</span>
+
+<span class="c1"># Type alias for torch operator overload</span>
+<span class="c1"># (forward reference avoids importing torch at module level)</span>
+<span class="n">TorchOpOverload</span> <span class="o">=</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="ExportOptions">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExportOptions</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gathers altogether all the options defining the way to export a model into a graph</span>
+<span class="sd">    (not onnx).</span>
+
+<span class="sd">    :param strict: strict export or not, it only applies</span>
+<span class="sd">        if :func:`torch.export.export` is called</span>
+<span class="sd">    :param decomposition_table: decomposition_table, a string such as ``&#39;default&#39;``</span>
+<span class="sd">        or ``&#39;all&#39;``, or a custom decomposition dict, see</span>
+<span class="sd">        :func:`get_decomposition_table</span>
+<span class="sd">        &lt;ybox.torch.export_options.get_decomposition_table&gt;`,</span>
+<span class="sd">        it can ``&#39;all&#39;``, ``&#39;default&#39;`` or a decomposition list</span>
+<span class="sd">    :param dynamo: to use ``torch._dynamo.export`` instead of :func:`torch.export.export`</span>
+<span class="sd">    :param tracing: use symbolic tracing</span>
+<span class="sd">    :param jit: use jit to get a graph then converts it into a fx graph</span>
+<span class="sd">    :param strategy: to overwrite all the previous parameters with just a value</span>
+<span class="sd">    :param remove_inplace: remove inplace nodes</span>
+<span class="sd">    :param aten_as_function: keeps aten function as local function to keep a faithful</span>
+<span class="sd">        translation of the fx graph, it can also be a set of function name the export</span>
+<span class="sd">        should export as local function such as</span>
+<span class="sd">        ``torch.ops.aten.scaled_dot_product_attention``, the default value</span>
+<span class="sd">        :func:`get_default_aten_as_function</span>
+<span class="sd">        &lt;ybox.torch.interpreter.onnx_export.get_default_aten_as_function&gt;`</span>
+<span class="sd">        returns a default list of functions to keep as function depending on this opset,</span>
+<span class="sd">        if no value is specified, this defaults to the whatever the function mentioned above</span>
+<span class="sd">        returns</span>
+<span class="sd">    :param allow_untyped_output: allows output with no shape and/or no type</span>
+<span class="sd">    :param save_ep: to save the exported program; if True, will save the graph as text;</span>
+<span class="sd">        can be a tuple ``(str, int)`` to avoid saving a model bigger than the desired size</span>
+<span class="sd">    :param validate_ep: validates the exported program with the given inputs;</span>
+<span class="sd">        by default the tolerance is ``1e-5``; use a float to change that value</span>
+<span class="sd">    :param backed_size_oblivious: use</span>
+<span class="sd">        ``torch.fx.experimental._config.patch(backed_size_oblivious=True)``</span>
+<span class="sd">        to allow dynamic dimension equal to 1</span>
+<span class="sd">    :param prefer_deferred_runtime_asserts_over_guards:</span>
+<span class="sd">        see :func:`torch.export.export`</span>
+<span class="sd">    :param fake: use fake tensors as inputs</span>
+<span class="sd">    :param tracing_module_leaves: this option is used when the module is traced</span>
+<span class="sd">        (``tracing=True``), it specifies which modules should remain a *call_module*,</span>
+<span class="sd">        see :class:`yobx.torch.tracing.CustomTracer`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_allowed</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="kc">None</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;none&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">&quot;strict-dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;strict-decall&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;tracing&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tracing&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">&quot;nostrict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+        <span class="s2">&quot;nostrict-dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;nostrict-decall&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">&quot;jit-dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;jit-decall&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;decall&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;fake&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fake&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">tracing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">jit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">decomposition_table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">TorchOpOverload</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dynamo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">aten_as_function</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">remove_inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">allow_untyped_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">save_ep</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">validate_ep</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">backed_size_oblivious</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">prefer_deferred_runtime_asserts_over_guards</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">fake</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">tracing_module_leaves</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">Dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span>  <span class="c1"># noqa: F821</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict</span> <span class="o">=</span> <span class="n">strict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracing</span> <span class="o">=</span> <span class="n">tracing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracing_module_leaves</span> <span class="o">=</span> <span class="n">tracing_module_leaves</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span> <span class="o">=</span> <span class="n">save_ep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="n">decomposition_table</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">decomposition_table</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamo</span> <span class="o">=</span> <span class="n">dynamo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jit</span> <span class="o">=</span> <span class="n">jit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span> <span class="o">=</span> <span class="n">aten_as_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_inplace</span> <span class="o">=</span> <span class="n">remove_inplace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_untyped_output</span> <span class="o">=</span> <span class="n">allow_untyped_output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_ep</span> <span class="o">=</span> <span class="n">validate_ep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span> <span class="o">=</span> <span class="n">backed_size_oblivious</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefer_deferred_runtime_asserts_over_guards</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">prefer_deferred_runtime_asserts_over_guards</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fake</span> <span class="o">=</span> <span class="n">fake</span>
+        <span class="k">if</span> <span class="n">aten_as_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.interpreter.onnx_export</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+                <span class="n">get_default_aten_as_function</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">aten_as_function</span> <span class="o">=</span> <span class="n">get_default_aten_as_function</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span> <span class="o">=</span> <span class="n">aten_as_function</span>
+
+        <span class="k">if</span> <span class="n">strategy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed</span><span class="p">,</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unexpected value for strategy=</span><span class="si">{</span><span class="n">strategy</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;it should be in </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_allowed</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed</span><span class="p">[</span><span class="n">strategy</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>  <span class="c1"># type checking</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamo</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="s2">&quot;jit and dynamo cannot be true at the same time&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">tracing</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">dynamo</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Both tracing and dynamo are incompatible options in </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">string_sig</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+<div class="viewcode-block" id="ExportOptions.clone">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions.clone">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ExportOptions&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes a copy and updates some of the values.&quot;&quot;&quot;</span>
+        <span class="n">kw</span> <span class="o">=</span> <span class="n">get_sig_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">kw</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ExportOptions</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExportOptions.get_decomposition_table">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions.get_decomposition_table">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_decomposition_table</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">TorchOpOverload</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the decomposition table.</span>
+
+<span class="sd">        For ``decomposition_table=&#39;all&#39;``, returns ``None`` because ``&#39;all&#39;`` triggers</span>
+<span class="sd">        :func:`torch.export.ExportedProgram.run_decompositions` with no arguments</span>
+<span class="sd">        (handled by :func:`apply_decompositions`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_get_decomposition_table_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="nb">dict</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">)</span><span class="si">}</span><span class="s2"> for decomposition_table&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span></div>
+
+
+<div class="viewcode-block" id="ExportOptions.post_process_exported_program">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions.post_process_exported_program">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_process_exported_program</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">exported_program</span><span class="p">:</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">print_exported_program</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run decompositions, remove inplace operations.</span>
+<span class="sd">        The graph is modified inplace.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>  <span class="c1"># to avoid many warnings from pyrefly</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] post_process_exported_program &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;with decomposition_table=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] run decomposition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">exported_program</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span>
+                <span class="n">exported_program</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done after decomposition &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">print_exported_program</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- EXPORTED PROGRAM AFTER DECOMPOSITION -- &quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- DONE -- &quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_inplace</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[ExportOptions.export] remove inplace nodes&quot;</span><span class="p">)</span>
+            <span class="n">modified</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_inplace_nodes</span><span class="p">(</span>
+                <span class="n">exported_program</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">exported_program</span><span class="o">=</span><span class="n">exported_program</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done remove inplace in &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">, modified=</span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">need_dec</span><span class="p">,</span> <span class="n">need_dec_all</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">need_run_decompositions</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span>
+                <span class="k">else</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">need_dec</span> <span class="ow">or</span> <span class="n">need_dec_all</span> <span class="ow">or</span> <span class="n">modified</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># We need to run decomposition to fully remove all inplace operations.</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[ExportOptions.export] use decomposition to remove inplace nodes left&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[modified=</span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2">, need_dec=</span><span class="si">{</span><span class="n">need_dec</span><span class="si">}</span><span class="s2">]&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">exported_program</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">need_dec_all</span>
+                    <span class="k">else</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">({})</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;modified=</span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">if</span> <span class="n">print_exported_program</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- EXPORTED PROGRAM AFTER REMOVING INPLACE -- &quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- DONE -- &quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">exported_program</span></div>
+
+
+<div class="viewcode-block" id="ExportOptions.need_run_decompositions">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions.need_run_decompositions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">need_run_decompositions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Final check to see if we need to run decompositions.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomTracer</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">target_name</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="o">.</span><span class="n">get_node_target_name</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;aten::index_copy_&quot;</span><span class="p">}:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="p">{</span>
+                <span class="s2">&quot;aten:relu_&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aten::mul_.Tensor&quot;</span><span class="p">,</span>
+            <span class="p">}:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">users</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="p">{</span>
+                <span class="s2">&quot;aten::lstm.input&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;torch._functorch.predispatch._add_batch_dim&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;torch._functorch.predispatch._remove_batch_dim&quot;</span><span class="p">,</span>
+            <span class="p">}:</span>
+                <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">False</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_export</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mod</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+        <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">input_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+        <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">backed_size_oblivious</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">prefer_deferred_runtime_asserts_over_guards</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">use_dyn_not_str</span>
+
+        <span class="n">dyn_shapes</span> <span class="o">=</span> <span class="n">use_dyn_not_str</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+
+        <span class="n">export_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">prefer_deferred_runtime_asserts_over_guards</span><span class="p">:</span>
+            <span class="n">export_kwargs</span><span class="p">[</span><span class="s2">&quot;prefer_deferred_runtime_asserts_over_guards&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">backed_size_oblivious</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="n">cand</span> <span class="o">=</span> <span class="n">InputCandidate</span><span class="p">(</span><span class="n">args</span> <span class="ow">or</span> <span class="p">(),</span> <span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{},</span> <span class="n">clone</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cst_kwargs</span><span class="o">=</span><span class="p">{})</span>
+            <span class="n">backed_size_oblivious</span> <span class="o">=</span> <span class="n">cand</span><span class="o">.</span><span class="n">needs_backed_size_oblivious</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">backed_size_oblivious</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">backed_size_oblivious</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>  <span class="c1"># type: ignore[attr-defined]</span>
+                <span class="n">ep</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+                    <span class="n">mod</span><span class="p">,</span>
+                    <span class="n">args</span> <span class="ow">or</span> <span class="p">(),</span>
+                    <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{},</span>
+                    <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dyn_shapes</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">export_kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">ep</span><span class="o">.</span><span class="n">_computed_backed_size_oblivious</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># type: ignore</span>
+                <span class="k">return</span> <span class="n">ep</span>
+        <span class="k">assert</span> <span class="n">backed_size_oblivious</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">backed_size_oblivious</span><span class="si">=}</span><span class="s2">, unexpected&quot;</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+            <span class="n">mod</span><span class="p">,</span>
+            <span class="n">args</span> <span class="ow">or</span> <span class="p">(),</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{},</span>
+            <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dyn_shapes</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">export_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="ExportOptions.export">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions.export">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mod</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+        <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">tracing_mode</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">same_signature</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">input_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.fx.GraphModule&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exports the model into an exported program.&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomTracer</span>
+
+        <span class="n">print_exported_program</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PRINT_EXPORTED_PROGRAM&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>  <span class="c1"># to avoid many warnings from pyrefly</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fake</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
+                <span class="n">args</span> <span class="ow">and</span> <span class="n">kwargs</span>
+            <span class="p">),</span> <span class="s2">&quot;Option with fake tensors is not available if both args and kwargs are specified&quot;</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span> <span class="k">as</span> <span class="n">_string_type</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">.fake_tensor_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_fake_with_dynamic_dimensions</span>
+
+            <span class="n">dynamic_shapes_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_str_not_dyn</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] dynamic_shapes_str=</span><span class="si">{</span><span class="n">dynamic_shapes_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] true kwargs=&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">kwargs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_fake_with_dynamic_dimensions</span><span class="p">(</span>
+                    <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes_str</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] fake kwargs=&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] true args=&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+                <span class="n">args</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_fake_with_dynamic_dimensions</span><span class="p">(</span>
+                    <span class="n">args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes_str</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] fake args=&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2"> - export </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamo</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[ExportOptions.export] torch._dynamo.export&quot;</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+                <span class="n">mod</span><span class="p">,</span>
+                <span class="n">aten_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">tracing_mode</span><span class="o">=</span><span class="n">tracing_mode</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span>
+                <span class="n">same_signature</span><span class="o">=</span><span class="n">same_signature</span><span class="p">,</span>
+                <span class="n">decomposition_table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_decomposition_table</span><span class="p">(),</span>
+                <span class="n">assume_static_by_default</span><span class="o">=</span><span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)(</span><span class="o">*</span><span class="p">(</span><span class="n">args</span> <span class="ow">or</span> <span class="nb">tuple</span><span class="p">()),</span> <span class="o">**</span><span class="p">(</span><span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{}))</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to save this type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">res</span>  <span class="c1"># type: ignore</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jit</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[ExportOptions.export] torch.jit.trace&quot;</span><span class="p">)</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">torch._export.converter</span><span class="w"> </span><span class="kn">import</span> <span class="n">TS2EPConverter</span>
+
+            <span class="n">jit_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">check_trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">TS2EPConverter</span><span class="p">(</span><span class="n">jit_model</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">:</span>
+                <span class="n">save_ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.jit&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.jit.pt2&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">dec</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">:</span>
+                <span class="n">save_ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.jit.decomposed&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dec</span><span class="p">))</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.jit.decomposed.pt2&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dec</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracing</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx._lazy_graph_module</span><span class="w"> </span><span class="kn">import</span> <span class="n">_make_graph_module</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomTracer</span>
+
+            <span class="n">concrete_args</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="p">{}</span>
+            <span class="n">trace_dynamic_shapes</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="p">{})</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+
+                <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">forward</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">ip</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">,</span> <span class="n">args</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">concrete_args</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                            <span class="c1"># not traceable otherwise</span>
+                            <span class="n">concrete_args</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                            <span class="c1"># not traceable otherwise</span>
+                            <span class="n">concrete_args</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">concrete_args</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+                    <span class="k">if</span> <span class="n">trace_dynamic_shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">trace_dynamic_shapes</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">dynamic_shapes</span><span class="p">[</span><span class="n">ip</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] CustomTracer().trace, verbose=</span><span class="si">{</span><span class="n">verbose</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tracing_module_leaves</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] kwargs=&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] concrete_args=&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">concrete_args</span><span class="p">,</span><span class="w"> </span><span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+            <span class="n">tracer</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="p">(</span><span class="n">module_leaves</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tracing_module_leaves</span><span class="p">)</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">tracer</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span>
+                <span class="n">mod</span><span class="p">,</span>
+                <span class="n">concrete_args</span><span class="o">=</span><span class="n">concrete_args</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">trace_dynamic_shapes</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_inplace</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[ExportOptions.export] remove_inplace_nodes&quot;</span><span class="p">)</span>
+                <span class="n">modified</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_inplace_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done, modified=</span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">:</span>
+                <span class="n">save_ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.tracing&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+            <span class="n">gm</span> <span class="o">=</span> <span class="n">_make_graph_module</span><span class="p">(</span><span class="n">tracer</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">mod</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+            <span class="c1"># from torch.fx.passes.shape_prop import ShapeProp</span>
+            <span class="c1"># ShapeProp(gp).propagate(**concrete_args)</span>
+            <span class="c1"># gm = torch.fx.GraphModule(getattr(tracer, &quot;traced_model&quot;, None) or mod, graph)</span>
+            <span class="k">return</span> <span class="n">gm</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] torch.export.export strict=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">strict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict</span><span class="p">:</span>
+            <span class="c1"># torch.export.export may turn Tensor into FakeTensor.</span>
+            <span class="c1"># We need to make a copy to avoid getting FakeTensor instead</span>
+            <span class="n">args0</span><span class="p">,</span> <span class="n">kwargs0</span> <span class="o">=</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] export start with strict=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">strict</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;backed_size_oblivious=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">exported_program</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_export</span><span class="p">(</span>
+            <span class="n">mod</span><span class="p">,</span>
+            <span class="n">args</span><span class="p">,</span>
+            <span class="n">kwargs</span><span class="p">,</span>
+            <span class="n">dynamic_shapes</span><span class="p">,</span>
+            <span class="n">input_names</span><span class="p">,</span>
+            <span class="n">exc</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="p">,</span>
+            <span class="n">backed_size_oblivious</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span><span class="p">,</span>
+            <span class="n">prefer_deferred_runtime_asserts_over_guards</span><span class="o">=</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prefer_deferred_runtime_asserts_over_guards</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stat_time_torch_export_export_oblivious</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] export done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict</span><span class="p">:</span>
+            <span class="c1"># torch.export.export may turn Tensor into FakeTensor.</span>
+            <span class="c1"># We need to make a copy to avoid getting FakeTensor instead</span>
+            <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">args0</span><span class="p">,</span> <span class="n">kwargs0</span>  <span class="c1"># pyrefly: ignore[unbound-name]</span>
+
+        <span class="k">if</span> <span class="n">exported_program</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">exported_program</span>
+
+        <span class="k">if</span> <span class="n">print_exported_program</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- EXPORTED PROGRAM AFTER EXPORT -- &quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- DONE -- &quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">:</span>
+            <span class="n">save_ep</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">22</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">_model_size</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+                    <span class="n">dtype</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span>
+                    <span class="k">if</span> <span class="n">dtype</span><span class="o">.</span><span class="n">is_floating_point</span> <span class="ow">or</span> <span class="n">dtype</span><span class="o">.</span><span class="n">is_complex</span><span class="p">:</span>
+                        <span class="n">bits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">bits</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">bits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">bits</span>
+                    <span class="n">size</span> <span class="o">+=</span> <span class="n">param</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="n">bits</span> <span class="o">//</span> <span class="mi">8</span>
+                <span class="k">return</span> <span class="n">size</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.ep&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exported_program</span><span class="p">))</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.ep.graph&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exported_program</span><span class="o">.</span><span class="n">graph</span><span class="p">))</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">_model_size</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] model size </span><span class="si">{</span><span class="n">size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="si">}</span><span class="s2"> Mb&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span><span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span> <span class="s2">&quot;kwargs&quot;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.input.pt&quot;</span><span class="p">)</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">exported_program</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.ep.pt2&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stat_time_torch_export_save</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validate_ep</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_ep</span><span class="p">:</span>
+            <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_exported_program</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stat_time_validate_exported_program</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">exported_program</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_process_exported_program</span><span class="p">(</span>
+            <span class="n">exported_program</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">print_exported_program</span><span class="o">=</span><span class="n">print_exported_program</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stat_time_post_process_exported_program</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done with no decomposition &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">exported_program</span></div>
+
+
+<div class="viewcode-block" id="ExportOptions.validate_exported_program">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions.validate_exported_program">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_exported_program</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">exported_program</span><span class="p">:</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+        <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates the exported program by running the model.&quot;&quot;&quot;</span>
+        <span class="n">ar</span><span class="p">,</span> <span class="n">kws</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">((</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[ExportOptions.validate_exported_program] run model with &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2"> and &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">expected</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">ar</span> <span class="ow">or</span> <span class="p">[]),</span> <span class="o">**</span><span class="p">(</span><span class="n">kws</span> <span class="ow">or</span> <span class="p">{}))</span>
+        <span class="n">ar</span><span class="p">,</span> <span class="n">kws</span> <span class="o">=</span> <span class="n">torch_deepcopy</span><span class="p">((</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[ExportOptions.validate_exported_program] run exported_program with &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2"> and &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">got</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">module</span><span class="p">()(</span><span class="o">*</span><span class="p">(</span><span class="n">ar</span> <span class="ow">or</span> <span class="p">[]),</span> <span class="o">**</span><span class="p">(</span><span class="n">kws</span> <span class="ow">or</span> <span class="p">{}))</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.validate_exported_program] discrepancies: </span><span class="si">{</span><span class="n">string_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">atol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_ep</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validate_ep</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="mf">1e-5</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">atol</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Discrepancies observed between the model and the exported program &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(atol=</span><span class="si">{</span><span class="n">atol</span><span class="si">}</span><span class="s2">) diff=</span><span class="si">{</span><span class="n">string_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_as_aten_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aten_name</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aten_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">aten_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span>
+        <span class="k">return</span> <span class="n">aten_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">aten_name</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span>
+
+<div class="viewcode-block" id="ExportOptions.remove_inplace_nodes">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions.remove_inplace_nodes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_inplace_nodes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Graph&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">exported_program</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Post-processing to remove inplace nodes.</span>
+
+<span class="sd">        :param graph: graph to modify</span>
+<span class="sd">        :param exported_program: if available, it is used in the error message</span>
+<span class="sd">            to make it easier to trace the code source</span>
+<span class="sd">        :param verbose: verbosity</span>
+<span class="sd">        :return: number of inplace nodes removed or -1 if there are any remaining inplace nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomTracer</span>
+
+        <span class="n">removed</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="o">.</span><span class="n">remove_unnecessary_slices</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">removed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] slices: </span><span class="si">{</span><span class="n">removed</span><span class="si">}</span><span class="s2"> slices nodes were removed&quot;</span><span class="p">)</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">lint</span><span class="p">()</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="o">.</span><span class="n">remove_inplace</span><span class="p">(</span>
+            <span class="n">graph</span><span class="p">,</span> <span class="n">exported_program</span><span class="o">=</span><span class="n">exported_program</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">modified</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">modified</span>
+        <span class="k">if</span> <span class="n">modified</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] inplaces: </span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2"> inplaced nodes were removed&quot;</span><span class="p">)</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">lint</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">modified</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">use_str_not_dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_c_use_str_not_dyn&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_c_use_str_not_dyn</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">set</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">dynamic_shapes</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">use_str_not_dyn</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">default_value</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_str_not_dyn</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="n">default_value</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span> <span class="ow">and</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_c_use_str_not_dyn</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;udim</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_use_str_not_dyn</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">dynamic_shapes</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_decomposition_table_by_name</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the decomposition table by name (only ``&#39;default&#39;`` is supported here;</span>
+<span class="sd">    ``&#39;all&#39;`` is handled as a special case in :func:`apply_decompositions`).&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">default_decompositions</span><span class="p">()</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Unknown decomposition table name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Expected &#39;default&#39;; use apply_decompositions for &#39;all&#39;.&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_inplace_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Graph&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns nodes with no users (candidates for inplace operations).&quot;&quot;&quot;</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;call_function&quot;</span><span class="p">,</span> <span class="s2">&quot;call_method&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">users</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;_.&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_has_inplace_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Graph&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if the graph has probable inplace nodes.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_inplace_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="apply_decompositions">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.apply_decompositions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_decompositions</span><span class="p">(</span>
+    <span class="n">exported_program</span><span class="p">:</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">decomposition_table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]],</span>
+    <span class="n">backed_size_oblivious</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies decompositions to an exported program.</span>
+
+<span class="sd">    :param exported_program: the exported program to decompose</span>
+<span class="sd">    :param decomposition_table: a string (``&#39;default&#39;`` or ``&#39;all&#39;``) or a dict</span>
+<span class="sd">    :param backed_size_oblivious: whether to use ``backed_size_oblivious=True``</span>
+<span class="sd">    :return: the decomposed exported program</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+    <span class="n">use_oblivious</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">exported_program</span><span class="p">,</span> <span class="s2">&quot;_computed_backed_size_oblivious&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">backed_size_oblivious</span> <span class="ow">is</span> <span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">decomposition_table</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="n">exported_program</span> <span class="o">=</span> <span class="n">insert_contiguous_between_transpose_and_view</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_oblivious</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">backed_size_oblivious</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>  <span class="c1"># type: ignore[attr-defined]</span>
+                <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">exported_program</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">decomposition_table</span> <span class="o">=</span> <span class="n">_get_decomposition_table_by_name</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">decomposition_table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exported_program</span> <span class="o">=</span> <span class="n">insert_contiguous_between_transpose_and_view</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_oblivious</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">backed_size_oblivious</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>  <span class="c1"># type: ignore[attr-defined]</span>
+                <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">exported_program</span></div>
+
+
+
+<div class="viewcode-block" id="insert_contiguous_between_transpose_and_view">
+<a class="viewcode-back" href="../../../api/torch/export_options.html#yobx.torch.export_options.insert_contiguous_between_transpose_and_view">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">insert_contiguous_between_transpose_and_view</span><span class="p">(</span>
+    <span class="n">exported_program</span><span class="p">:</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Modifies the module inplace to insert a ``contiguous`` node between a</span>
+<span class="sd">    ``transpose`` node followed by a ``view`` node.</span>
+<span class="sd">    The modification takes place inplace.</span>
+<span class="sd">    See https://github.com/pytorch/pytorch/issues/136543.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modified</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">graph_module</span><span class="o">.</span><span class="n">graph</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">!=</span> <span class="s2">&quot;call_method&quot;</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">target</span> <span class="o">!=</span> <span class="s2">&quot;transpose&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">!=</span> <span class="s2">&quot;call_function&quot;</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;aten::transpose.int&quot;</span>
+        <span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">insert</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">users</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;call_method&quot;</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;view&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">user</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;call_function&quot;</span>
+                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;aten::view&quot;</span>  <span class="c1"># pyrefly: ignore[missing-attribute]</span>
+            <span class="p">):</span>
+                <span class="n">insert</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">insert</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">inserting_after</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="n">new_node</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">call_method</span><span class="p">(</span><span class="s2">&quot;contiguous&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">node</span><span class="p">,))</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">replace_all_uses_with</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
+            <span class="c1"># new_node is replaced as well so we manually revert the replacement</span>
+            <span class="n">new_node</span><span class="o">.</span><span class="n">update_arg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="p">{</span><span class="n">new_node</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">modified</span><span class="p">:</span>
+        <span class="c1"># no rewrite was done.</span>
+        <span class="k">return</span> <span class="n">exported_program</span>
+
+    <span class="n">graph</span><span class="o">.</span><span class="n">lint</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">exported_program</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+            </div>
+
+            <div class="right">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>

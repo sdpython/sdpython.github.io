@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -138,7 +138,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -175,7 +181,7 @@
 
 
 <div class="viewcode-block" id="make_hash">
-<a class="viewcode-back" href="../../../api/xshape/shape_builder.html#yobx.xshape.make_hash">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/shape_builder.html#yobx.xshape.shape_builder.make_hash">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">make_hash</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a simple hash of ``id(obj)`` in four letter.&quot;&quot;&quot;</span>
     <span class="n">aa</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">26</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
@@ -184,7 +190,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ShapeBuilder</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    API for a class computing shapes in an ONNX model.</span>
@@ -260,7 +266,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ShapeBuilder.get_debug_msg">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_debug_msg">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_debug_msg">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_debug_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a string providing as much information as possible</span>
@@ -272,15 +278,46 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="ShapeBuilder.has_opset">
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.has_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if opset `name` is defined.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ShapeBuilder.get_opset">
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the opset version for domain `name`.</span>
+
+<span class="sd">        :param name: domain name</span>
+<span class="sd">        :return: domain version or 0 if not defined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ShapeBuilder.set_opset">
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.set_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the opset version for domain `name`.</span>
+
+<span class="sd">        :param name: domain name</span>
+<span class="sd">        :param version: domain version</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="ShapeBuilder.has_shape">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.has_shape">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.has_shape">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if `name` has a shape.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ShapeBuilder.get_shape">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_shape">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_shape">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the shape of result *name* as a tuple.</span>
@@ -293,7 +330,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.set_shape">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.set_shape">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.set_shape">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the shape for result *name*.</span>
@@ -305,14 +342,14 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.has_type">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.has_type">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.has_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if `name` has a type.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ShapeBuilder.get_type">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_type">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the element type of result *name* as an ONNX integer</span>
@@ -325,7 +362,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.set_type">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.set_type">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.set_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the element type for result *name*.</span>
@@ -338,14 +375,14 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.has_rank">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.has_rank">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.has_rank">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if `name` has a rank.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ShapeBuilder.get_rank">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_rank">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_rank">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the rank (number of dimensions) of result *name*.</span>
@@ -357,7 +394,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.set_rank">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.set_rank">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.set_rank">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the rank (number of dimensions) for result *name*.</span>
@@ -369,14 +406,14 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.has_device">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.has_device">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.has_device">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if `name` has a device.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not overloaded in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ShapeBuilder.get_device">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_device">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_device">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the device of result *name*.</span>
@@ -388,7 +425,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.set_device">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.set_device">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.set_device">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the rank (number of dimensions) for result *name*.</span>
@@ -400,7 +437,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.register_constraint_dimension">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.register_constraint_dimension">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.register_constraint_dimension">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">register_constraint_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Registers a constraint associating a symbolic dimension name with a value.</span>
@@ -415,7 +452,7 @@
         <span class="k">return</span> <span class="n">make_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ShapeBuilder.update_shapes">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.update_shapes">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.update_shapes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates model shapes with the value stored inside this graph.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_shapes_graph</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span></div>
@@ -446,7 +483,7 @@
         <span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">infos</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ShapeBuilder.get_attribute">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_attribute">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_attribute">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_attribute</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">att_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">AttributeProto</span><span class="p">]:</span>
@@ -462,7 +499,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.get_attribute_with_default">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_attribute_with_default">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_attribute_with_default">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_attribute_with_default</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_value</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -495,7 +532,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.get_attributes_with_default">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_attributes_with_default">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.get_attributes_with_default">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_attributes_with_default</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="o">**</span><span class="n">default_values</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -533,7 +570,7 @@
 
 
 <div class="viewcode-block" id="ShapeBuilder.pretty_node">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.pretty_node">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.pretty_node">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">pretty_node</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">],</span>
@@ -645,7 +682,7 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">computed</span><span class="p">))</span>
 
 <div class="viewcode-block" id="ShapeBuilder.compare_with_true_inputs">
-<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.ShapeBuilder.compare_with_true_inputs">[docs]</a>
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.shape_builder.ShapeBuilder.compare_with_true_inputs">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compare_with_true_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]],</span>

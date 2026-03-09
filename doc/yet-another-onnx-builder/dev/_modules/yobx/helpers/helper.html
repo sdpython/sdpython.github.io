@@ -138,7 +138,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -341,19 +347,28 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span>
 
-        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_torch</span>
 
-        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
-            <span class="nb">isinstance</span><span class="p">(</span>
-                <span class="n">v</span><span class="p">,</span>
-                <span class="p">(</span>
-                    <span class="nb">str</span><span class="p">,</span>
-                    <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">,</span>
-                    <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DerivedDim</span><span class="p">,</span>
-                    <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DimHint</span><span class="p">,</span>
-                <span class="p">),</span>
+            <span class="n">_has_torch</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">_has_torch</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">_has_torch</span>
+            <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">v</span><span class="p">,</span>
+                    <span class="p">(</span>
+                        <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">_torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">,</span>
+                        <span class="n">_torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DerivedDim</span><span class="p">,</span>
+                        <span class="n">_torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DimHint</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
             <span class="p">)</span>
-            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">):</span>
             <span class="c1"># This is dynamic shapes</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>

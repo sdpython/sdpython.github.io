@@ -140,6 +140,7 @@
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">scikit-learn Export to ONNX</a><ul class="current">
@@ -148,13 +149,21 @@
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -190,6 +199,18 @@ shape and type metadata on intermediate tensors.</p></li>
 <p>An alternative bridge implementation,
 <code class="xref py py-class docutils literal notranslate"><span class="pre">OnnxScriptGraphBuilder</span></code>,
 shows how the same API can be satisfied on top of <code class="docutils literal notranslate"><span class="pre">onnxscript</span></code>’s IR.</p>
+<p>When any <code class="docutils literal notranslate"><span class="pre">ONNXSTOP*</span></code> variable triggers an exception, the resulting
+<strong>stack trace points to the exact line of converter code</strong> that first
+assigned a type or shape to that result.</p>
+<p><strong>Why using strings to refer to intermediate results?</strong></p>
+<p>A user usually only sees the final model and can only investigate an
+issue based on the names he reads.
+Keeping <strong>explicit, stable names</strong> for intermediate results in converters
+code helps to track the code where this name appears.
+Keeping that in mind, a protocol for a value seems unnecessary.
+The creation of the final name should not be delayed.
+That makes it easier to investigate issues such as exposes in
+<a class="reference internal" href="debug.html#l-design-sklearn-debug-env-vars"><span class="std std-ref">Debugging with Environment Variables</span></a>.</p>
 <section id="construction-api">
 <h2>Construction API<a class="headerlink" href="#construction-api" title="Link to this heading">¶</a></h2>
 <table class="docutils align-default">
@@ -203,7 +224,7 @@ shows how the same API can be satisfied on top of <code class="docutils literal 
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">__init__(target_opset)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">__init__(target_opset</span> <span class="pre">or</span> <span class="pre">existing</span> <span class="pre">ModelProto</span> <span class="pre">or</span> <span class="pre">FunctionProto)</span></code></p></td>
 <td><p>Constructor.  <em>target_opset</em> is either an <code class="docutils literal notranslate"><span class="pre">int</span></code> (main domain) or
 a <code class="docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">int]</span></code> mapping domain names to versions.</p></td>
 </tr>
@@ -283,6 +304,62 @@ automatically promoted to initializers.</p></td>
 </pre></div>
 </div>
 </section>
+</section>
+<section id="opset-api">
+<h2>Opset API<a class="headerlink" href="#opset-api" title="Link to this heading">¶</a></h2>
+<p>Converters frequently need to know which opset versions are active so they
+can choose the right operator variant or register an additional domain
+(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;ai.onnx.ml&quot;</span></code> for scikit-learn models).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method / attribute</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">main_opset</span></code></p></td>
+<td><p>Read-only property.  Returns the opset version for the main ONNX
+domain (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>).  Equivalent to <code class="docutils literal notranslate"><span class="pre">g.opsets[&quot;&quot;]</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_opset(domain,</span> <span class="pre">exc=True)</span></code></p></td>
+<td><p>Returns the opset version for <em>domain</em>.  When <code class="docutils literal notranslate"><span class="pre">exc=True</span></code> (default)
+an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code> is raised if the domain is not registered;
+set <code class="docutils literal notranslate"><span class="pre">exc=False</span></code> to get <code class="docutils literal notranslate"><span class="pre">None</span></code> instead.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">add_domain(domain,</span> <span class="pre">version=1)</span></code></p></td>
+<td><p>Registers <em>domain</em> with the given <em>version</em>.  If the domain is already
+registered, the call is a no-op (provided <em>version</em> matches).</p></td>
+</tr>
+</tbody>
+</table>
+<p>A converter that targets the main ONNX domain only needs to read
+<code class="docutils literal notranslate"><span class="pre">g.main_opset</span></code>.  A converter that also emits nodes from a secondary domain
+(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;ai.onnx.ml&quot;</span></code>) should first call <code class="docutils literal notranslate"><span class="pre">g.add_domain(domain,</span> <span class="pre">version)</span></code>
+to ensure the domain is recorded in the exported model, then query its
+version with <code class="docutils literal notranslate"><span class="pre">g.get_opset(domain)</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_my_estimator</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="c1"># Read the main opset to pick the right operator variant.</span>
+    <span class="n">opset</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">main_opset</span>
+
+    <span class="c1"># Register and query the ai.onnx.ml domain when needed.</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">add_domain</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">ml_opset</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_opset</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">opset</span> <span class="o">&gt;=</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">SomeNewOp</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">SomeLegacyOp</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
 </section>
 <section id="shape-and-type-api">
 <h2>Shape and type API<a class="headerlink" href="#shape-and-type-api" title="Link to this heading">¶</a></h2>
@@ -422,7 +499,8 @@ Useful when the rest of the pipeline already works with onnxscript.</p></li>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.448</span><span class="p">,</span>  <span class="mf">0.052</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.093</span><span class="p">,</span>  <span class="mf">0.247</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init_2&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">0.774</span><span class="p">,</span> <span class="mf">0.641</span><span class="p">,</span> <span class="mf">0.825</span><span class="p">,</span> <span class="mf">0.728</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
@@ -461,6 +539,7 @@ passes and dynamic shapes.</p>
 <li><a class="reference internal" href="#minimal-example">Minimal example</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#opset-api">Opset API</a></li>
 <li><a class="reference internal" href="#shape-and-type-api">Shape and type API</a><ul>
 <li><a class="reference internal" href="#shape-and-type-representation">Shape and Type representation</a></li>
 <li><a class="reference internal" href="#propagating-shape-and-type-in-a-converter">Propagating shape and type in a converter</a></li>

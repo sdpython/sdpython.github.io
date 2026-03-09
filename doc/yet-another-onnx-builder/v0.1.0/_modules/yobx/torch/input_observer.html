@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -138,7 +138,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -306,22 +312,76 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">aligned_spec</span><span class="p">:</span> <span class="n">pytree</span><span class="o">.</span><span class="n">PyTreeSpec</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aligned_flat_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_flatten_nested_object</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]:</span>
+        <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">dynamic_shapes</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_flatten_nested_object</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_flatten_nested_object</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DimHint</span><span class="p">)):</span>
+            <span class="c1"># weird case where one input is annotated with a single torch.export.Dim.</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">dynamic_shapes</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">=}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InputCandidate.needs_backed_size_oblivious">
+<a class="viewcode-back" href="../../../api/torch/input_observer.html#yobx.torch.input_observer.InputCandidate.needs_backed_size_oblivious">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">needs_backed_size_oblivious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if ``torch.fx.experimental._config.patch(backed_size_oblivious=True):``</span>
+<span class="sd">        should be use (a dynamic dimension is 0 or 1 in one of the tensor).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dynamic_shapes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">flat_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flatten_nested_object</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">flat_shapes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flat_list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The flatten dynamic shapes has not the same size (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">flat_shapes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;than the flat list of tensors (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flat_list</span><span class="p">)</span><span class="si">}</span><span class="s2">).&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">shape</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">flat_shapes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flat_list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Dimension </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> is outside the boundary &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;for a tensor of rank </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">AUTO</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
 <div class="viewcode-block" id="InputCandidate.remove_inputs">
 <a class="viewcode-back" href="../../../api/torch/input_observer.html#yobx.torch.input_observer.InputCandidate.remove_inputs">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">remove_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes inputs.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes inputs. Returns 0 if nothing was removed other the number of removal.&quot;&quot;&quot;</span>
         <span class="c1"># Work on a mutable copy of positional arguments.</span>
         <span class="n">args_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
 
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">name_or_pos</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">input_names</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name_or_pos</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="n">name_or_pos</span>
                 <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">args_list</span><span class="p">):</span>
+                    <span class="n">res</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">del</span> <span class="n">args_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">name_or_pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="n">name_or_pos</span><span class="p">]</span>
                 <span class="k">elif</span> <span class="n">name_or_pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">[</span><span class="n">name_or_pos</span><span class="p">]</span>
 
         <span class="c1"># Update stored positional arguments.</span>
@@ -331,7 +391,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_position_to_args_kwargs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_n_tensors_for_args_kwargs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aligned_spec</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aligned_flat_list</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aligned_flat_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -707,10 +768,16 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">flat_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">aligned_flat_list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">&quot;infer_dynamic_shapes is not implemented &quot;</span>
-                <span class="s2">&quot;when the best candidate is not &#39;aligned&#39;. &quot;</span>
-                <span class="s2">&quot;This happens when there is no stored set of inputs where &quot;</span>
-                <span class="s2">&quot;all optional inputs showing in other sets are defined.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;infer_dynamic_shapes is not implemented &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;when the best candidate is not &#39;aligned&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;This happens when there is no stored set of inputs where &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;all optional inputs showing in other sets are defined. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;You need to register the flattening function to infer the argument: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;with register_flattening_functions(patch_transformers=True): ...&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">self._best_candidate.flat_list=&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">flat_list</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">self._best_candidate.aligned_flat_list=&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">aligned_flat_list</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">({</span><span class="n">inputs</span><span class="o">.</span><span class="n">n_aligned_tensors</span> <span class="k">for</span> <span class="n">inputs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">})</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -1026,16 +1093,19 @@
 
 <div class="viewcode-block" id="InputObserverInfo.remove_inputs">
 <a class="viewcode-back" href="../../../api/torch/input_observer.html#yobx.torch.input_observer.InputObserverInfo.remove_inputs">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">remove_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lets the users drops inputs.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lets the users drops inputs. Returns the number of removals.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_name_and_position</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">args_name</span><span class="p">,</span> <span class="n">args_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_name_and_position</span>
             <span class="k">if</span> <span class="n">args_name</span> <span class="ow">in</span> <span class="n">input_names</span> <span class="ow">or</span> <span class="n">args_pos</span> <span class="ow">in</span> <span class="n">input_names</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot remove variadic </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args_name_and_position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs_name</span> <span class="ow">in</span> <span class="n">input_names</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot remove variadic </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-            <span class="n">candidate</span><span class="o">.</span><span class="n">remove_inputs</span><span class="p">(</span><span class="n">input_names</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">remove_inputs</span><span class="p">(</span><span class="n">input_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No input in all candidates was removed from </span><span class="si">{</span><span class="n">input_names</span><span class="si">=}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">remove_inputs</span><span class="p">(</span><span class="n">input_names</span><span class="p">)</span>
 
@@ -1059,7 +1129,8 @@
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">signature_names</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature_names</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_names_str</span>
-        <span class="p">]</span></div>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">r</span></div>
 </div>
 
 
@@ -1151,9 +1222,8 @@
 <span class="sd">        with observer(pipe.model):</span>
 <span class="sd">            pipe(text=messages, max_new_tokens=4)</span>
 
-<span class="sd">    Examples can be found in :ref:`l-plot-tiny-llm-export-input-observer`,</span>
-<span class="sd">    :ref:`l-plot-whisper-tiny-export-input-observer`,</span>
-<span class="sd">    :ref:`l-plot-gemma3-tiny-export-input-observer`.</span>
+<span class="sd">    Examples can be found in :ref:`l-plot-input-observer-transformers`,</span>
+<span class="sd">    :ref:`l-plot-input-observer-tiny-llm`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_if_missing</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>

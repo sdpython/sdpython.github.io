@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -138,7 +138,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -230,7 +236,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_value_shape</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSTOPVALUESHAPE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_constant_folding</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_msg</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">=</span> <span class="n">opset</span> <span class="ow">or</span> <span class="mi">18</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="n">opset</span><span class="p">}</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opset</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">opset</span> <span class="ow">or</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_evaluation_constants_</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span> <span class="o">=</span> <span class="n">_OptimizationOptions</span><span class="p">()</span>
 
@@ -621,6 +628,42 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
+<div class="viewcode-block" id="BasicShapeBuilder.has_opset">
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.BasicShapeBuilder.has_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if opset `name` is defined.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span></div>
+
+
+<div class="viewcode-block" id="BasicShapeBuilder.get_opset">
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.BasicShapeBuilder.get_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the opset version for domain `name`.</span>
+
+<span class="sd">        :param name: domain name</span>
+<span class="sd">        :return: domain version or 0 if not specified</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BasicShapeBuilder.set_opset">
+<a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.BasicShapeBuilder.set_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the opset version for domain `name`.</span>
+
+<span class="sd">        :param name: domain name</span>
+<span class="sd">        :param version: domain version</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_opset</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
+            <span class="k">return</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_opset</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="n">version</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Inconsistencies for domain </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, existing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_opset</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">, new </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
 <div class="viewcode-block" id="BasicShapeBuilder.has_rank">
 <a class="viewcode-back" href="../../../api/xshape/index.html#yobx.xshape.BasicShapeBuilder.has_rank">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -905,13 +948,17 @@
         <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs inference over a model or a graph.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">=</span> <span class="mi">18</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">time_evaluation_constants_</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">opset</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">opset</span><span class="o">.</span><span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">=</span> <span class="n">opset</span><span class="o">.</span><span class="n">version</span>
-                    <span class="k">break</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">opset</span><span class="o">.</span><span class="n">domain</span><span class="p">]</span> <span class="o">=</span> <span class="n">opset</span><span class="o">.</span><span class="n">version</span>
+            <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_TARGET_OPSET</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_model</span><span class="p">(</span>
                 <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">functions</span><span class="o">=</span><span class="p">{(</span><span class="n">f</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">):</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">functions</span><span class="p">}</span>
             <span class="p">)</span>

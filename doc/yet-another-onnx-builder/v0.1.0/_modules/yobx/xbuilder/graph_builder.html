@@ -138,7 +138,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -475,8 +481,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source_flat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_dynamic_dimensions_source_flat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_process_dynamic_shape</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_dynamic_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_process_dynamic_shape</span><span class="p">(</span><span class="n">output_dynamic_shapes</span><span class="p">)</span>
+        <span class="n">unique_names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_process_dynamic_shape</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dynamic_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_process_dynamic_shape</span><span class="p">(</span>
+            <span class="n">output_dynamic_shapes</span><span class="p">,</span> <span class="n">unique_names</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects_rev</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">FunctionProto</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -750,11 +759,10 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_pre_process_dynamic_shape</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">unique_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="n">unique_names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replaces Hints by true DynamicShapes.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">unique_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;will lead to a bug&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dynamic_shapes</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">dynamic_shapes</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -763,8 +771,9 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">WrapDim</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">dynamic_shapes</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
-            <span class="n">processed</span> <span class="o">=</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">_pre_process_dynamic_shape</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="p">]</span>
-            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">processed</span>
+            <span class="k">return</span> <span class="n">dynamic_shapes</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_pre_process_dynamic_shape</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{</span>
                 <span class="n">k</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pre_process_dynamic_shape</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)</span>
@@ -775,9 +784,6 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">dynamic_shapes</span>
-        <span class="k">if</span> <span class="n">unique_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">unique_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">in</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">AUTO</span><span class="p">):</span>
             <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;DYN0&quot;</span>
@@ -842,7 +848,7 @@
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">WrapDim</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
                         <span class="n">_v</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>  <span class="c1"># type: ignore</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">WrapDim</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>  <span class="c1"># type: ignore</span>
                         <span class="n">axis</span><span class="o">=</span><span class="n">_k</span><span class="p">,</span>
                         <span class="n">input_name</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
                     <span class="p">)</span>
@@ -1261,9 +1267,21 @@
         <span class="s2">&quot;Returns the opset for the main domain (assuming it is used).&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
 
+<div class="viewcode-block" id="GraphBuilder.has_opset">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.has_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the opset version for a specific domain.</span>
+
+<span class="sd">        :param domain: domain name</span>
+<span class="sd">        :return: version or 0 if missing</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="GraphBuilder.get_opset">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.get_opset">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the opset version for a specific domain.</span>
 
@@ -1272,17 +1290,17 @@
 <span class="sd">        :return: version</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">exc</span> <span class="ow">or</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span>
+            <span class="ow">not</span> <span class="n">exc</span> <span class="ow">or</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Domain </span><span class="si">{</span><span class="n">domain</span><span class="si">!r}</span><span class="s2"> is not registered</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GraphBuilder.add_domain">
-<a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.add_domain">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="GraphBuilder.set_opset">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.set_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds a domain to the list of supported ones.</span>
-<span class="sd">        Checks the version is the same if it exists.</span>
+<span class="sd">        Sets the opset version for a domain.</span>
+<span class="sd">        Checks the version is the same if it already exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">domain</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">version</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">domain</span><span class="p">],</span> <span class="p">(</span>
@@ -1291,6 +1309,13 @@
             <span class="p">)</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilder.add_domain">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.add_domain">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deprecated. Use :meth:`set_opset` instead.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_opset</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -4604,7 +4629,7 @@
         <span class="n">insert_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">metadata_props</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a node in the graph.</span>
 
@@ -4822,7 +4847,7 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">output_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">output_names</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_another_pass_at_shape_inference</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -5033,7 +5058,7 @@
         <span class="n">function_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FunctionOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">force_rename_with_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Appends all nodes and initializers from another builder.</span>
 <span class="sd">        Handles the renaming of results.</span>
@@ -5213,7 +5238,7 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">output_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">output_names</span></div>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_large_initializers</span><span class="p">(</span>
@@ -6583,8 +6608,6 @@
 <span class="sd">            the names the user provides</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">replacements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_improves_dynamic_dimension_naming</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">replacements</span><span class="p">:</span>
-            <span class="k">return</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -6721,6 +6744,9 @@
                     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                         <span class="n">vv</span><span class="p">,</span> <span class="nb">str</span>
                     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for </span><span class="si">{</span><span class="n">vv</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="k">if</span> <span class="n">vv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="p">[</span><span class="n">vv</span><span class="p">]:</span>
+                        <span class="c1"># already an equivalence</span>
+                        <span class="k">continue</span>
                     <span class="n">simpl</span> <span class="o">=</span> <span class="n">simplify_two_expressions</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">vv</span><span class="p">)</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">simpl</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="k">continue</span>
@@ -6728,7 +6754,7 @@
                     <span class="k">if</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
                         <span class="k">continue</span>
                     <span class="c1"># adds an equivalence</span>
-                    <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">n1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">update</span><span class="p">:</span>
                         <span class="n">update</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">n2</span><span class="p">}</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -6739,7 +6765,9 @@
                         <span class="n">update</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
                     <span class="n">k2</span> <span class="o">=</span> <span class="n">rename_expression</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">{</span><span class="n">n1</span><span class="p">:</span> <span class="n">n2</span><span class="p">})</span>
                     <span class="n">vv2</span> <span class="o">=</span> <span class="n">rename_expression</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="p">{</span><span class="n">n2</span><span class="p">:</span> <span class="n">n1</span><span class="p">})</span>
-                    <span class="k">assert</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">k2</span> <span class="ow">and</span> <span class="n">vv</span> <span class="o">!=</span> <span class="n">vv2</span>
+                    <span class="k">assert</span> <span class="p">(</span>
+                        <span class="n">k</span> <span class="o">!=</span> <span class="n">k2</span> <span class="ow">or</span> <span class="n">vv</span> <span class="o">!=</span> <span class="n">vv2</span>
+                    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">k2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">vv</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">vv2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">n1</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">n2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">v</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="si">=}</span><span class="s2">&quot;</span>
                     <span class="n">eq</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">vv</span><span class="p">,</span> <span class="n">vv2</span><span class="p">}</span>
                     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">eq</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">e</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">update</span><span class="p">:</span>

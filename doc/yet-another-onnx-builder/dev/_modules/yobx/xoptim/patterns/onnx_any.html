@@ -138,7 +138,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -179,45 +182,28 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 1, 3, 4))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Expand&#39;, [&#39;Y&#39;, &#39;sh1&#39;], [&#39;y1&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Expand&#39;, [&#39;Y&#39;, &#39;sh1&#39;], [&#39;y2&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 1, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;sh1&#39;, onnx.TensorProto.INT64, (4,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y2&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ), # 1</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;sh1&quot;, onnx.TensorProto.INT64, shape=(4,)))</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;Y&quot;, &quot;sh1&quot;], [&quot;y1&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;Y&quot;, &quot;sh1&quot;], [&quot;y2&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -228,45 +214,28 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 1, 3, 4))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Expand&#39;, [&#39;Y&#39;, &#39;sh1&#39;], [&#39;y1&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Identity&#39;, [&#39;y1&#39;], [&#39;y2&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 1, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;sh1&#39;, onnx.TensorProto.INT64, (4,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y2&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ), # 2</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;sh1&quot;, onnx.TensorProto.INT64, shape=(4,)))</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;Y&quot;, &quot;sh1&quot;], [&quot;y1&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;y1&quot;], [&quot;y2&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -539,44 +508,27 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;xy1&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 2, 3, 4))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;X&#39;], [&#39;xy1&#39;], to=10),</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;X&#39;], [&#39;xy2&#39;], to=10),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;xy1&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;xy1&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;xy2&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ), # 5</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;X&quot;], [&quot;xy1&quot;], to=10))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;X&quot;], [&quot;xy2&quot;], to=10))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;xy1&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;xy2&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -587,44 +539,27 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;xy1&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 2, 3, 4))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;X&#39;], [&#39;xy1&#39;], to=10),</span>
+<span class="sd">                    oh.make_node(&#39;Identity&#39;, [&#39;xy1&#39;], [&#39;xy2&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;xy1&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;xy1&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;xy2&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ), # 6</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Cast&quot;, [&quot;X&quot;], [&quot;xy1&quot;], to=10))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;xy1&quot;], [&quot;xy2&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;xy1&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;xy2&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -667,45 +602,28 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Expand&#39;, [&#39;Y&#39;, &#39;sh1&#39;], [&#39;y1&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Expand&#39;, [&#39;Y&#39;, &#39;sh1&#39;], [&#39;y2&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;sh1&#39;, onnx.TensorProto.INT64, (4,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 1, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y2&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ), # 7</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;sh1&quot;, onnx.TensorProto.INT64, shape=(4,)))</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 1, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;Y&quot;, &quot;sh1&quot;], [&quot;y1&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;Y&quot;, &quot;sh1&quot;], [&quot;y2&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -716,45 +634,28 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Expand&#39;, [&#39;Y&#39;, &#39;sh1&#39;], [&#39;y1&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Identity&#39;, [&#39;y1&#39;], [&#39;y2&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;sh1&#39;, onnx.TensorProto.INT64, (4,)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 1, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y1&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;y2&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 2, 3, 4)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ), # 8</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;sh1&quot;, onnx.TensorProto.INT64, shape=(4,)))</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 1, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Expand&quot;, [&quot;Y&quot;, &quot;sh1&quot;], [&quot;y1&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;y1&quot;], [&quot;y2&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y1&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;y2&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 2, 3, 4))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -845,37 +746,18 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;x3&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [oh.make_node(&#39;Transpose&#39;, [&#39;x3&#39;], [&#39;Y&#39;], perm=[0, 1, 2])],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;x3&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;))],</span>
+<span class="sd">            ), # 9</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Transpose&quot;, [&quot;x3&quot;], [&quot;Y&quot;], perm=[0, 1, 2]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -886,37 +768,19 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;x3&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [oh.make_node(&#39;Identity&#39;, [&#39;x3&#39;], [&#39;Y&#39;])],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;x3&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;))],</span>
+<span class="sd">            ), # 11</span>
+<span class="sd">            functions=[],</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;x3&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1158,49 +1022,32 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = [onh.from_array(np.array([0], dtype=np.int64), &quot;zero&quot;)]</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Shape&quot;,</span>
-<span class="sd">                [&quot;X&quot;],</span>
-<span class="sd">                [&quot;N&quot;],</span>
-<span class="sd">                start=0,</span>
-<span class="sd">                end=1,</span>
-<span class="sd">            )</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Shape&#39;, [&#39;X&#39;], [&#39;N&#39;], end=1, start=0),</span>
+<span class="sd">                    oh.make_node(</span>
+<span class="sd">                        &#39;Constant&#39;,</span>
+<span class="sd">                        [],</span>
+<span class="sd">                        [&#39;zero&#39;],</span>
+<span class="sd">                        value=onh.from_array(</span>
+<span class="sd">                            np.array([0], dtype=np.int64),</span>
+<span class="sd">                            name=&#39;value&#39;,</span>
+<span class="sd">                        ), # 13</span>
+<span class="sd">                    ), # 12</span>
+<span class="sd">                    oh.make_node(&#39;Slice&#39;, [&#39;X&#39;, &#39;zero&#39;, &#39;N&#39;, &#39;zero&#39;], [&#39;Y&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;,))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;,))],</span>
+<span class="sd">                [onh.from_array(np.array([0], dtype=np.int64), name=&#39;zero&#39;)],</span>
+<span class="sd">            ), # 14</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;zero&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([0], dtype=np.int64), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Slice&quot;, [&quot;X&quot;, &quot;zero&quot;, &quot;N&quot;, &quot;zero&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -1211,33 +1058,18 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;X&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;,)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [oh.make_node(&#39;Identity&#39;, [&#39;X&#39;], [&#39;Y&#39;])],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;,))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;,))],</span>
+<span class="sd">            ), # 15</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1311,46 +1143,28 @@
 
 <span class="sd">        from yobx.doc import to_dot</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
 <span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;cst&#39;],</span>
+<span class="sd">                                 value=onh.from_array(np.array([2.0], dtype=np.float32),</span>
+<span class="sd">                                 name=&#39;value&#39;)),</span>
+<span class="sd">                    oh.make_node(&#39;Transpose&#39;, [&#39;X&#39;], [&#39;xt&#39;], perm=[0, 2, 1, 3]),</span>
+<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;xt&#39;, &#39;cst&#39;], [&#39;Y&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;cst&#39;, onnx.TensorProto.FLOAT, (1,)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;c&#39;, &#39;b&#39;, &#39;d&#39;))],</span>
+<span class="sd">            ), # 16</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;cst&quot;, onnx.TensorProto.FLOAT, shape=(1,)))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(</span>
-<span class="sd">                &quot;Constant&quot;,</span>
-<span class="sd">                [],</span>
-<span class="sd">                [&quot;cst&quot;],</span>
-<span class="sd">                value=onh.from_array(np.array([2.0], dtype=np.float32), name=&quot;value&quot;),</span>
-<span class="sd">            )</span>
-<span class="sd">        )</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Transpose&quot;, [&quot;X&quot;], [&quot;xt&quot;], perm=[0, 2, 1, 3]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;xt&quot;, &quot;cst&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;c&quot;, &quot;b&quot;, &quot;d&quot;))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -1361,41 +1175,26 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;))</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;X&#39;, &#39;cst&#39;], [&#39;SwapUnaryPattern--xt&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Transpose&#39;, [&#39;SwapUnaryPattern--xt&#39;], [&#39;Y&#39;], perm=[0, 2, 1, 3]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;)),</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;cst&#39;, onnx.TensorProto.FLOAT, (1,)),</span>
+<span class="sd">                ],</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;c&#39;, &#39;b&#39;, &#39;d&#39;)),</span>
+<span class="sd">                ],</span>
+<span class="sd">            ), # 17</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
 <span class="sd">        )</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;cst&quot;, onnx.TensorProto.FLOAT, shape=(1,)))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Mul&quot;, [&quot;X&quot;, &quot;cst&quot;], [&quot;SwapUnaryPattern--xt&quot;]))</span>
-<span class="sd">        nodes.append(</span>
-<span class="sd">            oh.make_node(&quot;Transpose&quot;, [&quot;SwapUnaryPattern--xt&quot;], [&quot;Y&quot;], perm=[0, 2, 1, 3])</span>
-<span class="sd">        )</span>
-<span class="sd">        outputs.append(</span>
-<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;c&quot;, &quot;b&quot;, &quot;d&quot;))</span>
-<span class="sd">        )</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
-<span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1477,34 +1276,21 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 23),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.BOOL, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Not&quot;, [&quot;X&quot;], [&quot;xs&quot;]))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Not&quot;, [&quot;xs&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.BOOL, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [</span>
+<span class="sd">                    oh.make_node(&#39;Not&#39;, [&#39;X&#39;], [&#39;xs&#39;]),</span>
+<span class="sd">                    oh.make_node(&#39;Not&#39;, [&#39;xs&#39;], [&#39;Y&#39;]),</span>
+<span class="sd">                ],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.BOOL, (&#39;a&#39;, 2))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.BOOL, (&#39;a&#39;, 2))],</span>
+<span class="sd">            ), # 19</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 23)],</span>
 <span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 
@@ -1515,33 +1301,18 @@
 <span class="sd">        :process:</span>
 
 <span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import ml_dtypes</span>
 <span class="sd">        import onnx</span>
 <span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
 
-<span class="sd">        opset_imports = [</span>
-<span class="sd">            oh.make_opsetid(&quot;&quot;, 23),</span>
-<span class="sd">        ]</span>
-<span class="sd">        inputs = []</span>
-<span class="sd">        outputs = []</span>
-<span class="sd">        nodes = []</span>
-<span class="sd">        initializers = []</span>
-<span class="sd">        sparse_initializers = []</span>
-<span class="sd">        functions = []</span>
-<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.BOOL, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        nodes.append(oh.make_node(&quot;Identity&quot;, [&quot;X&quot;], [&quot;Y&quot;]))</span>
-<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.BOOL, shape=(&quot;a&quot;, 2)))</span>
-<span class="sd">        graph = oh.make_graph(</span>
-<span class="sd">            nodes,</span>
-<span class="sd">            &quot;pattern&quot;,</span>
-<span class="sd">            inputs,</span>
-<span class="sd">            outputs,</span>
-<span class="sd">            initializers,</span>
-<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        model = oh.make_model(</span>
+<span class="sd">            oh.make_graph(</span>
+<span class="sd">                [oh.make_node(&#39;Identity&#39;, [&#39;X&#39;], [&#39;Y&#39;])],</span>
+<span class="sd">                &#39;pattern&#39;,</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.BOOL, (&#39;a&#39;, 2))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.BOOL, (&#39;a&#39;, 2))],</span>
+<span class="sd">            ),  # 20</span>
+<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 23)],</span>
 <span class="sd">        )</span>
-<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
 
 <span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>

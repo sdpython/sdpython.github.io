@@ -140,6 +140,7 @@
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">scikit-learn Export to ONNX</a><ul class="current">
@@ -148,13 +149,21 @@
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -225,7 +234,8 @@ finalises and returns the model.</p></li>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.448</span><span class="p">,</span>  <span class="mf">0.052</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.093</span><span class="p">,</span>  <span class="mf">0.247</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4_2&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">0.774</span><span class="p">,</span> <span class="mf">0.641</span><span class="p">,</span> <span class="mf">0.825</span><span class="p">,</span> <span class="mf">0.728</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
@@ -245,11 +255,12 @@ finalises and returns the model.</p></li>
 <p>Use the <code class="xref py py-func docutils literal notranslate"><span class="pre">register_sklearn_converter</span></code> decorator.
 Pass a single class or a tuple of classes as the first argument:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn.register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
 
 <span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">MyEstimator</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_my_estimator</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">estimator</span><span class="p">:</span> <span class="n">MyEstimator</span><span class="p">,</span>
@@ -350,7 +361,8 @@ converts <a class="reference external" href="https://scikit-learn.org/stable/mod
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s3_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.387</span><span class="p">,</span>  <span class="mf">0.435</span><span class="p">,</span>  <span class="mf">0.241</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
     <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s3_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span>
@@ -383,6 +395,41 @@ converts <a class="reference external" href="https://scikit-learn.org/stable/mod
                                Softmax  ──►  probabilities
                                    │
                                ArgMax ──Cast──Gather(classes)  ──►  label
+</pre></div>
+</div>
+</section>
+<section id="pca">
+<h3>PCA<a class="headerlink" href="#pca" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/sklearn/decomposition/pca.html#yobx.sklearn.decomposition.pca.sklearn_pca" title="yobx.sklearn.decomposition.pca.sklearn_pca"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_pca</span></code></a>
+converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.decomposition.PCA</span></code></a>.</p>
+<p>The implementation centres the input (when <code class="docutils literal notranslate"><span class="pre">mean_</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>) and
+then projects it onto the principal components:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Sub(mean_)──►  centered  ──MatMul(components_.T)──►  output
+     (if mean_ is not None)
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">mean_</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> the <code class="docutils literal notranslate"><span class="pre">Sub</span></code> node is skipped.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.448</span><span class="p">,</span>  <span class="mf">0.052</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.093</span><span class="p">,</span>  <span class="mf">0.247</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4x2_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>                    <span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
+    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s4_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_sub_X</span>
+      <span class="n">MatMul</span><span class="p">(</span><span class="n">_onx_sub_X</span><span class="p">,</span> <span class="n">init1_s4x2_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pca</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
 </pre></div>
 </div>
 </section>
@@ -438,13 +485,13 @@ is loaded when <a class="reference internal" href="../../api/sklearn/index.html#
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># yobx/sklearn/ensemble/random_forest.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">...xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
 
 
 <span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_random_forest_classifier</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">estimator</span><span class="p">:</span> <span class="n">RandomForestClassifier</span><span class="p">,</span>
@@ -484,6 +531,7 @@ is loaded when <a class="reference internal" href="../../api/sklearn/index.html#
 <li><a class="reference internal" href="#implemented-converters">Implemented converters</a><ul>
 <li><a class="reference internal" href="#standardscaler">StandardScaler</a></li>
 <li><a class="reference internal" href="#logisticregression">LogisticRegression</a></li>
+<li><a class="reference internal" href="#pca">PCA</a></li>
 <li><a class="reference internal" href="#pipeline">Pipeline</a></li>
 </ul>
 </li>

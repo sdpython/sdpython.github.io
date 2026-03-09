@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -138,7 +138,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -177,9 +183,10 @@
 <span class="p">)</span>
 
 
+<span class="c1"># keeps quotes, pytest is not happy otherwise</span>
 <div class="viewcode-block" id="onnx_dtype_to_torch_dtype">
 <a class="viewcode-back" href="../../../api/torch/torch_helper.html#yobx.torch.torch_helper.onnx_dtype_to_torch_dtype">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">onnx_dtype_to_torch_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">onnx_dtype_to_torch_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an onnx type into a torch dtype.</span>
 
@@ -224,7 +231,7 @@
 
 <div class="viewcode-block" id="torch_dtype_to_onnx_dtype">
 <a class="viewcode-back" href="../../../api/torch/torch_helper.html#yobx.torch.torch_helper.torch_dtype_to_onnx_dtype">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a torch dtype into a onnx element type.</span>
 
@@ -277,7 +284,7 @@
 
 <div class="viewcode-block" id="to_numpy">
 <a class="viewcode-back" href="../../../api/torch/torch_helper.html#yobx.torch.torch_helper.to_numpy">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">to_numpy</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_numpy</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="s2">&quot;torch.Tensor&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a :class:`torch.Tensor` to :class:`numpy.ndarray`.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
@@ -357,7 +364,7 @@
 
 <div class="viewcode-block" id="to_tensor">
 <a class="viewcode-back" href="../../../api/torch/torch_helper.html#yobx.torch.torch_helper.to_tensor">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">to_tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.Tensor&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a TensorProto to a torch.Tensor.</span>
 
