@@ -35,7 +35,7 @@ Dummy Example
 Let's use the example provided on
 `arnir0/Tiny-LLM <https://huggingface.co/arnir0/Tiny-LLM>`_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-73
+.. GENERATED FROM PYTHON SOURCE LINES 19-72
 
 .. code-block:: Python
 
@@ -44,8 +44,7 @@ Let's use the example provided on
     from transformers import AutoModelForCausalLM, AutoTokenizer
     from yobx import doc
     from yobx.helpers import string_type
-
-    # from yobx.helpers.rt_helper import onnx_generate
+    from yobx.helpers.rt_helper import onnx_generate
     from yobx.torch import (
         register_flattening_functions,
         apply_patches_for_model,
@@ -101,7 +100,7 @@ Let's use the example provided on
 
  .. code-block:: none
 
-    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 951.05it/s]
+    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 721.57it/s]
     -----------------
     Continue: it rains, what should I do?
     I have a lot of people who are in the world. I have a lot of people who are in the world, and I have a lot of people who are in the world
@@ -110,7 +109,7 @@ Let's use the example provided on
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-81
+.. GENERATED FROM PYTHON SOURCE LINES 73-80
 
 Replace forward method
 ++++++++++++++++++++++
@@ -120,7 +119,7 @@ We first capture inputs and outputs with an :class`InputObserver
 We also need to registers additional patches for :epkg:`transformers`.
 Then :epkg:`pytorch` knows how to flatten/unflatten inputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-89
+.. GENERATED FROM PYTHON SOURCE LINES 80-88
 
 .. code-block:: Python
 
@@ -145,7 +144,7 @@ Then :epkg:`pytorch` knows how to flatten/unflatten inputs.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-96
+.. GENERATED FROM PYTHON SOURCE LINES 89-95
 
 Exports
 +++++++
@@ -154,7 +153,7 @@ The `InputObserver` has now enough data to infer arguments and dynamic shapes.
 We need more than flattening but also patches to export the model.
 Inferred dynamic shapes looks like:
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-100
+.. GENERATED FROM PYTHON SOURCE LINES 95-99
 
 .. code-block:: Python
 
@@ -169,11 +168,11 @@ Inferred dynamic shapes looks like:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-102
+.. GENERATED FROM PYTHON SOURCE LINES 100-101
 
 and inferred arguments:
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-105
+.. GENERATED FROM PYTHON SOURCE LINES 101-104
 
 .. code-block:: Python
 
@@ -194,11 +193,11 @@ and inferred arguments:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-107
+.. GENERATED FROM PYTHON SOURCE LINES 105-106
 
 Let's export.
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-121
+.. GENERATED FROM PYTHON SOURCE LINES 106-120
 
 .. code-block:: Python
 
@@ -223,7 +222,7 @@ Let's export.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-127
+.. GENERATED FROM PYTHON SOURCE LINES 121-126
 
 Check discrepancies
 +++++++++++++++++++
@@ -231,7 +230,7 @@ Check discrepancies
 The model is exported into ONNX. We use again the stored inputs and outputs
 to verify the model produces the same outputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-132
+.. GENERATED FROM PYTHON SOURCE LINES 126-131
 
 .. code-block:: Python
 
@@ -248,23 +247,25 @@ to verify the model produces the same outputs.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:03,  1.88s/it]    100%|██████████| 3/3 [00:01<00:00,  1.59it/s]
-            abs       rel       sum        n  dnan  dev  >0.1  >0.01  SUCCESS  index  duration_torch  ort_duration  n_inputs  n_none  n_empty                                             inputs                               outputs_torch                                 outputs_ort
-    0  0.000012  0.000433  0.064768  34496.0     0    0     0      0     True      0        0.003326      1.868179         6       2        2  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
-    1  0.000010  0.001411  0.046240  34688.0     0    0     0      0     True      1        0.002468      0.001304         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
-    2  0.000010  0.001841  0.048305  34880.0     0    0     0      0     True      2        0.002320      0.001707         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
+      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:03,  1.97s/it]    100%|██████████| 3/3 [00:01<00:00,  1.51it/s]
+            abs       rel       sum  ...                                             inputs                               outputs_torch                                 outputs_ort
+    0  0.000012  0.000433  0.064768  ...  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
+    1  0.000010  0.001411  0.046240  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
+    2  0.000010  0.001841  0.048305  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
+
+    [3 rows x 18 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-137
+.. GENERATED FROM PYTHON SOURCE LINES 132-136
 
 Minimal script to export a LLM
 ++++++++++++++++++++++++++++++
 
 The following lines are a condensed copy with less comments.
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-178
+.. GENERATED FROM PYTHON SOURCE LINES 136-177
 
 .. code-block:: Python
 
@@ -318,47 +319,63 @@ The following lines are a condensed copy with less comments.
  .. code-block:: none
 
     ----------------
-    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 1444.44it/s]
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:00<00:00,  4.85it/s]    100%|██████████| 3/3 [00:00<00:00, 14.14it/s]
-            abs       rel       sum        n  dnan  dev  >0.1  >0.01  SUCCESS  index  duration_torch  ort_duration  n_inputs  n_none  n_empty                                             inputs                               outputs_torch                                 outputs_ort
-    0  0.000012  0.000433  0.064768  34496.0     0    0     0      0     True      0        0.015106      0.204200         6       2        2  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
-    1  0.000010  0.001411  0.046240  34688.0     0    0     0      0     True      1        0.004069      0.001012         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
-    2  0.000010  0.001841  0.048305  34880.0     0    0     0      0     True      2        0.001940      0.001335         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
+    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 1873.01it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:00<00:00,  3.97it/s]    100%|██████████| 3/3 [00:00<00:00, 11.58it/s]
+            abs       rel       sum  ...                                             inputs                               outputs_torch                                 outputs_ort
+    0  0.000012  0.000433  0.064768  ...  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
+    1  0.000010  0.001411  0.046240  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
+    2  0.000010  0.001841  0.048305  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
+
+    [3 rows x 18 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 179-181
+.. GENERATED FROM PYTHON SOURCE LINES 178-186
 
+%%
 ONNX Prompt
 +++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 181-195
+:func:`onnx_generate <yobx.helpers.rt_helper.onnx_generate>` runs the
+exported ONNX model in a greedy auto-regressive loop, feeding the
+*present* key/value tensors back as *past* key/values on every subsequent
+call, just like the HuggingFace ``generate`` method.
+
+.. GENERATED FROM PYTHON SOURCE LINES 186-199
 
 .. code-block:: Python
 
 
-    # not yet implemented
-    # onnx_tokens = onnx_generate(
-    #    filenamec,
-    #    input_ids=inputs["input_ids"],
-    #    attention_mask=inputs["attention_mask"],
-    #    eos_token_id=model.config.eos_token_id,
-    #    max_new_tokens=50,
-    # )
-    # onnx_generated_text = tokenizer.decode(onnx_tokens, skip_special_tokens=True)
-    # print("-----------------")
-    # print("\n".join(onnx_generated_text))
-    # print("-----------------")
+    onnx_tokens = onnx_generate(
+        filenamec,
+        input_ids=inputs["input_ids"],
+        attention_mask=inputs["attention_mask"],
+        eos_token_id=model.config.eos_token_id,
+        max_new_tokens=50,
+    )
+    onnx_generated_text = tokenizer.decode(onnx_tokens[0], skip_special_tokens=True)
+    print("-----------------")
+    print(onnx_generated_text)
+    print("-----------------")
 
 
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    -----------------
+    Continue: it rains, what should I do?
+    I have a lot of people who are in the world. I have a lot of people who are in the world, and I have a lot of people who are in the world. I have a lot of people who are in the world,
+    -----------------
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 196-197
+
+.. GENERATED FROM PYTHON SOURCE LINES 200-201
 
 .. code-block:: Python
 
@@ -378,7 +395,7 @@ ONNX Prompt
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.800 seconds)
+   **Total running time of the script:** (0 minutes 16.529 seconds)
 
 
 .. _sphx_glr_download_auto_examples_torch_plot_input_observer_tiny_llm.py:

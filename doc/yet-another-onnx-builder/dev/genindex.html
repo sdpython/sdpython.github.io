@@ -14,12 +14,448 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d0ff0132" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=3e4cc94f" />
     <script src="_static/documentation_options.js?v=01f34227"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
     <script src="_static/js/theme.js"></script>
     <script src="_static/js/petite-vue.js"></script>
     <link rel="icon" href="_static/logo.svg"/>
@@ -737,6 +1173,8 @@
 </li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_argmax">aten_argmax() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
+      <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_argmin">aten_argmin() (in module yobx.torch.interpreter._aten_functions)</a>
+</li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_argsort">aten_argsort() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_as_strided">aten_as_strided() (in module yobx.torch.interpreter._aten_functions)</a>
@@ -849,14 +1287,14 @@
 </li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_div_Tensor_mode">aten_div_Tensor_mode() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_dropout">aten_dropout() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_dropout_">aten_dropout_() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_einsum">aten_einsum() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_elu">aten_elu() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_elu_">aten_elu_() (in module yobx.torch.interpreter._aten_functions)</a>
@@ -1461,6 +1899,18 @@
 </li>
       <li><a href="api/torch/interpreter/_aten_functions.html#yobx.torch.interpreter._aten_functions.aten_zeros_like">aten_zeros_like() (in module yobx.torch.interpreter._aten_functions)</a>
 </li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenAsStrided">AtenAsStrided (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenInterpolate">AtenInterpolate (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenNonZero">AtenNonZero (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenNonZeroTuple">AtenNonZeroTuple (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenRollPos">AtenRollPos (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenRollRelu">AtenRollRelu (class in yobx.torch._model_eval_cases)</a>
+</li>
       <li><a href="api/xoptim/patterns_ort/llm_optim.html#yobx.xoptim.patterns_ort.llm_optim.Attention3DPattern">Attention3DPattern (class in yobx.xoptim.patterns_ort.llm_optim)</a>
 </li>
       <li><a href="api/xoptim/patterns/onnx_attention.html#yobx.xoptim.patterns.onnx_attention.AttentionGQAPattern">AttentionGQAPattern (class in yobx.xoptim.patterns.onnx_attention)</a>
@@ -1485,10 +1935,10 @@
 </li>
       <li><a href="api/xoptim/patterns_ort/activation.html#yobx.xoptim.patterns_ort.activation.BiasSoftmaxPattern">BiasSoftmaxPattern (class in yobx.xoptim.patterns_ort.activation)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/xoptim/patterns_investigation/element_wise.html#yobx.xoptim.patterns_investigation.element_wise.BinaryInvestigation">BinaryInvestigation (class in yobx.xoptim.patterns_investigation.element_wise)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/builder/light/var.html#yobx.builder.light._var.BaseVar.bring">bring() (yobx.builder.light._var.BaseVar method)</a>
 </li>
       <li><a href="api/xshape/shape_type_compute.html#yobx.xshape.shape_type_compute.broadcast_shape">broadcast_shape() (in module yobx.xshape.shape_type_compute)</a>
@@ -1496,6 +1946,10 @@
       <li><a href="api/torch/interpreter/onnx_export.html#yobx.torch.interpreter.onnx_export.build_source_lines">build_source_lines() (in module yobx.torch.interpreter.onnx_export)</a>
 </li>
       <li><a href="api/translate/builder_emitter.html#yobx.translate.builder_emitter.BuilderEmitter">BuilderEmitter (class in yobx.translate.builder_emitter)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.BuildInIsInstance">BuildInIsInstance (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.BuildInLen">BuildInLen (class in yobx.torch._model_eval_cases)</a>
 </li>
       <li><a href="api/container/build_stats.html#yobx.container.build_stats.BuildStats">BuildStats (class in yobx.container.build_stats)</a>
 </li>
@@ -1573,6 +2027,8 @@
 </li>
       <li><a href="api/xshape/_shape_helper.html#yobx.xshape._shape_helper.compatible_shapes">compatible_shapes() (in module yobx.xshape._shape_helper)</a>
 </li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ComplexPolar">ComplexPolar (class in yobx.torch._model_eval_cases)</a>
+</li>
       <li><a href="api/xoptim/patterns/onnx_cast.html#yobx.xoptim.patterns.onnx_cast.ComputationCastOpCastPattern">ComputationCastOpCastPattern (class in yobx.xoptim.patterns.onnx_cast)</a>
 </li>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.compute_constant">compute_constant() (yobx.xbuilder.GraphBuilder method)</a>
@@ -1601,15 +2057,91 @@
 </li>
       <li><a href="api/xoptim/patterns_ort/llm_optim.html#yobx.xoptim.patterns_ort.llm_optim.ContribRotaryEmbeddingPattern">ContribRotaryEmbeddingPattern (class in yobx.xoptim.patterns_ort.llm_optim)</a>
 </li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCond">ControlFlowCond (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCond2Inputs">ControlFlowCond2Inputs (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCond2Outputs">ControlFlowCond2Outputs (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondConstant">ControlFlowCondConstant (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondIdentity_153832">ControlFlowCondIdentity_153832 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondNestedModule">ControlFlowCondNestedModule (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondNestedModule.Submodule">ControlFlowCondNestedModule.Submodule (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondNonZero">ControlFlowCondNonZero (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowNestCond">ControlFlowNestCond (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScan">ControlFlowScan (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScan2Carried">ControlFlowScan2Carried (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanCDist">ControlFlowScanCDist (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanCDist2">ControlFlowScanCDist2 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanCDistXY">ControlFlowScanCDistXY (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanDecomposition_151564">ControlFlowScanDecomposition_151564 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanInplace_153705">ControlFlowScanInplace_153705 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowWhileDec">ControlFlowWhileDec (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowWhileInc">ControlFlowWhileInc (class in yobx.torch._model_eval_cases)</a>
+</li>
       <li><a href="api/xoptim/patterns/onnx_conv.html#yobx.xoptim.patterns.onnx_conv.ConvBiasNullPattern">ConvBiasNullPattern (class in yobx.xoptim.patterns.onnx_conv)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_abs">convert_abs() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_acos">convert_acos() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_acosh">convert_acosh() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_argmax">convert_argmax() (in module yobx.tensorflow.ops.math_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_argmin">convert_argmin() (in module yobx.tensorflow.ops.math_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_asin">convert_asin() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_asinh">convert_asinh() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_atan">convert_atan() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_atanh">convert_atanh() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/pooling.html#yobx.tensorflow.ops.pooling.convert_avg_pool">convert_avg_pool() (in module yobx.tensorflow.ops.pooling)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_ceil">convert_ceil() (in module yobx.tensorflow.ops.unary_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/const.html#yobx.tensorflow.ops.const.convert_const">convert_const() (in module yobx.tensorflow.ops.const)</a>
 </li>
+      <li><a href="api/tensorflow/ops/conv.html#yobx.tensorflow.ops.conv.convert_conv2d">convert_conv2d() (in module yobx.tensorflow.ops.conv)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_cos">convert_cos() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_cosh">convert_cosh() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/reduction_ops.html#yobx.tensorflow.ops.reduction_ops.convert_cumsum">convert_cumsum() (in module yobx.tensorflow.ops.reduction_ops)</a>
+</li>
       <li><a href="api/tensorflow/ops/element_wise.html#yobx.tensorflow.ops.element_wise.convert_element_wise">convert_element_wise() (in module yobx.tensorflow.ops.element_wise)</a>
+</li>
+      <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_equal">convert_equal() (in module yobx.tensorflow.ops.binary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_erf">convert_erf() (in module yobx.tensorflow.ops.unary_ops)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_equal">convert_equal() (in module yobx.tensorflow.ops.binary_ops)</a>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_erfc">convert_erfc() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_exp">convert_exp() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_expm1">convert_expm1() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_floor">convert_floor() (in module yobx.tensorflow.ops.unary_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_floor_div">convert_floor_div() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
@@ -1621,9 +2153,19 @@
 </li>
       <li><a href="api/tensorflow/ops/const.html#yobx.tensorflow.ops.const.convert_identity">convert_identity() (in module yobx.tensorflow.ops.const)</a>
 </li>
+      <li><a href="api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_isfinite">convert_isfinite() (in module yobx.tensorflow.ops.math_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_isinf">convert_isinf() (in module yobx.tensorflow.ops.math_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_isnan">convert_isnan() (in module yobx.tensorflow.ops.math_ops)</a>
+</li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_less">convert_less() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_less_equal">convert_less_equal() (in module yobx.tensorflow.ops.binary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_log">convert_log() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_log1p">convert_log1p() (in module yobx.tensorflow.ops.unary_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_logical_and">convert_logical_and() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
@@ -1635,15 +2177,23 @@
 </li>
       <li><a href="api/tensorflow/ops/matmul.html#yobx.tensorflow.ops.matmul.convert_matmul">convert_matmul() (in module yobx.tensorflow.ops.matmul)</a>
 </li>
+      <li><a href="api/tensorflow/ops/pooling.html#yobx.tensorflow.ops.pooling.convert_max_pool">convert_max_pool() (in module yobx.tensorflow.ops.pooling)</a>
+</li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_maximum">convert_maximum() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_minimum">convert_minimum() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
+      <li><a href="api/tensorflow/ops/padding.html#yobx.tensorflow.ops.padding.convert_mirror_pad">convert_mirror_pad() (in module yobx.tensorflow.ops.padding)</a>
+</li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_mul">convert_mul() (in module yobx.tensorflow.ops.binary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_neg">convert_neg() (in module yobx.tensorflow.ops.unary_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/const.html#yobx.tensorflow.ops.const.convert_noop">convert_noop() (in module yobx.tensorflow.ops.const)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_not_equal">convert_not_equal() (in module yobx.tensorflow.ops.binary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/padding.html#yobx.tensorflow.ops.padding.convert_pad">convert_pad() (in module yobx.tensorflow.ops.padding)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_pow">convert_pow() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
@@ -1651,19 +2201,59 @@
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_real_div">convert_real_div() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_reciprocal">convert_reciprocal() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/reduction_ops.html#yobx.tensorflow.ops.reduction_ops.convert_reduce_max">convert_reduce_max() (in module yobx.tensorflow.ops.reduction_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/reduction_ops.html#yobx.tensorflow.ops.reduction_ops.convert_reduce_mean">convert_reduce_mean() (in module yobx.tensorflow.ops.reduction_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/reduction_ops.html#yobx.tensorflow.ops.reduction_ops.convert_reduce_min">convert_reduce_min() (in module yobx.tensorflow.ops.reduction_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/reduction_ops.html#yobx.tensorflow.ops.reduction_ops.convert_reduce_prod">convert_reduce_prod() (in module yobx.tensorflow.ops.reduction_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/reduction_ops.html#yobx.tensorflow.ops.reduction_ops.convert_reduce_sum">convert_reduce_sum() (in module yobx.tensorflow.ops.reduction_ops)</a>
+</li>
       <li><a href="api/tensorflow/ops/activations.html#yobx.tensorflow.ops.activations.convert_relu">convert_relu() (in module yobx.tensorflow.ops.activations)</a>
 </li>
       <li><a href="api/tensorflow/ops/activations.html#yobx.tensorflow.ops.activations.convert_relu6">convert_relu6() (in module yobx.tensorflow.ops.activations)</a>
 </li>
+      <li><a href="api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_reshape">convert_reshape() (in module yobx.tensorflow.ops.shape_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_rint">convert_rint() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_round">convert_round() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_rsqrt">convert_rsqrt() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
       <li><a href="api/tensorflow/ops/activations.html#yobx.tensorflow.ops.activations.convert_sigmoid">convert_sigmoid() (in module yobx.tensorflow.ops.activations)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_sign">convert_sign() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_sin">convert_sin() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_sinh">convert_sinh() (in module yobx.tensorflow.ops.unary_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/activations.html#yobx.tensorflow.ops.activations.convert_softmax">convert_softmax() (in module yobx.tensorflow.ops.activations)</a>
 </li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_softplus">convert_softplus() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_softsign">convert_softsign() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_sqrt">convert_sqrt() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_square">convert_square() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_squared_difference">convert_squared_difference() (in module yobx.tensorflow.ops.binary_ops)</a>
+</li>
+      <li><a href="api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_squeeze">convert_squeeze() (in module yobx.tensorflow.ops.shape_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_sub">convert_sub() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
+      <li><a href="api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_tan">convert_tan() (in module yobx.tensorflow.ops.unary_ops)</a>
+</li>
       <li><a href="api/tensorflow/ops/activations.html#yobx.tensorflow.ops.activations.convert_tanh">convert_tanh() (in module yobx.tensorflow.ops.activations)</a>
+</li>
+      <li><a href="api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_topk">convert_topk() (in module yobx.tensorflow.ops.math_ops)</a>
 </li>
       <li><a href="api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_truncate_mod">convert_truncate_mod() (in module yobx.tensorflow.ops.binary_ops)</a>
 </li>
@@ -1674,6 +2264,14 @@
       <li><a href="api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model">create_input_tensors_from_onnx_model() (in module yobx.helpers.mini_onnx_builder)</a>
 </li>
       <li><a href="api/helpers/mini_onnx_builder.html#yobx.helpers.mini_onnx_builder.create_onnx_model_from_input_tensors">create_onnx_model_from_input_tensors() (in module yobx.helpers.mini_onnx_builder)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CreateFromShape">CreateFromShape (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CreateFromShapeThroughFunction">CreateFromShapeThroughFunction (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CropLastDimensionWithTensorContent">CropLastDimensionWithTensorContent (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CropLastDimensionWithTensorShape">CropLastDimensionWithTensorShape (class in yobx.torch._model_eval_cases)</a>
 </li>
       <li><a href="api/builder/light/var.html#yobx.builder.light._var.BaseVar.cst">cst() (yobx.builder.light._var.BaseVar method)</a>
 
@@ -1723,6 +2321,8 @@
 </li>
       <li><a href="api/helpers/cube_helper.html#yobx.helpers.cube_helper.CubeLogs.describe">describe() (yobx.helpers.cube_helper.CubeLogs method)</a>
 </li>
+      <li><a href="api/torch/model_eval_cases.html#yobx.torch.model_eval_cases.discover">discover() (in module yobx.torch.model_eval_cases)</a>
+</li>
       <li><a href="api/torch/interpreter/dispatcher.html#yobx.torch.interpreter.dispatcher.Dispatcher">Dispatcher (class in yobx.torch.interpreter.dispatcher)</a>
 </li>
       <li><a href="api/xoptim/index.html#yobx.xoptim.EasyPatternOptimization.display_pattern">display_pattern() (yobx.xoptim.EasyPatternOptimization method)</a>
@@ -1746,6 +2346,8 @@
       <li><a href="api/xoptim/patterns/onnx_dropout.html#yobx.xoptim.patterns.onnx_dropout.DropoutPattern">DropoutPattern (class in yobx.xoptim.patterns.onnx_dropout)</a>
 </li>
       <li><a href="api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.dtype_to_tensor_dtype">dtype_to_tensor_dtype() (in module yobx.helpers.onnx_helper)</a>
+</li>
+      <li><a href="api/sklearn/tests_helper.html#yobx.sklearn.tests_helper.dump_data_and_model">dump_data_and_model() (in module yobx.sklearn.tests_helper)</a>
 </li>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.ExtTestCase.dump_onnx">dump_onnx() (yobx.ext_test_case.ExtTestCase method)</a>
 </li>
@@ -1791,9 +2393,11 @@
 </li>
       <li><a href="api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.enumerate_subgraphs_builder">enumerate_subgraphs_builder() (in module yobx.helpers.onnx_helper)</a>
 </li>
+      <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.evaluate_dimension_equality_with_constraints">evaluate_dimension_equality_with_constraints() (yobx.xbuilder.GraphBuilder method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.evaluate_dimension_equality_with_constraints">evaluate_dimension_equality_with_constraints() (yobx.xbuilder.GraphBuilder method)</a>
+      <li><a href="api/torch/model_eval_cases.html#yobx.torch.model_eval_cases.evaluation">evaluation() (in module yobx.torch.model_eval_cases)</a>
 </li>
       <li><a href="api/translate/base_emitter.html#yobx.translate.base_emitter.EventType">EventType (class in yobx.translate.base_emitter)</a>
 </li>
@@ -1810,6 +2414,10 @@
 </li>
       </ul></li>
       <li><a href="api/torch/export_options.html#yobx.torch.export_options.ExportOptions">ExportOptions (class in yobx.torch.export_options)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ExportWithDimension0">ExportWithDimension0 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ExportWithDimension1">ExportWithDimension1 (class in yobx.torch._model_eval_cases)</a>
 </li>
       <li><a href="api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.extend">extend() (yobx.helpers.patch_helper.PatchDetails method)</a>
 </li>
@@ -1851,6 +2459,16 @@
 </li>
       <li><a href="api/reference/runtime_info.html#yobx.reference.runtime_info.first_used_last_used">first_used_last_used() (in module yobx.reference.runtime_info)</a>
 </li>
+      <li><a href="api/sklearn/tests_helper.html#yobx.sklearn.tests_helper.fit_classification_model">fit_classification_model() (in module yobx.sklearn.tests_helper)</a>
+</li>
+      <li><a href="api/sklearn/tests_helper.html#yobx.sklearn.tests_helper.fit_clustering_model">fit_clustering_model() (in module yobx.sklearn.tests_helper)</a>
+</li>
+      <li><a href="api/sklearn/tests_helper.html#yobx.sklearn.tests_helper.fit_multi_output_classification_model">fit_multi_output_classification_model() (in module yobx.sklearn.tests_helper)</a>
+</li>
+      <li><a href="api/sklearn/tests_helper.html#yobx.sklearn.tests_helper.fit_multilabel_classification_model">fit_multilabel_classification_model() (in module yobx.sklearn.tests_helper)</a>
+</li>
+      <li><a href="api/sklearn/tests_helper.html#yobx.sklearn.tests_helper.fit_regression_model">fit_regression_model() (in module yobx.sklearn.tests_helper)</a>
+</li>
       <li><a href="api/torch/in_transformers/flatten_class.html#yobx.torch.in_transformers.flatten_class.flatten_dynamic_cache">flatten_dynamic_cache() (in module yobx.torch.in_transformers.flatten_class)</a>
 </li>
       <li><a href="api/torch/in_transformers/flatten_class.html#yobx.torch.in_transformers.flatten_class.flatten_encoder_decoder_cache">flatten_encoder_decoder_cache() (in module yobx.torch.in_transformers.flatten_class)</a>
@@ -1871,18 +2489,124 @@
 </li>
       <li><a href="api/torch/flatten.html#yobx.torch.flatten.flattening_functions">flattening_functions() (in module yobx.torch.flatten)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/torch/interpreter/dispatcher.html#yobx.torch.interpreter.dispatcher.ForceDispatcher">ForceDispatcher (class in yobx.torch.interpreter.dispatcher)</a>
 </li>
       <li><a href="api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchInfo.format_diff">format_diff() (yobx.helpers.patch_helper.PatchInfo method)</a>
 </li>
-      <li><a href="api/torch/in_transformers/_patches_model_rope_utils.html#yobx.torch.in_transformers._patches_model_rope_utils.common_RotaryEmbedding.forward">forward() (yobx.torch.in_transformers._patches_model_rope_utils.common_RotaryEmbedding method)</a>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenAsStrided.forward">forward() (yobx.torch._model_eval_cases.AtenAsStrided method)</a>
 
       <ul>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenInterpolate.forward">(yobx.torch._model_eval_cases.AtenInterpolate method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenNonZero.forward">(yobx.torch._model_eval_cases.AtenNonZero method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenNonZeroTuple.forward">(yobx.torch._model_eval_cases.AtenNonZeroTuple method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenRollPos.forward">(yobx.torch._model_eval_cases.AtenRollPos method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.AtenRollRelu.forward">(yobx.torch._model_eval_cases.AtenRollRelu method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.BuildInIsInstance.forward">(yobx.torch._model_eval_cases.BuildInIsInstance method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.BuildInLen.forward">(yobx.torch._model_eval_cases.BuildInLen method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ComplexPolar.forward">(yobx.torch._model_eval_cases.ComplexPolar method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCond.forward">(yobx.torch._model_eval_cases.ControlFlowCond method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCond2Inputs.forward">(yobx.torch._model_eval_cases.ControlFlowCond2Inputs method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCond2Outputs.forward">(yobx.torch._model_eval_cases.ControlFlowCond2Outputs method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondConstant.forward">(yobx.torch._model_eval_cases.ControlFlowCondConstant method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondIdentity_153832.forward">(yobx.torch._model_eval_cases.ControlFlowCondIdentity_153832 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondNestedModule.forward">(yobx.torch._model_eval_cases.ControlFlowCondNestedModule method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondNestedModule.Submodule.forward">(yobx.torch._model_eval_cases.ControlFlowCondNestedModule.Submodule method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowCondNonZero.forward">(yobx.torch._model_eval_cases.ControlFlowCondNonZero method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowNestCond.forward">(yobx.torch._model_eval_cases.ControlFlowNestCond method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScan.forward">(yobx.torch._model_eval_cases.ControlFlowScan method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScan2Carried.forward">(yobx.torch._model_eval_cases.ControlFlowScan2Carried method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanCDist.forward">(yobx.torch._model_eval_cases.ControlFlowScanCDist method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanCDist2.forward">(yobx.torch._model_eval_cases.ControlFlowScanCDist2 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanCDistXY.forward">(yobx.torch._model_eval_cases.ControlFlowScanCDistXY method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanDecomposition_151564.forward">(yobx.torch._model_eval_cases.ControlFlowScanDecomposition_151564 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowScanInplace_153705.forward">(yobx.torch._model_eval_cases.ControlFlowScanInplace_153705 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowWhileDec.forward">(yobx.torch._model_eval_cases.ControlFlowWhileDec method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ControlFlowWhileInc.forward">(yobx.torch._model_eval_cases.ControlFlowWhileInc method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CreateFromShape.forward">(yobx.torch._model_eval_cases.CreateFromShape method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CreateFromShapeThroughFunction.forward">(yobx.torch._model_eval_cases.CreateFromShapeThroughFunction method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CropLastDimensionWithTensorContent.forward">(yobx.torch._model_eval_cases.CropLastDimensionWithTensorContent method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.CropLastDimensionWithTensorShape.forward">(yobx.torch._model_eval_cases.CropLastDimensionWithTensorShape method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ExportWithDimension0.forward">(yobx.torch._model_eval_cases.ExportWithDimension0 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.ExportWithDimension1.forward">(yobx.torch._model_eval_cases.ExportWithDimension1 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceAdd.forward">(yobx.torch._model_eval_cases.InplaceAdd method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceAdd2.forward">(yobx.torch._model_eval_cases.InplaceAdd2 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceAdd_Mul.forward">(yobx.torch._model_eval_cases.InplaceAdd_Mul method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceCloneAdd_.forward">(yobx.torch._model_eval_cases.InplaceCloneAdd_ method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemEllipsis_1.forward">(yobx.torch._model_eval_cases.InplaceSetItemEllipsis_1 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemEllipsis_2.forward">(yobx.torch._model_eval_cases.InplaceSetItemEllipsis_2 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemMask.forward">(yobx.torch._model_eval_cases.InplaceSetItemMask method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemSquare.forward">(yobx.torch._model_eval_cases.InplaceSetItemSquare method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemSquareAdd.forward">(yobx.torch._model_eval_cases.InplaceSetItemSquareAdd method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemSquareAdd2.forward">(yobx.torch._model_eval_cases.InplaceSetItemSquareAdd2 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureFloat1.forward">(yobx.torch._model_eval_cases.SignatureFloat1 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureInt1.forward">(yobx.torch._model_eval_cases.SignatureInt1 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureInt2.forward">(yobx.torch._model_eval_cases.SignatureInt2 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureListFixedLength.forward">(yobx.torch._model_eval_cases.SignatureListFixedLength method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureListFixedWithNone.forward">(yobx.torch._model_eval_cases.SignatureListFixedWithNone method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureListVariableLength.forward">(yobx.torch._model_eval_cases.SignatureListVariableLength method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureShapeAsIndex.forward">(yobx.torch._model_eval_cases.SignatureShapeAsIndex method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.TypeBFloat16.forward">(yobx.torch._model_eval_cases.TypeBFloat16 method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.Vmap.forward">(yobx.torch._model_eval_cases.Vmap method)</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.VmapPython.forward">(yobx.torch._model_eval_cases.VmapPython method)</a>
+</li>
+        <li><a href="api/torch/in_transformers/_patches_model_rope_utils.html#yobx.torch.in_transformers._patches_model_rope_utils.common_RotaryEmbedding.forward">(yobx.torch.in_transformers._patches_model_rope_utils.common_RotaryEmbedding method)</a>
+</li>
         <li><a href="api/torch/tiny_models.html#yobx.torch.tiny_models.TinyBroadcastAddModel.forward">(yobx.torch.tiny_models.TinyBroadcastAddModel method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/torch/fake_tensor_helper.html#yobx.torch.fake_tensor_helper.FakeTensorContext.from_tensor">from_tensor() (yobx.torch.fake_tensor_helper.FakeTensorContext method)</a>
 </li>
       <li><a href="api/xoptim/patterns/onnx_attention.html#yobx.xoptim.patterns.onnx_attention.FunctionAttentionGQAPattern">FunctionAttentionGQAPattern (class in yobx.xoptim.patterns.onnx_attention)</a>
@@ -2057,15 +2781,17 @@
 </li>
       <li><a href="api/sklearn/sklearn_helper.html#yobx.sklearn.sklearn_helper.get_n_expected_outputs">get_n_expected_outputs() (in module yobx.sklearn.sklearn_helper)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.get_onnx_signature">get_onnx_signature() (in module yobx.helpers.onnx_helper)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/xoptim/patterns_ort/index.html#yobx.xoptim.patterns_ort.get_onnxruntime_patterns">get_onnxruntime_patterns() (in module yobx.xoptim.patterns_ort)</a>
 </li>
-      <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.get_opset">get_opset() (yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder method)</a>
+      <li><a href="api/builder/light/graph.html#yobx.builder.light.OnnxGraph.get_opset">get_opset() (yobx.builder.light.OnnxGraph method)</a>
 
       <ul>
+        <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.get_opset">(yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder method)</a>
+</li>
         <li><a href="api/builder/spox/bridge_graph_builder.html#yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder.get_opset">(yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder method)</a>
 </li>
         <li><a href="api/typing.html#yobx.typing.GraphBuilderProtocol.get_opset">(yobx.typing.GraphBuilderProtocol method)</a>
@@ -2136,6 +2862,8 @@
       <li><a href="api/sklearn/register.html#yobx.sklearn.register.get_sklearn_converter">get_sklearn_converter() (in module yobx.sklearn.register)</a>
 </li>
       <li><a href="api/sklearn/register.html#yobx.sklearn.register.get_sklearn_converters">get_sklearn_converters() (in module yobx.sklearn.register)</a>
+</li>
+      <li><a href="api/sklearn/register.html#yobx.sklearn.register.get_sklearn_estimator_coverage">get_sklearn_estimator_coverage() (in module yobx.sklearn.register)</a>
 </li>
       <li><a href="api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.DynamoInterpreter.get_submodule_name">get_submodule_name() (yobx.torch.interpreter.interpreter.DynamoInterpreter method)</a>
 </li>
@@ -2211,6 +2939,8 @@
 </li>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.has_exact_same_constant_in_context">has_exact_same_constant_in_context() (yobx.xbuilder.GraphBuilder method)</a>
 </li>
+      <li><a href="api/ext_test_case.html#yobx.ext_test_case.has_lightgbm">has_lightgbm() (in module yobx.ext_test_case)</a>
+</li>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.has_local_function">has_local_function() (yobx.xbuilder.GraphBuilder method)</a>
 </li>
       <li><a href="api/builder/light/graph.html#yobx.builder.light.OnnxGraph.has_name">has_name() (yobx.builder.light.OnnxGraph method)</a>
@@ -2233,9 +2963,11 @@
 </li>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.has_onnxscript">has_onnxscript() (in module yobx.ext_test_case)</a>
 </li>
-      <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.has_opset">has_opset() (yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder method)</a>
+      <li><a href="api/builder/light/graph.html#yobx.builder.light.OnnxGraph.has_opset">has_opset() (yobx.builder.light.OnnxGraph method)</a>
 
       <ul>
+        <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.has_opset">(yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder method)</a>
+</li>
         <li><a href="api/builder/spox/bridge_graph_builder.html#yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder.has_opset">(yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder method)</a>
 </li>
         <li><a href="api/typing.html#yobx.typing.GraphBuilderProtocol.has_opset">(yobx.typing.GraphBuilderProtocol method)</a>
@@ -2249,6 +2981,8 @@
       </ul></li>
       <li><a href="api/xoptim/index.html#yobx.xoptim.GraphBuilderPatternOptimization.has_processor">has_processor() (yobx.xoptim.GraphBuilderPatternOptimization method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.has_rank">has_rank() (yobx.xbuilder.GraphBuilder method)</a>
 
       <ul>
@@ -2259,8 +2993,6 @@
         <li><a href="api/xshape/index.html#yobx.xshape.ShapeBuilder.has_rank">(yobx.xshape.ShapeBuilder method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.has_shape">has_shape() (yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder method)</a>
 
       <ul>
@@ -2353,6 +3085,26 @@
 </li>
       <li><a href="api/translate/inner_emitter.html#yobx.translate.inner_emitter.InnerEmitterShortInitializer">InnerEmitterShortInitializer (class in yobx.translate.inner_emitter)</a>
 </li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceAdd">InplaceAdd (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceAdd2">InplaceAdd2 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceAdd_Mul">InplaceAdd_Mul (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceCloneAdd_">InplaceCloneAdd_ (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemEllipsis_1">InplaceSetItemEllipsis_1 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemEllipsis_2">InplaceSetItemEllipsis_2 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemMask">InplaceSetItemMask (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemSquare">InplaceSetItemSquare (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemSquareAdd">InplaceSetItemSquareAdd (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.InplaceSetItemSquareAdd2">InplaceSetItemSquareAdd2 (class in yobx.torch._model_eval_cases)</a>
+</li>
       <li><a href="api/builder/light/graph.html#yobx.builder.light.OnnxGraph.input_names">input_names (yobx.builder.light.OnnxGraph property)</a>
 
       <ul>
@@ -2371,6 +3123,8 @@
         <li><a href="api/xshape/index.html#yobx.xshape.ShapeBuilder.input_names">(yobx.xshape.ShapeBuilder property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/reference/onnxruntime_evaluator.html#yobx.reference.onnxruntime_evaluator.OnnxruntimeEvaluator.input_types">input_types (yobx.reference.onnxruntime_evaluator.OnnxruntimeEvaluator property)</a>
 </li>
       <li><a href="api/torch/input_observer.html#yobx.torch.input_observer.InputCandidate">InputCandidate (class in yobx.torch.input_observer)</a>
@@ -2379,8 +3133,6 @@
 </li>
       <li><a href="api/torch/input_observer.html#yobx.torch.input_observer.InputObserverInfo">InputObserverInfo (class in yobx.torch.input_observer)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/xoptim/index.html#yobx.xoptim.GraphBuilderPatternOptimization.inputs">inputs (yobx.xoptim.GraphBuilderPatternOptimization property)</a>
 </li>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.insert_and_remove_nodes">insert_and_remove_nodes() (yobx.xbuilder.GraphBuilder method)</a>
@@ -2505,9 +3257,11 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.main_opset">main_opset (yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder property)</a>
+      <li><a href="api/builder/light/graph.html#yobx.builder.light.OnnxGraph.main_opset">main_opset (yobx.builder.light.OnnxGraph property)</a>
 
       <ul>
+        <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.main_opset">(yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder property)</a>
+</li>
         <li><a href="api/builder/spox/bridge_graph_builder.html#yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder.main_opset">(yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder property)</a>
 </li>
         <li><a href="api/typing.html#yobx.typing.GraphBuilderExtendedProtocol.main_opset">(yobx.typing.GraphBuilderExtendedProtocol property)</a>
@@ -2943,8 +3697,6 @@
         <li><a href="api/xoptim/patterns_ort/simplified_layer_normalization.html#yobx.xoptim.patterns_ort.simplified_layer_normalization.SkipSimplifiedLayerNormalizationPattern.match">(yobx.xoptim.patterns_ort.simplified_layer_normalization.SkipSimplifiedLayerNormalizationPattern method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/torch/interpreter/onnx_export.html#yobx.torch.interpreter.onnx_export.match_input_parameters">match_input_parameters() (in module yobx.torch.interpreter.onnx_export)</a>
 </li>
       <li><a href="api/xoptim/index.html#yobx.xoptim.EasyPatternOptimization.match_pattern">match_pattern() (yobx.xoptim.EasyPatternOptimization method)</a>
@@ -2965,6 +3717,8 @@
       </ul></li>
       <li><a href="api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.matching_pair">matching_pair() (yobx.helpers.patch_helper.PatchDetails method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/xoptim/index.html#yobx.xoptim.MatchResult">MatchResult (class in yobx.xoptim)</a>
 </li>
       <li><a href="api/torch/interpreter/_math_functions.html#yobx.torch.interpreter._math_functions.math_ceil">math_ceil() (in module yobx.torch.interpreter._math_functions)</a>
@@ -3059,17 +3813,35 @@
 </li>
         <li><a href="api/reference/torch_ops/index.html#module-yobx.reference.torch_ops">yobx.reference.torch_ops</a>
 </li>
+        <li><a href="api/sklearn/calibration/calibrated_classifier.html#module-yobx.sklearn.calibration.calibrated_classifier">yobx.sklearn.calibration.calibrated_classifier</a>
+</li>
         <li><a href="api/sklearn/cluster/kmeans.html#module-yobx.sklearn.cluster.kmeans">yobx.sklearn.cluster.kmeans</a>
 </li>
         <li><a href="api/sklearn/compose/column_transformer.html#module-yobx.sklearn.compose.column_transformer">yobx.sklearn.compose.column_transformer</a>
 </li>
         <li><a href="api/sklearn/convert.html#module-yobx.sklearn.convert">yobx.sklearn.convert</a>
 </li>
+        <li><a href="api/sklearn/decomposition/gaussian_random_projection.html#module-yobx.sklearn.decomposition.gaussian_random_projection">yobx.sklearn.decomposition.gaussian_random_projection</a>
+</li>
         <li><a href="api/sklearn/decomposition/pca.html#module-yobx.sklearn.decomposition.pca">yobx.sklearn.decomposition.pca</a>
+</li>
+        <li><a href="api/sklearn/decomposition/pls_regression.html#module-yobx.sklearn.decomposition.pls_regression">yobx.sklearn.decomposition.pls_regression</a>
+</li>
+        <li><a href="api/sklearn/discriminant_analysis/lda.html#module-yobx.sklearn.discriminant_analysis.lda">yobx.sklearn.discriminant_analysis.lda</a>
+</li>
+        <li><a href="api/sklearn/dummy/dummy.html#module-yobx.sklearn.dummy.dummy">yobx.sklearn.dummy.dummy</a>
 </li>
         <li><a href="api/sklearn/ensemble/hist_gradient_boosting.html#module-yobx.sklearn.ensemble.hist_gradient_boosting">yobx.sklearn.ensemble.hist_gradient_boosting</a>
 </li>
         <li><a href="api/sklearn/ensemble/random_forest.html#module-yobx.sklearn.ensemble.random_forest">yobx.sklearn.ensemble.random_forest</a>
+</li>
+        <li><a href="api/sklearn/ensemble/stacking.html#module-yobx.sklearn.ensemble.stacking">yobx.sklearn.ensemble.stacking</a>
+</li>
+        <li><a href="api/sklearn/ensemble/voting.html#module-yobx.sklearn.ensemble.voting">yobx.sklearn.ensemble.voting</a>
+</li>
+        <li><a href="api/sklearn/gaussian_process/gp.html#module-yobx.sklearn.gaussian_process.gp">yobx.sklearn.gaussian_process.gp</a>
+</li>
+        <li><a href="api/sklearn/lightgbm/lgbm.html#module-yobx.sklearn.lightgbm.lgbm">yobx.sklearn.lightgbm.lgbm</a>
 </li>
         <li><a href="api/sklearn/linear_model/glm.html#module-yobx.sklearn.linear_model.glm">yobx.sklearn.linear_model.glm</a>
 </li>
@@ -3079,19 +3851,55 @@
 </li>
         <li><a href="api/sklearn/linear_model/logistic_regression.html#module-yobx.sklearn.linear_model.logistic_regression">yobx.sklearn.linear_model.logistic_regression</a>
 </li>
+        <li><a href="api/sklearn/mixture/gaussian_mixture.html#module-yobx.sklearn.mixture.gaussian_mixture">yobx.sklearn.mixture.gaussian_mixture</a>
+</li>
         <li><a href="api/sklearn/multiclass/one_vs_rest.html#module-yobx.sklearn.multiclass.one_vs_rest">yobx.sklearn.multiclass.one_vs_rest</a>
+</li>
+        <li><a href="api/sklearn/multioutput/multioutput.html#module-yobx.sklearn.multioutput.multioutput">yobx.sklearn.multioutput.multioutput</a>
+</li>
+        <li><a href="api/sklearn/naive_bayes/nb.html#module-yobx.sklearn.naive_bayes.nb">yobx.sklearn.naive_bayes.nb</a>
+</li>
+        <li><a href="api/sklearn/neighbors/kneighbors.html#module-yobx.sklearn.neighbors.kneighbors">yobx.sklearn.neighbors.kneighbors</a>
+</li>
+        <li><a href="api/sklearn/neighbors/radiusneighbors.html#module-yobx.sklearn.neighbors.radiusneighbors">yobx.sklearn.neighbors.radiusneighbors</a>
 </li>
         <li><a href="api/sklearn/neural_network/mlp.html#module-yobx.sklearn.neural_network.mlp">yobx.sklearn.neural_network.mlp</a>
 </li>
+        <li><a href="api/sklearn/pipeline/feature_union.html#module-yobx.sklearn.pipeline.feature_union">yobx.sklearn.pipeline.feature_union</a>
+</li>
         <li><a href="api/sklearn/pipeline/pipeline.html#module-yobx.sklearn.pipeline.pipeline">yobx.sklearn.pipeline.pipeline</a>
 </li>
+        <li><a href="api/sklearn/preprocessing/binarizer.html#module-yobx.sklearn.preprocessing.binarizer">yobx.sklearn.preprocessing.binarizer</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/kbins_discretizer.html#module-yobx.sklearn.preprocessing.kbins_discretizer">yobx.sklearn.preprocessing.kbins_discretizer</a>
+</li>
         <li><a href="api/sklearn/preprocessing/min_max_scaler.html#module-yobx.sklearn.preprocessing.min_max_scaler">yobx.sklearn.preprocessing.min_max_scaler</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/one_hot_encoder.html#module-yobx.sklearn.preprocessing.one_hot_encoder">yobx.sklearn.preprocessing.one_hot_encoder</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/polynomial_features.html#module-yobx.sklearn.preprocessing.polynomial_features">yobx.sklearn.preprocessing.polynomial_features</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/power_transformer.html#module-yobx.sklearn.preprocessing.power_transformer">yobx.sklearn.preprocessing.power_transformer</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/quantile_transformer.html#module-yobx.sklearn.preprocessing.quantile_transformer">yobx.sklearn.preprocessing.quantile_transformer</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/robust_scaler.html#module-yobx.sklearn.preprocessing.robust_scaler">yobx.sklearn.preprocessing.robust_scaler</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/simple_imputer.html#module-yobx.sklearn.preprocessing.simple_imputer">yobx.sklearn.preprocessing.simple_imputer</a>
+</li>
+        <li><a href="api/sklearn/preprocessing/spline_transformer.html#module-yobx.sklearn.preprocessing.spline_transformer">yobx.sklearn.preprocessing.spline_transformer</a>
 </li>
         <li><a href="api/sklearn/preprocessing/standard_scaler.html#module-yobx.sklearn.preprocessing.standard_scaler">yobx.sklearn.preprocessing.standard_scaler</a>
 </li>
         <li><a href="api/sklearn/register.html#module-yobx.sklearn.register">yobx.sklearn.register</a>
 </li>
         <li><a href="api/sklearn/sklearn_helper.html#module-yobx.sklearn.sklearn_helper">yobx.sklearn.sklearn_helper</a>
+</li>
+        <li><a href="api/sklearn/svm/linear_svm.html#module-yobx.sklearn.svm.linear_svm">yobx.sklearn.svm.linear_svm</a>
+</li>
+        <li><a href="api/sklearn/svm/svm.html#module-yobx.sklearn.svm.svm">yobx.sklearn.svm.svm</a>
+</li>
+        <li><a href="api/sklearn/tests_helper.html#module-yobx.sklearn.tests_helper">yobx.sklearn.tests_helper</a>
 </li>
         <li><a href="api/sklearn/tree/decision_tree.html#module-yobx.sklearn.tree.decision_tree">yobx.sklearn.tree.decision_tree</a>
 </li>
@@ -3105,13 +3913,29 @@
 </li>
         <li><a href="api/tensorflow/ops/const.html#module-yobx.tensorflow.ops.const">yobx.tensorflow.ops.const</a>
 </li>
+        <li><a href="api/tensorflow/ops/conv.html#module-yobx.tensorflow.ops.conv">yobx.tensorflow.ops.conv</a>
+</li>
         <li><a href="api/tensorflow/ops/element_wise.html#module-yobx.tensorflow.ops.element_wise">yobx.tensorflow.ops.element_wise</a>
 </li>
+        <li><a href="api/tensorflow/ops/math_ops.html#module-yobx.tensorflow.ops.math_ops">yobx.tensorflow.ops.math_ops</a>
+</li>
         <li><a href="api/tensorflow/ops/matmul.html#module-yobx.tensorflow.ops.matmul">yobx.tensorflow.ops.matmul</a>
+</li>
+        <li><a href="api/tensorflow/ops/padding.html#module-yobx.tensorflow.ops.padding">yobx.tensorflow.ops.padding</a>
+</li>
+        <li><a href="api/tensorflow/ops/pooling.html#module-yobx.tensorflow.ops.pooling">yobx.tensorflow.ops.pooling</a>
+</li>
+        <li><a href="api/tensorflow/ops/reduction_ops.html#module-yobx.tensorflow.ops.reduction_ops">yobx.tensorflow.ops.reduction_ops</a>
+</li>
+        <li><a href="api/tensorflow/ops/shape_ops.html#module-yobx.tensorflow.ops.shape_ops">yobx.tensorflow.ops.shape_ops</a>
+</li>
+        <li><a href="api/tensorflow/ops/unary_ops.html#module-yobx.tensorflow.ops.unary_ops">yobx.tensorflow.ops.unary_ops</a>
 </li>
         <li><a href="api/tensorflow/register.html#module-yobx.tensorflow.register">yobx.tensorflow.register</a>
 </li>
         <li><a href="api/tensorflow/tensorflow_helper.html#module-yobx.tensorflow.tensorflow_helper">yobx.tensorflow.tensorflow_helper</a>
+</li>
+        <li><a href="api/torch/_model_eval_cases.html#module-yobx.torch._model_eval_cases">yobx.torch._model_eval_cases</a>
 </li>
         <li><a href="api/torch/export_helper.html#module-yobx.torch.export_helper">yobx.torch.export_helper</a>
 </li>
@@ -3170,6 +3994,8 @@
         <li><a href="api/torch/interpreter/interpreter.html#module-yobx.torch.interpreter.interpreter">yobx.torch.interpreter.interpreter</a>
 </li>
         <li><a href="api/torch/interpreter/onnx_export.html#module-yobx.torch.interpreter.onnx_export">yobx.torch.interpreter.onnx_export</a>
+</li>
+        <li><a href="api/torch/model_eval_cases.html#module-yobx.torch.model_eval_cases">yobx.torch.model_eval_cases</a>
 </li>
         <li><a href="api/torch/patch.html#module-yobx.torch.patch">yobx.torch.patch</a>
 </li>
@@ -3430,6 +4256,8 @@
       </ul></li>
       <li><a href="api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.onnx_find">onnx_find() (in module yobx.helpers.onnx_helper)</a>
 </li>
+      <li><a href="api/helpers/rt_helper.html#yobx.helpers.rt_helper.onnx_generate">onnx_generate() (in module yobx.helpers.rt_helper)</a>
+</li>
       <li><a href="api/torch/interpreter/_non_aten_functions.html#yobx.torch.interpreter._non_aten_functions.onnx_symbolic__symbolic_default">onnx_symbolic__symbolic_default() (in module yobx.torch.interpreter._non_aten_functions)</a>
 </li>
       <li><a href="api/xoptim/patterns_api.html#yobx.xoptim.patterns_api.OnnxEasyPatternOptimization">OnnxEasyPatternOptimization (class in yobx.xoptim.patterns_api)</a>
@@ -3454,10 +4282,10 @@
       </ul></li>
       <li><a href="api/xbuilder/graph_builder_opset.html#yobx.xbuilder.graph_builder_opset.Opset">Opset (class in yobx.xbuilder.graph_builder_opset)</a>
 </li>
-      <li><a href="api/typing.html#yobx.typing.OpsetProtocol">OpsetProtocol (class in yobx.typing)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/typing.html#yobx.typing.OpsetProtocol">OpsetProtocol (class in yobx.typing)</a>
+</li>
       <li><a href="api/xoptim/index.html#yobx.xoptim.GraphBuilderPatternOptimization.opsets">opsets (yobx.xoptim.GraphBuilderPatternOptimization property)</a>
 </li>
       <li><a href="api/builder/light/op_var.html#yobx.builder.light._op_var.OpsVar">OpsVar (class in yobx.builder.light._op_var)</a>
@@ -3537,6 +4365,8 @@
       <li><a href="api/torch/in_torch/patches.html#yobx.torch.in_torch.patches.patched_DynamicDimConstraintPrinter">patched_DynamicDimConstraintPrinter (class in yobx.torch.in_torch.patches)</a>
 </li>
       <li><a href="api/torch/in_torch/patches.html#yobx.torch.in_torch.patches.patched_infer_size">patched_infer_size() (in module yobx.torch.in_torch.patches)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.patched_vmap">patched_vmap() (in module yobx.torch._model_eval_cases)</a>
 </li>
       <li><a href="api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.patches_involved_in_graph">patches_involved_in_graph() (yobx.helpers.patch_helper.PatchDetails method)</a>
 </li>
@@ -3780,11 +4610,13 @@
 </li>
       <li><a href="api/reference/report_results_comparison.html#yobx.reference.report_results_comparison.ReportResultComparison">ReportResultComparison (class in yobx.reference.report_results_comparison)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.requires_cuda">requires_cuda() (in module yobx.ext_test_case)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.requires_diffusers">requires_diffusers() (in module yobx.ext_test_case)</a>
+</li>
+      <li><a href="api/ext_test_case.html#yobx.ext_test_case.requires_lightgbm">requires_lightgbm() (in module yobx.ext_test_case)</a>
 </li>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.requires_matplotlib">requires_matplotlib() (in module yobx.ext_test_case)</a>
 </li>
@@ -3862,6 +4694,8 @@
         <li><a href="api/reference/torch_evaluator.html#yobx.reference.torch_evaluator.TorchReferenceEvaluator.run">(yobx.reference.torch_evaluator.TorchReferenceEvaluator method)</a>
 </li>
       </ul></li>
+      <li><a href="api/torch/model_eval_cases.html#yobx.torch.model_eval_cases.run_exporter">run_exporter() (in module yobx.torch.model_eval_cases)</a>
+</li>
       <li><a href="api/xshape/index.html#yobx.xshape.BasicShapeBuilder.run_model">run_model() (yobx.xshape.BasicShapeBuilder method)</a>
 </li>
       <li><a href="api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.DynamoInterpreter.run_node">run_node() (yobx.torch.interpreter.interpreter.DynamoInterpreter method)</a>
@@ -3926,9 +4760,11 @@
 </li>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.set_name">set_name() (yobx.xbuilder.GraphBuilder method)</a>
 </li>
-      <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.set_opset">set_opset() (yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder method)</a>
+      <li><a href="api/builder/light/graph.html#yobx.builder.light.OnnxGraph.set_opset">set_opset() (yobx.builder.light.OnnxGraph method)</a>
 
       <ul>
+        <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder.set_opset">(yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder method)</a>
+</li>
         <li><a href="api/builder/spox/bridge_graph_builder.html#yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder.set_opset">(yobx.builder.spox.bridge_graph_builder.SpoxGraphBuilder method)</a>
 </li>
         <li><a href="api/typing.html#yobx.typing.GraphBuilderProtocol.set_opset">(yobx.typing.GraphBuilderProtocol method)</a>
@@ -4058,8 +4894,6 @@
 </li>
       <li><a href="api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandCastWhereSwapPattern">ShapeBasedExpandCastWhereSwapPattern (class in yobx.xoptim.patterns.onnx_expand)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ShapeBasedExpandSwapPattern">ShapeBasedExpandSwapPattern (class in yobx.xoptim.patterns.onnx_expand)</a>
 </li>
       <li><a href="api/xoptim/patterns/onnx_any.html#yobx.xoptim.patterns.onnx_any.ShapeBasedIdentityPattern">ShapeBasedIdentityPattern (class in yobx.xoptim.patterns.onnx_any)</a>
@@ -4078,6 +4912,20 @@
 </li>
       <li><a href="api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ShapedBasedReshapePattern">ShapedBasedReshapePattern (class in yobx.xoptim.patterns.onnx_reshape)</a>
 </li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureFloat1">SignatureFloat1 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureInt1">SignatureInt1 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureInt2">SignatureInt2 (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureListFixedLength">SignatureListFixedLength (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureListFixedWithNone">SignatureListFixedWithNone (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureListVariableLength">SignatureListVariableLength (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.SignatureShapeAsIndex">SignatureShapeAsIndex (class in yobx.torch._model_eval_cases)</a>
+</li>
       <li><a href="api/xshape/_shape_runtime.html#yobx.xshape._shape_runtime._ShapeRuntime.simple_update_value_shape_with_node">simple_update_value_shape_with_node() (yobx.xshape._shape_runtime._ShapeRuntime method)</a>
 </li>
       <li><a href="api/xoptim/patterns_exp/simple_rotary.html#yobx.xoptim.patterns_exp.simple_rotary.SimpleRotaryPattern">SimpleRotaryPattern (class in yobx.xoptim.patterns_exp.simple_rotary)</a>
@@ -4092,6 +4940,8 @@
 </li>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.skipif_ci_apple">skipif_ci_apple() (in module yobx.ext_test_case)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.skipif_ci_linux">skipif_ci_linux() (in module yobx.ext_test_case)</a>
 </li>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.skipif_ci_windows">skipif_ci_windows() (in module yobx.ext_test_case)</a>
@@ -4102,11 +4952,37 @@
 </li>
       <li><a href="api/xoptim/patterns_ort/simplified_layer_normalization.html#yobx.xoptim.patterns_ort.simplified_layer_normalization.SkipSimplifiedLayerNormalizationPattern">SkipSimplifiedLayerNormalizationPattern (class in yobx.xoptim.patterns_ort.simplified_layer_normalization)</a>
 </li>
+      <li><a href="api/sklearn/naive_bayes/nb.html#yobx.sklearn.naive_bayes.nb.sklearn_bernoulli_nb">sklearn_bernoulli_nb() (in module yobx.sklearn.naive_bayes.nb)</a>
+</li>
+      <li><a href="api/sklearn/preprocessing/binarizer.html#yobx.sklearn.preprocessing.binarizer.sklearn_binarizer">sklearn_binarizer() (in module yobx.sklearn.preprocessing.binarizer)</a>
+</li>
+      <li><a href="api/sklearn/calibration/calibrated_classifier.html#yobx.sklearn.calibration.calibrated_classifier.sklearn_calibrated_classifier_cv">sklearn_calibrated_classifier_cv() (in module yobx.sklearn.calibration.calibrated_classifier)</a>
+</li>
       <li><a href="api/sklearn/compose/column_transformer.html#yobx.sklearn.compose.column_transformer.sklearn_column_transformer">sklearn_column_transformer() (in module yobx.sklearn.compose.column_transformer)</a>
 </li>
       <li><a href="api/sklearn/tree/decision_tree.html#yobx.sklearn.tree.decision_tree.sklearn_decision_tree_classifier">sklearn_decision_tree_classifier() (in module yobx.sklearn.tree.decision_tree)</a>
 </li>
       <li><a href="api/sklearn/tree/decision_tree.html#yobx.sklearn.tree.decision_tree.sklearn_decision_tree_regressor">sklearn_decision_tree_regressor() (in module yobx.sklearn.tree.decision_tree)</a>
+</li>
+      <li><a href="api/sklearn/dummy/dummy.html#yobx.sklearn.dummy.dummy.sklearn_dummy_classifier">sklearn_dummy_classifier() (in module yobx.sklearn.dummy.dummy)</a>
+</li>
+      <li><a href="api/sklearn/dummy/dummy.html#yobx.sklearn.dummy.dummy.sklearn_dummy_regressor">sklearn_dummy_regressor() (in module yobx.sklearn.dummy.dummy)</a>
+</li>
+      <li><a href="api/sklearn/ensemble/random_forest.html#yobx.sklearn.ensemble.random_forest.sklearn_extra_trees_classifier">sklearn_extra_trees_classifier() (in module yobx.sklearn.ensemble.random_forest)</a>
+</li>
+      <li><a href="api/sklearn/ensemble/random_forest.html#yobx.sklearn.ensemble.random_forest.sklearn_extra_trees_regressor">sklearn_extra_trees_regressor() (in module yobx.sklearn.ensemble.random_forest)</a>
+</li>
+      <li><a href="api/sklearn/pipeline/feature_union.html#yobx.sklearn.pipeline.feature_union.sklearn_feature_union">sklearn_feature_union() (in module yobx.sklearn.pipeline.feature_union)</a>
+</li>
+      <li><a href="api/sklearn/mixture/gaussian_mixture.html#yobx.sklearn.mixture.gaussian_mixture.sklearn_gaussian_mixture">sklearn_gaussian_mixture() (in module yobx.sklearn.mixture.gaussian_mixture)</a>
+</li>
+      <li><a href="api/sklearn/naive_bayes/nb.html#yobx.sklearn.naive_bayes.nb.sklearn_gaussian_nb">sklearn_gaussian_nb() (in module yobx.sklearn.naive_bayes.nb)</a>
+</li>
+      <li><a href="api/sklearn/gaussian_process/gp.html#yobx.sklearn.gaussian_process.gp.sklearn_gaussian_process_classifier">sklearn_gaussian_process_classifier() (in module yobx.sklearn.gaussian_process.gp)</a>
+</li>
+      <li><a href="api/sklearn/gaussian_process/gp.html#yobx.sklearn.gaussian_process.gp.sklearn_gaussian_process_regressor">sklearn_gaussian_process_regressor() (in module yobx.sklearn.gaussian_process.gp)</a>
+</li>
+      <li><a href="api/sklearn/decomposition/gaussian_random_projection.html#yobx.sklearn.decomposition.gaussian_random_projection.sklearn_gaussian_random_projection">sklearn_gaussian_random_projection() (in module yobx.sklearn.decomposition.gaussian_random_projection)</a>
 </li>
       <li><a href="api/sklearn/linear_model/glm.html#yobx.sklearn.linear_model.glm.sklearn_glm_regressor">sklearn_glm_regressor() (in module yobx.sklearn.linear_model.glm)</a>
 </li>
@@ -4114,11 +4990,27 @@
 </li>
       <li><a href="api/sklearn/ensemble/hist_gradient_boosting.html#yobx.sklearn.ensemble.hist_gradient_boosting.sklearn_hgb_regressor">sklearn_hgb_regressor() (in module yobx.sklearn.ensemble.hist_gradient_boosting)</a>
 </li>
+      <li><a href="api/sklearn/preprocessing/kbins_discretizer.html#yobx.sklearn.preprocessing.kbins_discretizer.sklearn_kbins_discretizer">sklearn_kbins_discretizer() (in module yobx.sklearn.preprocessing.kbins_discretizer)</a>
+</li>
       <li><a href="api/sklearn/cluster/kmeans.html#yobx.sklearn.cluster.kmeans.sklearn_kmeans">sklearn_kmeans() (in module yobx.sklearn.cluster.kmeans)</a>
+</li>
+      <li><a href="api/sklearn/neighbors/kneighbors.html#yobx.sklearn.neighbors.kneighbors.sklearn_knn_classifier">sklearn_knn_classifier() (in module yobx.sklearn.neighbors.kneighbors)</a>
+</li>
+      <li><a href="api/sklearn/neighbors/kneighbors.html#yobx.sklearn.neighbors.kneighbors.sklearn_knn_regressor">sklearn_knn_regressor() (in module yobx.sklearn.neighbors.kneighbors)</a>
+</li>
+      <li><a href="api/sklearn/lightgbm/lgbm.html#yobx.sklearn.lightgbm.lgbm.sklearn_lgbm_classifier">sklearn_lgbm_classifier() (in module yobx.sklearn.lightgbm.lgbm)</a>
+</li>
+      <li><a href="api/sklearn/lightgbm/lgbm.html#yobx.sklearn.lightgbm.lgbm.sklearn_lgbm_regressor">sklearn_lgbm_regressor() (in module yobx.sklearn.lightgbm.lgbm)</a>
 </li>
       <li><a href="api/sklearn/linear_model/linear_classifier.html#yobx.sklearn.linear_model.linear_classifier.sklearn_linear_classifier">sklearn_linear_classifier() (in module yobx.sklearn.linear_model.linear_classifier)</a>
 </li>
+      <li><a href="api/sklearn/discriminant_analysis/lda.html#yobx.sklearn.discriminant_analysis.lda.sklearn_linear_discriminant_analysis">sklearn_linear_discriminant_analysis() (in module yobx.sklearn.discriminant_analysis.lda)</a>
+</li>
       <li><a href="api/sklearn/linear_model/linear_regressor.html#yobx.sklearn.linear_model.linear_regressor.sklearn_linear_regressor">sklearn_linear_regressor() (in module yobx.sklearn.linear_model.linear_regressor)</a>
+</li>
+      <li><a href="api/sklearn/svm/linear_svm.html#yobx.sklearn.svm.linear_svm.sklearn_linear_svc">sklearn_linear_svc() (in module yobx.sklearn.svm.linear_svm)</a>
+</li>
+      <li><a href="api/sklearn/svm/linear_svm.html#yobx.sklearn.svm.linear_svm.sklearn_linear_svr">sklearn_linear_svr() (in module yobx.sklearn.svm.linear_svm)</a>
 </li>
       <li><a href="api/sklearn/linear_model/logistic_regression.html#yobx.sklearn.linear_model.logistic_regression.sklearn_logistic_regression">sklearn_logistic_regression() (in module yobx.sklearn.linear_model.logistic_regression)</a>
 </li>
@@ -4128,17 +5020,55 @@
 </li>
       <li><a href="api/sklearn/neural_network/mlp.html#yobx.sklearn.neural_network.mlp.sklearn_mlp_regressor">sklearn_mlp_regressor() (in module yobx.sklearn.neural_network.mlp)</a>
 </li>
+      <li><a href="api/sklearn/multioutput/multioutput.html#yobx.sklearn.multioutput.multioutput.sklearn_multi_output_classifier">sklearn_multi_output_classifier() (in module yobx.sklearn.multioutput.multioutput)</a>
+</li>
+      <li><a href="api/sklearn/multioutput/multioutput.html#yobx.sklearn.multioutput.multioutput.sklearn_multi_output_regressor">sklearn_multi_output_regressor() (in module yobx.sklearn.multioutput.multioutput)</a>
+</li>
+      <li><a href="api/sklearn/naive_bayes/nb.html#yobx.sklearn.naive_bayes.nb.sklearn_multinomial_nb">sklearn_multinomial_nb() (in module yobx.sklearn.naive_bayes.nb)</a>
+</li>
+      <li><a href="api/sklearn/preprocessing/one_hot_encoder.html#yobx.sklearn.preprocessing.one_hot_encoder.sklearn_one_hot_encoder">sklearn_one_hot_encoder() (in module yobx.sklearn.preprocessing.one_hot_encoder)</a>
+</li>
       <li><a href="api/sklearn/multiclass/one_vs_rest.html#yobx.sklearn.multiclass.one_vs_rest.sklearn_one_vs_rest_classifier">sklearn_one_vs_rest_classifier() (in module yobx.sklearn.multiclass.one_vs_rest)</a>
 </li>
       <li><a href="api/sklearn/decomposition/pca.html#yobx.sklearn.decomposition.pca.sklearn_pca">sklearn_pca() (in module yobx.sklearn.decomposition.pca)</a>
 </li>
       <li><a href="api/sklearn/pipeline/pipeline.html#yobx.sklearn.pipeline.pipeline.sklearn_pipeline">sklearn_pipeline() (in module yobx.sklearn.pipeline.pipeline)</a>
 </li>
+      <li><a href="api/sklearn/decomposition/pls_regression.html#yobx.sklearn.decomposition.pls_regression.sklearn_pls_regression">sklearn_pls_regression() (in module yobx.sklearn.decomposition.pls_regression)</a>
+</li>
+      <li><a href="api/sklearn/preprocessing/polynomial_features.html#yobx.sklearn.preprocessing.polynomial_features.sklearn_polynomial_features">sklearn_polynomial_features() (in module yobx.sklearn.preprocessing.polynomial_features)</a>
+</li>
+      <li><a href="api/sklearn/preprocessing/power_transformer.html#yobx.sklearn.preprocessing.power_transformer.sklearn_power_transformer">sklearn_power_transformer() (in module yobx.sklearn.preprocessing.power_transformer)</a>
+</li>
+      <li><a href="api/sklearn/preprocessing/quantile_transformer.html#yobx.sklearn.preprocessing.quantile_transformer.sklearn_quantile_transformer">sklearn_quantile_transformer() (in module yobx.sklearn.preprocessing.quantile_transformer)</a>
+</li>
+      <li><a href="api/sklearn/neighbors/radiusneighbors.html#yobx.sklearn.neighbors.radiusneighbors.sklearn_radius_neighbors_classifier">sklearn_radius_neighbors_classifier() (in module yobx.sklearn.neighbors.radiusneighbors)</a>
+</li>
+      <li><a href="api/sklearn/neighbors/radiusneighbors.html#yobx.sklearn.neighbors.radiusneighbors.sklearn_radius_neighbors_regressor">sklearn_radius_neighbors_regressor() (in module yobx.sklearn.neighbors.radiusneighbors)</a>
+</li>
       <li><a href="api/sklearn/ensemble/random_forest.html#yobx.sklearn.ensemble.random_forest.sklearn_random_forest_classifier">sklearn_random_forest_classifier() (in module yobx.sklearn.ensemble.random_forest)</a>
 </li>
       <li><a href="api/sklearn/ensemble/random_forest.html#yobx.sklearn.ensemble.random_forest.sklearn_random_forest_regressor">sklearn_random_forest_regressor() (in module yobx.sklearn.ensemble.random_forest)</a>
 </li>
+      <li><a href="api/sklearn/preprocessing/robust_scaler.html#yobx.sklearn.preprocessing.robust_scaler.sklearn_robust_scaler">sklearn_robust_scaler() (in module yobx.sklearn.preprocessing.robust_scaler)</a>
+</li>
+      <li><a href="api/sklearn/preprocessing/simple_imputer.html#yobx.sklearn.preprocessing.simple_imputer.sklearn_simple_imputer">sklearn_simple_imputer() (in module yobx.sklearn.preprocessing.simple_imputer)</a>
+</li>
+      <li><a href="api/sklearn/preprocessing/spline_transformer.html#yobx.sklearn.preprocessing.spline_transformer.sklearn_spline_transformer">sklearn_spline_transformer() (in module yobx.sklearn.preprocessing.spline_transformer)</a>
+</li>
+      <li><a href="api/sklearn/ensemble/stacking.html#yobx.sklearn.ensemble.stacking.sklearn_stacking_classifier">sklearn_stacking_classifier() (in module yobx.sklearn.ensemble.stacking)</a>
+</li>
+      <li><a href="api/sklearn/ensemble/stacking.html#yobx.sklearn.ensemble.stacking.sklearn_stacking_regressor">sklearn_stacking_regressor() (in module yobx.sklearn.ensemble.stacking)</a>
+</li>
       <li><a href="api/sklearn/preprocessing/standard_scaler.html#yobx.sklearn.preprocessing.standard_scaler.sklearn_standard_scaler">sklearn_standard_scaler() (in module yobx.sklearn.preprocessing.standard_scaler)</a>
+</li>
+      <li><a href="api/sklearn/svm/svm.html#yobx.sklearn.svm.svm.sklearn_svc">sklearn_svc() (in module yobx.sklearn.svm.svm)</a>
+</li>
+      <li><a href="api/sklearn/svm/svm.html#yobx.sklearn.svm.svm.sklearn_svr">sklearn_svr() (in module yobx.sklearn.svm.svm)</a>
+</li>
+      <li><a href="api/sklearn/ensemble/voting.html#yobx.sklearn.ensemble.voting.sklearn_voting_classifier">sklearn_voting_classifier() (in module yobx.sklearn.ensemble.voting)</a>
+</li>
+      <li><a href="api/sklearn/ensemble/voting.html#yobx.sklearn.ensemble.voting.sklearn_voting_regressor">sklearn_voting_regressor() (in module yobx.sklearn.ensemble.voting)</a>
 </li>
       <li><a href="api/sklearn/xgboost/xgb.html#yobx.sklearn.xgboost.xgb.sklearn_xgb_classifier">sklearn_xgb_classifier() (in module yobx.sklearn.xgboost.xgb)</a>
 </li>
@@ -4294,10 +5224,10 @@
       </ul></li>
       <li><a href="api/helpers/dot_helper.html#yobx.helpers.dot_helper.to_svg">to_svg() (in module yobx.helpers.dot_helper)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/torch/torch_helper.html#yobx.torch.torch_helper.to_tensor">to_tensor() (in module yobx.torch.torch_helper)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.ExtTestCase.todo">todo() (yobx.ext_test_case.ExtTestCase class method)</a>
 </li>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.topological_sort">topological_sort() (yobx.xbuilder.GraphBuilder method)</a>
@@ -4361,6 +5291,8 @@
       <li><a href="api/ext_test_case.html#yobx.ext_test_case.ExtTestCase.tryCall">tryCall() (yobx.ext_test_case.ExtTestCase method)</a>
 </li>
       <li><a href="api/helpers/onnx_helper.html#yobx.helpers.onnx_helper.type_info">type_info() (in module yobx.helpers.onnx_helper)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.TypeBFloat16">TypeBFloat16 (class in yobx.torch._model_eval_cases)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -4468,10 +5400,10 @@
         <li><a href="api/xshape/index.html#yobx.xshape.BasicShapeBuilder.value_as_shape">(yobx.xshape.BasicShapeBuilder method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.value_to_ir_tensor">value_to_ir_tensor() (in module yobx.builder.onnxscript.bridge_graph_builder)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/builder/light/var.html#yobx.builder.light.Var">Var (class in yobx.builder.light)</a>
 </li>
       <li><a href="api/builder/light/var.html#yobx.builder.light.Vars">Vars (class in yobx.builder.light)</a>
@@ -4493,6 +5425,10 @@
 </li>
       </ul></li>
       <li><a href="api/xbuilder/index.html#yobx.xbuilder._virtual_tensor.VirtualTensor">VirtualTensor (class in yobx.xbuilder._virtual_tensor)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.Vmap">Vmap (class in yobx.torch._model_eval_cases)</a>
+</li>
+      <li><a href="api/torch/_model_eval_cases.html#yobx.torch._model_eval_cases.VmapPython">VmapPython (class in yobx.torch._model_eval_cases)</a>
 </li>
       <li><a href="api/builder/light/var.html#yobx.builder.light._var.BaseVar.vout">vout() (yobx.builder.light._var.BaseVar method)</a>
 
@@ -4691,6 +5627,13 @@
 </li>
       </ul></li>
       <li>
+    yobx.sklearn.calibration.calibrated_classifier
+
+      <ul>
+        <li><a href="api/sklearn/calibration/calibrated_classifier.html#module-yobx.sklearn.calibration.calibrated_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
     yobx.sklearn.cluster.kmeans
 
       <ul>
@@ -4712,10 +5655,38 @@
 </li>
       </ul></li>
       <li>
+    yobx.sklearn.decomposition.gaussian_random_projection
+
+      <ul>
+        <li><a href="api/sklearn/decomposition/gaussian_random_projection.html#module-yobx.sklearn.decomposition.gaussian_random_projection">module</a>
+</li>
+      </ul></li>
+      <li>
     yobx.sklearn.decomposition.pca
 
       <ul>
         <li><a href="api/sklearn/decomposition/pca.html#module-yobx.sklearn.decomposition.pca">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.decomposition.pls_regression
+
+      <ul>
+        <li><a href="api/sklearn/decomposition/pls_regression.html#module-yobx.sklearn.decomposition.pls_regression">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.discriminant_analysis.lda
+
+      <ul>
+        <li><a href="api/sklearn/discriminant_analysis/lda.html#module-yobx.sklearn.discriminant_analysis.lda">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.dummy.dummy
+
+      <ul>
+        <li><a href="api/sklearn/dummy/dummy.html#module-yobx.sklearn.dummy.dummy">module</a>
 </li>
       </ul></li>
       <li>
@@ -4730,6 +5701,34 @@
 
       <ul>
         <li><a href="api/sklearn/ensemble/random_forest.html#module-yobx.sklearn.ensemble.random_forest">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.ensemble.stacking
+
+      <ul>
+        <li><a href="api/sklearn/ensemble/stacking.html#module-yobx.sklearn.ensemble.stacking">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.ensemble.voting
+
+      <ul>
+        <li><a href="api/sklearn/ensemble/voting.html#module-yobx.sklearn.ensemble.voting">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.gaussian_process.gp
+
+      <ul>
+        <li><a href="api/sklearn/gaussian_process/gp.html#module-yobx.sklearn.gaussian_process.gp">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.lightgbm.lgbm
+
+      <ul>
+        <li><a href="api/sklearn/lightgbm/lgbm.html#module-yobx.sklearn.lightgbm.lgbm">module</a>
 </li>
       </ul></li>
       <li>
@@ -4761,10 +5760,45 @@
 </li>
       </ul></li>
       <li>
+    yobx.sklearn.mixture.gaussian_mixture
+
+      <ul>
+        <li><a href="api/sklearn/mixture/gaussian_mixture.html#module-yobx.sklearn.mixture.gaussian_mixture">module</a>
+</li>
+      </ul></li>
+      <li>
     yobx.sklearn.multiclass.one_vs_rest
 
       <ul>
         <li><a href="api/sklearn/multiclass/one_vs_rest.html#module-yobx.sklearn.multiclass.one_vs_rest">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.multioutput.multioutput
+
+      <ul>
+        <li><a href="api/sklearn/multioutput/multioutput.html#module-yobx.sklearn.multioutput.multioutput">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.naive_bayes.nb
+
+      <ul>
+        <li><a href="api/sklearn/naive_bayes/nb.html#module-yobx.sklearn.naive_bayes.nb">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.neighbors.kneighbors
+
+      <ul>
+        <li><a href="api/sklearn/neighbors/kneighbors.html#module-yobx.sklearn.neighbors.kneighbors">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.neighbors.radiusneighbors
+
+      <ul>
+        <li><a href="api/sklearn/neighbors/radiusneighbors.html#module-yobx.sklearn.neighbors.radiusneighbors">module</a>
 </li>
       </ul></li>
       <li>
@@ -4775,6 +5809,13 @@
 </li>
       </ul></li>
       <li>
+    yobx.sklearn.pipeline.feature_union
+
+      <ul>
+        <li><a href="api/sklearn/pipeline/feature_union.html#module-yobx.sklearn.pipeline.feature_union">module</a>
+</li>
+      </ul></li>
+      <li>
     yobx.sklearn.pipeline.pipeline
 
       <ul>
@@ -4782,10 +5823,73 @@
 </li>
       </ul></li>
       <li>
+    yobx.sklearn.preprocessing.binarizer
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/binarizer.html#module-yobx.sklearn.preprocessing.binarizer">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.kbins_discretizer
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/kbins_discretizer.html#module-yobx.sklearn.preprocessing.kbins_discretizer">module</a>
+</li>
+      </ul></li>
+      <li>
     yobx.sklearn.preprocessing.min_max_scaler
 
       <ul>
         <li><a href="api/sklearn/preprocessing/min_max_scaler.html#module-yobx.sklearn.preprocessing.min_max_scaler">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.one_hot_encoder
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/one_hot_encoder.html#module-yobx.sklearn.preprocessing.one_hot_encoder">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.polynomial_features
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/polynomial_features.html#module-yobx.sklearn.preprocessing.polynomial_features">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.power_transformer
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/power_transformer.html#module-yobx.sklearn.preprocessing.power_transformer">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.quantile_transformer
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/quantile_transformer.html#module-yobx.sklearn.preprocessing.quantile_transformer">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.robust_scaler
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/robust_scaler.html#module-yobx.sklearn.preprocessing.robust_scaler">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.simple_imputer
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/simple_imputer.html#module-yobx.sklearn.preprocessing.simple_imputer">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.preprocessing.spline_transformer
+
+      <ul>
+        <li><a href="api/sklearn/preprocessing/spline_transformer.html#module-yobx.sklearn.preprocessing.spline_transformer">module</a>
 </li>
       </ul></li>
       <li>
@@ -4807,6 +5911,27 @@
 
       <ul>
         <li><a href="api/sklearn/sklearn_helper.html#module-yobx.sklearn.sklearn_helper">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.svm.linear_svm
+
+      <ul>
+        <li><a href="api/sklearn/svm/linear_svm.html#module-yobx.sklearn.svm.linear_svm">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.svm.svm
+
+      <ul>
+        <li><a href="api/sklearn/svm/svm.html#module-yobx.sklearn.svm.svm">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.sklearn.tests_helper
+
+      <ul>
+        <li><a href="api/sklearn/tests_helper.html#module-yobx.sklearn.tests_helper">module</a>
 </li>
       </ul></li>
       <li>
@@ -4852,6 +5977,13 @@
 </li>
       </ul></li>
       <li>
+    yobx.tensorflow.ops.conv
+
+      <ul>
+        <li><a href="api/tensorflow/ops/conv.html#module-yobx.tensorflow.ops.conv">module</a>
+</li>
+      </ul></li>
+      <li>
     yobx.tensorflow.ops.element_wise
 
       <ul>
@@ -4859,10 +5991,52 @@
 </li>
       </ul></li>
       <li>
+    yobx.tensorflow.ops.math_ops
+
+      <ul>
+        <li><a href="api/tensorflow/ops/math_ops.html#module-yobx.tensorflow.ops.math_ops">module</a>
+</li>
+      </ul></li>
+      <li>
     yobx.tensorflow.ops.matmul
 
       <ul>
         <li><a href="api/tensorflow/ops/matmul.html#module-yobx.tensorflow.ops.matmul">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.tensorflow.ops.padding
+
+      <ul>
+        <li><a href="api/tensorflow/ops/padding.html#module-yobx.tensorflow.ops.padding">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.tensorflow.ops.pooling
+
+      <ul>
+        <li><a href="api/tensorflow/ops/pooling.html#module-yobx.tensorflow.ops.pooling">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.tensorflow.ops.reduction_ops
+
+      <ul>
+        <li><a href="api/tensorflow/ops/reduction_ops.html#module-yobx.tensorflow.ops.reduction_ops">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.tensorflow.ops.shape_ops
+
+      <ul>
+        <li><a href="api/tensorflow/ops/shape_ops.html#module-yobx.tensorflow.ops.shape_ops">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.tensorflow.ops.unary_ops
+
+      <ul>
+        <li><a href="api/tensorflow/ops/unary_ops.html#module-yobx.tensorflow.ops.unary_ops">module</a>
 </li>
       </ul></li>
       <li>
@@ -4877,6 +6051,13 @@
 
       <ul>
         <li><a href="api/tensorflow/tensorflow_helper.html#module-yobx.tensorflow.tensorflow_helper">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.torch._model_eval_cases
+
+      <ul>
+        <li><a href="api/torch/_model_eval_cases.html#module-yobx.torch._model_eval_cases">module</a>
 </li>
       </ul></li>
       <li>
@@ -4956,6 +6137,8 @@
         <li><a href="api/torch/in_transformers/patches.html#module-yobx.torch.in_transformers.patches">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     yobx.torch.input_observer
 
@@ -5075,13 +6258,18 @@
         <li><a href="api/torch/interpreter/interpreter.html#module-yobx.torch.interpreter.interpreter">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     yobx.torch.interpreter.onnx_export
 
       <ul>
         <li><a href="api/torch/interpreter/onnx_export.html#module-yobx.torch.interpreter.onnx_export">module</a>
+</li>
+      </ul></li>
+      <li>
+    yobx.torch.model_eval_cases
+
+      <ul>
+        <li><a href="api/torch/model_eval_cases.html#module-yobx.torch.model_eval_cases">module</a>
 </li>
       </ul></li>
       <li>

@@ -10,12 +10,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d0ff0132" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -27,7 +27,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Supported TF Ops" href="supported_ops.html" />
-    <link rel="prev" title="Patches List" href="../torch/patches_list.html" /> 
+    <link rel="prev" title="Overview of Exportability" href="../torch/case_coverage.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
 <div id="top_nav">
@@ -140,15 +140,15 @@
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">TensorFlow Export to ONNX</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="supported_ops.html">Supported TF Ops</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
@@ -378,6 +378,7 @@ modifying the package.</p>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># yobx/tensorflow/ops/reduce.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorProto</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_tf_op_converter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
 
@@ -385,8 +386,10 @@ modifying the package.</p>
 <span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;Sum&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_reduce_sum</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TF ``Sum`` → ONNX ``ReduceSum``.&quot;&quot;&quot;</span>
-    <span class="n">axes</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># axis tensor</span>
     <span class="n">keepdims</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;keep_dims&quot;</span><span class="p">))</span>
+    <span class="c1"># TF may pass a 0-D scalar for single-axis reductions; ONNX requires 1-D.</span>
+    <span class="n">axes_i64</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast&quot;</span><span class="p">)</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">axes_i64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_axes&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span>
         <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keepdims</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span>
@@ -441,8 +444,8 @@ modifying the package.</p>
         <div class="button_nav">
             <div class="left">
                 
-                <a href="../torch/patches_list.html">
-                    <span class="icon">&lt;</span><span>Patches List</span></a>
+                <a href="../torch/case_coverage.html">
+                    <span class="icon">&lt;</span><span>Overview of Exportability</span></a>
                 
             </div>
 

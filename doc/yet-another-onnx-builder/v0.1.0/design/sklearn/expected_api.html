@@ -10,12 +10,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d0ff0132" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -140,12 +140,11 @@
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">scikit-learn Export to ONNX</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Expected API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lightgbm_converter.html">Gradient Boosting Converters (XGBoost, LightGBM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="svm_converter.html">SVM Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
@@ -154,6 +153,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
@@ -325,20 +327,30 @@ can choose the right operator variant or register an additional domain
 <td><p>Read-only property.  Returns the opset version for the main ONNX
 domain (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>).  Equivalent to <code class="docutils literal notranslate"><span class="pre">g.opsets[&quot;&quot;]</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_opset(domain,</span> <span class="pre">exc=True)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">has_opset(domain)</span></code></p></td>
+<td><p>Returns the opset version (an <code class="docutils literal notranslate"><span class="pre">int</span></code>) for <em>domain</em>, or <code class="docutils literal notranslate"><span class="pre">0</span></code> if the
+domain is not registered.  Because <code class="docutils literal notranslate"><span class="pre">0</span></code> is falsy and any valid version
+is truthy, the return value can be used directly in a boolean context:
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">g.has_opset(&quot;ai.onnx.ml&quot;):</span> <span class="pre">...</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_opset(domain,</span> <span class="pre">exc=True)</span></code></p></td>
 <td><p>Returns the opset version for <em>domain</em>.  When <code class="docutils literal notranslate"><span class="pre">exc=True</span></code> (default)
 an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code> is raised if the domain is not registered;
-set <code class="docutils literal notranslate"><span class="pre">exc=False</span></code> to get <code class="docutils literal notranslate"><span class="pre">None</span></code> instead.</p></td>
+set <code class="docutils literal notranslate"><span class="pre">exc=False</span></code> to get <code class="docutils literal notranslate"><span class="pre">0</span></code> instead.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_opset(domain,</span> <span class="pre">version=1)</span></code></p></td>
+<td><p>Registers <em>domain</em> with the given <em>version</em>.  If the domain is already
+registered with the same version the call is a no-op; a version
+mismatch raises an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">add_domain(domain,</span> <span class="pre">version=1)</span></code></p></td>
-<td><p>Registers <em>domain</em> with the given <em>version</em>.  If the domain is already
-registered, the call is a no-op (provided <em>version</em> matches).</p></td>
+<td><p>Deprecated alias for <code class="docutils literal notranslate"><span class="pre">set_opset</span></code>.</p></td>
 </tr>
 </tbody>
 </table>
 <p>A converter that targets the main ONNX domain only needs to read
 <code class="docutils literal notranslate"><span class="pre">g.main_opset</span></code>.  A converter that also emits nodes from a secondary domain
-(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;ai.onnx.ml&quot;</span></code>) should first call <code class="docutils literal notranslate"><span class="pre">g.add_domain(domain,</span> <span class="pre">version)</span></code>
+(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;ai.onnx.ml&quot;</span></code>) should first call <code class="docutils literal notranslate"><span class="pre">g.set_opset(domain,</span> <span class="pre">version)</span></code>
 to ensure the domain is recorded in the exported model, then query its
 version with <code class="docutils literal notranslate"><span class="pre">g.get_opset(domain)</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
@@ -349,10 +361,13 @@ version with <code class="docutils literal notranslate"><span class="pre">g.get_
     <span class="n">opset</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">main_opset</span>
 
     <span class="c1"># Register and query the ai.onnx.ml domain when needed.</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">add_domain</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_opset</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">ml_opset</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_opset</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">opset</span> <span class="o">&gt;=</span> <span class="mi">20</span><span class="p">:</span>
+    <span class="c1"># Check whether an optional domain is already registered.</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_opset</span><span class="p">(</span><span class="s2">&quot;com.microsoft&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MicrosoftOp</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">opset</span> <span class="o">&gt;=</span> <span class="mi">20</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">SomeNewOp</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">SomeLegacyOp</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>

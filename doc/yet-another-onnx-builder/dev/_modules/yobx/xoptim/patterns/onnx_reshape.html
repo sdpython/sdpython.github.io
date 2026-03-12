@@ -9,17 +9,453 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=d0ff0132" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=3e4cc94f" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
     <script src="../../../../_static/js/theme.js"></script>
     <script src="../../../../_static/js/petite-vue.js"></script>
     <link rel="icon" href="../../../../_static/logo.svg"/>
@@ -236,68 +672,36 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span>
+<span class="sd">            C[Constant &lt;br/&gt; value: 0, 0, -1]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            xrr([Output: xrr &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;shape2&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([0, 0, -1], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;shape2&#39;], [&#39;xrr&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;shape2&#39;, onnx.TensorProto.INT64, (3,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;xrr&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C --&gt;|shape2| R</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            R --&gt; xrr</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style xrr fill:#dfd</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            X[Input: X] --&gt; ID[Identity]</span>
+<span class="sd">            S[Input: shape2] -.-&gt;|Invalid?| ID</span>
+<span class="sd">            ID --&gt; xrr[Output: xrr]</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Identity&#39;, [&#39;X&#39;, &#39;shape2&#39;], [&#39;xrr&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;shape2&#39;, onnx.TensorProto.INT64, (3,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;xrr&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
-
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            style ID fill:#f9f,stroke:#333,stroke-width:2px</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -337,67 +741,49 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 3, 2])</span>
+<span class="sd">            C[Constant &lt;br/&gt; value: 3]</span>
+<span class="sd">            RS[[ReduceSum &lt;br/&gt; axes=1, keepdims=1]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 3])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;shape&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([3], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;ReduceSum&#39;, [&#39;X&#39;], [&#39;xr&#39;], axes=[1], keepdims=1),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;xr&#39;, &#39;shape&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (3, 2)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 10)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; RS</span>
+<span class="sd">            RS --&gt; xr[ ]</span>
+<span class="sd">            C --&gt;|shape| R</span>
+<span class="sd">            xr --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style RS fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style xr fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 3, 2])</span>
+<span class="sd">            RS[[ReduceSum &lt;br/&gt; axes=1, keepdims=0]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 3])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;ReduceSum&#39;, [&#39;X&#39;], [&#39;Y&#39;], axes=[1], keepdims=0),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (3, 2)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (3,)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 10)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; RS</span>
+<span class="sd">            RS --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style RS fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ReduceReshapePattern.match">
@@ -498,72 +884,55 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, 128])</span>
+<span class="sd">            C1[Constant &lt;br/&gt; value: 4096, 7, 7, 128]</span>
+<span class="sd">            C2[Constant &lt;br/&gt; value: 4096, 49, 128]</span>
+<span class="sd">            R1[[Reshape]]</span>
+<span class="sd">            R2[[Reshape]]</span>
+<span class="sd">            s2([Output: s2 &lt;br/&gt; float, 4096, 49, 128])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;sh1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([4096, 7, 7, 128], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;sh2&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([4096, 49, 128], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;sh1&#39;], [&#39;s1&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;s1&#39;, &#39;sh2&#39;], [&#39;s2&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;sh2&#39;, onnx.TensorProto.INT64, (3,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, 128)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;s2&#39;, onnx.TensorProto.FLOAT, (4096, 49, 128)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C1 --&gt;|sh1| R1</span>
+<span class="sd">            X --&gt; R1</span>
+<span class="sd">            R1 --&gt; s1[ ]</span>
+<span class="sd">            C2 --&gt;|sh2| R2</span>
+<span class="sd">            s1 --&gt; R2</span>
+<span class="sd">            R2 --&gt; s2</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style C2 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R1 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R2 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style s2 fill:#dfd</span>
+<span class="sd">            style s1 fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, 128])</span>
+<span class="sd">            C2[Constant &lt;br/&gt; value: 4096, 49, 128]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            s2([Output: s2 &lt;br/&gt; float, 4096, 49, 128])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;sh2&#39;], [&#39;s2&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;sh2&#39;, onnx.TensorProto.INT64, (3,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, 128)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;s2&#39;, onnx.TensorProto.FLOAT, (4096, 49, 128)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C2 --&gt;|sh2| R</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            R --&gt; s2</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C2 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style s2 fill:#dfd</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -825,84 +1194,85 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, 4])</span>
+<span class="sd">            Y([Input: Y &lt;br/&gt; float, 2, 3, 4])</span>
+<span class="sd">            C1[Constant &lt;br/&gt; value: -1, 8]</span>
+<span class="sd">            C2[Constant &lt;br/&gt; value: 3, -1]</span>
+<span class="sd">            C3[Constant &lt;br/&gt; value: 2, 3, 4]</span>
+<span class="sd">            R1[[Reshape]]</span>
+<span class="sd">            R2[[Reshape]]</span>
+<span class="sd">            R3[[Reshape]]</span>
+<span class="sd">            M[[Mul]]</span>
+<span class="sd">            xrr([Output: xrr &lt;br/&gt; float, 3, 8])</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, 2, 3, 4])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;shape1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([-1, 8], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;shape2&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([3, -1], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;shape3&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([2, 3, 4], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;shape1&#39;], [&#39;xr&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;Y&#39;, &#39;shape2&#39;], [&#39;yr&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;xrr&#39;, &#39;shape3&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;xr&#39;, &#39;yr&#39;], [&#39;xrr&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;shape2&#39;, onnx.TensorProto.INT64, (2,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;xrr&#39;, onnx.TensorProto.FLOAT, (3, 8)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C1 --&gt;|shape1| R1</span>
+<span class="sd">            X --&gt; R1</span>
+<span class="sd">            R1 --&gt; xr[ ]</span>
+<span class="sd">            C2 --&gt;|shape2| R2</span>
+<span class="sd">            Y --&gt; R2</span>
+<span class="sd">            R2 --&gt; yr[ ]</span>
+<span class="sd">            xr --&gt; M</span>
+<span class="sd">            yr --&gt; M</span>
+<span class="sd">            M --&gt; xrr_int[ ]</span>
+<span class="sd">            C3 --&gt;|shape3| R3</span>
+<span class="sd">            xrr_int --&gt; R3</span>
+<span class="sd">            R3 --&gt; Z</span>
+<span class="sd">            xrr_int --&gt; xrr</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style C2 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style C3 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R1 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R2 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R3 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style M fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style xrr fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
+<span class="sd">            style xr fill:#eee,stroke:#999</span>
+<span class="sd">            style yr fill:#eee,stroke:#999</span>
+<span class="sd">            style xrr_int fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, 4])</span>
+<span class="sd">            Y([Input: Y &lt;br/&gt; float, 2, 3, 4])</span>
+<span class="sd">            C2[Constant &lt;br/&gt; value: 3, -1]</span>
+<span class="sd">            M[[Mul]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            xrr([Output: xrr &lt;br/&gt; float, 3, 8])</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, 2, 3, 4])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Mul&#39;, [&#39;X&#39;, &#39;Y&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;Z&#39;, &#39;shape2&#39;], [&#39;xrr&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;shape2&#39;, onnx.TensorProto.INT64, (2,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;xrr&#39;, onnx.TensorProto.FLOAT, (3, 8)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (2, 3, 4)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; M</span>
+<span class="sd">            Y --&gt; M</span>
+<span class="sd">            M --&gt; z_int[ ]</span>
+<span class="sd">            z_int --&gt; Z</span>
+<span class="sd">            C2 --&gt;|shape2| R</span>
+<span class="sd">            z_int --&gt; R</span>
+<span class="sd">            R --&gt; xrr</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C2 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style M fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style xrr fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
+<span class="sd">            style z_int fill:#eee,stroke:#999</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_op_types</span> <span class="o">=</span> <span class="n">element_wise_binary_op_types</span><span class="p">()</span>
@@ -1102,81 +1472,71 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 4])</span>
+<span class="sd">            Y([Input: Y &lt;br/&gt; float, &#39;a&#39;, 4])</span>
+<span class="sd">            C1[Constant &lt;br/&gt; value: -1, 8]</span>
+<span class="sd">            C2[Constant &lt;br/&gt; value: -1, 8]</span>
+<span class="sd">            R1[[Reshape]]</span>
+<span class="sd">            R2[[Reshape]]</span>
+<span class="sd">            A[[Add]]</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, &#39;b&#39;, 8])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;sh1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([-1, 8], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;sh2&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([-1, 8], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;sh1&#39;], [&#39;xc&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;Y&#39;, &#39;sh2&#39;], [&#39;yc&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Add&#39;, [&#39;xc&#39;, &#39;yc&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;sh1&#39;, onnx.TensorProto.INT64, (2,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;b&#39;, 8)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    onh.from_array(np.array([-1, 1], dtype=np.int64), name=&#39;sh1&#39;),</span>
-<span class="sd">                    onh.from_array(np.array([1, -1], dtype=np.int64), name=&#39;sh2&#39;),</span>
-<span class="sd">                    onh.from_array(np.array([4], dtype=np.int64), name=&#39;four&#39;),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C1 --&gt;|sh1| R1</span>
+<span class="sd">            X --&gt; R1</span>
+<span class="sd">            R1 --&gt; xc[ ]</span>
+<span class="sd">            C2 --&gt;|sh2| R2</span>
+<span class="sd">            Y --&gt; R2</span>
+<span class="sd">            R2 --&gt; yc[ ]</span>
+<span class="sd">            xc --&gt; A</span>
+<span class="sd">            yc --&gt; A</span>
+<span class="sd">            A --&gt; Z</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style C2 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R1 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R2 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style A fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
+<span class="sd">            style xc fill:#eee,stroke:#999</span>
+<span class="sd">            style yc fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 4])</span>
+<span class="sd">            Y([Input: Y &lt;br/&gt; float, &#39;a&#39;, 4])</span>
+<span class="sd">            C1[Constant &lt;br/&gt; value: -1, 8]</span>
+<span class="sd">            A[[Add]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, &#39;b&#39;, 8])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Add&#39;, [&#39;X&#39;, &#39;Y&#39;], [&#39;add-X&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;add-X&#39;, &#39;sh1&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;sh1&#39;, onnx.TensorProto.INT64, (2,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;b&#39;, 8)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; A</span>
+<span class="sd">            Y --&gt; A</span>
+<span class="sd">            A --&gt; add_out[ ]</span>
+<span class="sd">            C1 --&gt;|sh1| R</span>
+<span class="sd">            add_out --&gt; R</span>
+<span class="sd">            R --&gt; Z</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style A fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
+<span class="sd">            style add_out fill:#eee,stroke:#999</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_op_types</span> <span class="o">=</span> <span class="n">element_wise_binary_op_types</span><span class="p">()</span>
@@ -1258,85 +1618,81 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])</span>
+<span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
+<span class="sd">            I2([Input: I2 &lt;br/&gt; int64, 1])</span>
+<span class="sd">            SH1[[Shape &lt;br/&gt; start=2, end=3]]</span>
+<span class="sd">            SH2[[Shape &lt;br/&gt; start=3, end=4]]</span>
+<span class="sd">            CC[[Concat &lt;br/&gt; axis=0]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;d&#39;, &#39;c&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Shape&#39;, [&#39;X&#39;], [&#39;D2&#39;], end=3, start=2),</span>
-<span class="sd">                    oh.make_node(&#39;Shape&#39;, [&#39;X&#39;], [&#39;D1&#39;], end=4, start=3),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;I1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([2], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;I2&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([1], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Concat&#39;, [&#39;I1&#39;, &#39;I2&#39;, &#39;D1&#39;, &#39;D2&#39;], [&#39;d&#39;], axis=0),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;d&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;I1&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;D1&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;I2&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;d&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; SH1</span>
+<span class="sd">            X --&gt; SH2</span>
+<span class="sd">            SH1 --&gt; D2[ ]</span>
+<span class="sd">            SH2 --&gt; D1[ ]</span>
+<span class="sd">            I1 --&gt; CC</span>
+<span class="sd">            I2 --&gt; CC</span>
+<span class="sd">            D1 --&gt; CC</span>
+<span class="sd">            D2 --&gt; CC</span>
+<span class="sd">            CC --&gt; d[ ]</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            d --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style SH1 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style SH2 fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style CC fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style I1 fill:#dfd</span>
+<span class="sd">            style I2 fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style D1 fill:#eee,stroke:#999</span>
+<span class="sd">            style D2 fill:#eee,stroke:#999</span>
+<span class="sd">            style d fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])</span>
+<span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
+<span class="sd">            I2([Input: I2 &lt;br/&gt; int64, 1])</span>
+<span class="sd">            D1([Input: D1 &lt;br/&gt; int64, 1])</span>
+<span class="sd">            CM1[Constant &lt;br/&gt; value: -1]</span>
+<span class="sd">            CC[[Concat &lt;br/&gt; axis=0]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;d&#39;, &#39;c&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init7_s1_-1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([-1], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Concat&#39;, [&#39;I1&#39;, &#39;I2&#39;, &#39;D1&#39;, &#39;init7_s1_-1&#39;], [&#39;d--concat&#39;],</span>
-<span class="sd">                                 axis=0),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;d--concat&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;I1&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;D1&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;I2&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;d&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            I1 --&gt; CC</span>
+<span class="sd">            I2 --&gt; CC</span>
+<span class="sd">            D1 --&gt; CC</span>
+<span class="sd">            CM1 --&gt; CC</span>
+<span class="sd">            CC --&gt; d_concat[ ]</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            d_concat --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style CM1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style CC fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style I1 fill:#dfd</span>
+<span class="sd">            style I2 fill:#dfd</span>
+<span class="sd">            style D1 fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style d_concat fill:#eee,stroke:#999</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -1461,76 +1817,66 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
+<span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
+<span class="sd">            SH[[Shape &lt;br/&gt; start=2, end=3]]</span>
+<span class="sd">            CC[[Concat &lt;br/&gt; axis=0]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 6, &#39;d&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;I1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([6], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Shape&#39;, [&#39;X&#39;], [&#39;D2&#39;], end=3, start=2),</span>
-<span class="sd">                    oh.make_node(&#39;Concat&#39;, [&#39;I1&#39;, &#39;D2&#39;], [&#39;dc&#39;], axis=0),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;dc&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;I1&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (6, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; SH</span>
+<span class="sd">            SH --&gt; D2[ ]</span>
+<span class="sd">            I1 --&gt; CC</span>
+<span class="sd">            D2 --&gt; CC</span>
+<span class="sd">            CC --&gt; dc[ ]</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            dc --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style SH fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style CC fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style I1 fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style D2 fill:#eee,stroke:#999</span>
+<span class="sd">            style dc fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
+<span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
+<span class="sd">            CM1[Constant &lt;br/&gt; value: -1]</span>
+<span class="sd">            CC[[Concat &lt;br/&gt; axis=0]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 6, &#39;d&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init7_s1_-1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([-1], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Concat&#39;, [&#39;I1&#39;, &#39;init7_s1_-1&#39;], [&#39;d--concat&#39;], axis=0),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;d--concat&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;I1&#39;, onnx.TensorProto.INT64, (1,)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (6, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            I1 --&gt; CC</span>
+<span class="sd">            CM1 --&gt; CC</span>
+<span class="sd">            CC --&gt; d_concat[ ]</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            d_concat --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style CM1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style CC fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style I1 fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style d_concat fill:#eee,stroke:#999</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -1641,73 +1987,58 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
+<span class="sd">            I1[Initializer &lt;br/&gt; value: -1]</span>
+<span class="sd">            SH[[Shape &lt;br/&gt; start=2, end=3]]</span>
+<span class="sd">            CC[[Concat &lt;br/&gt; axis=0]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 6, &#39;d&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Shape&#39;, [&#39;X&#39;], [&#39;D2&#39;], end=3, start=2),</span>
-<span class="sd">                    oh.make_node(&#39;Concat&#39;, [&#39;I1&#39;, &#39;D2&#39;], [&#39;dshape&#39;], axis=0),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;dshape&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (6, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    onh.from_array(np.array([-1], dtype=np.int64), name=&#39;I1&#39;),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; SH</span>
+<span class="sd">            SH --&gt; D2[ ]</span>
+<span class="sd">            I1 --&gt; CC</span>
+<span class="sd">            D2 --&gt; CC</span>
+<span class="sd">            CC --&gt; dshape[ ]</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            dshape --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style I1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style SH fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style CC fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style D2 fill:#eee,stroke:#999</span>
+<span class="sd">            style dshape fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
+<span class="sd">            C[Constant &lt;br/&gt; value: 6, -1]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 6, &#39;d&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init7_s2_6_-1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([6, -1], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;init7_s2_6_-1&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (6, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C --&gt;|shape| R</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -1891,73 +2222,59 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
+<span class="sd">            one[Initializer &lt;br/&gt; value: 1]</span>
+<span class="sd">            SH[[Shape]]</span>
+<span class="sd">            CC[[Concat &lt;br/&gt; axis=0]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 1, 2, 3, &#39;d&#39;, 1])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Shape&#39;, [&#39;X&#39;], [&#39;D2&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Concat&#39;, [&#39;one&#39;, &#39;D2&#39;, &#39;one&#39;], [&#39;dshape2&#39;], axis=0),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;dshape2&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (1, 2, 3, &#39;d&#39;, 1)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    onh.from_array(np.array([1], dtype=np.int64), name=&#39;one&#39;),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; SH</span>
+<span class="sd">            SH --&gt; D2[ ]</span>
+<span class="sd">            one --&gt; CC</span>
+<span class="sd">            D2 --&gt; CC</span>
+<span class="sd">            one --&gt; CC</span>
+<span class="sd">            CC --&gt; dshape2[ ]</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            dshape2 --&gt; R</span>
+<span class="sd">            R --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style one fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style SH fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style CC fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
+<span class="sd">            style D2 fill:#eee,stroke:#999</span>
+<span class="sd">            style dshape2 fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
+<span class="sd">            C[Constant &lt;br/&gt; value: 0, 4]</span>
+<span class="sd">            U[[Unsqueeze]]</span>
+<span class="sd">            Y([Output: Y &lt;br/&gt; float, 1, 2, 3, &#39;d&#39;, 1])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init7_s2_0_4&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([0, 4], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Unsqueeze&#39;, [&#39;X&#39;, &#39;init7_s2_0_4&#39;], [&#39;Y&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (2, 3, &#39;d&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (1, 2, 3, &#39;d&#39;, 1)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C --&gt;|axes| U</span>
+<span class="sd">            X --&gt; U</span>
+<span class="sd">            U --&gt; Y</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style U fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Y fill:#dfd</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -2066,75 +2383,55 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span>
+<span class="sd">            C1[Constant &lt;br/&gt; value: 2]</span>
+<span class="sd">            C2[Constant &lt;br/&gt; value: 0, 1, -1, 0]</span>
+<span class="sd">            U[[Unsqueeze]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, &#39;e&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;zero&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([2], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;shape3&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([0, 1, -1, 0], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Unsqueeze&#39;, [&#39;X&#39;, &#39;zero&#39;], [&#39;xu0&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;xu0&#39;, &#39;shape3&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;e&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C1 --&gt;|axes| U</span>
+<span class="sd">            X --&gt; U</span>
+<span class="sd">            U --&gt; xu0[ ]</span>
+<span class="sd">            C2 --&gt;|shape| R</span>
+<span class="sd">            xu0 --&gt; R</span>
+<span class="sd">            R --&gt; Z</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C1 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style C2 fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style U fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
+<span class="sd">            style xu0 fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span>
+<span class="sd">            C[Constant &lt;br/&gt; value: 1]</span>
+<span class="sd">            U[[Unsqueeze]]</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, &#39;e&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;init7_s1_1&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([1], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Unsqueeze&#39;, [&#39;X&#39;, &#39;init7_s1_1&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;e&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C --&gt;|axes| U</span>
+<span class="sd">            X --&gt; U</span>
+<span class="sd">            U --&gt; Z</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style U fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -2218,72 +2515,55 @@
 
 <span class="sd">    Model with nodes to be fused:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import numpy as np</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
-<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 8, 16])</span>
+<span class="sd">            S3([Input: shape3 &lt;br/&gt; int64, 2])</span>
+<span class="sd">            C[Constant &lt;br/&gt; value: 0]</span>
+<span class="sd">            U[[Unsqueeze]]</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, &#39;2*a&#39;, 64])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;zero&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([0], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Constant&#39;, [], [&#39;shape3&#39;],</span>
-<span class="sd">                                 value=onh.from_array(np.array([-1, 128], dtype=np.int64),</span>
-<span class="sd">                                 name=&#39;value&#39;)),</span>
-<span class="sd">                    oh.make_node(&#39;Unsqueeze&#39;, [&#39;X&#39;, &#39;zero&#39;], [&#39;xu0&#39;]),</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;xu0&#39;, &#39;shape3&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 8, 16)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;shape3&#39;, onnx.TensorProto.INT64, (2,)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;2*a&#39;, 64)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            C --&gt;|axes| U</span>
+<span class="sd">            X --&gt; U</span>
+<span class="sd">            U --&gt; xu0[ ]</span>
+<span class="sd">            S3 --&gt;|shape| R</span>
+<span class="sd">            xu0 --&gt; R</span>
+<span class="sd">            R --&gt; Z</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style C fill:#f9f,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style U fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style S3 fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
+<span class="sd">            style xu0 fill:#eee,stroke:#999</span>
 
 <span class="sd">    Outcome of the fusion:</span>
 
-<span class="sd">    .. gdot::</span>
-<span class="sd">        :script: DOT-SECTION</span>
-<span class="sd">        :process:</span>
+<span class="sd">    .. mermaid::</span>
 
-<span class="sd">        from yobx.doc import to_dot</span>
-<span class="sd">        import onnx</span>
-<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        graph TD</span>
+<span class="sd">            %% Nodes</span>
+<span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 8, 16])</span>
+<span class="sd">            S3([Input: shape3 &lt;br/&gt; int64, 2])</span>
+<span class="sd">            R[[Reshape]]</span>
+<span class="sd">            Z([Output: Z &lt;br/&gt; float, &#39;2*a&#39;, 64])</span>
 
-<span class="sd">        model = oh.make_model(</span>
-<span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Reshape&#39;, [&#39;X&#39;, &#39;shape3&#39;], [&#39;Z&#39;]),</span>
-<span class="sd">                ],</span>
-<span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 8, 16)),</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;shape3&#39;, onnx.TensorProto.INT64, (2,)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;2*a&#39;, 64)),</span>
-<span class="sd">                ],</span>
-<span class="sd">            ),</span>
-<span class="sd">            functions=[],</span>
-<span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
-<span class="sd">        )</span>
+<span class="sd">            %% Flow</span>
+<span class="sd">            X --&gt; R</span>
+<span class="sd">            S3 --&gt;|shape| R</span>
+<span class="sd">            R --&gt; Z</span>
 
-<span class="sd">        print(&quot;DOT-SECTION&quot;, to_dot(model))</span>
+<span class="sd">            %% Styling</span>
+<span class="sd">            style R fill:#bbf,stroke:#333,stroke-width:2px</span>
+<span class="sd">            style X fill:#dfd</span>
+<span class="sd">            style S3 fill:#dfd</span>
+<span class="sd">            style Z fill:#dfd</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>

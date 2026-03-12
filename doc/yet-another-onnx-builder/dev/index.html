@@ -10,12 +10,12 @@
     <link rel="stylesheet" type="text/css" href="_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d0ff0132" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=3e4cc94f" />
     <script src="_static/documentation_options.js?v=01f34227"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -181,7 +181,7 @@
 <a class="reference external image-reference" href="https://github.com/xadupre/yet-another-onnx-builder"><img alt="https://img.shields.io/github/repo-size/xadupre/yet-another-onnx-builder" src="https://img.shields.io/github/repo-size/xadupre/yet-another-onnx-builder" />
 </a>
 <p><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder">yet-another-onnx-builder on GitHub</a></p>
-<p><strong>yet-another-onnx-builder</strong> (<code class="docutils literal notranslate"><span class="pre">yobx</span></code>) is a toolkit for converting machine learning models
+<p><strong>yet-another-onnx-builder</strong> (<code class="docutils literal notranslate"><span class="pre">yobx</span></code>) proposes a unique API to convert machine learning models
 to <a class="reference external" href="https://onnx.ai">ONNX</a> format and manipulating ONNX graphs programmatically.
 It provides:</p>
 <ul class="simple">
@@ -192,17 +192,26 @@ with built-in shape inference and a pattern-based
 <li><p>Utilities for <strong>PyTorch</strong> export, including model patching and input flattening (<code class="docutils literal notranslate"><span class="pre">yobx.torch</span></code>).</p></li>
 <li><p>A symbolic <a class="reference internal" href="design/builder/shape.html#l-design-shape"><span class="std std-ref">shape expression system</span></a> for dynamic shape handling at export time.</p></li>
 <li><p>A <a class="reference internal" href="design/misc/translate.html#l-design-translate"><span class="std std-ref">translation tool</span></a> that converts ONNX graphs back to executable Python code.</p></li>
+<li><p><strong>Optimization functions</strong> to make the model more efficient.</p></li>
+<li><p>It supports multiple opsets and multiple domains.</p></li>
+<li><p>It allows the user to directly onnx model with <a class="reference external" href="https://spox.readthedocs.io/en/latest/">spox</a> or <a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a>/<a class="reference external" href="https://onnx.ai/ir-py/">ir-py</a>.</p></li>
 </ul>
+<p>Its unique API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the model is called</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">onnx_model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="design/index.html">Elements of Design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="design/ci.html">Repository Structure and CI Workflows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/misc/index.html">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/ci.html">Repository Structure and CI Workflows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cmds/index.html">Command Lines</a><ul>

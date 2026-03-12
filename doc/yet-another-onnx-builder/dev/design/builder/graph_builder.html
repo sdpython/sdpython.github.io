@@ -10,12 +10,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d0ff0132" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -27,7 +27,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Pattern Optimizer" href="optimizer.html" />
-    <link rel="prev" title="Fluent ONNX Builder (Light API)" href="light_api.html" /> 
+    <link rel="prev" title="ShapeBuilder" href="shape.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
 <div id="top_nav">
@@ -140,19 +140,18 @@
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">GraphBuilder to build and optimize ONNX Models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="shape.html">ShapeBuilder</a></li>
-<li class="toctree-l3"><a class="reference internal" href="light_api.html">Fluent ONNX Builder (Light API)</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">GraphBuilder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="optimizer.html">Pattern Optimizer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="optimizer_patterns.html">Available Patterns</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmds/index.html">Command Lines</a></li>
@@ -550,439 +549,439 @@ exploration:</p>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                                         <span class="n">pattern</span>  <span class="n">added</span>  <span class="n">removed</span>  <span class="n">time_in</span>
-                        <span class="n">dynamic_dimension_naming</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000038</span>
-                <span class="n">check_A</span><span class="o">-</span><span class="n">dynamic_dimension_naming</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
-                                 <span class="n">check_A</span><span class="o">-</span><span class="n">opt</span><span class="o">-</span><span class="n">sub</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000026</span>
-                                 <span class="n">remove_identity</span>      <span class="mi">1</span>        <span class="mi">2</span> <span class="mf">0.000089</span>
-                         <span class="n">check_remove_identity</span><span class="o">-</span><span class="mi">0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000030</span>
-                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000061</span>
-                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">1</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000030</span>
-                                <span class="n">constant_folding</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
-                <span class="n">apply_constant_folding_new_inits</span>      <span class="mi">0</span>        <span class="mi">0</span>      <span class="n">NaN</span>
-                        <span class="n">check_constant_folding</span><span class="o">-</span><span class="mi">2</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                        <span class="n">dynamic_dimension_naming</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000027</span>
+                <span class="n">check_A</span><span class="o">-</span><span class="n">dynamic_dimension_naming</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
+                                 <span class="n">check_A</span><span class="o">-</span><span class="n">opt</span><span class="o">-</span><span class="n">sub</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
+                                 <span class="n">remove_identity</span>      <span class="mi">1</span>        <span class="mi">2</span> <span class="mf">0.000064</span>
+                         <span class="n">check_remove_identity</span><span class="o">-</span><span class="mi">0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
                                    <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000031</span>
-                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">3</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
-                                        <span class="n">patterns</span>      <span class="mi">0</span>        <span class="mi">1</span> <span class="mf">0.018024</span>
-                                <span class="n">check_pattern_00</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000029</span>
-                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
-         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">1</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000023</span>
+                                <span class="n">constant_folding</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                <span class="n">apply_constant_folding_new_inits</span>      <span class="mi">0</span>        <span class="mi">0</span>      <span class="n">NaN</span>
+                        <span class="n">check_constant_folding</span><span class="o">-</span><span class="mi">2</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
+                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">3</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                                        <span class="n">patterns</span>      <span class="mi">0</span>        <span class="mi">1</span> <span class="mf">0.013135</span>
+                                <span class="n">check_pattern_00</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
+                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
+         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                               <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                             <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                               <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000001</span>
+                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000042</span>
+                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.001484</span>
+                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000021</span>
+                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                     <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
+              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
+        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.004549</span>
+                         <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
+             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000083</span>
+                <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
+                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000073</span>
+             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000028</span>
+                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000022</span>
+                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000184</span>
+          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000019</span>
+                   <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
+                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
+                         <span class="n">insert_and_remove_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000244</span>
+                 <span class="n">apply_TransposeTransposePattern</span>      <span class="mi">1</span>        <span class="mi">2</span> <span class="mf">0.000491</span>
+                               <span class="n">check_pattern_A10</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000003</span>
+                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
+                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000039</span>
+                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000031</span>
+                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000026</span>
+                                     <span class="n">iteration_0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.007655</span>
+                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
+         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
                                <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                             <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                               <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000002</span>
-                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000059</span>
-                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.002504</span>
-                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000026</span>
-                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                     <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
-              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000050</span>
-        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.006654</span>
-                         <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
-             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
-                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000082</span>
-             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000026</span>
-                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000028</span>
-                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000113</span>
-          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                   <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                         <span class="n">insert_and_remove_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000616</span>
-                 <span class="n">apply_TransposeTransposePattern</span>      <span class="mi">1</span>        <span class="mi">2</span> <span class="mf">0.000986</span>
-                               <span class="n">check_pattern_A10</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000077</span>
-                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000109</span>
-                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000072</span>
-                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000063</span>
-                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
-                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000068</span>
-                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
-                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000035</span>
-                                     <span class="n">iteration_0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.011598</span>
-                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
-         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
-                               <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
-                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
+                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000254</span>
                              <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
                                <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000002</span>
-                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
-                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                     <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
-        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
-                         <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
-                   <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
-                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000034</span>
-                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
-                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000069</span>
-                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000022</span>
-                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000088</span>
-                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000041</span>
-                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000056</span>
-                                     <span class="n">iteration_1</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.001056</span>
-                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-         <span class="n">match_CastLayerNormalizationCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                               <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                     <span class="n">match_CastCastBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                         <span class="n">match_CastOpCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                           <span class="n">match_ClipClipPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
-                        <span class="n">match_ConcatEmptyPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000067</span>
-                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                   <span class="n">match_ConcatTwiceUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-              <span class="n">match_ConstantToInitializerPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                            <span class="n">match_DropoutPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                             <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                    <span class="n">match_ExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                         <span class="n">match_ExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000019</span>
-                       <span class="n">match_GathersSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                               <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000002</span>
-                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                 <span class="n">match_LayerNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-            <span class="n">match_LayerNormalizationScalePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
                           <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000022</span>
-                    <span class="n">match_MulMulMulScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                             <span class="n">match_NotNotPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                           <span class="n">match_NotWherePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                      <span class="n">match_ReduceArgTopKPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                      <span class="n">match_ReduceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                 <span class="n">match_ReduceSumNormalizePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-               <span class="n">match_ReshapeMatMulReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                        <span class="n">match_Reshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-               <span class="n">match_ReshapeReshapeBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
-                      <span class="n">match_GemmTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                  <span class="n">match_MatMulReshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                       <span class="n">match_MulMulMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
              <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_ShapeBasedConcatExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-          <span class="n">match_ShapeBasedExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-    <span class="n">match_ShapeBasedExpandBroadcastMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-      <span class="n">match_ShapeBasedExpandCastWhereSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-               <span class="n">match_ShapeBasedExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-              <span class="n">match_ShapeBasedMatMulToMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
              <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
                      <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                    <span class="n">match_RotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
-                <span class="n">match_SequenceConstructAtPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                         <span class="n">match_SliceSlicePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                        <span class="n">match_SlicesSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000022</span>
-                        <span class="n">match_SplitConcatPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
+              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
                          <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                    <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
                 <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                            <span class="n">match_Sub1MulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
                   <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                 <span class="n">match_SwapRangeAddScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
                           <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                  <span class="n">match_SwitchOrderBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-            <span class="n">match_SwitchReshapeActivationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-              <span class="n">match_TransposeEqualReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                    <span class="n">match_TransposeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_TransposeReshapeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
+          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
                  <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                     <span class="n">match_UnsqueezeEqualPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
           <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                    <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                           <span class="n">match_WhereAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                   <span class="n">match_RotaryConcatPartPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                 <span class="n">match_FunctionCausalMaskPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-           <span class="n">match_FunctionCausalMaskMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                <span class="n">match_FunctionCosSinCachePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-        <span class="n">match_FunctionHalfRotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                   <span class="n">match_RMSNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                <span class="n">match_RMSNormalizationMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000381</span>
-                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
-                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000033</span>
-                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000070</span>
-                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000030</span>
-                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000039</span>
-                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
-                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000031</span>
-                                     <span class="n">iteration_2</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.002065</span>
-                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-         <span class="n">match_CastLayerNormalizationCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                               <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
-                     <span class="n">match_CastCastBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                         <span class="n">match_CastOpCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
-                           <span class="n">match_ClipClipPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                        <span class="n">match_ConcatEmptyPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                   <span class="n">match_ConcatTwiceUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-              <span class="n">match_ConstantToInitializerPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                            <span class="n">match_DropoutPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                             <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                    <span class="n">match_ExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                         <span class="n">match_ExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                       <span class="n">match_GathersSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                               <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000001</span>
-                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                 <span class="n">match_LayerNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-            <span class="n">match_LayerNormalizationScalePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000019</span>
-                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000044</span>
-                    <span class="n">match_MulMulMulScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
-                             <span class="n">match_NotNotPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
-                           <span class="n">match_NotWherePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
-                      <span class="n">match_ReduceArgTopKPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
-                      <span class="n">match_ReduceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000021</span>
-                 <span class="n">match_ReduceSumNormalizePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-               <span class="n">match_ReshapeMatMulReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                        <span class="n">match_Reshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-               <span class="n">match_ReshapeReshapeBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                      <span class="n">match_GemmTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                  <span class="n">match_MatMulReshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                       <span class="n">match_MulMulMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_ShapeBasedConcatExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-          <span class="n">match_ShapeBasedExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-    <span class="n">match_ShapeBasedExpandBroadcastMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-      <span class="n">match_ShapeBasedExpandCastWhereSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-               <span class="n">match_ShapeBasedExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-              <span class="n">match_ShapeBasedMatMulToMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                     <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                    <span class="n">match_RotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-                <span class="n">match_SequenceConstructAtPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                         <span class="n">match_SliceSlicePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                        <span class="n">match_SlicesSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
-                        <span class="n">match_SplitConcatPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                         <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000032</span>
-             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
-                <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                            <span class="n">match_Sub1MulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000022</span>
-                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                 <span class="n">match_SwapRangeAddScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                  <span class="n">match_SwitchOrderBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-            <span class="n">match_SwitchReshapeActivationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-              <span class="n">match_TransposeEqualReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                    <span class="n">match_TransposeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_TransposeReshapeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
-          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                     <span class="n">match_UnsqueezeEqualPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                   <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                           <span class="n">match_WhereAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                   <span class="n">match_RotaryConcatPartPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
-               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-                 <span class="n">match_FunctionCausalMaskPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-           <span class="n">match_FunctionCausalMaskMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                <span class="n">match_FunctionCosSinCachePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-        <span class="n">match_FunctionHalfRotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                   <span class="n">match_RMSNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                <span class="n">match_RMSNormalizationMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                       <span class="n">match_AttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000038</span>
-                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
-                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000043</span>
-                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000039</span>
+                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000019</span>
+                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000050</span>
+                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
                                    <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000032</span>
-                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000061</span>
-                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000061</span>
-                                     <span class="n">iteration_3</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.001778</span>
-                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000027</span>
+                                     <span class="n">iteration_1</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.001171</span>
+                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
          <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-         <span class="n">match_CastLayerNormalizationCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+         <span class="n">match_CastLayerNormalizationCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
                                <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                     <span class="n">match_CastCastBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                         <span class="n">match_CastOpCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                           <span class="n">match_ClipClipPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
-                        <span class="n">match_ConcatEmptyPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                   <span class="n">match_ConcatTwiceUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                     <span class="n">match_CastCastBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                         <span class="n">match_CastOpCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+                           <span class="n">match_ClipClipPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                        <span class="n">match_ConcatEmptyPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                   <span class="n">match_ConcatTwiceUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
               <span class="n">match_ConstantToInitializerPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
                        <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                            <span class="n">match_DropoutPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                             <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_ExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                         <span class="n">match_ExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000041</span>
+                       <span class="n">match_GathersSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
+                               <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000001</span>
+                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_LayerNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+            <span class="n">match_LayerNormalizationScalePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
+                    <span class="n">match_MulMulMulScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                             <span class="n">match_NotNotPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                           <span class="n">match_NotWherePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                      <span class="n">match_ReduceArgTopKPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                      <span class="n">match_ReduceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_ReduceSumNormalizePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+               <span class="n">match_ReshapeMatMulReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                        <span class="n">match_Reshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+               <span class="n">match_ReshapeReshapeBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                      <span class="n">match_GemmTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                  <span class="n">match_MatMulReshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                       <span class="n">match_MulMulMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
+             <span class="n">match_ShapeBasedConcatExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
+                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+          <span class="n">match_ShapeBasedExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+    <span class="n">match_ShapeBasedExpandBroadcastMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+      <span class="n">match_ShapeBasedExpandCastWhereSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+               <span class="n">match_ShapeBasedExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+              <span class="n">match_ShapeBasedMatMulToMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                     <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                    <span class="n">match_RotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
+              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+                <span class="n">match_SequenceConstructAtPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+                         <span class="n">match_SliceSlicePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                        <span class="n">match_SlicesSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000019</span>
+                        <span class="n">match_SplitConcatPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000029</span>
+                         <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                            <span class="n">match_Sub1MulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                 <span class="n">match_SwapRangeAddScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                  <span class="n">match_SwitchOrderBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+            <span class="n">match_SwitchReshapeActivationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+              <span class="n">match_TransposeEqualReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_TransposeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+             <span class="n">match_TransposeReshapeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                     <span class="n">match_UnsqueezeEqualPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
+                   <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                           <span class="n">match_WhereAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                   <span class="n">match_RotaryConcatPartPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_FunctionCausalMaskPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+           <span class="n">match_FunctionCausalMaskMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                <span class="n">match_FunctionCosSinCachePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+        <span class="n">match_FunctionHalfRotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                   <span class="n">match_RMSNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                <span class="n">match_RMSNormalizationMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000038</span>
+                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
+                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000047</span>
+                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000031</span>
+                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000026</span>
+                                     <span class="n">iteration_2</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.001504</span>
+                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+         <span class="n">match_CastLayerNormalizationCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                               <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                     <span class="n">match_CastCastBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                         <span class="n">match_CastOpCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                           <span class="n">match_ClipClipPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                        <span class="n">match_ConcatEmptyPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
+                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                   <span class="n">match_ConcatTwiceUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+              <span class="n">match_ConstantToInitializerPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
                             <span class="n">match_DropoutPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                              <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                     <span class="n">match_ExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                         <span class="n">match_ExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
-                       <span class="n">match_GathersSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                         <span class="n">match_ExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
+                       <span class="n">match_GathersSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
                                <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000001</span>
-                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
-                 <span class="n">match_LayerNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_LayerNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
             <span class="n">match_LayerNormalizationScalePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
-                    <span class="n">match_MulMulMulScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                             <span class="n">match_NotNotPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                           <span class="n">match_NotWherePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                      <span class="n">match_ReduceArgTopKPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                      <span class="n">match_ReduceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                 <span class="n">match_ReduceSumNormalizePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000019</span>
+                    <span class="n">match_MulMulMulScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000037</span>
+                             <span class="n">match_NotNotPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                           <span class="n">match_NotWherePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
+                      <span class="n">match_ReduceArgTopKPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+                      <span class="n">match_ReduceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_ReduceSumNormalizePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                <span class="n">match_ReshapeMatMulReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                        <span class="n">match_Reshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-               <span class="n">match_ReshapeReshapeBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                          <span class="n">match_MatMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                      <span class="n">match_GemmTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                        <span class="n">match_Reshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+               <span class="n">match_ReshapeReshapeBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                      <span class="n">match_GemmTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                   <span class="n">match_MatMulReshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                        <span class="n">match_MulMulMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
          <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
              <span class="n">match_ShapeBasedConcatExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                  <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-          <span class="n">match_ShapeBasedExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+          <span class="n">match_ShapeBasedExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
     <span class="n">match_ShapeBasedExpandBroadcastMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
       <span class="n">match_ShapeBasedExpandCastWhereSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                <span class="n">match_ShapeBasedExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
               <span class="n">match_ShapeBasedMatMulToMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
+             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
                      <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                    <span class="n">match_RotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                    <span class="n">match_RotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                        <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000071</span>
-                <span class="n">match_SequenceConstructAtPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-                         <span class="n">match_SliceSlicePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
-                        <span class="n">match_SlicesSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
-                        <span class="n">match_SplitConcatPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
+                <span class="n">match_SequenceConstructAtPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                         <span class="n">match_SliceSlicePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                        <span class="n">match_SlicesSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                        <span class="n">match_SplitConcatPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                          <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                 <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                             <span class="n">match_Sub1MulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                 <span class="n">match_SwapRangeAddScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                 <span class="n">match_SwapRangeAddScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
              <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                  <span class="n">match_SwitchOrderBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-            <span class="n">match_SwitchReshapeActivationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-              <span class="n">match_TransposeEqualReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                    <span class="n">match_TransposeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-             <span class="n">match_TransposeReshapeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                  <span class="n">match_SwitchOrderBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+            <span class="n">match_SwitchReshapeActivationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+              <span class="n">match_TransposeEqualReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_TransposeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+             <span class="n">match_TransposeReshapeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                      <span class="n">match_UnsqueezeEqualPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                    <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                           <span class="n">match_WhereAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                           <span class="n">match_WhereAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
                    <span class="n">match_RotaryConcatPartPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
                   <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
-                 <span class="n">match_FunctionCausalMaskPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-           <span class="n">match_FunctionCausalMaskMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
-                <span class="n">match_FunctionCosSinCachePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
+                 <span class="n">match_FunctionCausalMaskPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+           <span class="n">match_FunctionCausalMaskMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                <span class="n">match_FunctionCosSinCachePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
         <span class="n">match_FunctionHalfRotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-                   <span class="n">match_RMSNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                   <span class="n">match_RMSNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                <span class="n">match_RMSNormalizationMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                       <span class="n">match_AttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000033</span>
+                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                               <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                           <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000041</span>
+                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000028</span>
+                              <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000023</span>
+                                     <span class="n">iteration_3</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.001343</span>
+                 <span class="n">match_BatchNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+         <span class="n">match_BatchNormalizationTrainingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+         <span class="n">match_CastLayerNormalizationCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                               <span class="n">match_CastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                     <span class="n">match_CastCastBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                           <span class="n">match_CastCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                         <span class="n">match_CastOpCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                           <span class="n">match_ClipClipPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                        <span class="n">match_ConcatEmptyPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                       <span class="n">match_ConcatGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                      <span class="n">match_ConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                   <span class="n">match_ConcatTwiceUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+              <span class="n">match_ConstantToInitializerPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
+                       <span class="n">match_ConvBiasNullPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                            <span class="n">match_DropoutPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                             <span class="n">match_ExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_ExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                         <span class="n">match_ExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                       <span class="n">match_GathersSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                               <span class="n">match_GeluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000001</span>
+                           <span class="n">match_IdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                 <span class="n">match_LayerNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+            <span class="n">match_LayerNormalizationScalePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                          <span class="n">match_LeakyReluPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                    <span class="n">match_MulMulMulScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                             <span class="n">match_NotNotPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                           <span class="n">match_NotWherePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                      <span class="n">match_ReduceArgTopKPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                      <span class="n">match_ReduceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000024</span>
+                 <span class="n">match_ReduceSumNormalizePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                            <span class="n">match_ReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+               <span class="n">match_ReshapeMatMulReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                        <span class="n">match_Reshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+               <span class="n">match_ReshapeReshapeBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                          <span class="n">match_MatMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                      <span class="n">match_GemmTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                  <span class="n">match_MatMulReshape2Of3Pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                       <span class="n">match_MulMulMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+         <span class="n">match_ShapeBasedReshapeIsSqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+             <span class="n">match_ShapeBasedStaticExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+             <span class="n">match_ShapeBasedConcatExpandPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+      <span class="n">match_ShapeBasedEditDistanceReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                 <span class="n">match_ShapeBasedIdentityPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+          <span class="n">match_ShapeBasedExpandBroadcastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+    <span class="n">match_ShapeBasedExpandBroadcastMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
+      <span class="n">match_ShapeBasedExpandCastWhereSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+               <span class="n">match_ShapeBasedExpandSwapPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+              <span class="n">match_ShapeBasedMatMulToMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                 <span class="n">match_ShapedBasedReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+             <span class="n">match_ShapeBasedSameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+            <span class="n">match_ShapeBasedShapeShapeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                     <span class="n">match_ReshapeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_RotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                       <span class="n">match_SameChildrenPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
+              <span class="n">match_SameChildrenFromInputPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000009</span>
+                <span class="n">match_SequenceConstructAtPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                         <span class="n">match_SliceSlicePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                        <span class="n">match_SlicesSplitPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+        <span class="n">match_SoftmaxCrossEntropyLossCastPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
+                        <span class="n">match_SplitConcatPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                         <span class="n">match_SqueezeAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000032</span>
+             <span class="n">match_SqueezeBinaryUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                   <span class="n">match_SqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                <span class="n">match_StaticConcatReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                            <span class="n">match_Sub1MulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                  <span class="n">match_SwapExpandReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000011</span>
+                 <span class="n">match_SwapRangeAddScalarPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                          <span class="n">match_SwapUnaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+             <span class="n">match_SwapUnsqueezeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                  <span class="n">match_SwitchOrderBinaryPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+            <span class="n">match_SwitchReshapeActivationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+              <span class="n">match_TransposeEqualReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_TransposeGatherPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                    <span class="n">match_TransposeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000055</span>
+             <span class="n">match_TransposeReshapeMatMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000010</span>
+          <span class="n">match_TransposeReshapeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_TransposeTransposePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+                     <span class="n">match_UnsqueezeEqualPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+          <span class="n">match_UnsqueezeOrSqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                   <span class="n">match_UnsqueezeReshapePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                 <span class="n">match_UnsqueezeUnsqueezePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                           <span class="n">match_WhereAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                   <span class="n">match_RotaryConcatPartPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+                  <span class="n">match_FunctionAttentionPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+               <span class="n">match_FunctionAttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                 <span class="n">match_FunctionCausalMaskPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
+           <span class="n">match_FunctionCausalMaskMulAddPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000007</span>
+                <span class="n">match_FunctionCosSinCachePattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+        <span class="n">match_FunctionHalfRotaryEmbeddingPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
+                   <span class="n">match_RMSNormalizationPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                 <span class="n">match_RMSNormalizationMulPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
                        <span class="n">match_AttentionGQAPattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000004</span>
-                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000035</span>
-                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000006</span>
+                               <span class="n">check_pattern_A20</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000033</span>
+                         <span class="n">remove_duplicated_shape</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000008</span>
                                <span class="n">check_pattern_BD0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
                            <span class="n">remove_identity_nodes</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000043</span>
-                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
-                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000030</span>
+                               <span class="n">check_pattern_BI0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000029</span>
                               <span class="n">check_pattern_BUS0</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000025</span>
-                                <span class="n">check_patterns</span><span class="o">-</span><span class="mi">4</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000054</span>
-                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000047</span>
-                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">5</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000019</span>
-                                 <span class="n">remove_identity</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000037</span>
-                         <span class="n">check_remove_identity</span><span class="o">-</span><span class="mi">6</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
-                                <span class="n">constant_folding</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000020</span>
-                <span class="n">apply_constant_folding_new_inits</span>      <span class="mi">0</span>        <span class="mi">0</span>      <span class="n">NaN</span>
-                        <span class="n">check_constant_folding</span><span class="o">-</span><span class="mi">7</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
-                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000027</span>
-                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">8</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-                   <span class="n">remove_duplicated_initializer</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
-           <span class="n">check_remove_duplicated_initializer</span><span class="o">-</span><span class="mi">9</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-                                 <span class="n">remove_identity</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000031</span>
-                        <span class="n">check_remove_identity</span><span class="o">-</span><span class="mi">10</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                         <span class="n">build_graph_for_pattern</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000023</span>
+                                <span class="n">check_patterns</span><span class="o">-</span><span class="mi">4</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000022</span>
                                    <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000026</span>
-                          <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">11</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
-                                           <span class="n">order</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000091</span>
-                                    <span class="n">check_orderA</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000017</span>
+                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">5</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+                                 <span class="n">remove_identity</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000030</span>
+                         <span class="n">check_remove_identity</span><span class="o">-</span><span class="mi">6</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
+                                <span class="n">constant_folding</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000018</span>
+                <span class="n">apply_constant_folding_new_inits</span>      <span class="mi">0</span>        <span class="mi">0</span>      <span class="n">NaN</span>
+                        <span class="n">check_constant_folding</span><span class="o">-</span><span class="mi">7</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000036</span>
+                           <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">8</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
+                   <span class="n">remove_duplicated_initializer</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000005</span>
+           <span class="n">check_remove_duplicated_initializer</span><span class="o">-</span><span class="mi">9</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
+                                 <span class="n">remove_identity</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000030</span>
+                        <span class="n">check_remove_identity</span><span class="o">-</span><span class="mi">10</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                                   <span class="n">remove_unused</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000023</span>
+                          <span class="n">check_remove_unused</span><span class="o">-</span><span class="mi">11</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000013</span>
+                                           <span class="n">order</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000101</span>
+                                    <span class="n">check_orderA</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000016</span>
                                     <span class="n">check_orderL</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000012</span>
-                                     <span class="n">shape_order</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000046</span>
+                                     <span class="n">shape_order</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000047</span>
                                            <span class="n">order</span>      <span class="mi">0</span>        <span class="mi">0</span>      <span class="n">NaN</span>
-                                  <span class="n">check_order</span><span class="o">-</span><span class="mi">12</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000015</span>
-                                    <span class="n">optimization</span>      <span class="mi">0</span>        <span class="mi">2</span> <span class="mf">0.019014</span>
+                                  <span class="n">check_order</span><span class="o">-</span><span class="mi">12</span>      <span class="mi">0</span>        <span class="mi">0</span> <span class="mf">0.000014</span>
+                                    <span class="n">optimization</span>      <span class="mi">0</span>        <span class="mi">2</span> <span class="mf">0.013924</span>
     
     <span class="n">nodes</span> <span class="n">before</span><span class="p">:</span> <span class="mi">3</span>
     <span class="n">nodes</span> <span class="n">after</span> <span class="p">:</span> <span class="mi">1</span>
@@ -1029,10 +1028,10 @@ exploration:</p>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                                     <span class="n">added</span>  <span class="n">removed</span>   <span class="n">time_in</span>
     <span class="n">pattern</span>                                                  
-    <span class="n">apply_TransposeTransposePattern</span>      <span class="mi">1</span>        <span class="mi">2</span>  <span class="mf">0.000384</span>
-    <span class="n">optimization</span>                         <span class="mi">0</span>        <span class="mi">2</span>  <span class="mf">0.015185</span>
-    <span class="n">remove_identity</span>                      <span class="mi">1</span>        <span class="mi">2</span>  <span class="mf">0.000170</span>
-    <span class="n">patterns</span>                             <span class="mi">0</span>        <span class="mi">1</span>  <span class="mf">0.014225</span>
+    <span class="n">apply_TransposeTransposePattern</span>      <span class="mi">1</span>        <span class="mi">2</span>  <span class="mf">0.000371</span>
+    <span class="n">optimization</span>                         <span class="mi">0</span>        <span class="mi">2</span>  <span class="mf">0.011220</span>
+    <span class="n">remove_identity</span>                      <span class="mi">1</span>        <span class="mi">2</span>  <span class="mf">0.000120</span>
+    <span class="n">patterns</span>                             <span class="mi">0</span>        <span class="mi">1</span>  <span class="mf">0.010530</span>
 </pre></div>
 </div>
 </section>
@@ -1216,8 +1215,8 @@ outputs) and is useful for quick visual inspection:</p>
         <div class="button_nav">
             <div class="left">
                 
-                <a href="light_api.html">
-                    <span class="icon">&lt;</span><span>Fluent ONNX Builder (Light API)</span></a>
+                <a href="shape.html">
+                    <span class="icon">&lt;</span><span>ShapeBuilder</span></a>
                 
             </div>
 

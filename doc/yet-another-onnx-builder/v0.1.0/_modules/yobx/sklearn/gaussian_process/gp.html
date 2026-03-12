@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>yobx.sklearn.gaussian_process.gp &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=3e4cc94f" />
+    <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <script src="../../../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../../../index.html" title="Go to homepage"><img src="../../../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for yobx.sklearn.gaussian_process.gp</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_triangular</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianProcessClassifier</span><span class="p">,</span> <span class="n">GaussianProcessRegressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process.kernels</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConstantKernel</span><span class="p">,</span>
+    <span class="n">DotProduct</span><span class="p">,</span>
+    <span class="n">Matern</span><span class="p">,</span>
+    <span class="n">Product</span><span class="p">,</span>
+    <span class="n">RBF</span><span class="p">,</span>
+    <span class="n">Sum</span><span class="p">,</span>
+    <span class="n">WhiteKernel</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
+
+<span class="c1"># ── constants from sklearn._gpc used in the probability approximation ────────</span>
+<span class="c1"># Williams &amp; Barber (1998) 5-point approximation of ∫ σ(z) N(z|f, v) dz.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process._gpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">COEFS</span> <span class="k">as</span> <span class="n">_GPC_COEFS</span>  <span class="c1"># (5, 1)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.gaussian_process._gpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">LAMBDAS</span> <span class="k">as</span> <span class="n">_GPC_LAMBDAS</span>  <span class="c1"># (5, 1)</span>
+
+<span class="n">_LAMBDAS_1D</span> <span class="o">=</span> <span class="n">_GPC_LAMBDAS</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># shape (5,)</span>
+<span class="n">_COEFS_1D</span> <span class="o">=</span> <span class="n">_GPC_COEFS</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># shape (5,)</span>
+<span class="n">_COEFS_HALF_SUM</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">_COEFS_1D</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+
+<span class="c1"># ── kernel helpers ────────────────────────────────────────────────────────────</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_emit_pairwise_sq_dist</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">X_ref</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">length_scale</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute pairwise squared Euclidean distances (after length-scale</span>
+<span class="sd">    normalisation) between rows of *X* (shape ``(N, F)``, graph node) and</span>
+<span class="sd">    rows of *X_ref* (shape ``(M, F)``, fixed constant).</span>
+
+<span class="sd">    The formula used is::</span>
+
+<span class="sd">        D[i,j] = ||X[i]/l - X_ref[j]/l||²</span>
+
+<span class="sd">    When the ``com.microsoft`` domain is registered in the graph builder the</span>
+<span class="sd">    computation is delegated to ``com.microsoft.CDist`` with</span>
+<span class="sd">    ``metric=&quot;sqeuclidean&quot;``, which is hardware-accelerated by ONNX Runtime.</span>
+<span class="sd">    The length-scale normalisation is absorbed into the inputs:</span>
+<span class="sd">    ``X`` is divided at runtime and ``X_ref`` is pre-divided at conversion time.</span>
+
+<span class="sd">    For the standard-ONNX path the numerically stable expand-expand trick is</span>
+<span class="sd">    used::</span>
+
+<span class="sd">        D[i,j] = ||X[i]/l||² + ||X_ref[j]/l||² - 2 · X[i]/l · X_ref[j]/l</span>
+
+<span class="sd">    :param g: graph builder</span>
+<span class="sd">    :param X: input tensor name, shape ``(N, F)``</span>
+<span class="sd">    :param X_ref: fixed reference matrix, shape ``(M, F)``</span>
+<span class="sd">    :param length_scale: per-feature or scalar length-scale array</span>
+<span class="sd">    :param name: node name prefix</span>
+<span class="sd">    :param dtype: numpy dtype</span>
+<span class="sd">    :return: ONNX tensor name of shape ``(N, M)``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pre-normalise training data at conversion time (constant)</span>
+    <span class="n">X_ref_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_ref</span> <span class="o">/</span> <span class="n">length_scale</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (M, F)</span>
+
+    <span class="c1"># Normalise query data at run time</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">length_scale</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (1, F)</span>
+    <span class="n">X_norm</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">ls</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_xnorm&quot;</span><span class="p">)</span>  <span class="c1"># (N, F)</span>
+
+    <span class="c1"># ── CDist path (com.microsoft) ─────────────────────────────────────────</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_opset</span><span class="p">(</span><span class="s2">&quot;com.microsoft&quot;</span><span class="p">):</span>
+        <span class="n">X_ref_norm_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_Xref_norm&quot;</span><span class="p">,</span> <span class="n">X_ref_norm</span><span class="p">)</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+            <span class="s2">&quot;CDist&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">X_norm</span><span class="p">,</span> <span class="n">X_ref_norm_name</span><span class="p">],</span>
+            <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;com.microsoft&quot;</span><span class="p">,</span>
+            <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;sqeuclidean&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cdist&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Max</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_Dclamp&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ── Standard ONNX path ─────────────────────────────────────────────────</span>
+    <span class="n">c_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X_ref_norm</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (1, M)</span>
+
+    <span class="c1"># ||X_norm[i]||² → (N, 1)</span>
+    <span class="n">x_sq</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">X_norm</span><span class="p">,</span> <span class="n">X_norm</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_xsq&quot;</span><span class="p">)</span>
+    <span class="n">x_sq_sum</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span>
+        <span class="n">x_sq</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_xsqsum&quot;</span>
+    <span class="p">)</span>  <span class="c1"># (N, 1)</span>
+
+    <span class="c1"># 2 · X_norm @ X_ref_norm.T → (N, M)</span>
+    <span class="n">cross</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">X_norm</span><span class="p">,</span> <span class="n">X_ref_norm</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cross&quot;</span><span class="p">)</span>
+    <span class="n">two_cross</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">cross</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_2cross&quot;</span><span class="p">)</span>
+
+    <span class="c1"># D = x_sq_sum + c_sq - 2*cross</span>
+    <span class="n">sq_plus</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">x_sq_sum</span><span class="p">,</span> <span class="n">c_sq</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sqplus&quot;</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">sq_plus</span><span class="p">,</span> <span class="n">two_cross</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_D&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Clip to non-negative to guard against tiny floating-point negatives</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Max</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_Dclamp&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_emit_kernel_matrix</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">X_ref</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Emit ONNX operations computing the kernel matrix ``K(X, X_ref)``.</span>
+
+<span class="sd">    *X* is a graph node of shape ``(N, F)``; *X_ref* is a fixed numpy array</span>
+<span class="sd">    of shape ``(M, F)`` stored as graph constants.  Returns a tensor name</span>
+<span class="sd">    of shape ``(N, M)``.</span>
+
+<span class="sd">    Supported kernels</span>
+<span class="sd">    -----------------</span>
+<span class="sd">    * :class:`~sklearn.gaussian_process.kernels.RBF` (scalar or ARD length-scale)</span>
+<span class="sd">    * :class:`~sklearn.gaussian_process.kernels.ConstantKernel`</span>
+<span class="sd">    * :class:`~sklearn.gaussian_process.kernels.WhiteKernel`</span>
+<span class="sd">      (returns zeros for the off-diagonal test-vs-train block)</span>
+<span class="sd">    * :class:`~sklearn.gaussian_process.kernels.Matern`</span>
+<span class="sd">      (``nu`` ∈ {0.5, 1.5, 2.5, ∞})</span>
+<span class="sd">    * :class:`~sklearn.gaussian_process.kernels.DotProduct`</span>
+<span class="sd">    * :class:`~sklearn.gaussian_process.kernels.Product` (recursive)</span>
+<span class="sd">    * :class:`~sklearn.gaussian_process.kernels.Sum` (recursive)</span>
+
+<span class="sd">    :param g: graph builder</span>
+<span class="sd">    :param kernel: a fitted sklearn kernel object</span>
+<span class="sd">    :param X: input tensor name, shape ``(N, F)``</span>
+<span class="sd">    :param X_ref: fixed reference matrix, shape ``(M, F)``</span>
+<span class="sd">    :param name: node name prefix</span>
+<span class="sd">    :param dtype: numpy dtype</span>
+<span class="sd">    :return: ONNX tensor name of shape ``(N, M)``</span>
+<span class="sd">    :raises NotImplementedError: for unsupported kernel types or Matern ``nu`` values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X_ref</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">X_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># NOTE: Matern inherits from RBF in sklearn, so the Matern check MUST come first.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Matern</span><span class="p">):</span>
+        <span class="n">ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">length_scale</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">nu</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">_emit_pairwise_sq_dist</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_ref</span><span class="p">,</span> <span class="n">ls</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat_D&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">nu</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">D</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat_inf_scale&quot;</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat_inf_K&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nu</span> <span class="o">==</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="c1"># k = exp(-r),  r = sqrt(D)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat05_r&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat05_nr&quot;</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat05_K&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nu</span> <span class="o">==</span> <span class="mf">1.5</span><span class="p">:</span>
+            <span class="c1"># k = (1 + √3·r) · exp(-√3·r)</span>
+            <span class="n">sqrt3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">3.0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">sqrt3</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat15_sqD&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat15_r&quot;</span><span class="p">)</span>
+            <span class="n">one_plus_r</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat15_1pr&quot;</span><span class="p">)</span>
+            <span class="n">neg_r</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat15_nr&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span>
+                <span class="n">one_plus_r</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span><span class="n">neg_r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat15_exp&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat15_K&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nu</span> <span class="o">==</span> <span class="mf">2.5</span><span class="p">:</span>
+            <span class="c1"># k = (1 + √5·r + 5·r²/3) · exp(-√5·r)</span>
+            <span class="n">sqrt5</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">sqrt5</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_sqD&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_r&quot;</span><span class="p">)</span>
+            <span class="n">r2_3</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_r2&quot;</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_r2_3&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">poly</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_1pr&quot;</span><span class="p">),</span>
+                <span class="n">r2_3</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_poly&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">neg_r</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_nr&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span>
+                <span class="n">poly</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span><span class="n">neg_r</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_exp&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mat25_K&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Matern kernel with nu=</span><span class="si">{</span><span class="n">nu</span><span class="si">}</span><span class="s2"> is not supported. &quot;</span>
+                <span class="s2">&quot;Supported values: 0.5, 1.5, 2.5, inf.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">RBF</span><span class="p">):</span>
+        <span class="n">ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">length_scale</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">_emit_pairwise_sq_dist</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_ref</span><span class="p">,</span> <span class="n">ls</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_rbf&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">D</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_rbf_scale&quot;</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_rbf_K&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">ConstantKernel</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">constant_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="c1"># Build (N, M) filled with c:</span>
+        <span class="c1">#   MatMul(X, zero_col) → (N, 1) of zeros, then add c * ones(1, M)</span>
+        <span class="n">zero_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">x_zero</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">zero_col</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_ck_zero&quot;</span><span class="p">)</span>  <span class="c1"># (N, 1)</span>
+        <span class="n">c_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">x_zero</span><span class="p">,</span> <span class="n">c_row</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_ck_K&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">WhiteKernel</span><span class="p">):</span>
+        <span class="c1"># k(x_test, x_train) = 0 for all test/train pairs</span>
+        <span class="n">zero_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">x_zero</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">zero_col</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_wk_zero&quot;</span><span class="p">)</span>  <span class="c1"># (N, 1)</span>
+        <span class="n">zero_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">x_zero</span><span class="p">,</span> <span class="n">zero_row</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_wk_K&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">DotProduct</span><span class="p">):</span>
+        <span class="n">sigma_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">sigma_0</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># (1, 1)</span>
+        <span class="n">cross</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X_ref</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp_cross&quot;</span><span class="p">)</span>  <span class="c1"># (N, M)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">sigma_sq</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp_K&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Product</span><span class="p">):</span>
+        <span class="n">K1</span> <span class="o">=</span> <span class="n">_emit_kernel_matrix</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_ref</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_pk1&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="n">K2</span> <span class="o">=</span> <span class="n">_emit_kernel_matrix</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k2</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_ref</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_pk2&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">K1</span><span class="p">,</span> <span class="n">K2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_prod_K&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Sum</span><span class="p">):</span>
+        <span class="n">K1</span> <span class="o">=</span> <span class="n">_emit_kernel_matrix</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_ref</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sk1&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="n">K2</span> <span class="o">=</span> <span class="n">_emit_kernel_matrix</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k2</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_ref</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sk2&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">K1</span><span class="p">,</span> <span class="n">K2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sum_K&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Kernel </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is not supported in ONNX conversion. &quot;</span>
+            <span class="s2">&quot;Supported kernels: RBF, ConstantKernel, WhiteKernel, &quot;</span>
+            <span class="s2">&quot;Matern (nu ∈ {0.5, 1.5, 2.5, ∞}), &quot;</span>
+            <span class="s2">&quot;DotProduct, Product, Sum.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_kernel_diag_const</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return ``k(x, x)`` as a constant float if the kernel is stationary</span>
+<span class="sd">    (i.e. its self-covariance does not depend on *x*), otherwise return</span>
+<span class="sd">    ``None``.</span>
+
+<span class="sd">    :param kernel: a fitted sklearn kernel object</span>
+<span class="sd">    :return: the constant diagonal value, or ``None``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># NOTE: Matern inherits from RBF in sklearn, so the Matern check MUST come first.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Matern</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">RBF</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">ConstantKernel</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">constant_value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">WhiteKernel</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">noise_level</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Product</span><span class="p">):</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">_kernel_diag_const</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">k1</span><span class="p">)</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">_kernel_diag_const</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">k2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d1</span> <span class="o">*</span> <span class="n">d2</span> <span class="k">if</span> <span class="p">(</span><span class="n">d1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Sum</span><span class="p">):</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">_kernel_diag_const</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">k1</span><span class="p">)</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">_kernel_diag_const</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">k2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d1</span> <span class="o">+</span> <span class="n">d2</span> <span class="k">if</span> <span class="p">(</span><span class="n">d1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># DotProduct or unknown kernel</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_emit_kernel_diag</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Emit ONNX operations computing the kernel diagonal ``k(X[i], X[i])``</span>
+<span class="sd">    for each row *i* of *X*.  Returns a tensor of shape ``(N,)``.</span>
+
+<span class="sd">    For stationary kernels (RBF, Matern, etc.) the diagonal is a constant</span>
+<span class="sd">    scalar; for :class:`~sklearn.gaussian_process.kernels.DotProduct` it</span>
+<span class="sd">    depends on the input norm.</span>
+
+<span class="sd">    :param g: graph builder</span>
+<span class="sd">    :param kernel: a fitted sklearn kernel object</span>
+<span class="sd">    :param X: input tensor name, shape ``(N, F)``</span>
+<span class="sd">    :param name: node name prefix</span>
+<span class="sd">    :param dtype: numpy dtype</span>
+<span class="sd">    :return: ONNX tensor name of shape ``(N,)``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">_kernel_diag_const</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Stationary: diagonal is c everywhere.</span>
+        <span class="c1"># Trick: (X * 0) row-summed → (N,) of zeros, then add c.</span>
+        <span class="n">x_zeros</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_diag_zero&quot;</span><span class="p">)</span>
+        <span class="n">row_zero</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span>
+            <span class="n">x_zeros</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_diag_rsum&quot;</span>
+        <span class="p">)</span>  <span class="c1"># (N,)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">row_zero</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_diag_c&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">DotProduct</span><span class="p">):</span>
+        <span class="c1"># k(x, x) = sigma_0² + ||x||²</span>
+        <span class="n">X_sq</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp_diag_xsq&quot;</span><span class="p">)</span>
+        <span class="n">X_sq_sum</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span>
+            <span class="n">X_sq</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp_diag_sum&quot;</span>
+        <span class="p">)</span>  <span class="c1"># (N,)</span>
+        <span class="n">sigma_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">sigma_0</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">X_sq_sum</span><span class="p">,</span> <span class="n">sigma_sq</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp_diag&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Product</span><span class="p">):</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">_emit_kernel_diag</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_pk1&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">_emit_kernel_diag</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k2</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_pk2&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_prod_diag&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">Sum</span><span class="p">):</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">_emit_kernel_diag</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sk1&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">_emit_kernel_diag</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">k2</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sk2&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sum_diag&quot;</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Kernel diagonal for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># ── binary GPC helper ─────────────────────────────────────────────────────────</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_emit_gpc_binary_pi_star</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="p">,</span>
+    <span class="n">be</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Emit ONNX operations for the binary GPC sigmoid probability ``π*``.</span>
+
+<span class="sd">    Implements Algorithm 3.2 of *Gaussian Processes for Machine Learning*</span>
+<span class="sd">    (Rasmussen &amp; Williams 2006) followed by the Williams-Barber (1998)</span>
+<span class="sd">    five-point Gauss-Hermite approximation of the probit integral.</span>
+
+<span class="sd">    Steps</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        K_trans = kernel(X, X_train)              # (N, M) — kernel matrix</span>
+<span class="sd">        latent_mean = K_trans @ (y_train - π)      # (N,)   — posterior mean</span>
+<span class="sd">        v = M_pre @ K_trans.T                     # (M, N) — M_pre precomputed</span>
+<span class="sd">        latent_var  = diag(K(X,X)) - sum(v², 0)  # (N,)   — posterior variance</span>
+<span class="sd">        π* = Σ_j COEFS[j] · integral_j + 0.5·ΣCOEFS   # (N,)</span>
+
+<span class="sd">    *M_pre = L⁻¹ · diag(W_sr)* is precomputed once at conversion time using</span>
+<span class="sd">    ``scipy.linalg.solve_triangular``.</span>
+
+<span class="sd">    :param g: graph builder</span>
+<span class="sd">    :param kernel: fitted binary-estimator kernel</span>
+<span class="sd">    :param be: fitted ``_BinaryGaussianProcessClassifierLaplace`` instance</span>
+<span class="sd">    :param name: node name prefix</span>
+<span class="sd">    :param X: input tensor name, shape ``(N, F)``</span>
+<span class="sd">    :param dtype: numpy dtype</span>
+<span class="sd">    :return: ONNX tensor name of shape ``(N,)`` containing ``π*``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">be</span><span class="o">.</span><span class="n">X_train_</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (M, F)</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">y_train_</span> <span class="o">-</span> <span class="n">be</span><span class="o">.</span><span class="n">pi_</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (M,)</span>
+
+    <span class="c1"># Pre-compute M_pre = L⁻¹ · diag(W_sr) at conversion time.</span>
+    <span class="c1"># We solve L @ X = I for X = L⁻¹ using back-substitution; this is a one-time</span>
+    <span class="c1"># cost at conversion, not at inference, so the full inverse is acceptable here.</span>
+    <span class="n">L_inv</span> <span class="o">=</span> <span class="n">solve_triangular</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">L_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">L_</span><span class="p">)),</span> <span class="n">lower</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">M_pre</span> <span class="o">=</span> <span class="p">(</span><span class="n">L_inv</span> <span class="o">*</span> <span class="n">be</span><span class="o">.</span><span class="n">W_sr_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (M, M)</span>
+
+    <span class="c1"># K_trans = kernel(X, X_train) → (N, M)</span>
+    <span class="n">K_trans</span> <span class="o">=</span> <span class="n">_emit_kernel_matrix</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_Kt&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+
+    <span class="c1"># latent_mean = K_trans @ coef → (N,)</span>
+    <span class="c1"># Reshape coef to (M, 1) for MatMul, then squeeze</span>
+    <span class="n">lm_mm</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">K_trans</span><span class="p">,</span> <span class="n">coef</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_lm_mm&quot;</span><span class="p">)</span>  <span class="c1"># (N, 1)</span>
+    <span class="n">latent_mean</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">lm_mm</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_lm&quot;</span><span class="p">)</span>  <span class="c1"># (N,)</span>
+
+    <span class="c1"># v = M_pre @ K_trans.T → (M, N)</span>
+    <span class="n">K_trans_T</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">K_trans</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_KtT&quot;</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">M_pre</span><span class="p">,</span> <span class="n">K_trans_T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_v&quot;</span><span class="p">)</span>  <span class="c1"># (M, N)</span>
+
+    <span class="c1"># latent_var = kernel_diag(X) - sum(v², axis=0) → (N,)</span>
+    <span class="n">kdiag</span> <span class="o">=</span> <span class="n">_emit_kernel_diag</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_kdiag&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (N,)</span>
+    <span class="n">v_sq</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_vsq&quot;</span><span class="p">)</span>
+    <span class="n">v_sq_sum</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span>
+        <span class="n">v_sq</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_vss&quot;</span>
+    <span class="p">)</span>  <span class="c1"># (N,)</span>
+    <span class="n">latent_var</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">kdiag</span><span class="p">,</span> <span class="n">v_sq_sum</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_lv_raw&quot;</span><span class="p">)</span>
+    <span class="c1"># Clamp to a small positive value to keep latent_var &gt; 0 in the presence</span>
+    <span class="c1"># of numerical round-off (the sqrt and 1/(2*var) below require positivity).</span>
+    <span class="n">latent_var</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Max</span><span class="p">(</span><span class="n">latent_var</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_lv&quot;</span><span class="p">)</span>  <span class="c1"># (N,)</span>
+
+    <span class="c1"># ── Williams-Barber approximation ─────────────────────────────────────</span>
+    <span class="c1"># alpha = 1 / (2 · latent_var)   → (N,)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">latent_var</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_2lv&quot;</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_alpha&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># γ = ΛΛΛΛΛ · latent_mean  → (5, N):  broadcast (5,1) × (1,N)</span>
+    <span class="n">lm_2d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span>
+        <span class="n">latent_mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_lm2d&quot;</span>
+    <span class="p">)</span>  <span class="c1"># (1,N)</span>
+    <span class="n">lambdas_col</span> <span class="o">=</span> <span class="n">_LAMBDAS_1D</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (5, 1)</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">lambdas_col</span><span class="p">,</span> <span class="n">lm_2d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_gamma&quot;</span><span class="p">)</span>  <span class="c1"># (5, N)</span>
+
+    <span class="c1"># α and λ² in (1,N) and (5,1) shapes for broadcasting</span>
+    <span class="n">alpha_2d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_a2d&quot;</span><span class="p">)</span>  <span class="c1"># (1,N)</span>
+    <span class="n">lambdas_sq_col</span> <span class="o">=</span> <span class="p">(</span><span class="n">_LAMBDAS_1D</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (5, 1)</span>
+
+    <span class="c1"># ratio = α / (α + λ²)  → (5, N)</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">alpha_2d</span><span class="p">,</span> <span class="n">lambdas_sq_col</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_denom&quot;</span><span class="p">)</span>  <span class="c1"># (5, N)</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">alpha_2d</span><span class="p">,</span> <span class="n">denom</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_ratio&quot;</span><span class="p">)</span>  <span class="c1"># (5, N)</span>
+
+    <span class="c1"># erf(γ · √ratio)  → (5, N)</span>
+    <span class="n">erf_arg</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sqratio&quot;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_erf_arg&quot;</span><span class="p">)</span>
+    <span class="n">erf_val</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Erf</span><span class="p">(</span><span class="n">erf_arg</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_erf&quot;</span><span class="p">)</span>  <span class="c1"># (5, N)</span>
+
+    <span class="c1"># √(π / α)   → (1, N)</span>
+    <span class="n">sqrt_pi_over_alpha</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">alpha_2d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_pia&quot;</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sqpia&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 2 · √(latent_var · 2π)  → (1, N)</span>
+    <span class="n">lv_2d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span>
+        <span class="n">latent_var</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_lv2d&quot;</span>
+    <span class="p">)</span>  <span class="c1"># (1,N)</span>
+    <span class="n">two_sqrt_lv2pi</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">lv_2d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_lv2pi&quot;</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sqrtlv2pi&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_2sqrtlv2pi&quot;</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># (1, N)</span>
+
+    <span class="c1"># integrals = √(π/α) · erf_val / (2·√(latent_var·2π))   → (5, N)</span>
+    <span class="n">integrals</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">sqrt_pi_over_alpha</span><span class="p">,</span> <span class="n">erf_val</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_num&quot;</span><span class="p">),</span>
+        <span class="n">two_sqrt_lv2pi</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_integrals&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># π* = Σ_j COEFS[j] · integrals[j] + 0.5 · ΣCOEFS   → (N,)</span>
+    <span class="n">coefs_col</span> <span class="o">=</span> <span class="n">_COEFS_1D</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (5, 1)</span>
+    <span class="n">weighted</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">coefs_col</span><span class="p">,</span> <span class="n">integrals</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_weighted&quot;</span><span class="p">)</span>  <span class="c1"># (5, N)</span>
+    <span class="n">pi_star</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span><span class="n">weighted</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_pisum&quot;</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_COEFS_HALF_SUM</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_pi_star&quot;</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># (N,)</span>
+    <span class="k">return</span> <span class="n">pi_star</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_emit_label_and_proba_from_scores</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">scores</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">classes</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shared helper: ArgMax(scores) → label, Softmax(scores) → proba.</span>
+
+<span class="sd">    :param g: graph builder</span>
+<span class="sd">    :param sts: shapes</span>
+<span class="sd">    :param scores: logit or un-normalised score tensor, shape ``(N, C)``</span>
+<span class="sd">    :param classes: class labels array</span>
+<span class="sd">    :param name: node name prefix</span>
+<span class="sd">    :param outputs: desired output names ``[label_name, proba_name]``</span>
+<span class="sd">    :return: ``(label, proba)``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">proba</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">label_idx</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ArgMax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">label_idx_cast</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">label_idx</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+        <span class="n">classes_arr</span> <span class="o">=</span> <span class="n">classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
+            <span class="n">classes_arr</span><span class="p">,</span> <span class="n">label_idx_cast</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">classes_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
+            <span class="n">classes_arr</span><span class="p">,</span>
+            <span class="n">label_idx_cast</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label_str&quot;</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">label</span><span class="p">,</span> <span class="n">proba</span>
+
+
+<span class="c1"># ── GaussianProcessRegressor converter ───────────────────────────────────────</span>
+
+
+<div class="viewcode-block" id="sklearn_gaussian_process_regressor">
+<a class="viewcode-back" href="../../../../api/sklearn/gaussian_process/gp.html#yobx.sklearn.gaussian_process.gp.sklearn_gaussian_process_regressor">[docs]</a>
+<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">GaussianProcessRegressor</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sklearn_gaussian_process_regressor</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">estimator</span><span class="p">:</span> <span class="n">GaussianProcessRegressor</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gpr&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a :class:`sklearn.gaussian_process.GaussianProcessRegressor`</span>
+<span class="sd">    into ONNX (mean prediction only).</span>
+
+<span class="sd">    The predictive mean follows Algorithm 2.1 of *Gaussian Processes for</span>
+<span class="sd">    Machine Learning* (Rasmussen &amp; Williams 2006, p. 19):</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        K_trans = kernel(X, X_train)          # (N, M)</span>
+<span class="sd">        y_mean  = K_trans @ α + y_train_mean  # (N,)  or  (N, n_targets)</span>
+
+<span class="sd">    where ``α`` (``estimator.alpha_``) and the denormalisation offsets</span>
+<span class="sd">    (``_y_train_mean``, ``_y_train_std``) are stored as ONNX constants.</span>
+
+<span class="sd">    **Supported kernels** — see :func:`_emit_kernel_matrix` for the full list.</span>
+
+<span class="sd">    :param g: the graph builder to add nodes to</span>
+<span class="sd">    :param sts: shapes defined by :epkg:`scikit-learn`</span>
+<span class="sd">    :param outputs: desired output names</span>
+<span class="sd">    :param estimator: a fitted ``GaussianProcessRegressor``</span>
+<span class="sd">    :param X: input tensor name</span>
+<span class="sd">    :param name: prefix for added node names</span>
+<span class="sd">    :return: output tensor name (predictions)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">estimator</span><span class="p">,</span> <span class="n">GaussianProcessRegressor</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span><span class="si">}</span><span class="s2"> for estimator.&quot;</span>
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Missing type for </span><span class="si">{</span><span class="n">X</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">X_train_</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (M, F)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">alpha_</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># (M,) or (M, n_targets)</span>
+    <span class="c1"># _y_train_mean/_y_train_std may be 0-d scalars (normalize_y=True) or 1-D arrays</span>
+    <span class="n">y_mean_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">_y_train_mean</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">y_std_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">_y_train_std</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="c1"># K_trans = kernel(X, X_train) → (N, M)</span>
+    <span class="n">K_trans</span> <span class="o">=</span> <span class="n">_emit_kernel_matrix</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimator</span><span class="o">.</span><span class="n">kernel_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_K&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">alpha</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Single-target: alpha is (M,), reshape to (M, 1) for MatMul</span>
+        <span class="n">y_raw</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">K_trans</span><span class="p">,</span> <span class="n">alpha</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_raw&quot;</span><span class="p">)</span>  <span class="c1"># (N, 1)</span>
+        <span class="c1"># Undo normalisation: y = y_std * y_raw + y_mean</span>
+        <span class="n">y_unnorm</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">y_raw</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">y_std_train</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_std&quot;</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">y_mean_train</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_unnorm&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Squeeze (N, 1) → (N,)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span>
+            <span class="n">y_unnorm</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Multi-target: alpha is (M, n_targets)</span>
+        <span class="n">y_raw</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">K_trans</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_raw&quot;</span><span class="p">)</span>  <span class="c1"># (N, n_targets)</span>
+        <span class="c1"># Undo normalisation: y = y_std * y_raw + y_mean  (broadcast over N)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">y_raw</span><span class="p">,</span> <span class="n">y_std_train</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_std&quot;</span><span class="p">),</span>
+            <span class="n">y_mean_train</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">itype</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="c1"># ── GaussianProcessClassifier converter ──────────────────────────────────────</span>
+
+
+<div class="viewcode-block" id="sklearn_gaussian_process_classifier">
+<a class="viewcode-back" href="../../../../api/sklearn/gaussian_process/gp.html#yobx.sklearn.gaussian_process.gp.sklearn_gaussian_process_classifier">[docs]</a>
+<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">GaussianProcessClassifier</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sklearn_gaussian_process_classifier</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">estimator</span><span class="p">:</span> <span class="n">GaussianProcessClassifier</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gpc&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a :class:`sklearn.gaussian_process.GaussianProcessClassifier`</span>
+<span class="sd">    into ONNX.</span>
+
+<span class="sd">    **Binary classification** (two classes):</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        K_trans  = kernel(X, X_train)                      # (N, M)</span>
+<span class="sd">        f_mean   = K_trans @ (y_train - π)                 # (N,)   posterior mean</span>
+<span class="sd">        v        = M_pre @ K_trans.T                       # (M, N) M_pre precomputed</span>
+<span class="sd">        f_var    = diag(K(X,X)) - Σ_col(v²)              # (N,)   posterior variance</span>
+<span class="sd">        π*       ≈ Williams-Barber 5-point approximation   # (N,)</span>
+<span class="sd">        proba    = [[1-π*, π*]]                             # (N, 2)</span>
+
+<span class="sd">    where ``M_pre = L⁻¹ · diag(W_sr)`` is precomputed once at conversion</span>
+<span class="sd">    time.</span>
+
+<span class="sd">    **Multiclass** (``multi_class=&quot;one_vs_rest&quot;``):</span>
+
+<span class="sd">    Each binary sub-estimator produces ``π*ₖ``; these are stacked and</span>
+<span class="sd">    row-normalised:</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        Y[:, k]  = π*ₖ  for k in 0…C-1</span>
+<span class="sd">        proba    = Y / row_sum(Y)</span>
+
+<span class="sd">    **Supported kernels** — see :func:`_emit_kernel_matrix` for the full list.</span>
+
+<span class="sd">    :param g: the graph builder to add nodes to</span>
+<span class="sd">    :param sts: shapes defined by :epkg:`scikit-learn`</span>
+<span class="sd">    :param outputs: desired output names (label, probabilities)</span>
+<span class="sd">    :param estimator: a fitted ``GaussianProcessClassifier``</span>
+<span class="sd">    :param X: input tensor name</span>
+<span class="sd">    :param name: prefix for added node names</span>
+<span class="sd">    :return: tuple ``(label_result_name, proba_result_name)``</span>
+<span class="sd">    :raises NotImplementedError: for ``multi_class=&quot;one_vs_one&quot;`` with &gt;2 classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">estimator</span><span class="p">,</span> <span class="n">GaussianProcessClassifier</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span><span class="si">}</span><span class="s2"> for estimator.&quot;</span>
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Missing type for </span><span class="si">{</span><span class="n">X</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">if</span> <span class="n">estimator</span><span class="o">.</span><span class="n">n_classes_</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">estimator</span><span class="o">.</span><span class="n">multi_class</span> <span class="o">==</span> <span class="s2">&quot;one_vs_one&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;GaussianProcessClassifier with multi_class=&#39;one_vs_one&#39; and &quot;</span>
+            <span class="s2">&quot;more than two classes is not supported in ONNX conversion. &quot;</span>
+            <span class="s2">&quot;Use multi_class=&#39;one_vs_rest&#39; instead.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">classes_</span>
+
+    <span class="n">be</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">base_estimator_</span>
+
+    <span class="k">if</span> <span class="n">estimator</span><span class="o">.</span><span class="n">n_classes_</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># Binary: base_estimator_ is _BinaryGaussianProcessClassifierLaplace</span>
+        <span class="n">pi_star</span> <span class="o">=</span> <span class="n">_emit_gpc_binary_pi_star</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">be</span><span class="o">.</span><span class="n">kernel_</span><span class="p">,</span> <span class="n">be</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_bin&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="c1"># proba = [[1-π*, π*]]  → (N, 2)</span>
+        <span class="n">pi_star_2d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">pi_star</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_ps2d&quot;</span><span class="p">)</span>
+        <span class="n">one_minus</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">pi_star_2d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_1mp&quot;</span><span class="p">)</span>
+        <span class="n">proba</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="n">one_minus</span><span class="p">,</span> <span class="n">pi_star_2d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+        <span class="n">label_idx</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ArgMax</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">label_idx_int64</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">label_idx</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
+                <span class="n">classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="n">label_idx_int64</span><span class="p">,</span>
+                <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label&quot;</span><span class="p">,</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)),</span>
+                <span class="n">label_idx_int64</span><span class="p">,</span>
+                <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label_str&quot;</span><span class="p">,</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">label</span><span class="p">,</span> <span class="n">proba</span>
+
+    <span class="c1"># Multiclass: base_estimator_ is OneVsRestClassifier</span>
+    <span class="n">pi_star_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bin_est</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">estimators_</span><span class="p">):</span>
+        <span class="n">pi_i</span> <span class="o">=</span> <span class="n">_emit_gpc_binary_pi_star</span><span class="p">(</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">bin_est</span><span class="o">.</span><span class="n">kernel_</span><span class="p">,</span> <span class="n">bin_est</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_est</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">dtype</span>
+        <span class="p">)</span>  <span class="c1"># (N,)</span>
+        <span class="n">pi_star_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">pi_i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_est</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_2d&quot;</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># (N, 1)</span>
+
+    <span class="c1"># Concatenate → (N, n_classes)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="o">*</span><span class="n">pi_star_cols</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_Y&quot;</span><span class="p">)</span>
+    <span class="c1"># Normalise rows: Y / row_sum(Y)</span>
+    <span class="n">row_sums</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_rsum&quot;</span><span class="p">)</span>
+    <span class="n">proba</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">row_sums</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">label_idx</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ArgMax</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">label_idx_int64</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">label_idx</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
+            <span class="n">classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+            <span class="n">label_idx_int64</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label&quot;</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)),</span>
+            <span class="n">label_idx_int64</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label_str&quot;</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">label</span><span class="p">,</span> <span class="n">proba</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+            </div>
+
+            <div class="right">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>
