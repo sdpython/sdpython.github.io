@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -143,16 +143,16 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">scikit-learn Export to ONNX</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="expected_api.html">Expected API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lightgbm_converter.html">Gradient Boosting Converters (XGBoost, LightGBM)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="svm_converter.html">SVM Converters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lightgbm_converter.html">External Libraries (XGBoost, LightGBM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
@@ -188,7 +188,8 @@
   <section id="scikit-learn-export-to-onnx">
 <h1>scikit-learn Export to ONNX<a class="headerlink" href="#scikit-learn-export-to-onnx" title="Link to this heading">¶</a></h1>
 <p>A basic <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> model may look like the following,
-a scaler following by an estimator.</p>
+a scaler following by an estimator. Every model can be converter
+with model <a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx()</span></code></a>.</p>
 <style>#sk-container-id-1 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
@@ -1245,19 +1246,30 @@ for a model not already covered but this library. This package includes
 a function able to query <em>Copilot</em> to get that first draft.
 That saves quite some time.</p>
 <p><strong>Opsets</strong></p>
-<p><a class="reference internal" href="../../api/sklearn/convert.html#yobx.sklearn.convert.to_onnx" title="yobx.sklearn.convert.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.convert.to_onnx()</span></code></a> converts scikit-learn models into
+<p><a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code></a> converts scikit-learn models into
 ONNX. The function exposes arguments <strong>target_opset</strong>.
 The conversion is done for opset 18 if <code class="docutils literal notranslate"><span class="pre">target_opset==18</span></code>.
 The conversion may includes optimized kernels for <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>
-if <code class="docutils literal notranslate"><span class="pre">target_opsets={'':</span> <span class="pre">18,</span> <span class="pre">'com.microsoft':</span> <span class="pre">1}</span></code>.</p>
+if <code class="docutils literal notranslate"><span class="pre">target_opsets={'':</span> <span class="pre">18,</span> <span class="pre">'com.microsoft':</span> <span class="pre">1}</span></code> (see <a class="reference internal" href="contrib_ops.html#l-design-sklearn-contrib-ops"><span class="std std-ref">ONNX Runtime Contrib Ops (com.microsoft domain)</span></a>).</p>
+<p><strong>Discrepancies</strong></p>
+<p><cite>scikit-learn==1.8</cite> is more strict with computation types and
+the number of discrepancies is reduced. Switch to float32 in a matrix
+multiplication when the order of magnitude of the coefficient is quite
+large usually introduces discrepancies. That is often the case when
+a matrix is the inverse of another one (see <a class="reference internal" href="../../auto_examples_sklearn/plot_sklearn_pls_float32.html#l-plot-sklearn-pls-float32"><span class="std std-ref">Float32 vs Float64: precision loss with PLSRegression</span></a>).
+Prior to that, it was not rare the see huge difference when using a model just
+after normalizing the data. The normalizer was implicitly switching the type
+to float64 while ONNX was keeping float32.
+If followed by a tree, a small difference could make the model
+choose a different decision path and produce a very different output.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="expected_api.html">Expected API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lightgbm_converter.html">Gradient Boosting Converters (XGBoost, LightGBM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="svm_converter.html">SVM Converters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lightgbm_converter.html">External Libraries (XGBoost, LightGBM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>

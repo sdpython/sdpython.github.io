@@ -100,10 +100,10 @@ Let's use the example provided on
 
  .. code-block:: none
 
-    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 721.57it/s]
+    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 1270.52it/s]
     -----------------
     Continue: it rains, what should I do?
-    I have a lot of people who are in the world. I have a lot of people who are in the world, and I have a lot of people who are in the world
+    I have a lot of people who are in the same country. I have a lot of people who are in the world, and I have a lot of people who are in the
     -----------------
 
 
@@ -247,13 +247,11 @@ to verify the model produces the same outputs.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:03,  1.97s/it]    100%|██████████| 3/3 [00:01<00:00,  1.51it/s]
-            abs       rel       sum  ...                                             inputs                               outputs_torch                                 outputs_ort
-    0  0.000012  0.000433  0.064768  ...  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
-    1  0.000010  0.001411  0.046240  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
-    2  0.000010  0.001841  0.048305  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
-
-    [3 rows x 18 columns]
+      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:03,  1.76s/it]    100%|██████████| 3/3 [00:01<00:00,  1.69it/s]
+            abs       rel       sum        n  dnan  dev  >0.1  >0.01  SUCCESS  index  duration_torch  ort_duration  n_inputs  n_none  n_empty                                             inputs                               outputs_torch                                 outputs_ort
+    0  0.000012  0.000433  0.064768  34496.0     0    0     0      0     True      0        0.002816      1.750910         6       2        2  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
+    1  0.000010  0.001411  0.046240  34688.0     0    0     0      0     True      1        0.002690      0.001501         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
+    2  0.000010  0.001841  0.048305  34880.0     0    0     0      0     True      2        0.002582      0.001632         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
 
 
 
@@ -319,14 +317,12 @@ The following lines are a condensed copy with less comments.
  .. code-block:: none
 
     ----------------
-    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 1873.01it/s]
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:00<00:00,  3.97it/s]    100%|██████████| 3/3 [00:00<00:00, 11.58it/s]
-            abs       rel       sum  ...                                             inputs                               outputs_torch                                 outputs_ort
-    0  0.000012  0.000433  0.064768  ...  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
-    1  0.000010  0.001411  0.046240  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
-    2  0.000010  0.001841  0.048305  ...  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
-
-    [3 rows x 18 columns]
+    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 556.27it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:00<00:00,  4.71it/s]    100%|██████████| 3/3 [00:00<00:00, 13.75it/s]
+            abs       rel       sum        n  dnan  dev  >0.1  >0.01  SUCCESS  index  duration_torch  ort_duration  n_inputs  n_none  n_empty                                             inputs                               outputs_torch                                 outputs_ort
+    0  0.000012  0.000433  0.064768  34496.0     0    0     0      0     True      0        0.002563      0.210278         6       2        2  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
+    1  0.000010  0.001411  0.046240  34688.0     0    0     0      0     True      1        0.002071      0.001132         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
+    2  0.000010  0.001841  0.048305  34880.0     0    0     0      0     True      2        0.002080      0.001216         6       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
 
 
 
@@ -395,7 +391,7 @@ call, just like the HuggingFace ``generate`` method.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 16.529 seconds)
+   **Total running time of the script:** (0 minutes 14.745 seconds)
 
 
 .. _sphx_glr_download_auto_examples_torch_plot_input_observer_tiny_llm.py:

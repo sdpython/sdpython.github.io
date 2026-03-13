@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -601,9 +601,11 @@ window.runMermaid = runMermaid;</script>
           <div class="body" role="main">
             
   <h1>Source code for yobx.sklearn.decomposition.pls_regression</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cross_decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PLSRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">NumericalDiscrepancyWarning</span><span class="p">,</span> <span class="n">has_sklearn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
@@ -645,10 +647,23 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    :param X: input tensor name</span>
 <span class="sd">    :param name: prefix name for the added nodes</span>
 <span class="sd">    :return: output tensor name</span>
+
+<span class="sd">    .. note:: discrepancies</span>
+
+<span class="sd">        The conversion shows discrepancies for ``scikit-learn==1.4``</span>
+<span class="sd">        at least in unit tests. It is safe to assume it only works</span>
+<span class="sd">        for ``scikit-learn&gt;=1.8``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
         <span class="n">estimator</span><span class="p">,</span> <span class="n">PLSRegression</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span><span class="si">}</span><span class="s2"> for estimator.&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">has_sklearn</span><span class="p">(</span><span class="s2">&quot;1.8&quot;</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Discrepancies were observed for scikit-learn==1.4 but not for 1.8.&quot;</span>
+            <span class="s2">&quot;This is probably because scikit-learn&gt;=1.8 is more consistent with computation &quot;</span>
+            <span class="s2">&quot;types and does not implicitly switch to float64.&quot;</span><span class="p">,</span>
+            <span class="n">NumericalDiscrepancyWarning</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Missing type for </span><span class="si">{</span><span class="n">X</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>

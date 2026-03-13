@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Gradient Boosting Converters (XGBoost, LightGBM) &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <title>External Libraries (XGBoost, LightGBM) &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -26,7 +26,7 @@
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SVM Converters" href="svm_converter.html" />
+    <link rel="next" title="Supported Converters" href="supported_converters.html" />
     <link rel="prev" title="Sklearn Converter" href="sklearn_converter.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
@@ -143,16 +143,16 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">scikit-learn Export to ONNX</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="expected_api.html">Expected API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient Boosting Converters (XGBoost, LightGBM)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="svm_converter.html">SVM Converters</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">External Libraries (XGBoost, LightGBM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
@@ -185,9 +185,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="gradient-boosting-converters-xgboost-lightgbm">
-<span id="l-design-gbm-converters"></span><h1>Gradient Boosting Converters (XGBoost, LightGBM)<a class="headerlink" href="#gradient-boosting-converters-xgboost-lightgbm" title="Link to this heading">¶</a></h1>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code> converts fitted
+  <section id="external-libraries-xgboost-lightgbm">
+<span id="l-design-gbm-converters"></span><h1>External Libraries (XGBoost, LightGBM)<a class="headerlink" href="#external-libraries-xgboost-lightgbm" title="Link to this heading">¶</a></h1>
+<p><a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code></a> converts fitted
 <code class="xref py py-class docutils literal notranslate"><span class="pre">xgboost.XGBRegressor</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xgboost.XGBClassifier</span></code>,
 <code class="xref py py-class docutils literal notranslate"><span class="pre">lightgbm.LGBMRegressor</span></code>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">lightgbm.LGBMClassifier</span></code>
 estimators to ONNX using the same registry-based architecture as the other
@@ -427,7 +427,7 @@ then convert as usual:</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001491 seconds.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000138 seconds.
     You can set `force_col_wise=true` to remove the overhead.
     [LightGBM] [Info] Total Bins 212
     [LightGBM] [Info] Number of data points in the train set: 200, number of used features: 4
@@ -501,83 +501,6 @@ natively via the <code class="docutils literal notranslate"><span class="pre">ca
 </tbody>
 </table>
 </section>
-<section id="supported-input-dtypes-and-opsets">
-<h2>Supported input dtypes and opsets<a class="headerlink" href="#supported-input-dtypes-and-opsets" title="Link to this heading">¶</a></h2>
-<p>Both converters respect the input dtype and the active <code class="docutils literal notranslate"><span class="pre">ai.onnx.ml</span></code> opset:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">float32</span></code> input with <code class="docutils literal notranslate"><span class="pre">ai.onnx.ml</span></code> opset 3 → <code class="docutils literal notranslate"><span class="pre">TreeEnsembleRegressor</span></code>
-/ <code class="docutils literal notranslate"><span class="pre">TreeEnsembleClassifier</span></code> (float32 weights)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">float64</span></code> input with <code class="docutils literal notranslate"><span class="pre">ai.onnx.ml</span></code> opset 3 → legacy operators with
-float64 routing via an explicit <code class="docutils literal notranslate"><span class="pre">Cast</span></code> node</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">float32</span></code> or <code class="docutils literal notranslate"><span class="pre">float64</span></code> with <code class="docutils literal notranslate"><span class="pre">ai.onnx.ml</span></code> opset 5 → unified
-<code class="docutils literal notranslate"><span class="pre">TreeEnsemble</span></code> with matching weight dtype</p></li>
-</ul>
-<p>Specifying the target opset:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),),</span>
-              <span class="n">target_opset</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
-</pre></div>
-</div>
-</section>
-<section id="pipeline-embedding">
-<h2>Pipeline embedding<a class="headerlink" href="#pipeline-embedding" title="Link to this heading">¶</a></h2>
-<p>Both <code class="xref py py-class docutils literal notranslate"><span class="pre">xgboost.XGBRegressor</span></code> / <code class="xref py py-class docutils literal notranslate"><span class="pre">xgboost.XGBClassifier</span></code> and
-<code class="xref py py-class docutils literal notranslate"><span class="pre">lightgbm.LGBMRegressor</span></code> / <code class="xref py py-class docutils literal notranslate"><span class="pre">lightgbm.LGBMClassifier</span></code> can be
-used as the final step in a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>:</p>
-<p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LGBMClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
-
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
-        <span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">,</span> <span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-    <span class="p">]</span>
-<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">onx</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [LightGBM] [Info] Number of positive: 25, number of negative: 25
-    [LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000079 seconds.
-    You can set `force_col_wise=true` to remove the overhead.
-    [LightGBM] [Info] Total Bins 75
-    [LightGBM] [Info] Number of data points in the train set: 50, number of used features: 4
-    [LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -&gt; initscore=0.000000
-    [LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-    [LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-    [LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-    [LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-    [LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-    opset: domain=&#39;&#39; version=21
-    opset: domain=&#39;ai.onnx.ml&#39; version=5
-    input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-    init: name=&#39;init1_s4_&#39; type=float32 shape=(4,) -- array([ 0.001,  0.097, -0.143,  0.106], dtype=float32)-- Opset.make_node.0
-    init: name=&#39;init1_s4_2&#39; type=float32 shape=(4,) -- array([0.927, 0.841, 1.005, 1.038], dtype=float32)-- Opset.make_node.0
-    init: name=&#39;init1_s1_&#39; type=float32 shape=(1,) -- array([1.], dtype=float32)-- Opset.make_node.1/Small
-    init: name=&#39;init7_s2_0_1&#39; type=int64 shape=(2,) -- array([0, 1])      -- Opset.make_node.1/Shape
-    Sub(X, init1_s4_) -&gt; _onx_sub_X
-      Div(_onx_sub_X, init1_s4_2) -&gt; x
-        TreeEnsemble(x, aggregate_function=1, leaf_targetids=10:[0,0,0...0,0,0], leaf_weights=[-0.200000..., n_targets=1, nodes_falseleafs=[1,1,1,1,1], nodes_falsenodeids=[1,3,5,7,9], nodes_featureids=[0,0,0,0,0], nodes_modes=[0, 0, 0, ..., nodes_splits=[1.0000000..., nodes_trueleafs=[1,1,1,1,1], nodes_truenodeids=[0,2,4,6,8], post_transform=0, tree_roots=[0,1,2,3,4]) -&gt; _onx_treeensemble_x
-          Sigmoid(_onx_treeensemble_x) -&gt; _onx_sigmoid_treeensemble_x
-            Sub(init1_s1_, _onx_sigmoid_treeensemble_x) -&gt; _onx_sub_init1_s1_
-            Concat(_onx_sub_init1_s1_, _onx_sigmoid_treeensemble_x, axis=1) -&gt; probabilities
-              ArgMax(probabilities, axis=1, keepdims=0) -&gt; _onx_argmax_probabilities
-                Gather(init7_s2_0_1, _onx_argmax_probabilities, axis=0) -&gt; label
-    output: name=&#39;label&#39; type=&#39;NOTENSOR&#39; shape=None
-    output: name=&#39;probabilities&#39; type=&#39;NOTENSOR&#39; shape=None
-</pre></div>
-</div>
-</section>
 </section>
 
 
@@ -594,7 +517,7 @@ used as the final step in a <a class="reference external" href="https://scikit-l
             <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
             <div class="page_toc">
                 <ul>
-<li><a class="reference internal" href="#">Gradient Boosting Converters (XGBoost, LightGBM)</a><ul>
+<li><a class="reference internal" href="#">External Libraries (XGBoost, LightGBM)</a><ul>
 <li><a class="reference internal" href="#common-onnx-encoding">Common ONNX encoding</a></li>
 <li><a class="reference internal" href="#xgboost">XGBoost</a><ul>
 <li><a class="reference internal" href="#tree-structure">Tree structure</a></li>
@@ -610,8 +533,6 @@ used as the final step in a <a class="reference external" href="https://scikit-l
 </ul>
 </li>
 <li><a class="reference internal" href="#comparison-xgboost-vs-lightgbm">Comparison: XGBoost vs LightGBM</a></li>
-<li><a class="reference internal" href="#supported-input-dtypes-and-opsets">Supported input dtypes and opsets</a></li>
-<li><a class="reference internal" href="#pipeline-embedding">Pipeline embedding</a></li>
 </ul>
 </li>
 </ul>
@@ -633,7 +554,7 @@ used as the final step in a <a class="reference external" href="https://scikit-l
 
             <div class="right">
                 
-                    <a href="svm_converter.html"><span>SVM Converters</span><span class="icon">&gt;</span></a>
+                    <a href="supported_converters.html"><span>Supported Converters</span><span class="icon">&gt;</span></a>
                 
             </div>
         </div>

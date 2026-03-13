@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -26,7 +26,7 @@
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Drafting Converters with GitHub Copilot" href="copilot_draft.html" />
+    <link rel="next" title="ONNX Runtime Contrib Ops (com.microsoft domain)" href="contrib_ops.html" />
     <link rel="prev" title="Supported Converters" href="supported_converters.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
@@ -143,16 +143,16 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">scikit-learn Export to ONNX</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="expected_api.html">Expected API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sklearn_converter.html">Sklearn Converter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lightgbm_converter.html">Gradient Boosting Converters (XGBoost, LightGBM)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="svm_converter.html">SVM Converters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lightgbm_converter.html">External Libraries (XGBoost, LightGBM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Custom Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
@@ -194,7 +194,7 @@ own converter without touching the package source.</p>
 <p>There are two ways:</p>
 <ul class="simple">
 <li><p><strong>Ad-hoc</strong> via the <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code> parameter of
-<code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code> — useful for one-off
+<a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> — useful for one-off
 conversions or during development.</p></li>
 <li><p><strong>Permanent</strong> via the
 <code class="xref py py-func docutils literal notranslate"><span class="pre">register_sklearn_converter</span></code> decorator — the
@@ -446,7 +446,7 @@ means you no longer have to pass <code class="docutils literal notranslate"><spa
 </pre></div>
 </div>
 <p>Once this module is imported the converter is available globally and
-<code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code> will use it automatically:</p>
+<a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> will use it automatically:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">myproject.onnx_converters</span>  <span class="c1"># registers the converter</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
@@ -505,7 +505,7 @@ the package itself.</p>
 
             <div class="right">
                 
-                    <a href="copilot_draft.html"><span>Drafting Converters with GitHub Copilot</span><span class="icon">&gt;</span></a>
+                    <a href="contrib_ops.html"><span>ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</span><span class="icon">&gt;</span></a>
                 
             </div>
         </div>

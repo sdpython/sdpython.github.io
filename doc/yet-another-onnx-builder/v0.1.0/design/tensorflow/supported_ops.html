@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -26,7 +26,7 @@
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="GraphBuilder to build and optimize ONNX Models" href="../builder/index.html" />
+    <link rel="next" title="Torch Export to ONNX" href="../torch/index.html" />
     <link rel="prev" title="TensorFlow Export to ONNX" href="index.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
@@ -141,11 +141,11 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">TensorFlow Export to ONNX</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Supported TF Ops</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
@@ -223,6 +223,7 @@ from the live converter registry.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Cos</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_cos" title="yobx.tensorflow.ops.unary_ops.convert_cos"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_cos</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Cosh</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_cosh" title="yobx.tensorflow.ops.unary_ops.convert_cosh"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_cosh</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Cumsum</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/reduction_ops.html#yobx.tensorflow.ops.reduction_ops.convert_cumsum" title="yobx.tensorflow.ops.reduction_ops.convert_cumsum"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_cumsum</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Elu</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/nn_ops.html#yobx.tensorflow.ops.nn_ops.convert_elu" title="yobx.tensorflow.ops.nn_ops.convert_elu"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_elu</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Equal</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_equal" title="yobx.tensorflow.ops.binary_ops.convert_equal"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_equal</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Erf</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_erf" title="yobx.tensorflow.ops.unary_ops.convert_erf"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_erf</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Erfc</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_erfc" title="yobx.tensorflow.ops.unary_ops.convert_erfc"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_erfc</span></code></a></p></li>
@@ -237,10 +238,12 @@ from the live converter registry.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">IsFinite</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_isfinite" title="yobx.tensorflow.ops.math_ops.convert_isfinite"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_isfinite</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">IsInf</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_isinf" title="yobx.tensorflow.ops.math_ops.convert_isinf"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_isinf</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">IsNan</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/math_ops.html#yobx.tensorflow.ops.math_ops.convert_isnan" title="yobx.tensorflow.ops.math_ops.convert_isnan"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_isnan</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LeakyRelu</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/nn_ops.html#yobx.tensorflow.ops.nn_ops.convert_leaky_relu" title="yobx.tensorflow.ops.nn_ops.convert_leaky_relu"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_leaky_relu</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Less</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_less" title="yobx.tensorflow.ops.binary_ops.convert_less"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_less</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LessEqual</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_less_equal" title="yobx.tensorflow.ops.binary_ops.convert_less_equal"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_less_equal</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Log</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_log" title="yobx.tensorflow.ops.unary_ops.convert_log"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_log</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Log1p</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_log1p" title="yobx.tensorflow.ops.unary_ops.convert_log1p"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_log1p</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LogSoftmax</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/nn_ops.html#yobx.tensorflow.ops.nn_ops.convert_log_softmax" title="yobx.tensorflow.ops.nn_ops.convert_log_softmax"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_log_softmax</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LogicalAnd</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_logical_and" title="yobx.tensorflow.ops.binary_ops.convert_logical_and"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_logical_and</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LogicalNot</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_logical_not" title="yobx.tensorflow.ops.binary_ops.convert_logical_not"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_logical_not</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LogicalOr</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/binary_ops.html#yobx.tensorflow.ops.binary_ops.convert_logical_or" title="yobx.tensorflow.ops.binary_ops.convert_logical_or"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_logical_or</span></code></a></p></li>
@@ -268,6 +271,7 @@ from the live converter registry.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Rint</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_rint" title="yobx.tensorflow.ops.unary_ops.convert_rint"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_rint</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Round</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_round" title="yobx.tensorflow.ops.unary_ops.convert_round"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_round</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Rsqrt</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_rsqrt" title="yobx.tensorflow.ops.unary_ops.convert_rsqrt"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_rsqrt</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Selu</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/nn_ops.html#yobx.tensorflow.ops.nn_ops.convert_selu" title="yobx.tensorflow.ops.nn_ops.convert_selu"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_selu</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/activations.html#yobx.tensorflow.ops.activations.convert_sigmoid" title="yobx.tensorflow.ops.activations.convert_sigmoid"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_sigmoid</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Sign</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_sign" title="yobx.tensorflow.ops.unary_ops.convert_sign"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_sign</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Sin</span></code> → <a class="reference internal" href="../../api/tensorflow/ops/unary_ops.html#yobx.tensorflow.ops.unary_ops.convert_sin" title="yobx.tensorflow.ops.unary_ops.convert_sin"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_sin</span></code></a></p></li>
@@ -308,7 +312,7 @@ from the live converter registry.</p>
 
             <div class="right">
                 
-                    <a href="../builder/index.html"><span>GraphBuilder to build and optimize ONNX Models</span><span class="icon">&gt;</span></a>
+                    <a href="../torch/index.html"><span>Torch Export to ONNX</span><span class="icon">&gt;</span></a>
                 
             </div>
         </div>

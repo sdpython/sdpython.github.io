@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -603,7 +603,32 @@ window.runMermaid = runMermaid;</script>
   <h1>Source code for yobx.sklearn</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;to_onnx&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NumericalDiscrepancyWarning&quot;</span><span class="p">,</span> <span class="s2">&quot;register_sklearn_converters&quot;</span><span class="p">,</span> <span class="s2">&quot;to_onnx&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">has_sklearn</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tells if scikit-learn is available and more recent than the given version.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">sklearn</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sklearn</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">version</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+
+    <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NumericalDiscrepancyWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The exported model has discrepancies for a particular version</span>
+<span class="sd">    of scikit-learn while running unit tests.</span>
+<span class="sd">    scikit-learn&gt;=1.8 is more strict about types and does not implicitly switch</span>
+<span class="sd">    to float64 in many models relying on a matrix multiplication or a</span>
+<span class="sd">    normalization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="register_sklearn_converters">
@@ -618,6 +643,7 @@ window.runMermaid = runMermaid;</script>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.calibration</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_calibration</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_cluster</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_compose</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_covariance</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_decomposition</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.discriminant_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_discriminant_analysis</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.dummy</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_dummy</span>
@@ -625,7 +651,9 @@ window.runMermaid = runMermaid;</script>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.gaussian_process</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_gaussian_process</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_lightgbm</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_linear_model</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.manifold</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_manifold</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.mixture</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_mixture</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_model_selection</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.multiclass</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_multiclass</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.multioutput</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_multioutput</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_naive_bayes</span>
@@ -640,6 +668,7 @@ window.runMermaid = runMermaid;</script>
     <span class="n">register_calibration</span><span class="p">()</span>
     <span class="n">register_cluster</span><span class="p">()</span>
     <span class="n">register_compose</span><span class="p">()</span>
+    <span class="n">register_covariance</span><span class="p">()</span>
     <span class="n">register_decomposition</span><span class="p">()</span>
     <span class="n">register_discriminant_analysis</span><span class="p">()</span>
     <span class="n">register_dummy</span><span class="p">()</span>
@@ -647,7 +676,9 @@ window.runMermaid = runMermaid;</script>
     <span class="n">register_gaussian_process</span><span class="p">()</span>
     <span class="n">register_linear_model</span><span class="p">()</span>
     <span class="n">register_lightgbm</span><span class="p">()</span>
+    <span class="n">register_manifold</span><span class="p">()</span>
     <span class="n">register_mixture</span><span class="p">()</span>
+    <span class="n">register_model_selection</span><span class="p">()</span>
     <span class="n">register_multiclass</span><span class="p">()</span>
     <span class="n">register_multioutput</span><span class="p">()</span>
     <span class="n">register_naive_bayes</span><span class="p">()</span>

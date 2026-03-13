@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -200,6 +200,51 @@
 <li class="toctree-l1"><a class="reference internal" href="ops/index.html">yobx.tensorflow.ops</a></li>
 </ul>
 </div>
+<section id="to-onnx">
+<h2>to_onnx<a class="headerlink" href="#to-onnx" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="yobx.tensorflow.to_onnx">
+<span class="sig-prename descclassname"><span class="pre">yobx.tensorflow.</span></span><span class="sig-name descname"><span class="pre">to_onnx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model,</span> <span class="pre">args:</span> <span class="pre">~typing.Tuple[~typing.Any],</span> <span class="pre">input_names:</span> <span class="pre">~typing.Sequence[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">dynamic_shapes:</span> <span class="pre">~typing.Tuple[~typing.Dict[int,</span> <span class="pre">str]]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">target_opset:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">21,</span> <span class="pre">builder_cls:</span> <span class="pre">type</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'yobx.xbuilder.graph_builder.GraphBuilder'&gt;,</span> <span class="pre">verbose:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0,</span> <span class="pre">extra_converters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Callable]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">large_model:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">external_threshold:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1024</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><span class="pre">ModelProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../container/model_container.html#yobx.container.model_container.ExtendedModelContainer" title="yobx.container.model_container.ExtendedModelContainer"><span class="pre">ExtendedModelContainer</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/05fe073/yobx/tensorflow/convert.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/yobx/tensorflow/convert.html#to_onnx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.tensorflow.to_onnx" title="Link to this definition">¶</a></dt>
+<dd><p>Converts a <a class="reference external" href="https://www.tensorflow.org/">TensorFlow</a>/<a class="reference external" href="https://keras.io/">Keras</a> model into ONNX.</p>
+<p>The model is first traced with <code class="xref py py-func docutils literal notranslate"><span class="pre">get_concrete_function()</span></code> to obtain the
+actual TensorFlow computation graph.  Each operation in that graph is then
+converted individually to an equivalent ONNX node by a registered converter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – a Keras model or layer (must be built / called at least once)</p></li>
+<li><p><strong>args</strong> – dummy inputs (numpy arrays); used to determine dtypes and shapes</p></li>
+<li><p><strong>input_names</strong> – optional list of names for the ONNX input tensors</p></li>
+<li><p><strong>dynamic_shapes</strong> – optional per-input axis-to-dim-name mappings.
+When <em>None</em>, axis 0 is treated as a dynamic batch dimension for every input.</p></li>
+<li><p><strong>target_opset</strong> – opset to use; either an integer for the default domain
+(<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>), or a dictionary mapping domain names to opset versions.
+If it includes <code class="docutils literal notranslate"><span class="pre">{'com.microsoft':</span> <span class="pre">1}</span></code>, the converted model
+may include optimized kernels specific to <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>.</p></li>
+<li><p><strong>builder_cls</strong> – by default the graph builder is a
+<a class="reference internal" href="../xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xbuilder.GraphBuilder</span></code></a> but any builder can
+be used as long it implements the apis <a class="reference internal" href="../../design/builder/graph_builder.html#builder-api"><span class="std std-ref">Shape and type tracking</span></a>
+and <a class="reference internal" href="../../design/builder/graph_builder.html#builder-api-make"><span class="std std-ref">Building a graph from scratch</span></a></p></li>
+<li><p><strong>verbose</strong> – verbosity level (0 = silent)</p></li>
+<li><p><strong>extra_converters</strong> – optional mapping from TF op-type string to converter
+function with signature <code class="docutils literal notranslate"><span class="pre">(g,</span> <span class="pre">sts,</span> <span class="pre">outputs,</span> <span class="pre">op,</span> <span class="pre">verbose=0)</span></code>;
+entries here take priority over the built-in op converters</p></li>
+<li><p><strong>large_model</strong> – if True returns a
+<a class="reference external" href="https://onnx.ai/onnx/api/model_container.html#onnx.model_container.ModelContainer" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.model_container.ModelContainer</span></code></a>, which lets the user
+decide later whether weights should be embedded in the model or saved
+as external data</p></li>
+<li><p><strong>external_threshold</strong> – if <code class="docutils literal notranslate"><span class="pre">large_model</span></code> is True, every tensor whose
+element count exceeds this threshold is stored as external data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>onnx model or <a class="reference external" href="https://onnx.ai/onnx/api/model_container.html#onnx.model_container.ModelContainer" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.model_container.ModelContainer</span></code></a>
+when <em>large_model</em> is True</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -207,6 +252,26 @@
           </div>
         </div>
       </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">yobx.tensorflow</a><ul>
+<li><a class="reference internal" href="#to-onnx">to_onnx</a><ul>
+<li><a class="reference internal" href="#yobx.tensorflow.to_onnx"><code class="docutils literal notranslate"><span class="pre">to_onnx()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
     
 
       <div class="clearer"></div>

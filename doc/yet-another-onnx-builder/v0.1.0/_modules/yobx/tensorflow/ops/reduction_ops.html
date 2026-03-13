@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -609,6 +609,14 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">``Sum`` (reduce_sum), ``Max`` (reduce_max), ``Min`` (reduce_min),</span>
 <span class="sd">``Mean`` (reduce_mean), ``Prod`` (reduce_prod)</span>
 
+<span class="sd">Variance / standard deviation</span>
+<span class="sd">------------------------------</span>
+<span class="sd">``tf.math.reduce_variance`` and ``tf.math.reduce_std`` are Python-level</span>
+<span class="sd">TensorFlow functions that decompose into primitive graph ops (``Mean``,</span>
+<span class="sd">``SquaredDifference``, ``Sqrt``, etc.).  Because every component op has a</span>
+<span class="sd">registered converter, these high-level functions are automatically supported</span>
+<span class="sd">without a dedicated single-op converter.</span>
+
 <span class="sd">Cumulative</span>
 <span class="sd">----------</span>
 <span class="sd">``Cumsum``</span>
@@ -653,7 +661,7 @@ window.runMermaid = runMermaid;</script>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TF ``Sum`` (tf.math.reduce_sum) → ONNX ``ReduceSum``.&quot;&quot;&quot;</span>
     <span class="n">keep_dims</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;keep_dims&quot;</span><span class="p">))</span>
     <span class="n">axes</span> <span class="o">=</span> <span class="n">_axes_i64</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSumAnyOpset</span><span class="p">(</span>
         <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keep_dims</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span></div>
 
@@ -668,7 +676,7 @@ window.runMermaid = runMermaid;</script>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TF ``Max`` (tf.math.reduce_max) → ONNX ``ReduceMax``.&quot;&quot;&quot;</span>
     <span class="n">keep_dims</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;keep_dims&quot;</span><span class="p">))</span>
     <span class="n">axes</span> <span class="o">=</span> <span class="n">_axes_i64</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMax</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMaxAnyOpset</span><span class="p">(</span>
         <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keep_dims</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span></div>
 
@@ -683,7 +691,7 @@ window.runMermaid = runMermaid;</script>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TF ``Min`` (tf.math.reduce_min) → ONNX ``ReduceMin``.&quot;&quot;&quot;</span>
     <span class="n">keep_dims</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;keep_dims&quot;</span><span class="p">))</span>
     <span class="n">axes</span> <span class="o">=</span> <span class="n">_axes_i64</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMin</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMinAnyOpset</span><span class="p">(</span>
         <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keep_dims</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span></div>
 
@@ -698,7 +706,7 @@ window.runMermaid = runMermaid;</script>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TF ``Mean`` (tf.math.reduce_mean) → ONNX ``ReduceMean``.&quot;&quot;&quot;</span>
     <span class="n">keep_dims</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;keep_dims&quot;</span><span class="p">))</span>
     <span class="n">axes</span> <span class="o">=</span> <span class="n">_axes_i64</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMean</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMeanAnyOpset</span><span class="p">(</span>
         <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keep_dims</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span></div>
 
@@ -713,7 +721,7 @@ window.runMermaid = runMermaid;</script>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TF ``Prod`` (tf.math.reduce_prod) → ONNX ``ReduceProd``.&quot;&quot;&quot;</span>
     <span class="n">keep_dims</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;keep_dims&quot;</span><span class="p">))</span>
     <span class="n">axes</span> <span class="o">=</span> <span class="n">_axes_i64</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceProd</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceProdAnyOpset</span><span class="p">(</span>
         <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keep_dims</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span></div>
 

@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=65bd008a" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -602,9 +602,14 @@ window.runMermaid = runMermaid;</script>
             
   <h1>Source code for yobx.sklearn.sklearn_helper</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">,</span> <span class="n">is_classifier</span><span class="p">,</span> <span class="n">is_regressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">,</span> <span class="n">OutlierMixin</span><span class="p">,</span> <span class="n">is_classifier</span><span class="p">,</span> <span class="n">is_regressor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.mixture._base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMixture</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OutlierMixin</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">OutlierMixin</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_classifier_has_predict_proba</span><span class="p">(</span><span class="n">estimator</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -631,7 +636,7 @@ window.runMermaid = runMermaid;</script>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the number of expected outputs.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_classifier</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">_classifier_has_predict_proba</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="p">(</span><span class="n">ClusterMixin</span><span class="p">,</span> <span class="n">BaseMixture</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="p">(</span><span class="n">ClusterMixin</span><span class="p">,</span> <span class="n">BaseMixture</span><span class="p">,</span> <span class="n">OutlierMixin</span><span class="p">)):</span>
         <span class="k">return</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="mi">1</span></div>
 
@@ -662,15 +667,23 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="n">_classifier_has_predict_proba</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;probabilities&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">OutlierMixin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">OutlierMixin</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;scores&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">BaseMixture</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;probabilities&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">OutlierMixin</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;scores&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">is_regressor</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;predictions&quot;</span><span class="p">]</span>
     <span class="n">last</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">)</span> <span class="k">else</span> <span class="n">estimator</span>
+    <span class="k">if</span> <span class="n">OutlierMixin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">OutlierMixin</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;scores&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">ClusterMixin</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;distances&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">BaseMixture</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;probabilities&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">OutlierMixin</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;scores&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span></div>
 
 

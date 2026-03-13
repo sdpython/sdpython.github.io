@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -26,7 +26,7 @@
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Gradient Boosting Converters (XGBoost, LightGBM)" href="lightgbm_converter.html" />
+    <link rel="next" title="External Libraries (XGBoost, LightGBM)" href="lightgbm_converter.html" />
     <link rel="prev" title="Expected API" href="expected_api.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
@@ -143,16 +143,16 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">scikit-learn Export to ONNX</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="expected_api.html">Expected API</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Sklearn Converter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lightgbm_converter.html">Gradient Boosting Converters (XGBoost, LightGBM)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="svm_converter.html">SVM Converters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lightgbm_converter.html">External Libraries (XGBoost, LightGBM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
@@ -187,7 +187,7 @@
             
   <section id="sklearn-converter">
 <span id="l-design-sklearn-converter"></span><h1>Sklearn Converter<a class="headerlink" href="#sklearn-converter" title="Link to this heading">¶</a></h1>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code> converts a fitted <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>
+<p><a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code></a> converts a fitted <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>
 estimator into an <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a>.  The conversion is
 powered by <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.xbuilder.GraphBuilder</span></code></a> and follows a
 <strong>registry-based</strong> design: each estimator class maps to a dedicated
@@ -207,7 +207,7 @@ converter function   ← adds ONNX nodes via GraphBuilder.op.*
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code> accepts the fitted estimator,
+<li><p><a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> accepts the fitted estimator,
 representative dummy inputs (used to infer dtype and shape), and
 optional <code class="docutils literal notranslate"><span class="pre">input_names</span></code> / <code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code>.</p></li>
 <li><p>It calls <a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.register_sklearn_converters" title="yobx.sklearn.register_sklearn_converters"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_sklearn_converters</span></code></a> (idempotent) to populate
@@ -298,9 +298,7 @@ takes a class and returns the registered callable, raising
 — call <code class="docutils literal notranslate"><span class="pre">g.op.&lt;OpType&gt;(…)</span></code> to emit ONNX nodes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sts</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Dict</span></code> of shape/type metadata provided by
-<a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> (empty <code class="docutils literal notranslate"><span class="pre">{}</span></code> in the default
-path; reserved for future shape propagation).</p></td>
+<td><p>unused</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">outputs</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> of pre-allocated output tensor names
@@ -336,271 +334,6 @@ when more than one output is expected).</p></li>
 <li><p><strong>Regressors</strong> default to <code class="docutils literal notranslate"><span class="pre">[&quot;predictions&quot;]</span></code>.</p></li>
 <li><p>Everything else defaults to <code class="docutils literal notranslate"><span class="pre">[&quot;Y&quot;]</span></code>.</p></li>
 </ul>
-</section>
-<section id="implemented-converters">
-<h2>Implemented converters<a class="headerlink" href="#implemented-converters" title="Link to this heading">¶</a></h2>
-<section id="standardscaler">
-<h3>StandardScaler<a class="headerlink" href="#standardscaler" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../../api/sklearn/preprocessing/standard_scaler.html#yobx.sklearn.preprocessing.standard_scaler.sklearn_standard_scaler" title="yobx.sklearn.preprocessing.standard_scaler.sklearn_standard_scaler"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_standard_scaler</span></code></a>
-converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code></a>.</p>
-<p>The implementation respects the <code class="docutils literal notranslate"><span class="pre">with_mean</span></code> and <code class="docutils literal notranslate"><span class="pre">with_std</span></code> flags:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Sub(mean)──►  centered  ──Div(scale)──►  output
-     (if with_mean)               (if with_std)
-</pre></div>
-</div>
-<p>When <code class="docutils literal notranslate"><span class="pre">with_mean=False</span></code> the <code class="docutils literal notranslate"><span class="pre">Sub</span></code> node is skipped; when
-<code class="docutils literal notranslate"><span class="pre">with_std=False</span></code> the <code class="docutils literal notranslate"><span class="pre">Div</span></code> node is replaced by an <code class="docutils literal notranslate"><span class="pre">Identity</span></code>.</p>
-<p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
-
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(</span><span class="n">with_std</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
-    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s3_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.387</span><span class="p">,</span>  <span class="mf">0.435</span><span class="p">,</span>  <span class="mf">0.241</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
-    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s3_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-</pre></div>
-</div>
-</section>
-<section id="logisticregression">
-<h3>LogisticRegression<a class="headerlink" href="#logisticregression" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../../api/sklearn/linear_model/logistic_regression.html#yobx.sklearn.linear_model.logistic_regression.sklearn_logistic_regression" title="yobx.sklearn.linear_model.logistic_regression.sklearn_logistic_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_logistic_regression</span></code></a>
-converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.LogisticRegression</span></code></a> and
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegressionCV.html#sklearn.linear_model.LogisticRegressionCV" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.LogisticRegressionCV</span></code></a>.</p>
-<p>The graph structure depends on the number of classes:</p>
-<p><strong>Binary classification</strong> (<code class="docutils literal notranslate"><span class="pre">coef_.shape[0]</span> <span class="pre">==</span> <span class="pre">1</span></code>):</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Gemm(coef, intercept)──►  decision
-                                   │
-                          ┌────────┴────────┐
-                       Sigmoid           Sub(1, ·)
-                          │                  │
-                       proba_pos          proba_neg
-                          └────────┬────────┘
-                                Concat  ──►  probabilities
-                                   │
-                                ArgMax ──Cast──Gather(classes) ──►  label
-</pre></div>
-</div>
-<p><strong>Multiclass</strong> (<code class="docutils literal notranslate"><span class="pre">coef_.shape[0]</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>):</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Gemm(coef, intercept)──►  decision
-                                   │
-                               Softmax  ──►  probabilities
-                                   │
-                               ArgMax ──Cast──Gather(classes)  ──►  label
-</pre></div>
-</div>
-</section>
-<section id="pca">
-<h3>PCA<a class="headerlink" href="#pca" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../../api/sklearn/decomposition/pca.html#yobx.sklearn.decomposition.pca.sklearn_pca" title="yobx.sklearn.decomposition.pca.sklearn_pca"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_pca</span></code></a>
-converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.decomposition.PCA</span></code></a>.</p>
-<p>The implementation centres the input (when <code class="docutils literal notranslate"><span class="pre">mean_</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>) and
-then projects it onto the principal components:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X  ──Sub(mean_)──►  centered  ──MatMul(components_.T)──►  output
-     (if mean_ is not None)
-</pre></div>
-</div>
-<p>When <code class="docutils literal notranslate"><span class="pre">mean_</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> the <code class="docutils literal notranslate"><span class="pre">Sub</span></code> node is skipped.</p>
-<p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
-
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
-    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.448</span><span class="p">,</span>  <span class="mf">0.052</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.093</span><span class="p">,</span>  <span class="mf">0.247</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s4x2_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>                    <span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
-    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s4_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_sub_X</span>
-      <span class="n">MatMul</span><span class="p">(</span><span class="n">_onx_sub_X</span><span class="p">,</span> <span class="n">init1_s4x2_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pca</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-</pre></div>
-</div>
-</section>
-<section id="pipeline">
-<h3>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../../api/sklearn/pipeline/pipeline.html#yobx.sklearn.pipeline.pipeline.sklearn_pipeline" title="yobx.sklearn.pipeline.pipeline.sklearn_pipeline"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_pipeline</span></code></a>
-converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> by iterating over the
-pipeline steps and chaining each step’s converter output into the
-next step’s input.  Intermediate tensor names are generated with
-<a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.unique_name" title="yobx.xbuilder.GraphBuilder.unique_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GraphBuilder.unique_name</span></code></a>
-to avoid collisions.</p>
-<div class="graphviz"><object data="../../_images/gdot-02fed7aa882674272c3e9f52efeed64b452c0ce4.svg" type="image/svg+xml" class="graphviz">
-<p class="warning">digraph {
-  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
-  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
-  edge [arrowhead=vee, fontsize=7, labeldistance=-5, labelangle=0];
-  I_0 [label=&quot;X\nFLOAT(batch,4)&quot;, fillcolor=&quot;#aaeeaa&quot;];
-  i_1 [label=&quot;init1_s1x4_\nFLOAT(1, 4)&quot;, fillcolor=&quot;#cccc00&quot;];
-  Sub_2 [label=&quot;Sub\n(., [0.13506442, 0.30849382, 0.15263239, -0.42686778])&quot;, fillcolor=&quot;#cccccc&quot;];
-  Div_3 [label=&quot;Div\n(., [1.0598633, 0.91415834, 0.83482164, 1.0283957])&quot;, fillcolor=&quot;#cccccc&quot;];
-  Gemm_4 [label=&quot;Gemm(., ., [0.64127016])&quot;, fillcolor=&quot;#cccccc&quot;];
-  Sigmoid_5 [label=&quot;Sigmoid(.)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Sub_6 [label=&quot;Sub([1.0], .)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Concat_7 [label=&quot;Concat(., ., axis=-1)&quot;, fillcolor=&quot;#cccccc&quot;];
-  ArgMax_8 [label=&quot;ArgMax(., axis=1)&quot;, fillcolor=&quot;#cccccc&quot;];
-  Gather_9 [label=&quot;Gather([0, 1], ., axis=0)&quot;, fillcolor=&quot;#cccccc&quot;];
-  I_0 -&gt; Sub_2 [label=&quot;FLOAT(batch,4)&quot;];
-  Sub_2 -&gt; Div_3;
-  Div_3 -&gt; Gemm_4;
-  i_1 -&gt; Gemm_4 [label=&quot;FLOAT(1, 4)&quot;];
-  Gemm_4 -&gt; Sigmoid_5;
-  Sigmoid_5 -&gt; Sub_6;
-  Sub_6 -&gt; Concat_7;
-  Sigmoid_5 -&gt; Concat_7;
-  Concat_7 -&gt; ArgMax_8;
-  ArgMax_8 -&gt; Gather_9;
-  O_10 [label=&quot;label\n&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Gather_9 -&gt; O_10;
-  O_11 [label=&quot;probabilities\n&quot;, fillcolor=&quot;#aaaaee&quot;];
-  Concat_7 -&gt; O_11;
-}</p></object></div>
-</section>
-<section id="votingclassifier">
-<h3>VotingClassifier<a class="headerlink" href="#votingclassifier" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../../api/sklearn/ensemble/voting.html#yobx.sklearn.ensemble.voting.sklearn_voting_classifier" title="yobx.sklearn.ensemble.voting.sklearn_voting_classifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_voting_classifier</span></code></a>
-converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.VotingClassifier</span></code></a> for both
-<code class="docutils literal notranslate"><span class="pre">voting='soft'</span></code> and <code class="docutils literal notranslate"><span class="pre">voting='hard'</span></code>, with optional per-estimator
-<code class="docutils literal notranslate"><span class="pre">weights</span></code>.</p>
-<p><strong>Soft voting</strong> — average class probabilities across estimators, then
-take the argmax:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X ──[sub-est 0]──► (_, proba_0)  ──Unsqueeze──► (1, N, C)
-X ──[sub-est 1]──► (_, proba_1)  ──Unsqueeze──► (1, N, C)
-                      Concat(axis=0) ──► stacked (E, N, C)
-                          ReduceMean(axis=0) ──► avg_proba (N, C)
-                              ArgMax(axis=1) ──Cast──Gather(classes_) ──► label
-</pre></div>
-</div>
-<p><strong>Hard voting</strong> — each estimator casts one (weighted) vote; the class
-with the most votes wins:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X ──[sub-est 0]──► label_0 (N,)
-X ──[sub-est 1]──► label_1 (N,)
-    label → class index (Equal+ArgMax) ──Unsqueeze──► (N, 1)
-        Equal(range_classes) ──Cast(float) ──► votes (N, C)
-            Add(votes_0, votes_1, ...) ──► total_votes (N, C)
-                ArgMax(axis=1) ──Cast──Gather(classes_) ──► label
-</pre></div>
-</div>
-<p>Soft voting returns <code class="docutils literal notranslate"><span class="pre">(label,</span> <span class="pre">probabilities)</span></code>; hard voting returns
-only <code class="docutils literal notranslate"><span class="pre">(label,)</span></code> — consistent with sklearn’s behaviour where
-<code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> is absent for hard-voting estimators.</p>
-<p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">VotingClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
-
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-
-<span class="n">clf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span>
-    <span class="n">estimators</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-        <span class="p">(</span><span class="s2">&quot;dt&quot;</span><span class="p">,</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-    <span class="p">],</span>
-    <span class="n">voting</span><span class="o">=</span><span class="s2">&quot;soft&quot;</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
-    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1x4_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span> <span class="mf">1.927</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.345</span><span class="p">,</span>  <span class="mf">0.28</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.156</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.377</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Small</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1_2&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Small</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init7_s2_0_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">int64</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>      <span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Shape</span><span class="c1">##Opset.make_node.1/Shape##Opset.make_node.1/Shape</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init7_s1_0&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">int64</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>           <span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Shape</span><span class="c1">##Opset.make_node.1/Shape##Opset.make_node.1/Shape</span>
-    <span class="n">Gemm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s1x4_</span><span class="p">,</span> <span class="n">init1_s1_</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_gemm_X</span>
-      <span class="n">Sigmoid</span><span class="p">(</span><span class="n">_onx_gemm_X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_sigmoid_gemm_X</span>
-        <span class="n">Sub</span><span class="p">(</span><span class="n">init1_s1_2</span><span class="p">,</span> <span class="n">_onx_sigmoid_gemm_X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_sub_init1_s1_2</span>
-        <span class="n">Concat</span><span class="p">(</span><span class="n">_onx_sub_init1_s1_2</span><span class="p">,</span> <span class="n">_onx_sigmoid_gemm_X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">main__est0_proba</span>
-          <span class="n">Unsqueeze</span><span class="p">(</span><span class="n">main__est0_proba</span><span class="p">,</span> <span class="n">init7_s1_0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">main__est0_proba</span><span class="p">::</span><span class="n">UnSq0</span>
-    <span class="n">TreeEnsemble</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">aggregate_function</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">leaf_targetids</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">leaf_weights</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span><span class="o">...</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nodes_falseleafs</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">nodes_falsenodeids</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">nodes_featureids</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_modes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">nodes_splits</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0606380</span><span class="o">...</span><span class="p">,</span> <span class="n">nodes_trueleafs</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">nodes_truenodeids</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">post_transform</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tree_roots</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_onx_treeensemble_X</span>
-      <span class="n">Unsqueeze</span><span class="p">(</span><span class="n">_onx_treeensemble_X</span><span class="p">,</span> <span class="n">init7_s1_0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">main__est1_proba</span><span class="p">::</span><span class="n">UnSq0</span>
-        <span class="n">Concat</span><span class="p">(</span><span class="n">main__est0_proba</span><span class="p">::</span><span class="n">UnSq0</span><span class="p">,</span> <span class="n">main__est1_proba</span><span class="p">::</span><span class="n">UnSq0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_concat_main__est0_proba</span><span class="p">::</span><span class="n">UnSq0</span>
-          <span class="n">ReduceMean</span><span class="p">(</span><span class="n">_onx_concat_main__est0_proba</span><span class="p">::</span><span class="n">UnSq0</span><span class="p">,</span> <span class="n">init7_s1_0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">probabilities</span>
-            <span class="n">ArgMax</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_argmax_reducemean_concat_main__est0_proba</span><span class="p">::</span><span class="n">UnSq0</span>
-              <span class="n">Gather</span><span class="p">(</span><span class="n">init7_s2_0_1</span><span class="p">,</span> <span class="n">_onx_argmax_reducemean_concat_main__est0_proba</span><span class="p">::</span><span class="n">UnSq0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">label</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;label&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;probabilities&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-</pre></div>
-</div>
-</section>
-<section id="votingregressor">
-<h3>VotingRegressor<a class="headerlink" href="#votingregressor" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../../api/sklearn/ensemble/voting.html#yobx.sklearn.ensemble.voting.sklearn_voting_regressor" title="yobx.sklearn.ensemble.voting.sklearn_voting_regressor"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn_voting_regressor</span></code></a>
-converts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingRegressor.html#sklearn.ensemble.VotingRegressor" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.VotingRegressor</span></code></a>.</p>
-<p>Each sub-estimator’s predictions are collected and then averaged
-(optionally weighted):</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>X ──[sub-est 0]──► pred_0 (N,) ──Reshape──► (N, 1)
-X ──[sub-est 1]──► pred_1 (N,) ──Reshape──► (N, 1)
-        Concat(axis=1) ──► stacked (N, E)
-            ReduceMean(axis=1) ──► predictions (N,)
-</pre></div>
-</div>
-<p>With <code class="docutils literal notranslate"><span class="pre">weights</span></code>, a weighted sum is used instead of a plain mean.</p>
-<p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">VotingRegressor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">Ridge</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
-
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="n">reg</span> <span class="o">=</span> <span class="n">VotingRegressor</span><span class="p">(</span>
-    <span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">()),</span> <span class="p">(</span><span class="s2">&quot;ridge&quot;</span><span class="p">,</span> <span class="n">Ridge</span><span class="p">())],</span>
-<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">21</span>
-    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">5</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1x4_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.000e+00</span><span class="p">,</span> <span class="mf">5.000e-01</span><span class="p">,</span> <span class="mf">8.941e-08</span><span class="p">,</span> <span class="mf">1.192e-07</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">3.725e-08</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Small</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init7_s2_-1_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">int64</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">])</span>   <span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Shape</span><span class="c1">##Opset.make_node.1/Shape</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1x4_2&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.929</span><span class="p">,</span>  <span class="mf">0.473</span><span class="p">,</span>  <span class="mf">0.01</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.02</span> <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.0</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s1_2&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.004</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Small</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init7_s1_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">int64</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>           <span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Shape</span>
-    <span class="n">Gemm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s1x4_</span><span class="p">,</span> <span class="n">init1_s1_</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">main__est0_pred</span>
-      <span class="n">Reshape</span><span class="p">(</span><span class="n">main__est0_pred</span><span class="p">,</span> <span class="n">init7_s2_</span><span class="o">-</span><span class="mi">1_1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">main__est0_pred</span><span class="p">::</span><span class="n">RSh</span><span class="o">-</span><span class="mi">1</span><span class="n">x1</span>
-    <span class="n">Gemm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init1_s1x4_2</span><span class="p">,</span> <span class="n">init1_s1_2</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">main__est1_pred</span>
-      <span class="n">Reshape</span><span class="p">(</span><span class="n">main__est1_pred</span><span class="p">,</span> <span class="n">init7_s2_</span><span class="o">-</span><span class="mi">1_1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">main__est1_pred</span><span class="p">::</span><span class="n">RSh</span><span class="o">-</span><span class="mi">1</span><span class="n">x1</span>
-        <span class="n">Concat</span><span class="p">(</span><span class="n">main__est0_pred</span><span class="p">::</span><span class="n">RSh</span><span class="o">-</span><span class="mi">1</span><span class="n">x1</span><span class="p">,</span> <span class="n">main__est1_pred</span><span class="p">::</span><span class="n">RSh</span><span class="o">-</span><span class="mi">1</span><span class="n">x1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_concat_main__est0_pred</span><span class="p">::</span><span class="n">RSh</span><span class="o">-</span><span class="mi">1</span><span class="n">x1</span>
-          <span class="n">ReduceMean</span><span class="p">(</span><span class="n">_onx_concat_main__est0_pred</span><span class="p">::</span><span class="n">RSh</span><span class="o">-</span><span class="mi">1</span><span class="n">x1</span><span class="p">,</span> <span class="n">init7_s1_1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">votingregressor_</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;votingregressor_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-</pre></div>
-</div>
-</section>
 </section>
 <section id="adding-a-new-converter">
 <h2>Adding a new converter<a class="headerlink" href="#adding-a-new-converter" title="Link to this heading">¶</a></h2>
@@ -657,15 +390,6 @@ is loaded when <a class="reference internal" href="../../api/sklearn/index.html#
 </li>
 <li><a class="reference internal" href="#converter-function-signature">Converter function signature</a></li>
 <li><a class="reference internal" href="#output-naming">Output naming</a></li>
-<li><a class="reference internal" href="#implemented-converters">Implemented converters</a><ul>
-<li><a class="reference internal" href="#standardscaler">StandardScaler</a></li>
-<li><a class="reference internal" href="#logisticregression">LogisticRegression</a></li>
-<li><a class="reference internal" href="#pca">PCA</a></li>
-<li><a class="reference internal" href="#pipeline">Pipeline</a></li>
-<li><a class="reference internal" href="#votingclassifier">VotingClassifier</a></li>
-<li><a class="reference internal" href="#votingregressor">VotingRegressor</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#adding-a-new-converter">Adding a new converter</a></li>
 </ul>
 </li>
@@ -688,7 +412,7 @@ is loaded when <a class="reference internal" href="../../api/sklearn/index.html#
 
             <div class="right">
                 
-                    <a href="lightgbm_converter.html"><span>Gradient Boosting Converters (XGBoost, LightGBM)</span><span class="icon">&gt;</span></a>
+                    <a href="lightgbm_converter.html"><span>External Libraries (XGBoost, LightGBM)</span><span class="icon">&gt;</span></a>
                 
             </div>
         </div>

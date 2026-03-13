@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3e4cc94f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=65bd008a" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -27,7 +27,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Supported TF Ops" href="supported_ops.html" />
-    <link rel="prev" title="Overview of Exportability" href="../torch/case_coverage.html" /> 
+    <link rel="prev" title="Debugging with Environment Variables" href="../sklearn/debug.html" /> 
   </head><body data-dark_mode_code_blocks="true">
 
 <div id="top_nav">
@@ -141,11 +141,11 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Elements of Design</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">TensorFlow Export to ONNX</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="supported_ops.html">Supported TF Ops</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
@@ -180,7 +180,7 @@
             
   <section id="tensorflow-export-to-onnx">
 <span id="l-design-tensorflow-converter"></span><h1>TensorFlow Export to ONNX<a class="headerlink" href="#tensorflow-export-to-onnx" title="Link to this heading">¶</a></h1>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.tensorflow.to_onnx()</span></code> converts a <a class="reference external" href="https://www.tensorflow.org/">TensorFlow</a>/<a class="reference external" href="https://keras.io/">Keras</a>
+<p><a class="reference internal" href="../../api/tensorflow/index.html#yobx.tensorflow.to_onnx" title="yobx.tensorflow.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.tensorflow.to_onnx()</span></code></a> converts a <a class="reference external" href="https://www.tensorflow.org/">TensorFlow</a>/<a class="reference external" href="https://keras.io/">Keras</a>
 model into an <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a>.  The implementation is a
 <strong>proof-of-concept</strong> that traces the model with
 <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/function" title="(in TensorFlow v2.8)"><code class="docutils literal notranslate"><span class="pre">tf.function</span></code></a> / <code class="docutils literal notranslate"><span class="pre">get_concrete_function</span></code> and then
@@ -208,7 +208,7 @@ GraphBuilder.to_onnx()  ← validates and returns ModelProto
 </div>
 <p>The steps in detail:</p>
 <ol class="arabic simple">
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code> accepts the Keras model,
+<li><p><a class="reference internal" href="../../api/tensorflow/index.html#yobx.tensorflow.to_onnx" title="yobx.tensorflow.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> accepts the Keras model,
 a tuple of representative <em>numpy</em> inputs (used to infer dtypes
 and shapes), and optional <code class="docutils literal notranslate"><span class="pre">input_names</span></code> / <code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code>.</p></li>
 <li><p>A <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/TensorSpec" title="(in TensorFlow v2.8)"><code class="docutils literal notranslate"><span class="pre">tf.TensorSpec</span></code></a> is built for every input.  By
@@ -324,7 +324,7 @@ built-in TF op converters, generated automatically from the live registry.</p>
 </section>
 <section id="dynamic-shapes">
 <h2>Dynamic shapes<a class="headerlink" href="#dynamic-shapes" title="Link to this heading">¶</a></h2>
-<p>By default <code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code> marks axis 0 of
+<p>By default <a class="reference internal" href="../../api/tensorflow/index.html#yobx.tensorflow.to_onnx" title="yobx.tensorflow.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> marks axis 0 of
 every input as dynamic (unnamed batch dimension).  To control which axes
 are dynamic, pass <code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code> — a tuple of one <code class="docutils literal notranslate"><span class="pre">Dict[int,</span> <span class="pre">str]</span></code>
 per input where keys are axis indices and values are symbolic dimension
@@ -336,7 +336,7 @@ names:</p>
 </section>
 <section id="custom-op-converters">
 <h2>Custom op converters<a class="headerlink" href="#custom-op-converters" title="Link to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code> parameter of <code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code> accepts a mapping from TF op-type string to
+<p>The <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code> parameter of <a class="reference internal" href="../../api/tensorflow/index.html#yobx.tensorflow.to_onnx" title="yobx.tensorflow.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> accepts a mapping from TF op-type string to
 converter function.  Entries here take <strong>priority</strong> over the built-in
 registry, making it easy to override or extend coverage without
 modifying the package.</p>
@@ -444,8 +444,8 @@ modifying the package.</p>
         <div class="button_nav">
             <div class="left">
                 
-                <a href="../torch/case_coverage.html">
-                    <span class="icon">&lt;</span><span>Overview of Exportability</span></a>
+                <a href="../sklearn/debug.html">
+                    <span class="icon">&lt;</span><span>Debugging with Environment Variables</span></a>
                 
             </div>
 
