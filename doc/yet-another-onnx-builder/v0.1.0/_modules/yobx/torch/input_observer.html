@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -612,11 +615,24 @@ window.runMermaid = runMermaid;</script>
 
 <span class="n">EOL</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
+<span class="c1"># Well-known dimension names for common LLM/transformer inputs.</span>
+<span class="c1"># Used by ``infer_dynamic_shapes(dim_names=True)`` to produce precise,</span>
+<span class="c1"># human-readable labels for frequently-seen parameter names.</span>
+<span class="n">_KNOWN_DIM_NAMES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;sequence_length&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;position_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;sequence_length&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;total_sequence_length&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;token_type_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;sequence_length&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;past_key_values&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;past_sequence_length&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;cache_position&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;sequence_length&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;pixel_values&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;decoder_input_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;decoder_sequence_length&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;decoder_attention_mask&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;decoder_sequence_length&quot;</span><span class="p">},</span>
+<span class="p">}</span>
+
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_flatten_unflatten_for_dynamic_shapes</span><span class="p">(</span>
-    <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="n">use_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">change_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">use_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">change_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the object in a different structure similar to what</span>
 <span class="sd">    the definition of the dynamic shapes should use.</span>
@@ -892,9 +908,7 @@ window.runMermaid = runMermaid;</script>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_tensors_for_args_kwargs</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_aligned_flat_list</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">aligned_flat_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span>
-        <span class="n">aligned_spec</span><span class="p">:</span> <span class="n">pytree</span><span class="o">.</span><span class="n">PyTreeSpec</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">aligned_flat_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">aligned_spec</span><span class="p">:</span> <span class="n">pytree</span><span class="o">.</span><span class="n">PyTreeSpec</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aligned_flat_list</span> <span class="o">=</span> <span class="n">aligned_flat_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aligned_spec</span> <span class="o">=</span> <span class="n">aligned_spec</span>
@@ -1159,6 +1173,7 @@ window.runMermaid = runMermaid;</script>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">set_batch_dimension_for</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">return_flat</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">dim_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Infers dynamic shapes based on the collected tensors.</span>
 <span class="sd">        Most of the time, models do support a batch dimension</span>
@@ -1174,6 +1189,20 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                no additional batch dimensions are marked as dynamic.</span>
 <span class="sd">            return_flat: Tells the function to return a flat tuple instead of</span>
 <span class="sd">                nested structured. This option is used internally to infer arguments.</span>
+<span class="sd">            dim_names (bool | dict[str | int, dict[int, str]] | None): Controls how</span>
+<span class="sd">                dynamic dimension placeholders are labelled.</span>
+
+<span class="sd">                * ``None`` (default) — every dynamic dimension gets</span>
+<span class="sd">                  ``torch.export.Dim.DYNAMIC``.</span>
+<span class="sd">                * ``dict`` — explicit mapping from input identifier (name ``str`` or</span>
+<span class="sd">                  position ``int``) to a ``{dim_index: label}`` dict.  Unspecified</span>
+<span class="sd">                  inputs or dimensions fall back to ``torch.export.Dim.DYNAMIC``.</span>
+<span class="sd">                * ``True`` — auto-generate string labels for **all** dynamic</span>
+<span class="sd">                  dimensions.  Dimensions whose observed values are identical across</span>
+<span class="sd">                  every recorded call share the same label (they are constrained to be</span>
+<span class="sd">                  equal during export).  Well-known LLM input names</span>
+<span class="sd">                  (``input_ids``, ``position_ids``, ``past_key_values``, …) receive</span>
+<span class="sd">                  precise semantic labels; other inputs get ``&lt;name&gt;_dim_&lt;n&gt;`` labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">align_inputs_none_values</span><span class="p">()</span>
         <span class="c1"># type checking</span>
@@ -1236,8 +1265,27 @@ window.runMermaid = runMermaid;</script>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_tensors</span><span class="p">)</span>
         <span class="p">]</span>
-        <span class="n">cst</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span>
-        <span class="n">flat_dynamic_shapes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">cst</span><span class="p">)</span> <span class="k">for</span> <span class="n">dims</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="p">]</span>
+
+        <span class="c1"># Convert dim_names=True to an auto-generated dict.</span>
+        <span class="k">if</span> <span class="n">dim_names</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">dim_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_auto_dim_names</span><span class="p">(</span><span class="n">shape_lists</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># Ensure _position_to_args_kwargs is built before using it below.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">build_mappings</span><span class="p">()</span>
+
+        <span class="n">flat_dynamic_shapes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="n">dim</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_dim_label</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">_position_to_args_kwargs</span><span class="p">[</span><span class="n">flat_idx</span><span class="p">],</span> <span class="n">dim</span><span class="p">,</span> <span class="n">dim_names</span>  <span class="c1"># type: ignore</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">dim_names</span>
+                    <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">flat_idx</span><span class="p">,</span> <span class="n">dims</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+        <span class="p">]</span>
         <span class="k">if</span> <span class="n">return_flat</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">flat_dynamic_shapes</span><span class="p">)</span>
 
@@ -1267,10 +1315,7 @@ window.runMermaid = runMermaid;</script>
                     <span class="p">{</span>
                         <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">pos_names</span><span class="p">,</span> <span class="n">flat_dynamic_shapes</span><span class="p">[:</span><span class="n">n_args</span><span class="p">])),</span>
                         <span class="o">**</span><span class="nb">dict</span><span class="p">(</span>
-                            <span class="nb">zip</span><span class="p">(</span>
-                                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">kwargs</span><span class="p">),</span>
-                                <span class="n">flat_dynamic_shapes</span><span class="p">[</span><span class="n">n_args</span><span class="p">:],</span>
-                            <span class="p">)</span>
+                            <span class="nb">zip</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">flat_dynamic_shapes</span><span class="p">[</span><span class="n">n_args</span><span class="p">:])</span>
                         <span class="p">),</span>
                         <span class="o">**</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                     <span class="p">}</span>
@@ -1285,10 +1330,7 @@ window.runMermaid = runMermaid;</script>
                     <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">pos_names</span><span class="p">,</span> <span class="n">flat_dynamic_shapes</span><span class="p">[:</span><span class="n">n_args</span><span class="p">])),</span>
                     <span class="n">var_pos</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">flat_dynamic_shapes</span><span class="p">[</span><span class="n">n_args</span><span class="p">:</span><span class="n">i_kwargs</span><span class="p">]),</span>
                     <span class="o">**</span><span class="nb">dict</span><span class="p">(</span>
-                        <span class="nb">zip</span><span class="p">(</span>
-                            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">kwargs</span><span class="p">),</span>
-                            <span class="n">flat_dynamic_shapes</span><span class="p">[</span><span class="n">i_kwargs</span><span class="p">:],</span>
-                        <span class="p">)</span>
+                        <span class="nb">zip</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">flat_dynamic_shapes</span><span class="p">[</span><span class="n">i_kwargs</span><span class="p">:])</span>
                     <span class="p">),</span>
                     <span class="o">**</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                 <span class="p">}</span>
@@ -1328,10 +1370,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">change_function</span><span class="o">=</span><span class="n">change_function</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">:</span>
-            <span class="n">ds_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="o">**</span><span class="n">ds_kwargs</span><span class="p">,</span>
-                <span class="o">**</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="p">}</span>
+            <span class="n">ds_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">ds_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">,</span> <span class="kc">None</span><span class="p">)}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ds_kwargs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_name_and_position</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ds_args</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ds_args</span><span class="p">:</span>
@@ -1474,10 +1513,7 @@ window.runMermaid = runMermaid;</script>
         <span class="c1"># type checking</span>
         <span class="k">assert</span> <span class="n">candidate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="n">candidate</span><span class="o">.</span><span class="n">aligned_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">pytree</span><span class="o">.</span><span class="n">tree_unflatten</span><span class="p">(</span>
-            <span class="n">aligned_flat_list</span><span class="p">,</span>
-            <span class="n">candidate</span><span class="o">.</span><span class="n">aligned_spec</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">pytree</span><span class="o">.</span><span class="n">tree_unflatten</span><span class="p">(</span><span class="n">aligned_flat_list</span><span class="p">,</span> <span class="n">candidate</span><span class="o">.</span><span class="n">aligned_spec</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">:</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">cst_kwargs</span><span class="p">}</span>
 
@@ -1526,6 +1562,119 @@ window.runMermaid = runMermaid;</script>
                 <span class="s2">&quot;Passing a keyword argument with this name is not supported.&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">new_kwargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs_name</span><span class="p">:</span> <span class="n">keywords</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_dim_label</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">arg_or_kwarg</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dim_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the string label for a dynamic dimension.</span>
+
+<span class="sd">        Always returns a string — never ``torch.export.Dim.DYNAMIC``.  When</span>
+<span class="sd">        *dim_names* provides an explicit label for this input and dimension it is</span>
+<span class="sd">        returned directly.  Otherwise a unique fallback label</span>
+<span class="sd">        ``&lt;input_name&gt;_dim_&lt;n&gt;`` is generated so that every dynamic axis carries a</span>
+<span class="sd">        distinct, human-readable name.</span>
+
+<span class="sd">        The caller is responsible for the ``if not dim_names`` guard (treating both</span>
+<span class="sd">        ``None`` and an empty dict as &quot;no naming requested&quot;) and should use</span>
+<span class="sd">        ``torch.export.Dim.DYNAMIC`` directly when no naming is requested.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            arg_or_kwarg: The positional index (``int``) or keyword name (``str``)</span>
+<span class="sd">                that identifies which input this tensor belongs to, as stored in</span>
+<span class="sd">                ``InputCandidate._position_to_args_kwargs``.</span>
+<span class="sd">            dim: Dimension index within the tensor.</span>
+<span class="sd">            dim_names: Mapping from input identifier to per-dimension string labels,</span>
+<span class="sd">                as passed to :meth:`infer_dynamic_shapes`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A string label — the one from *dim_names* when available, otherwise an</span>
+<span class="sd">            auto-generated ``&lt;input_name&gt;_dim_&lt;n&gt;`` label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Resolve the human-readable input name for the fallback label.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg_or_kwarg</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">arg_or_kwarg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">input_name</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">signature_names</span><span class="p">[</span><span class="n">arg_or_kwarg</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">arg_or_kwarg</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signature_names</span><span class="p">)</span>
+                <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;arg</span><span class="si">{</span><span class="n">arg_or_kwarg</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Look up an explicit label from dim_names (try str key then int key).</span>
+        <span class="n">per_input</span> <span class="o">=</span> <span class="n">dim_names</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">arg_or_kwarg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">per_input</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg_or_kwarg</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">per_input</span> <span class="o">=</span> <span class="n">dim_names</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">input_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">per_input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">per_input</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">per_input</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+
+        <span class="c1"># No explicit label — return a unique fallback string.</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_name</span><span class="si">}</span><span class="s2">_dim_</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_auto_dim_names</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">shape_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]],</span> <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Auto-generate a *dim_names* mapping from observed shapes.</span>
+
+<span class="sd">        Groups every dynamic ``(tensor_flat_index, dim)`` pair by its sequence of</span>
+<span class="sd">        observed values across all calls.  Pairs whose value sequences are identical</span>
+<span class="sd">        are considered the same logical dimension and share one string label —</span>
+<span class="sd">        making them *constrained equal* in :func:`torch.export.export`.</span>
+
+<span class="sd">        Well-known LLM/transformer parameter names listed in :data:`_KNOWN_DIM_NAMES`</span>
+<span class="sd">        are given precise semantic labels (e.g. ``&quot;batch_size&quot;``, ``&quot;sequence_length&quot;``).</span>
+<span class="sd">        Unknown inputs that happen to share observed values with a known dimension</span>
+<span class="sd">        inherit that label; all remaining dimensions get ``&lt;name&gt;_dim_&lt;n&gt;`` labels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            shape_lists: Per-observation, per-flat-tensor shape tuples (or ``None``</span>
+<span class="sd">                for absent optional tensors), as built in :meth:`infer_dynamic_shapes`.</span>
+<span class="sd">            dynamic_shapes: Per-flat-tensor list of dynamic dimension indices,</span>
+<span class="sd">                as returned by :func:`_infer_dynamic_dimensions`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A *dim_names* dict mapping each input name (``str``) to a</span>
+<span class="sd">            ``{dim_index: label}`` dict covering all its dynamic dimensions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="c1"># Collect (flat_idx, dim, input_name, value_sequence) for every dynamic dim.</span>
+        <span class="n">entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">flat_idx</span><span class="p">,</span> <span class="n">dims</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">):</span>
+            <span class="n">arg_or_kwarg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_candidate</span><span class="o">.</span><span class="n">position_to_args_kwargs</span><span class="p">[</span><span class="n">flat_idx</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg_or_kwarg</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">input_name</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">signature_names</span><span class="p">[</span><span class="n">arg_or_kwarg</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">arg_or_kwarg</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signature_names</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg_or_kwarg</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">input_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg_or_kwarg</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                    <span class="n">shapes</span><span class="p">[</span><span class="n">flat_idx</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+                    <span class="k">for</span> <span class="n">shapes</span> <span class="ow">in</span> <span class="n">shape_lists</span>
+                    <span class="k">if</span> <span class="n">shapes</span><span class="p">[</span><span class="n">flat_idx</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">flat_idx</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+
+        <span class="c1"># First pass: populate value_seq_to_name with known-named dimensions so that</span>
+        <span class="c1"># unknown inputs sharing the same observed values inherit the semantic label.</span>
+        <span class="n">value_seq_to_name</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">_flat_idx</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">_KNOWN_DIM_NAMES</span> <span class="ow">and</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">_KNOWN_DIM_NAMES</span><span class="p">[</span><span class="n">input_name</span><span class="p">]:</span>
+                <span class="n">value_seq_to_name</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">_KNOWN_DIM_NAMES</span><span class="p">[</span><span class="n">input_name</span><span class="p">][</span><span class="n">dim</span><span class="p">])</span>
+
+        <span class="c1"># Second pass: assign a name to every (input_name, dim) pair.</span>
+        <span class="n">auto_dim_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">_flat_idx</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">value_seq_to_name</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">value_seq_to_name</span><span class="p">[</span><span class="n">values</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_name</span><span class="si">}</span><span class="s2">_dim_</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">value_seq_to_name</span><span class="p">[</span><span class="n">values</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="n">auto_dim_names</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">input_name</span><span class="p">,</span> <span class="p">{})[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="k">return</span> <span class="n">auto_dim_names</span>
 
 <div class="viewcode-block" id="InputObserverInfo.remove_inputs">
 <a class="viewcode-back" href="../../../api/torch/input_observer.html#yobx.torch.input_observer.InputObserverInfo.remove_inputs">[docs]</a>
@@ -1667,11 +1816,7 @@ window.runMermaid = runMermaid;</script>
         <span class="bp">self</span><span class="o">.</span><span class="n">value_if_missing</span> <span class="o">=</span> <span class="n">value_if_missing</span> <span class="ow">or</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_replaced_method</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-        <span class="n">_captured_method</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">_store_n_calls</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_captured_method</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_store_n_calls</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="k">assert</span> <span class="n">_captured_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;_captured_forward cannot be None&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;info cannot be None&quot;</span>
@@ -1694,10 +1839,7 @@ window.runMermaid = runMermaid;</script>
 
     <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
-        <span class="n">store_n_calls</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="n">method_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;forward&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">store_n_calls</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">method_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;forward&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Starts collecting inputs and outputs of a specific method.</span>
 <span class="sd">        The model method is replaced by a new one collecting tensors</span>
@@ -1764,7 +1906,9 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="InputObserver.infer_dynamic_shapes">
 <a class="viewcode-back" href="../../../api/torch/input_observer.html#yobx.torch.input_observer.InputObserver.infer_dynamic_shapes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">infer_dynamic_shapes</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">set_batch_dimension_for</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">set_batch_dimension_for</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dim_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Infers dynamic shapes. Most of the time, models do support a batch dimension</span>
@@ -1779,10 +1923,26 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                which the first dimension should be treated as a dynamic batch</span>
 <span class="sd">                dimension. If ``None``, no dimensions are explicitly marked as</span>
 <span class="sd">                dynamic.</span>
+<span class="sd">            dim_names (bool | dict[str | int, dict[int, str]] | None): Controls how</span>
+<span class="sd">                dynamic dimension placeholders are labelled.</span>
+
+<span class="sd">                * ``None`` (default) — every dynamic dimension gets</span>
+<span class="sd">                  ``torch.export.Dim.DYNAMIC``.</span>
+<span class="sd">                * ``dict`` — explicit mapping from input identifier (name ``str`` or</span>
+<span class="sd">                  position ``int``) to a ``{dim_index: label}`` dict.  Unspecified</span>
+<span class="sd">                  inputs or dimensions fall back to ``torch.export.Dim.DYNAMIC``.</span>
+<span class="sd">                * ``True`` — auto-generate string labels for **all** dynamic</span>
+<span class="sd">                  dimensions.  Dimensions whose observed values are identical across</span>
+<span class="sd">                  every recorded call share the same label (constrained equal during</span>
+<span class="sd">                  export).  Well-known LLM input names (``input_ids``,</span>
+<span class="sd">                  ``position_ids``, ``past_key_values``, …) receive precise semantic</span>
+<span class="sd">                  labels; other inputs get ``&lt;name&gt;_dim_&lt;n&gt;`` labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_captured</span><span class="p">()</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>  <span class="c1"># missed by type checking</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">infer_dynamic_shapes</span><span class="p">(</span><span class="n">set_batch_dimension_for</span><span class="o">=</span><span class="n">set_batch_dimension_for</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">infer_dynamic_shapes</span><span class="p">(</span>
+            <span class="n">set_batch_dimension_for</span><span class="o">=</span><span class="n">set_batch_dimension_for</span><span class="p">,</span> <span class="n">dim_names</span><span class="o">=</span><span class="n">dim_names</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="InputObserver.infer_arguments">
@@ -1860,9 +2020,7 @@ window.runMermaid = runMermaid;</script>
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">_best_candidate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">_captured_inputs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="n">index_or_candidate</span><span class="o">.</span><span class="n">align_with</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">_best_candidate</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">_captured_inputs</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">signature_names</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">_best_candidate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">_captured_inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">signature_names</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">infer_arguments</span><span class="p">(</span>
             <span class="n">index_or_candidate</span><span class="o">=</span><span class="n">index_or_candidate</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="n">flat</span><span class="p">,</span> <span class="n">as_args_kwargs</span><span class="o">=</span><span class="n">as_args_kwargs</span>

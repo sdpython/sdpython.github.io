@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -784,13 +787,16 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">        a matrix is the inverse of another one.</span>
 <span class="sd">        See :ref:`l-plot-sklearn-pls-float32`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_fitted_check_target</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">estimator</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">)</span> <span class="k">else</span> <span class="n">estimator</span>
+    <span class="p">)</span>
     <span class="n">check_is_fitted</span><span class="p">(</span>
-        <span class="n">estimator</span><span class="p">,</span>
-        <span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;predict&quot;</span><span class="p">],</span>
+        <span class="n">_fitted_check_target</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="s2">&quot;mahalanobis&quot;</span><span class="p">,</span> <span class="s2">&quot;score_samples&quot;</span><span class="p">],</span>
         <span class="n">all_or_any</span><span class="o">=</span><span class="nb">any</span><span class="p">,</span>
         <span class="n">msg</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;This </span><span class="si">%(name)s</span><span class="s2"> instance has neither a &#39;transform&#39; nor a &#39;predict&#39; method &quot;</span>
-            <span class="s2">&quot;and cannot be converted to ONNX.&quot;</span>
+            <span class="s2">&quot;This </span><span class="si">%(name)s</span><span class="s2"> instance has neither a &#39;transform&#39;, &#39;predict&#39;, &quot;</span>
+            <span class="s2">&quot;&#39;mahalanobis&#39;, nor &#39;score_samples&#39; method and cannot be converted to ONNX.&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target_opset</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -846,13 +852,7 @@ window.runMermaid = runMermaid;</script>
     <span class="k">if</span> <span class="n">function_options</span> <span class="ow">and</span> <span class="n">function_options</span><span class="o">.</span><span class="n">export_as_function</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_container</span><span class="p">:</span>
         <span class="c1"># Wrap the single top-level estimator as a local function.</span>
         <span class="n">_wrap_step_as_function</span><span class="p">(</span>
-            <span class="n">g</span><span class="p">,</span>
-            <span class="n">function_options</span><span class="p">,</span>
-            <span class="n">estimator</span><span class="p">,</span>
-            <span class="nb">list</span><span class="p">(</span><span class="n">input_names</span><span class="p">),</span>
-            <span class="n">output_names</span><span class="p">,</span>
-            <span class="n">fct</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">function_options</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_names</span><span class="p">),</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">fct</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;main&quot;</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">is_container</span><span class="p">:</span>
         <span class="n">fct</span><span class="p">(</span>

@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -672,14 +675,7 @@ window.runMermaid = runMermaid;</script>
 
 <span class="c1">#: Regression objectives that apply ``exp`` as the output transform</span>
 <span class="c1">#: (log-link objectives).</span>
-<span class="n">_REG_EXP_OBJECTIVES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;count:poisson&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;reg:gamma&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;reg:tweedie&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;survival:cox&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">)</span>
+<span class="n">_REG_EXP_OBJECTIVES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;count:poisson&quot;</span><span class="p">,</span> <span class="s2">&quot;reg:gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;reg:tweedie&quot;</span><span class="p">,</span> <span class="s2">&quot;survival:cox&quot;</span><span class="p">})</span>
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
@@ -871,10 +867,7 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_build_xgb_tree_attrs_v5</span><span class="p">(</span>
-    <span class="n">trees_json</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
-    <span class="n">n_targets</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">feature_name_to_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
-    <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">trees_json</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">n_targets</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">feature_name_to_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ``TreeEnsemble`` (``ai.onnx.ml`` opset 5) attribute arrays.</span>
 
@@ -986,10 +979,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">cumulative_leaf_offset</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_leaves</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="n">nodes_splits_tensor</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor</span><span class="p">(</span>
-        <span class="s2">&quot;nodes_splits&quot;</span><span class="p">,</span>
-        <span class="n">itype</span><span class="p">,</span>
-        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">),),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="s2">&quot;nodes_splits&quot;</span><span class="p">,</span> <span class="n">itype</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">),),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">nodes_modes_tensor</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor</span><span class="p">(</span>
         <span class="s2">&quot;nodes_modes&quot;</span><span class="p">,</span>
@@ -998,10 +988,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_nodes_modes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="n">leaf_weights_tensor</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor</span><span class="p">(</span>
-        <span class="s2">&quot;leaf_weights&quot;</span><span class="p">,</span>
-        <span class="n">itype</span><span class="p">,</span>
-        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">),),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="s2">&quot;leaf_weights&quot;</span><span class="p">,</span> <span class="n">itype</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">),),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
@@ -1108,10 +1095,7 @@ window.runMermaid = runMermaid;</script>
 
     <span class="k">if</span> <span class="n">ml_opset</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="n">_build_xgb_tree_attrs_v5</span><span class="p">(</span>
-            <span class="n">trees_json</span><span class="p">,</span>
-            <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">,</span>
-            <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span><span class="p">,</span>
-            <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span>
+            <span class="n">trees_json</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">,</span> <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span><span class="p">,</span> <span class="n">itype</span><span class="o">=</span><span class="n">itype</span>
         <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;TreeEnsemble&quot;</span><span class="p">,</span>
@@ -1166,9 +1150,7 @@ window.runMermaid = runMermaid;</script>
         <span class="k">return</span> <span class="n">scores</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="n">_build_xgb_tree_attrs_legacy</span><span class="p">(</span>
-            <span class="n">trees_json</span><span class="p">,</span>
-            <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">,</span>
-            <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span><span class="p">,</span>
+            <span class="n">trees_json</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">,</span> <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span>
         <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;TreeEnsembleRegressor&quot;</span><span class="p">,</span>
@@ -1186,11 +1168,7 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_gather_labels</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
-    <span class="n">label_idx</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">classes</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">out_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">label_idx</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">out_name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Gather class labels from ``classes`` at positions ``label_idx``.</span>
 
@@ -1204,22 +1182,14 @@ window.runMermaid = runMermaid;</script>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
         <span class="n">classes_arr</span> <span class="o">=</span> <span class="n">classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
-            <span class="n">classes_arr</span><span class="p">,</span>
-            <span class="n">label_idx</span><span class="p">,</span>
-            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label&quot;</span><span class="p">,</span>
-            <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">out_name</span><span class="p">],</span>
+            <span class="n">classes_arr</span><span class="p">,</span> <span class="n">label_idx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">out_name</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
             <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">classes_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
-            <span class="n">classes_arr</span><span class="p">,</span>
-            <span class="n">label_idx</span><span class="p">,</span>
-            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label_str&quot;</span><span class="p">,</span>
-            <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">out_name</span><span class="p">],</span>
+            <span class="n">classes_arr</span><span class="p">,</span> <span class="n">label_idx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_label_str&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">out_name</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
             <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>

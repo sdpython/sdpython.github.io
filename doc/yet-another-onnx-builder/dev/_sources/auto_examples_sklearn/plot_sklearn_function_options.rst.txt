@@ -80,7 +80,7 @@ We will demonstrate three scenarios:
 * a **Pipeline** with two steps,
 * a **ColumnTransformer** with two sub-transformers.
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-88
+.. GENERATED FROM PYTHON SOURCE LINES 51-79
 
 .. code-block:: Python
 
@@ -91,29 +91,20 @@ We will demonstrate three scenarios:
 
     scaler = StandardScaler().fit(X)
 
-    pipe = Pipeline(
-        [
-            ("scaler", StandardScaler()),
-            ("clf", LogisticRegression(max_iter=200)),
-        ]
-    ).fit(X, y)
+    pipe = Pipeline([("scaler", StandardScaler()), ("clf", LogisticRegression(max_iter=200))]).fit(
+        X, y
+    )
 
-    ct = ColumnTransformer(
-        [
-            ("std", StandardScaler(), [0, 1]),
-            ("mms", MinMaxScaler(), [2, 3]),
-        ]
-    ).fit(X)
+    ct = ColumnTransformer([("std", StandardScaler(), [0, 1]), ("mms", MinMaxScaler(), [2, 3])]).fit(
+        X
+    )
 
     pipe_ct = Pipeline(
         [
             (
                 "ct",
                 ColumnTransformer(
-                    [
-                        ("std", StandardScaler(), [0, 1]),
-                        ("mms", MinMaxScaler(), [2, 3]),
-                    ]
+                    [("std", StandardScaler(), [0, 1]), ("mms", MinMaxScaler(), [2, 3])]
                 ),
             ),
             ("clf", LogisticRegression(max_iter=200)),
@@ -128,7 +119,7 @@ We will demonstrate three scenarios:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-100
+.. GENERATED FROM PYTHON SOURCE LINES 80-91
 
 2. Create FunctionOptions
 --------------------------
@@ -142,16 +133,13 @@ We will demonstrate three scenarios:
   embedded inside the function body as a ``Constant`` node instead of being
   threaded through as an extra input (recommended for portability).
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-108
+.. GENERATED FROM PYTHON SOURCE LINES 91-96
 
 .. code-block:: Python
 
 
     fopts = FunctionOptions(
-        name="sklearn_op",
-        domain="myapp",
-        move_initializer_to_constant=True,
-        export_as_function=True,
+        name="sklearn_op", domain="myapp", move_initializer_to_constant=True, export_as_function=True
     )
 
 
@@ -161,7 +149,7 @@ We will demonstrate three scenarios:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-115
+.. GENERATED FROM PYTHON SOURCE LINES 97-103
 
 3. Standalone estimator as a local function
 --------------------------------------------
@@ -170,7 +158,7 @@ The converted model contains a single ``FunctionProto`` called
 ``StandardScaler`` in domain ``myapp``.  The main graph has only one node —
 a call to that function — instead of the usual ``Sub``/``Div`` operators.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-131
+.. GENERATED FROM PYTHON SOURCE LINES 103-119
 
 .. code-block:: Python
 
@@ -206,7 +194,7 @@ a call to that function — instead of the usual ``Sub``/``Div`` operators.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-137
+.. GENERATED FROM PYTHON SOURCE LINES 120-125
 
 4. Pipeline: each step becomes a separate function
 ---------------------------------------------------
@@ -214,7 +202,7 @@ a call to that function — instead of the usual ``Sub``/``Div`` operators.
 The ``Pipeline`` container itself is **not** wrapped; each step gets its own
 ``FunctionProto``.  The main graph chains two function-call nodes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-158
+.. GENERATED FROM PYTHON SOURCE LINES 125-146
 
 .. code-block:: Python
 
@@ -256,7 +244,7 @@ The ``Pipeline`` container itself is **not** wrapped; each step gets its own
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-164
+.. GENERATED FROM PYTHON SOURCE LINES 147-152
 
 5. ColumnTransformer: each sub-transformer becomes a function
 -------------------------------------------------------------
@@ -264,7 +252,7 @@ The ``Pipeline`` container itself is **not** wrapped; each step gets its own
 The orchestration logic (``Gather`` + ``Concat``) stays in the main graph;
 only the two leaf transformers become functions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 164-183
+.. GENERATED FROM PYTHON SOURCE LINES 152-171
 
 .. code-block:: Python
 
@@ -304,7 +292,7 @@ only the two leaf transformers become functions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-189
+.. GENERATED FROM PYTHON SOURCE LINES 172-177
 
 6. Pipeline and ColumnTransformer
 ---------------------------------
@@ -312,7 +300,7 @@ only the two leaf transformers become functions.
 The flat graph (default) inlines all operators.  The function graph keeps
 the structure clean in the main graph proto.
 
-.. GENERATED FROM PYTHON SOURCE LINES 189-205
+.. GENERATED FROM PYTHON SOURCE LINES 177-193
 
 .. code-block:: Python
 
@@ -349,14 +337,14 @@ the structure clean in the main graph proto.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-210
+.. GENERATED FROM PYTHON SOURCE LINES 194-198
 
 7. Visualize the function graph
 --------------------------------
 
 The main graph of the pipeline model shows two function-call nodes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 210-212
+.. GENERATED FROM PYTHON SOURCE LINES 198-200
 
 .. code-block:: Python
 
@@ -377,7 +365,7 @@ The main graph of the pipeline model shows two function-call nodes.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.566 seconds)
+   **Total running time of the script:** (0 minutes 0.371 seconds)
 
 
 .. _sphx_glr_download_auto_examples_sklearn_plot_sklearn_function_options.py:

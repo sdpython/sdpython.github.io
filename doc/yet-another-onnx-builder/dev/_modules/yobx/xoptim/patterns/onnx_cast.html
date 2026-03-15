@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -627,9 +630,7 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        model = oh.make_model(</span>
 <span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;_onx_mul045&#39;], [&#39;mul_34&#39;], to=10),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_node(&#39;Cast&#39;, [&#39;_onx_mul045&#39;], [&#39;mul_34&#39;], to=10)],</span>
 <span class="sd">                &#39;pattern&#39;,</span>
 <span class="sd">                [</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;_onx_mul045&#39;, onnx.TensorProto.FLOAT16,</span>
@@ -658,9 +659,7 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        model = oh.make_model(</span>
 <span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Identity&#39;, [&#39;_onx_mul045&#39;], [&#39;mul_34&#39;]),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_node(&#39;Identity&#39;, [&#39;_onx_mul045&#39;], [&#39;mul_34&#39;])],</span>
 <span class="sd">                &#39;pattern&#39;,</span>
 <span class="sd">                [</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;_onx_mul045&#39;, onnx.TensorProto.FLOAT16,</span>
@@ -709,11 +708,7 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="CastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#yobx.xoptim.patterns.onnx_cast.CastPattern.apply">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;Identity&quot;</span><span class="p">,</span>
             <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
@@ -749,12 +744,8 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;x2&#39;], [&#39;Y&#39;], to=1),</span>
 <span class="sd">                ],</span>
 <span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;x1&#39;, onnx.TensorProto.FLOAT16, (&#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;x1&#39;, onnx.TensorProto.FLOAT16, (&#39;b&#39;, &#39;c&#39;))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;b&#39;, &#39;c&#39;))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
@@ -774,16 +765,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        model = oh.make_model(</span>
 <span class="sd">            oh.make_graph(</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_node(&#39;Cast&#39;, [&#39;x1&#39;], [&#39;Y&#39;], to=1),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_node(&#39;Cast&#39;, [&#39;x1&#39;], [&#39;Y&#39;], to=1)],</span>
 <span class="sd">                &#39;pattern&#39;,</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;x1&#39;, onnx.TensorProto.FLOAT16, (&#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;b&#39;, &#39;c&#39;)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;x1&#39;, onnx.TensorProto.FLOAT16, (&#39;b&#39;, &#39;c&#39;))],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;b&#39;, &#39;c&#39;))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 18)],</span>
@@ -839,10 +824,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="CastCastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#yobx.xoptim.patterns.onnx_cast.CastCastPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">cast1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">cast2</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">cast1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">cast2</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">cast1</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">middle_type</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">cast1</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">i</span>
@@ -904,9 +886,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 4)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 4))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
@@ -935,9 +915,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, 4)),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 4)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, 4))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
@@ -1006,11 +984,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="CastCastBinaryPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#yobx.xoptim.patterns.onnx_cast.CastCastBinaryPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">right</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">to</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span>
 
@@ -1060,9 +1034,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
@@ -1091,9 +1063,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
@@ -1294,9 +1264,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>
@@ -1327,9 +1295,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">                    oh.make_tensor_value_info(&#39;Y&#39;, onnx.TensorProto.FLOAT16, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                    oh.make_tensor_value_info(&#39;X&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
 <span class="sd">                ],</span>
-<span class="sd">                [</span>
-<span class="sd">                    oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;)),</span>
-<span class="sd">                ],</span>
+<span class="sd">                [oh.make_tensor_value_info(&#39;Z&#39;, onnx.TensorProto.FLOAT, (&#39;a&#39;, &#39;b&#39;))],</span>
 <span class="sd">            ),</span>
 <span class="sd">            functions=[],</span>
 <span class="sd">            opset_imports=[oh.make_opsetid(&#39;&#39;, 26)],</span>

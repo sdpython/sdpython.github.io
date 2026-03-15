@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -720,12 +723,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="aten_meth_eq">
 <a class="viewcode-back" href="../../../../api/torch/interpreter/_aten_methods.html#yobx.torch.interpreter._aten_methods.aten_meth_eq">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_eq</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;meth_eq&quot;</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;meth_eq&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;equal&quot;</span>
     <span class="k">return</span> <span class="n">aten_eq</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
@@ -750,11 +748,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="aten_meth_expand">
 <a class="viewcode-back" href="../../../../api/torch/interpreter/_aten_methods.html#yobx.torch.interpreter._aten_methods.aten_meth_expand">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_expand</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="o">*</span><span class="n">dims</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="o">*</span><span class="n">dims</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;expand&quot;</span>
     <span class="k">return</span> <span class="n">aten_expand</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.expand&quot;</span><span class="p">)</span></div>
@@ -875,12 +869,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="aten_meth_masked_fill_">
 <a class="viewcode-back" href="../../../../api/torch/interpreter/_aten_methods.html#yobx.torch.interpreter._aten_methods.aten_meth_masked_fill_">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_masked_fill_</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">mask</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;masked&quot;</span>
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -914,11 +903,7 @@ window.runMermaid = runMermaid;</script>
     <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
         <span class="n">set_type_shape_reduce_op</span><span class="p">(</span>
-            <span class="n">g</span><span class="p">,</span>
-            <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">x</span><span class="p">,</span>
-            <span class="n">keepdim</span><span class="o">=</span><span class="n">keepdim</span><span class="p">,</span>
-            <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">dim</span><span class="p">,</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="n">keepdim</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">dim</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span></div>
 
@@ -945,21 +930,14 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="aten_meth_pow">
 <a class="viewcode-back" href="../../../../api/torch/interpreter/_aten_methods.html#yobx.torch.interpreter._aten_methods.aten_meth_pow">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_pow</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">exponent</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">exponent</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;pow&quot;</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2"> (x=</span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2">, exponent=</span><span class="si">{</span><span class="n">exponent</span><span class="si">!r}</span><span class="s2">)&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
         <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
             <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="n">exponent</span><span class="p">,</span>
-                <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span>
-            <span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))),</span>
             <span class="n">source</span><span class="o">=</span><span class="s2">&quot;aten_meth_pow.exponent.scalar&quot;</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
@@ -982,11 +960,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="aten_meth_repeat">
 <a class="viewcode-back" href="../../../../api/torch/interpreter/_aten_methods.html#yobx.torch.interpreter._aten_methods.aten_meth_repeat">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_repeat</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="o">*</span><span class="n">repeats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="o">*</span><span class="n">repeats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;repeat&quot;</span>
     <span class="k">return</span> <span class="n">aten_repeat</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">repeats</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.repeat&quot;</span><span class="p">)</span></div>
@@ -1085,13 +1059,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">x</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">keepdim</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.sum&quot;</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">set_type_shape_reduce_op</span><span class="p">(</span>
-            <span class="n">g</span><span class="p">,</span>
-            <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">x</span><span class="p">,</span>
-            <span class="n">keepdim</span><span class="o">=</span><span class="n">keepdim</span><span class="p">,</span>
-            <span class="n">axes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">axes</span><span class="p">)),</span>
-        <span class="p">)</span>
+        <span class="n">set_type_shape_reduce_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="n">keepdim</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">axes</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">res</span></div>
 
 
@@ -1187,11 +1155,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="aten_meth_unsqueeze">
 <a class="viewcode-back" href="../../../../api/torch/interpreter/_aten_methods.html#yobx.torch.interpreter._aten_methods.aten_meth_unsqueeze">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_unsqueeze</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">input_name</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">input_name</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;unsqueeze&quot;</span>
     <span class="n">new_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_name</span><span class="si">}</span><span class="s2">_axes&quot;</span><span class="p">)</span>

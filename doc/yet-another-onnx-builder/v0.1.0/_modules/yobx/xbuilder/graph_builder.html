@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -986,7 +989,9 @@ window.runMermaid = runMermaid;</script>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_node_output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSTOPOUTPUT&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_node_type</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXNODETYPE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_quiet</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXQUIET&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_debug_shape_missing</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSHAPECOMPUTE&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_debug_shape_missing</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_function</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSHAPECOMPUTE&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_constant_folding</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXCONSTANTFOLD&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_foldnot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXFOLDNOT&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXDYNDIM&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
@@ -1120,11 +1125,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="GraphBuilder.make_subset_builder">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.make_subset_builder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_subset_builder</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">input_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">add_local_functions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">add_local_functions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a copy of the existing builder but with information reduced to the input_names</span>
@@ -1463,11 +1464,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="GraphBuilder.pretty_node">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.pretty_node">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">pretty_node</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
-        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>
-        <span class="n">short</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">shape</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="n">short</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Pretty rendering for a node.</span>
@@ -2417,12 +2414,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="p">[</span><span class="n">k</span><span class="p">]</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_shapes_types</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">],</span>
-        <span class="n">where</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_shapes_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">],</span> <span class="n">where</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_known_torch_value</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
@@ -2684,11 +2676,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="GraphBuilder.set_device">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.set_device">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_device</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">device</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-        <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">keep_this_device</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">keep_this_device</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the shape for a result. It is exists, it checks the new shape</span>
@@ -3004,7 +2992,7 @@ window.runMermaid = runMermaid;</script>
             <span class="sa">f</span><span class="s2">&quot;Unexpected value for shape </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">, &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;types=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">())</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, has no rank, but it should, value=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span>
@@ -3070,7 +3058,11 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_known_value_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">simplify_expression</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">simplify_expression</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="GraphBuilder.unique_function_name">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.unique_function_name">[docs]</a>
@@ -3096,6 +3088,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">        the builder may be confused as a dynamic dimension can take part</span>
 <span class="sd">        of a known value for a shape.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prefix</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&#39;:&#39; not allowed in a dimension </span><span class="si">{</span><span class="n">prefix</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="n">existing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unique_names</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_shapes</span><span class="p">:</span>
             <span class="n">existing</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
@@ -3350,7 +3343,7 @@ window.runMermaid = runMermaid;</script>
                         <span class="s2">&quot;&quot;</span><span class="p">,</span>
                         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
                         <span class="n">source</span><span class="o">=</span><span class="s2">&quot;GraphBuilder.make_shape_from_results.conc&quot;</span><span class="p">,</span>
-                    <span class="p">),</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">shape_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">shape_shape</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -3928,9 +3921,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;dim=</span><span class="si">{</span><span class="n">dim</span><span class="si">!r}</span><span class="s2"> has no rank</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">UnsqueezeAnyOpset</span><span class="p">(</span>
-                        <span class="n">dim</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">ZERO</span><span class="p">,</span>
-                        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;get_dynamic_dimension_a_</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ZERO</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;get_dynamic_dimension_a_</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
                 <span class="k">return</span> <span class="n">dim</span>
             <span class="k">assert</span> <span class="n">dim</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">,</span> <span class="p">(</span>
@@ -4434,11 +4425,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="GraphBuilder.make_tensor_sequence_input">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.make_tensor_sequence_input">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_tensor_sequence_input</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">elem_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-        <span class="n">shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
-        <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a tensor input to the onnx graph.</span>
@@ -4455,10 +4442,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">input_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_names</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_input</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">input_name</span> <span class="o">!=</span> <span class="n">name</span><span class="p">:</span>
                 <span class="n">add_node</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>  <span class="c1"># noqa: E731</span>
-                    <span class="s2">&quot;Identity&quot;</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">input_name</span><span class="p">],</span>
-                    <span class="p">[</span><span class="n">name</span><span class="p">],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;make_tensor_input_id&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">input_name</span><span class="p">],</span> <span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;make_tensor_input_id&quot;</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">input_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -4806,10 +4790,7 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">verify_shape</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DYNAMIC_SHAPE</span><span class="p">],</span>
-        <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DYNAMIC_SHAPE</span><span class="p">],</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DYNAMIC_SHAPE</span><span class="p">]:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;elem_type must be an integer not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">elem_type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">assert</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
@@ -4987,15 +4968,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">inputs</span>
             <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span>
             <span class="ow">and</span> <span class="n">op_type</span>
-            <span class="ow">in</span> <span class="p">{</span>
-                <span class="s2">&quot;Reshape&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;Shape&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;Size&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;Transpose&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;Cast&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;Squeeze&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;Unsqueeze&quot;</span><span class="p">,</span>
-            <span class="p">}</span>
+            <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Reshape&quot;</span><span class="p">,</span> <span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="s2">&quot;Size&quot;</span><span class="p">,</span> <span class="s2">&quot;Transpose&quot;</span><span class="p">,</span> <span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">,</span> <span class="s2">&quot;Unsqueeze&quot;</span><span class="p">}</span>
         <span class="p">):</span>
 
             <span class="k">def</span><span class="w"> </span><span class="nf">_get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
@@ -5130,10 +5103,10 @@ window.runMermaid = runMermaid;</script>
             <span class="c1"># No need.</span>
             <span class="k">return</span> <span class="n">output_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Concat&quot;</span><span class="p">:</span>
-            <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">inputs</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span>
-            <span class="k">assert</span> <span class="ow">not</span> <span class="n">types</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">types</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+            <span class="n">ranks</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">inputs</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">ranks</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ranks</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;All inputs must have the same rank for Concat, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;types=</span><span class="si">{</span><span class="n">types</span><span class="si">}</span><span class="s2">, inputs=</span><span class="si">{</span><span class="n">inputs</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;types=</span><span class="si">{</span><span class="n">ranks</span><span class="si">}</span><span class="s2">, inputs=</span><span class="si">{</span><span class="n">inputs</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">check</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
@@ -5281,6 +5254,18 @@ window.runMermaid = runMermaid;</script>
 
         <span class="n">node</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">+=</span> <span class="s2">&quot;.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info_shape_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_shape_missing</span> <span class="ow">or</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span> <span class="k">if</span> <span class="n">o</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;One output among </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2"> shape is missing in &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">o</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">shape_set</span><span class="si">=}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">input shapes are &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">value shapes are &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">value_as_shape</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">node is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">output_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span></div>
@@ -7201,9 +7186,10 @@ window.runMermaid = runMermaid;</script>
                         <span class="n">update</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
                     <span class="n">k2</span> <span class="o">=</span> <span class="n">rename_expression</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">{</span><span class="n">n1</span><span class="p">:</span> <span class="n">n2</span><span class="p">})</span>
                     <span class="n">vv2</span> <span class="o">=</span> <span class="n">rename_expression</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="p">{</span><span class="n">n2</span><span class="p">:</span> <span class="n">n1</span><span class="p">})</span>
-                    <span class="k">assert</span> <span class="p">(</span>
-                        <span class="n">k</span> <span class="o">!=</span> <span class="n">k2</span> <span class="ow">or</span> <span class="n">vv</span> <span class="o">!=</span> <span class="n">vv2</span>
-                    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">k2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">vv</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">vv2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">n1</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">n2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">v</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="si">=}</span><span class="s2">&quot;</span>
+                    <span class="k">assert</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">k2</span> <span class="ow">or</span> <span class="n">vv</span> <span class="o">!=</span> <span class="n">vv2</span><span class="p">,</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">k2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">vv</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">vv2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">n1</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">n2</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">v</span><span class="si">=}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="si">=}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
                     <span class="n">eq</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">vv</span><span class="p">,</span> <span class="n">vv2</span><span class="p">}</span>
                     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">eq</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">e</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">update</span><span class="p">:</span>
@@ -7389,8 +7375,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict_sources</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">initializers_dict_sources</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span>
-                    <span class="n">k</span><span class="p">,</span>
-                    <span class="n">marker</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">_events</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;set_event&quot;</span><span class="p">),</span> <span class="s2">&quot;optimize_node_subgraphs_inplace&quot;</span><span class="p">),</span>
+                    <span class="n">k</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">_events</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;set_event&quot;</span><span class="p">),</span> <span class="s2">&quot;optimize_node_subgraphs_inplace&quot;</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
@@ -7531,11 +7516,7 @@ window.runMermaid = runMermaid;</script>
                     <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
                         <span class="k">continue</span>
                     <span class="n">local_stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="nb">dict</span><span class="p">(</span>
-                            <span class="n">pattern</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;apply_constant_folding_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="n">value</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
-                            <span class="n">iteration</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                        <span class="p">)</span>
+                        <span class="nb">dict</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;apply_constant_folding_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                     <span class="p">)</span>
         <span class="k">elif</span> <span class="n">pass_name</span> <span class="o">==</span> <span class="s2">&quot;patterns&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span>
@@ -7558,12 +7539,7 @@ window.runMermaid = runMermaid;</script>
 
         <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">pattern</span><span class="o">=</span><span class="n">pass_name</span><span class="p">,</span>
-                    <span class="n">removed</span><span class="o">=</span><span class="n">nr</span><span class="p">,</span>
-                    <span class="n">added</span><span class="o">=</span><span class="n">na</span><span class="p">,</span>
-                    <span class="n">time_in</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">pass_name</span><span class="p">,</span> <span class="n">removed</span><span class="o">=</span><span class="n">nr</span><span class="p">,</span> <span class="n">added</span><span class="o">=</span><span class="n">na</span><span class="p">,</span> <span class="n">time_in</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">local_stats</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">local_stats</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -8120,11 +8096,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="sa">f</span><span class="s2">&quot;replacements are</span><span class="se">\n</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
             <span class="n">new_node</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span>
-                <span class="n">new_inputs</span><span class="p">,</span>
-                <span class="n">new_outputs</span><span class="p">,</span>
-                <span class="n">domain</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">new_inputs</span><span class="p">,</span> <span class="n">new_outputs</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_has_subgraph_possibly</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
@@ -8135,8 +8107,7 @@ window.runMermaid = runMermaid;</script>
                         <span class="n">att</span>
                         <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span>
                         <span class="k">else</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span>
-                            <span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                            <span class="bp">cls</span><span class="o">.</span><span class="n">_rename_inputs_in_subgraph</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">replacements</span><span class="p">),</span>
+                            <span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_rename_inputs_in_subgraph</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -8643,8 +8614,7 @@ window.runMermaid = runMermaid;</script>
                     <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">node_domain</span><span class="p">]</span> <span class="o">=</span> <span class="n">opsets</span><span class="p">[</span><span class="n">node_domain</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">node_domain</span><span class="p">]</span> <span class="o">=</span> <span class="n">choose_consistent_domain_opset</span><span class="p">(</span>
-                        <span class="n">node_domain</span><span class="p">,</span>
-                        <span class="n">opsets</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">,</span>
+                        <span class="n">node_domain</span><span class="p">,</span> <span class="n">opsets</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">opsets</span>
                     <span class="p">)</span>
 
         <span class="k">assert</span> <span class="n">n_existing</span><span class="p">,</span> <span class="s2">&quot;Any output of the new node is connected to existing names.&quot;</span>
@@ -9604,11 +9574,7 @@ window.runMermaid = runMermaid;</script>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_function_order</span><span class="p">()</span>
 
-        <span class="n">fct</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span>
-            <span class="n">function_options</span><span class="o">=</span><span class="n">function_options</span><span class="p">,</span>
-            <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
-            <span class="n">inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">fct</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span><span class="n">function_options</span><span class="o">=</span><span class="n">function_options</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fct</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)),</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">fct</span><span class="p">)</span><span class="si">}</span><span class="s2">, function_options=</span><span class="si">{</span><span class="n">function_options</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -9668,9 +9634,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">repl</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fct</span><span class="p">[</span><span class="s2">&quot;initializers_dict&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">new_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_initializer</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
-                    <span class="n">v</span><span class="p">,</span>
-                    <span class="n">source</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;GraphBuilder.make_local_function/from(</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;GraphBuilder.make_local_function/from(</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="p">)</span>
                 <span class="n">repl</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_name</span>
             <span class="n">renaming</span> <span class="o">=</span> <span class="n">fct</span><span class="p">[</span><span class="s2">&quot;initializers_renaming&quot;</span><span class="p">]</span>
@@ -9918,8 +9882,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">node_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span>
-                        <span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_rename_op_type_in_local_functions</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">replacements</span><span class="p">),</span>
+                        <span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rename_op_type_in_local_functions</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">modified</span><span class="p">:</span>
@@ -11061,8 +11024,18 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        First supported expression:</span>
 
-<span class="sd">        * ``f(&quot;dim&quot;, &quot;d1&quot;, &quot;+&quot;, &quot;d2&quot;)  -&gt;  dimension == args[0] + args[2]``</span>
+<span class="sd">        * ``f(&quot;dim&quot;, &quot;d1&quot;) -&gt; dim == d2``</span>
+<span class="sd">        * ``f(&quot;dim&quot;, &quot;d1&quot;, &quot;+&quot;, &quot;d2&quot;)  -&gt;  dim == args[0] + args[2]``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dim2</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">dim2</span> <span class="o">==</span> <span class="n">dimension</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">dim2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span> <span class="ow">and</span> <span class="n">dimension</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="p">[</span><span class="n">dim2</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">dimension</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span> <span class="ow">and</span> <span class="n">dim2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="p">[</span><span class="n">dimension</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
                 <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -11083,10 +11056,7 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_unary_op</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">itype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">itype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">itype</span><span class="p">)</span>  <span class="c1"># type: ignore</span></div>
 

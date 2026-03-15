@@ -10,12 +10,12 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -139,6 +139,9 @@
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -191,13 +194,69 @@
             
   <section id="module-yobx.tensorflow.ops.matmul">
 <span id="yobx-tensorflow-ops-matmul"></span><h1>yobx.tensorflow.ops.matmul<a class="headerlink" href="#module-yobx.tensorflow.ops.matmul" title="Link to this heading">¶</a></h1>
-<p>Converter for the TF <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> / <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code> op → ONNX <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>.</p>
+<p>Converter for the TF <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> / <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code> / <code class="docutils literal notranslate"><span class="pre">BatchMatMul</span></code> op →
+ONNX <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>.</p>
+<section id="matrix-multiplication">
+<h2>Matrix multiplication<a class="headerlink" href="#matrix-multiplication" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code>, <code class="docutils literal notranslate"><span class="pre">BatchMatMul</span></code></p>
+<p>All three TF op variants produce standard matrix multiplication (or batched
+matrix multiplication) and map directly to a single ONNX <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> node.</p>
+</section>
+<section id="transposition-adjoint">
+<h2>Transposition / adjoint<a class="headerlink" href="#transposition-adjoint" title="Link to this heading">¶</a></h2>
+<p>TF supports two families of “reverse-input” attributes that indicate the
+operands should be transposed before multiplying:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">transpose_a</span></code> / <code class="docutils literal notranslate"><span class="pre">transpose_b</span></code> — used by 2-D <code class="docutils literal notranslate"><span class="pre">MatMul</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">adj_x</span></code> / <code class="docutils literal notranslate"><span class="pre">adj_y</span></code> — used by <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code> and <code class="docutils literal notranslate"><span class="pre">BatchMatMul</span></code></p></li>
+</ul>
+<p>For real-valued tensors the <em>adjoint</em> is identical to the <em>transpose</em>, so
+both families are handled identically: when an attribute is <code class="docutils literal notranslate"><span class="pre">True</span></code> an ONNX
+<code class="docutils literal notranslate"><span class="pre">Transpose</span></code> node that swaps the <strong>last two dimensions</strong> is inserted before
+the <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>.</p>
+<p>Because the batch dimensions can be of arbitrary rank the permutation is
+computed dynamically by <code class="xref py py-func docutils literal notranslate"><span class="pre">_transpose_last_two()</span></code> rather than using
+hard-coded indices like <code class="docutils literal notranslate"><span class="pre">[-1,</span> <span class="pre">-2]</span></code>.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
+<p>The following TF graph fragment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># batched matmul with transposed B: result[b, i, j] = sum_k A[b, i, k] * B[b, j, k]</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">adjoint_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># BatchMatMulV2 with adj_y=True</span>
+</pre></div>
+</div>
+<p>is converted to:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Transpose(B, perm=[0, 2, 1])   # swap last two dims
+MatMul(A, transposed_B)
+</pre></div>
+</div>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.tensorflow.ops.matmul.convert_matmul">
-<span class="sig-prename descclassname"><span class="pre">yobx.tensorflow.ops.matmul.</span></span><span class="sig-name descname"><span class="pre">convert_matmul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../typing.html#yobx.typing.GraphBuilderExtendedProtocol" title="yobx.typing.GraphBuilderExtendedProtocol"><span class="pre">GraphBuilderExtendedProtocol</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Operation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/05fe073/yobx/tensorflow/ops/matmul.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/tensorflow/ops/matmul.html#convert_matmul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.tensorflow.ops.matmul.convert_matmul" title="Link to this definition">¶</a></dt>
-<dd><p>Converts TF <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> / <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code> to ONNX <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>.</p>
-<p>TF’s transpose flags (<code class="docutils literal notranslate"><span class="pre">transpose_a</span></code> / <code class="docutils literal notranslate"><span class="pre">transpose_b</span></code>) are honoured by
-inserting ONNX <code class="docutils literal notranslate"><span class="pre">Transpose</span></code> nodes when needed.</p>
+<span class="sig-prename descclassname"><span class="pre">yobx.tensorflow.ops.matmul.</span></span><span class="sig-name descname"><span class="pre">convert_matmul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../typing.html#yobx.typing.GraphBuilderExtendedProtocol" title="yobx.typing.GraphBuilderExtendedProtocol"><span class="pre">GraphBuilderExtendedProtocol</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Operation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/81383f7/yobx/tensorflow/ops/matmul.py#L79"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/tensorflow/ops/matmul.html#convert_matmul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.tensorflow.ops.matmul.convert_matmul" title="Link to this definition">¶</a></dt>
+<dd><p>Converts TF <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> / <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code> / <code class="docutils literal notranslate"><span class="pre">BatchMatMul</span></code> → ONNX <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – the active <a class="reference internal" href="../../xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a> instance.</p></li>
+<li><p><strong>sts</strong> – metadata dictionary (unused, always <code class="docutils literal notranslate"><span class="pre">{}</span></code>).</p></li>
+<li><p><strong>outputs</strong> – list of pre-allocated output tensor names; <code class="docutils literal notranslate"><span class="pre">outputs[0]</span></code>
+receives the result of the multiplication.</p></li>
+<li><p><strong>op</strong> – the TF <code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code>, or <code class="docutils literal notranslate"><span class="pre">BatchMatMul</span></code>
+operation.  Its first two inputs are the left and right operands.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the name of the primary output tensor.</p>
+</dd>
+</dl>
+<p>TF’s transpose flags (<code class="docutils literal notranslate"><span class="pre">transpose_a</span></code> / <code class="docutils literal notranslate"><span class="pre">transpose_b</span></code>) and adjoint flags
+(<code class="docutils literal notranslate"><span class="pre">adj_x</span></code> / <code class="docutils literal notranslate"><span class="pre">adj_y</span></code> used by <code class="docutils literal notranslate"><span class="pre">BatchMatMulV2</span></code>) are honoured by inserting
+ONNX <code class="docutils literal notranslate"><span class="pre">Transpose</span></code> nodes when needed.  For real-valued tensors, adjoint is
+equivalent to transpose.</p>
+<p>The permutation used for transposition is always rank-aware: it swaps only
+the last two axes so that arbitrary batch dimensions are left intact.  See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_transpose_last_two()</span></code> for details.</p>
 </dd></dl>
 
 </section>
@@ -217,6 +276,9 @@ inserting ONNX <code class="docutils literal notranslate"><span class="pre">Tran
             <div class="page_toc">
                 <ul>
 <li><a class="reference internal" href="#">yobx.tensorflow.ops.matmul</a><ul>
+<li><a class="reference internal" href="#matrix-multiplication">Matrix multiplication</a></li>
+<li><a class="reference internal" href="#transposition-adjoint">Transposition / adjoint</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
 <li><a class="reference internal" href="#yobx.tensorflow.ops.matmul.convert_matmul"><code class="docutils literal notranslate"><span class="pre">convert_matmul()</span></code></a></li>
 </ul>
 </li>

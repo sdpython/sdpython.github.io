@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -789,10 +792,7 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
-        <span class="n">concat_left</span><span class="p">,</span> <span class="n">concat_right</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="n">concat_left</span><span class="p">,</span> <span class="n">concat_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="k">if</span> <span class="n">concat_left</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">concat_right</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">concat_left</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">concat_right</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
@@ -961,30 +961,18 @@ window.runMermaid = runMermaid;</script>
             <span class="n">neg_out</span> <span class="o">=</span> <span class="n">neg_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">concat_right</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">neg_out</span><span class="p">)</span>
             <span class="n">concat_inputs</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="n">neg_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="p">]</span>
+                <span class="p">[</span><span class="n">neg_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                 <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span>
-                <span class="k">else</span> <span class="p">[</span>
-                    <span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="n">neg_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="p">]</span>
+                <span class="k">else</span> <span class="p">[</span><span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">neg_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
             <span class="p">)</span>
             <span class="n">neg</span> <span class="o">=</span> <span class="n">neg_right</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">neg_out</span> <span class="o">=</span> <span class="n">neg_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">concat_left</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">neg_out</span><span class="p">)</span>
             <span class="n">concat_inputs</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="n">neg_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="p">]</span>
+                <span class="p">[</span><span class="n">neg_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                 <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span>
-                <span class="k">else</span> <span class="p">[</span>
-                    <span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="n">neg_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="p">]</span>
+                <span class="k">else</span> <span class="p">[</span><span class="n">split</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_split</span> <span class="k">else</span> <span class="n">slice_right</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">neg_left</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
             <span class="p">)</span>
             <span class="n">neg</span> <span class="o">=</span> <span class="n">neg_left</span>
 
@@ -1093,11 +1081,7 @@ window.runMermaid = runMermaid;</script>
 
         <span class="n">slice_left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">tr_update_left</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">slice_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">tr_update_right</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">slice_left</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="s2">&quot;Slice&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Neg&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Split&quot;</span><span class="p">,</span>
-        <span class="p">)</span> <span class="ow">or</span> <span class="n">slice_right</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="k">if</span> <span class="n">slice_left</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="s2">&quot;Neg&quot;</span><span class="p">,</span> <span class="s2">&quot;Split&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">slice_right</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="s2">&quot;Slice&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Neg&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Split&quot;</span><span class="p">,</span>
@@ -1125,15 +1109,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">neg_right</span> <span class="o">=</span> <span class="n">slice_right</span>
             <span class="n">slice_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">neg_right</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-        <span class="n">nodes2</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">cst_left</span><span class="p">,</span>
-            <span class="n">slice_left</span><span class="p">,</span>
-            <span class="n">neg_left</span><span class="p">,</span>
-            <span class="n">cst_right</span><span class="p">,</span>
-            <span class="n">slice_right</span><span class="p">,</span>
-            <span class="n">neg_right</span><span class="p">,</span>
-            <span class="n">node</span><span class="p">,</span>
-        <span class="p">]</span>
+        <span class="n">nodes2</span> <span class="o">=</span> <span class="p">[</span><span class="n">cst_left</span><span class="p">,</span> <span class="n">slice_left</span><span class="p">,</span> <span class="n">neg_left</span><span class="p">,</span> <span class="n">cst_right</span><span class="p">,</span> <span class="n">slice_right</span><span class="p">,</span> <span class="n">neg_right</span><span class="p">,</span> <span class="n">node</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
             <span class="p">(</span>

@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -728,10 +731,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="FusedMatMulDivPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/fused_matmul.html#yobx.xoptim.patterns_ort.fused_matmul.FusedMatMulDivPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">node_div</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">node_div</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">atts</span> <span class="o">=</span> <span class="p">[]</span>
@@ -973,10 +973,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="p">)</span>
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">transA</span><span class="o">=</span><span class="n">transA</span><span class="p">,</span>
-            <span class="n">transB</span><span class="o">=</span><span class="n">transB</span><span class="p">,</span>
-            <span class="n">transBatchA</span><span class="o">=</span><span class="n">transBatchA</span><span class="p">,</span>
-            <span class="n">transBatchB</span><span class="o">=</span><span class="n">transBatchB</span><span class="p">,</span>
+            <span class="n">transA</span><span class="o">=</span><span class="n">transA</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="n">transB</span><span class="p">,</span> <span class="n">transBatchA</span><span class="o">=</span><span class="n">transBatchA</span><span class="p">,</span> <span class="n">transBatchB</span><span class="o">=</span><span class="n">transBatchB</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1332,10 +1329,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="FusedMatMulTransposePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/fused_matmul.html#yobx.xoptim.patterns_ort.fused_matmul.FusedMatMulTransposePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">transpose_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">transpose_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">default_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">transA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transBatchA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transBatchB</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attributes_with_default</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">default_values</span><span class="p">)</span>
@@ -1483,10 +1477,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ReshapeGemmPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/fused_matmul.html#yobx.xoptim.patterns_ort.fused_matmul.ReshapeGemmPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">gemm_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">gemm_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">transB</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attributes_with_default</span><span class="p">(</span><span class="n">gemm_node</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="s2">&quot;transB&quot;</span><span class="p">]</span>
@@ -1804,10 +1795,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="TransposeFusedMatMulBPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/fused_matmul.html#yobx.xoptim.patterns_ort.fused_matmul.TransposeFusedMatMulBPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">transpose_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">transpose_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">tout</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span>

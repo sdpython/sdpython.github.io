@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -719,11 +722,7 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="ExpandPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ExpandPattern.apply">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;Identity&quot;</span><span class="p">,</span>
             <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
@@ -873,10 +872,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ExpandBroadcastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ExpandBroadcastPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
@@ -1171,10 +1167,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ExpandSwapPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ExpandSwapPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="c1"># We need to create a new name for the intermediate results.</span>
         <span class="c1"># The optimizer cannot reuse an existing name if the new result</span>
@@ -1327,18 +1320,12 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="ShapeBasedStaticExpandPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ShapeBasedStaticExpandPattern.apply">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">expand_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_expand_shape</span><span class="p">(</span>
             <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">new_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expand_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">source</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.m1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expand_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.m1&quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -1643,7 +1630,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="p">[</span><span class="n">new_name</span><span class="p">],</span>
                 <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">binary_node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">doc_string</span><span class="o">=</span><span class="n">binary_node</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
-            <span class="p">),</span>
+            <span class="p">)</span>
         <span class="p">)</span>
 
         <span class="c1"># One or two expand, same rewriting as the expand argument is the same.</span>
@@ -1928,11 +1915,7 @@ window.runMermaid = runMermaid;</script>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_compatible_shapes</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">cond</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
-        <span class="n">cst</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
-        <span class="n">output</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
-        <span class="n">before</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">cst</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">before</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">cond</span> <span class="o">!=</span> <span class="n">output</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -2175,10 +2158,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ShapeBasedConcatExpandPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.ShapeBasedConcatExpandPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">concat_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">expand_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">concat_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">expand_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">shape1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">expand_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">shape2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">expand_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -2328,10 +2308,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="SwapExpandReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#yobx.xoptim.patterns.onnx_expand.SwapExpandReshapePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">expand_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">expand_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">new_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="n">reshape_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="p">[</span>

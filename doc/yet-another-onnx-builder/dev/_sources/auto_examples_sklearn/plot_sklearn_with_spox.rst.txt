@@ -78,7 +78,7 @@ We train a two-step pipeline: ``StandardScaler`` followed by
 ``LogisticRegression`` on a small synthetic dataset (80 samples,
 4 features, 2 classes).
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-68
+.. GENERATED FROM PYTHON SOURCE LINES 51-63
 
 .. code-block:: Python
 
@@ -87,12 +87,7 @@ We train a two-step pipeline: ``StandardScaler`` followed by
     X_train = rng.standard_normal((80, 4)).astype(np.float32)
     y_train = (X_train[:, 0] + X_train[:, 1] > 0).astype(int)
 
-    pipe = Pipeline(
-        [
-            ("scaler", StandardScaler()),
-            ("clf", LogisticRegression()),
-        ]
-    )
+    pipe = Pipeline([("scaler", StandardScaler()), ("clf", LogisticRegression())])
     pipe.fit(X_train, y_train)
 
     print("Binary pipeline steps:")
@@ -114,7 +109,7 @@ We train a two-step pipeline: ``StandardScaler`` followed by
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-76
+.. GENERATED FROM PYTHON SOURCE LINES 64-71
 
 2. Convert to ONNX using SpoxGraphBuilder
 ------------------------------------------
@@ -124,7 +119,7 @@ passing ``builder_cls=SpoxGraphBuilder``.  The converters for each
 step in the pipeline will use :epkg:`spox` opset modules to emit
 the ONNX nodes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-87
+.. GENERATED FROM PYTHON SOURCE LINES 71-79
 
 .. code-block:: Python
 
@@ -133,10 +128,7 @@ the ONNX nodes.
 
     print(f"\nONNX opset  : {onx.opset_import[0].version}")
     print("Node types  :", [n.op_type for n in onx.graph.node])
-    print(
-        "Graph input : ",
-        [(inp.name, inp.type.tensor_type.elem_type) for inp in onx.graph.input],
-    )
+    print("Graph input : ", [(inp.name, inp.type.tensor_type.elem_type) for inp in onx.graph.input])
     print("Graph outputs:", [out.name for out in onx.graph.output])
 
 
@@ -156,7 +148,7 @@ the ONNX nodes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-93
+.. GENERATED FROM PYTHON SOURCE LINES 80-85
 
 3. Run and verify — binary classification
 ------------------------------------------
@@ -164,7 +156,7 @@ the ONNX nodes.
 We run the exported model with :epkg:`onnxruntime` and check that
 class labels and probabilities match scikit-learn's predictions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-109
+.. GENERATED FROM PYTHON SOURCE LINES 85-101
 
 .. code-block:: Python
 
@@ -201,7 +193,7 @@ class labels and probabilities match scikit-learn's predictions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-116
+.. GENERATED FROM PYTHON SOURCE LINES 102-108
 
 4. Multiclass classification
 -----------------------------
@@ -210,7 +202,7 @@ The same workflow applies to multiclass problems.  The
 ``LogisticRegression`` converter switches from a sigmoid-based binary
 graph to a softmax-based multiclass graph automatically.
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-143
+.. GENERATED FROM PYTHON SOURCE LINES 108-130
 
 .. code-block:: Python
 
@@ -218,12 +210,7 @@ graph to a softmax-based multiclass graph automatically.
     X_mc = rng.standard_normal((120, 4)).astype(np.float32)
     y_mc = rng.integers(0, 3, size=120)
 
-    pipe_mc = Pipeline(
-        [
-            ("scaler", StandardScaler()),
-            ("clf", LogisticRegression(max_iter=500)),
-        ]
-    )
+    pipe_mc = Pipeline([("scaler", StandardScaler()), ("clf", LogisticRegression(max_iter=500))])
     pipe_mc.fit(X_mc, y_mc)
 
     X_test_mc = rng.standard_normal((30, 4)).astype(np.float32)
@@ -254,12 +241,12 @@ graph to a softmax-based multiclass graph automatically.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-146
+.. GENERATED FROM PYTHON SOURCE LINES 131-133
 
 5. Visualise the ONNX graph
 ---------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-148
+.. GENERATED FROM PYTHON SOURCE LINES 133-135
 
 .. code-block:: Python
 
@@ -280,7 +267,7 @@ graph to a softmax-based multiclass graph automatically.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.607 seconds)
+   **Total running time of the script:** (0 minutes 0.777 seconds)
 
 
 .. _sphx_glr_download_auto_examples_sklearn_plot_sklearn_with_spox.py:

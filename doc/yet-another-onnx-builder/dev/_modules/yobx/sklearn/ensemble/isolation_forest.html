@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -643,9 +646,7 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_extract_iforest_attributes_legacy</span><span class="p">(</span>
-    <span class="n">estimators</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-    <span class="n">estimators_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-    <span class="n">n_estimators</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">estimators</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">estimators_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">n_estimators</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts combined tree attributes for all isolation trees, encoding each</span>
@@ -753,10 +754,7 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_extract_iforest_attributes_v5</span><span class="p">(</span>
-    <span class="n">estimators</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-    <span class="n">estimators_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-    <span class="n">n_estimators</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">estimators</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">estimators_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">n_estimators</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts combined tree attributes for all isolation trees in the</span>
@@ -885,10 +883,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">cumulative_leaf_offset</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_leaves</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="n">nodes_splits_tensor</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor</span><span class="p">(</span>
-        <span class="s2">&quot;nodes_splits&quot;</span><span class="p">,</span>
-        <span class="n">itype</span><span class="p">,</span>
-        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">),),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="s2">&quot;nodes_splits&quot;</span><span class="p">,</span> <span class="n">itype</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">),),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_nodes_splits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">nodes_modes_tensor</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor</span><span class="p">(</span>
         <span class="s2">&quot;nodes_modes&quot;</span><span class="p">,</span>
@@ -897,10 +892,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_nodes_modes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="n">leaf_weights_tensor</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor</span><span class="p">(</span>
-        <span class="s2">&quot;leaf_weights&quot;</span><span class="p">,</span>
-        <span class="n">itype</span><span class="p">,</span>
-        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">),),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="s2">&quot;leaf_weights&quot;</span><span class="p">,</span> <span class="n">itype</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">),),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_leaf_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
@@ -1026,29 +1018,19 @@ window.runMermaid = runMermaid;</script>
 
     <span class="c1"># Flatten (N, 1) → (N,)</span>
     <span class="n">avg_depth_flat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span>
-        <span class="n">avg_depth_raw</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_reshape&quot;</span><span class="p">,</span>
+        <span class="n">avg_depth_raw</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_reshape&quot;</span>
     <span class="p">)</span>
 
     <span class="c1"># Cast to the input dtype when float64 is requested (legacy tree always outputs float32).</span>
     <span class="k">if</span> <span class="n">ml_opset</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">itype</span> <span class="o">==</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span>
-        <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span>
-            <span class="n">avg_depth_flat</span><span class="p">,</span>
-            <span class="n">to</span><span class="o">=</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast_f64&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">avg_depth_flat</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast_f64&quot;</span><span class="p">)</span>
         <span class="n">np_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">avg_depth</span> <span class="o">=</span> <span class="n">avg_depth_flat</span>
 
     <span class="c1"># score = 2^(-avg_depth / normalization) = exp(avg_depth * (-log(2) / normalization))</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="n">np_dtype</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">normalization</span><span class="p">)</span>
-    <span class="n">exponent</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span>
-        <span class="n">avg_depth</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">scale</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np_dtype</span><span class="p">),</span>
-        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_scale&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">exponent</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">avg_depth</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">scale</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np_dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_scale&quot;</span><span class="p">)</span>
     <span class="n">score</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_exp&quot;</span><span class="p">)</span>
 
     <span class="c1"># score_samples = -score</span>
@@ -1056,11 +1038,7 @@ window.runMermaid = runMermaid;</script>
 
     <span class="c1"># decision_function = score_samples - offset_</span>
     <span class="n">offset_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">offset</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np_dtype</span><span class="p">)</span>
-    <span class="n">decision</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span>
-        <span class="n">score_samples</span><span class="p">,</span>
-        <span class="n">offset_arr</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_decision&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">decision</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">score_samples</span><span class="p">,</span> <span class="n">offset_arr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_decision&quot;</span><span class="p">)</span>
 
     <span class="c1"># label = 1 if decision_function &gt;= 0 else -1</span>
     <span class="n">zero_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np_dtype</span><span class="p">(</span><span class="mi">0</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np_dtype</span><span class="p">)</span>

@@ -71,17 +71,14 @@ Build a small model
 
 The model computes ``Z = Tanh(X + Y)``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-63
+.. GENERATED FROM PYTHON SOURCE LINES 42-60
 
 .. code-block:: Python
 
 
     model = oh.make_model(
         oh.make_graph(
-            [
-                oh.make_node("Add", ["X", "Y"], ["T"]),
-                oh.make_node("Tanh", ["T"], ["Z"]),
-            ],
+            [oh.make_node("Add", ["X", "Y"], ["T"]), oh.make_node("Tanh", ["T"], ["Z"])],
             "add_tanh",
             [
                 oh.make_tensor_value_info("X", TFLOAT, [None, None]),
@@ -103,7 +100,7 @@ The model computes ``Z = Tanh(X + Y)``.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-69
+.. GENERATED FROM PYTHON SOURCE LINES 61-66
 
 1. ExtendedReferenceEvaluator
 ------------------------------
@@ -111,7 +108,7 @@ The model computes ``Z = Tanh(X + Y)``.
 Pure Python / NumPy.  A drop-in replacement for
 :class:`onnx.reference.ReferenceEvaluator` that also handles contrib ops.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-74
+.. GENERATED FROM PYTHON SOURCE LINES 66-71
 
 .. code-block:: Python
 
@@ -134,7 +131,7 @@ Pure Python / NumPy.  A drop-in replacement for
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-81
+.. GENERATED FROM PYTHON SOURCE LINES 72-78
 
 2. OnnxruntimeEvaluator
 ------------------------
@@ -143,7 +140,7 @@ Executes each node via ONNX Runtime.  Setting ``intermediate=True``
 returns a dictionary with *all* intermediate results, which is very
 handy when debugging a model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-86
+.. GENERATED FROM PYTHON SOURCE LINES 78-83
 
 .. code-block:: Python
 
@@ -166,11 +163,11 @@ handy when debugging a model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-88
+.. GENERATED FROM PYTHON SOURCE LINES 84-85
 
 Retrieve intermediate results:
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-92
+.. GENERATED FROM PYTHON SOURCE LINES 85-89
 
 .. code-block:: Python
 
@@ -198,7 +195,7 @@ Retrieve intermediate results:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-98
+.. GENERATED FROM PYTHON SOURCE LINES 90-95
 
 3. TorchReferenceEvaluator
 ---------------------------
@@ -206,7 +203,7 @@ Retrieve intermediate results:
 All computation uses PyTorch tensors.  The same model can run on CUDA
 by passing ``providers=["CUDAExecutionProvider"]``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-105
+.. GENERATED FROM PYTHON SOURCE LINES 95-102
 
 .. code-block:: Python
 
@@ -231,12 +228,12 @@ by passing ``providers=["CUDAExecutionProvider"]``.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-108
+.. GENERATED FROM PYTHON SOURCE LINES 103-105
 
 Verify all three evaluators agree
 -----------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-113
+.. GENERATED FROM PYTHON SOURCE LINES 105-110
 
 .. code-block:: Python
 
@@ -258,7 +255,7 @@ Verify all three evaluators agree
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-126
+.. GENERATED FROM PYTHON SOURCE LINES 111-123
 
 Summary
 -------
@@ -273,7 +270,7 @@ Summary
 | TorchReferenceEvaluator         | torch.Tensor       | CUDA support; no round-trip    |
 +---------------------------------+--------------------+--------------------------------+
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-133
+.. GENERATED FROM PYTHON SOURCE LINES 125-130
 
 Plot: outputs from all three evaluators
 -----------------------------------------
@@ -281,7 +278,7 @@ Plot: outputs from all three evaluators
 The heat-maps below show the ``Tanh(X + Y)`` output produced by each
 evaluator.  All three panels are identical, confirming the results agree.
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-147
+.. GENERATED FROM PYTHON SOURCE LINES 130-144
 
 .. code-block:: Python
 
@@ -314,7 +311,7 @@ evaluator.  All three panels are identical, confirming the results agree.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.482 seconds)
+   **Total running time of the script:** (0 minutes 0.576 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_evaluator_comparison.py:

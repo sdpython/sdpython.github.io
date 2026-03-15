@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -602,7 +605,29 @@ window.runMermaid = runMermaid;</script>
             
   <h1>Source code for yobx.tensorflow.ops.shape_ops</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Converters for TF shape-manipulation ops: ``Reshape``, ``Squeeze``.</span>
+<span class="sd">Converters for TF shape-manipulation ops:</span>
+<span class="sd">``Reshape``, ``Squeeze``, ``Shape``, ``StridedSlice``, ``Pack``,</span>
+<span class="sd">``ExpandDims``, ``Transpose``, ``Cast``.</span>
+
+<span class="sd">Reshape / squeeze</span>
+<span class="sd">-----------------</span>
+<span class="sd">``Reshape``, ``Squeeze``</span>
+
+<span class="sd">Type casting</span>
+<span class="sd">------------</span>
+<span class="sd">``Cast``</span>
+
+<span class="sd">Shape / indexing</span>
+<span class="sd">----------------</span>
+<span class="sd">``Shape``, ``StridedSlice``</span>
+
+<span class="sd">Stack / pack</span>
+<span class="sd">------------</span>
+<span class="sd">``Pack``</span>
+
+<span class="sd">Dimension insertion / permutation</span>
+<span class="sd">----------------------------------</span>
+<span class="sd">``ExpandDims``, ``Transpose``</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
@@ -614,24 +639,69 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_tf_op_converter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 
+<span class="c1"># Mapping from TF dtype to ONNX TensorProto type.</span>
+<span class="n">_TF_DTYPE_TO_ONNX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT16</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">bfloat16</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BFLOAT16</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">int8</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT8</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">int16</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT16</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">uint8</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT8</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">uint16</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT16</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">uint32</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT32</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">uint64</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">bool</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">,</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">as_datatype_enum</span><span class="p">:</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+<span class="p">}</span>
+
 
 <div class="viewcode-block" id="convert_reshape">
 <a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_reshape">[docs]</a>
 <span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;Reshape&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_reshape</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts TF ``Reshape`` → ONNX ``Reshape``.</span>
 
 <span class="sd">    The TF ``shape`` input (second input) may be int32; it is cast to int64</span>
 <span class="sd">    as required by the ONNX ``Reshape`` specification.</span>
+
+<span class="sd">    When ONNX shape inference cannot determine the output shape (e.g. because</span>
+<span class="sd">    the shape tensor contains a dynamic batch dimension), the TF-inferred output</span>
+<span class="sd">    shape is used as a fallback so that downstream shape-inference assertions are</span>
+<span class="sd">    satisfied.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">shape_i64</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_shape_cast&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shape_i64</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shape_i64</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Fall back to TF&#39;s known output shape when ONNX inference did not produce one.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">tf_dims</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">as_list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tf_dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="n">in_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># Build a map from position-in-output to a symbolic or concrete dimension value.</span>
+            <span class="c1"># For None (dynamic) dims, reuse the symbolic name from the input if available.</span>
+            <span class="n">in_dynamic</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">in_shape</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">str</span><span class="p">)]</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">_map_dim</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">d</span>
+                <span class="c1"># Use input&#39;s symbolic dim at the same position when present.</span>
+                <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_shape</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">in_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">in_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="c1"># Otherwise fall back to the first dynamic input dim or a generic name.</span>
+                <span class="k">return</span> <span class="n">in_dynamic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">in_dynamic</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;rd</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="n">onnx_shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_map_dim</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tf_dims</span><span class="p">))</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">onnx_shape</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
 
 
 
@@ -639,10 +709,7 @@ window.runMermaid = runMermaid;</script>
 <a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_squeeze">[docs]</a>
 <span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;Squeeze&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_squeeze</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span><span class="p">,</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts TF ``Squeeze`` → ONNX ``Squeeze``.</span>
@@ -656,6 +723,186 @@ window.runMermaid = runMermaid;</script>
         <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">squeeze_dims</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Squeeze</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Squeeze</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_cast">
+<a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_cast">[docs]</a>
+<span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_cast</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts TF ``Cast`` → ONNX ``Cast``.</span>
+
+<span class="sd">    The target dtype is read from the TF op&#39;s ``DstT`` attribute and</span>
+<span class="sd">    mapped to the corresponding ONNX ``TensorProto`` integer type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dst_tf</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;DstT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">as_datatype_enum</span>
+    <span class="n">dst_onnx</span> <span class="o">=</span> <span class="n">_TF_DTYPE_TO_ONNX</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dst_tf</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dst_onnx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;TF dtype </span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s1">&#39;DstT&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no ONNX TensorProto mapping.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">dst_onnx</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_shape">
+<a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_shape">[docs]</a>
+<span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;Shape&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_shape</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts TF ``Shape`` → ONNX ``Shape``.</span>
+
+<span class="sd">    TF&#39;s ``Shape`` op may output ``int32`` (via the ``out_type`` attribute),</span>
+<span class="sd">    but the ONNX ``Shape`` operator always returns ``int64``.  The output is</span>
+<span class="sd">    kept as ``int64`` throughout the ONNX graph; downstream converters</span>
+<span class="sd">    (e.g. ``StridedSlice``, ``Pack``) cast their non-int64 constant inputs</span>
+<span class="sd">    to match.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_strided_slice">
+<a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_strided_slice">[docs]</a>
+<span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;StridedSlice&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_strided_slice</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts TF ``StridedSlice`` → ONNX ``Gather`` or ``Slice`` (+ optional</span>
+<span class="sd">    ``Squeeze``).</span>
+
+<span class="sd">    Only the common cases are supported:</span>
+
+<span class="sd">    * No ``begin_mask``, ``end_mask``, ``ellipsis_mask``, or</span>
+<span class="sd">      ``new_axis_mask`` bits set.</span>
+<span class="sd">    * ``shrink_axis_mask`` is supported by using ``Gather`` with a scalar</span>
+<span class="sd">      index for the typical single-element-extraction pattern (e.g. as</span>
+<span class="sd">      emitted by ``tf.keras.layers.Flatten``).</span>
+
+<span class="sd">    This covers the pattern generated by ``tf.keras.layers.Flatten`` and</span>
+<span class="sd">    similar common usages of ``StridedSlice`` on shape tensors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">begin_mask</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;begin_mask&quot;</span><span class="p">)</span>
+    <span class="n">end_mask</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;end_mask&quot;</span><span class="p">)</span>
+    <span class="n">ellipsis_mask</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;ellipsis_mask&quot;</span><span class="p">)</span>
+    <span class="n">new_axis_mask</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;new_axis_mask&quot;</span><span class="p">)</span>
+    <span class="n">shrink_axis_mask</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;shrink_axis_mask&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">begin_mask</span> <span class="ow">or</span> <span class="n">end_mask</span> <span class="ow">or</span> <span class="n">ellipsis_mask</span> <span class="ow">or</span> <span class="n">new_axis_mask</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;StridedSlice with non-zero begin_mask=</span><span class="si">{</span><span class="n">begin_mask</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;end_mask=</span><span class="si">{</span><span class="n">end_mask</span><span class="si">}</span><span class="s2">, ellipsis_mask=</span><span class="si">{</span><span class="n">ellipsis_mask</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;new_axis_mask=</span><span class="si">{</span><span class="n">new_axis_mask</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">if</span> <span class="n">shrink_axis_mask</span><span class="p">:</span>
+        <span class="c1"># Common pattern: extract a single element and drop the dimension.</span>
+        <span class="c1"># Use Gather with a scalar index for reliable shape inference.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">begin_val</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">make_ndarray</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">begin_val</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">begin_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Determine which axes are shrunk (bits set in shrink_axis_mask).</span>
+            <span class="n">shrink_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">shrink_axis_mask</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shrink_axes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="n">shrink_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># Extract the element at begin[axis] along the given axis.</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">begin_val</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">begin_val</span><span class="p">,</span> <span class="s2">&quot;__getitem__&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">begin_val</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">idx_scalar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx_scalar</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># General case: cast begin/end to int64 and use Slice.</span>
+    <span class="n">begin_i64</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_begin_cast&quot;</span><span class="p">)</span>
+    <span class="n">end_i64</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_end_cast&quot;</span><span class="p">)</span>
+    <span class="n">sliced</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">begin_i64</span><span class="p">,</span> <span class="n">end_i64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_slice&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">shrink_axis_mask</span><span class="p">:</span>
+        <span class="n">axes_to_squeeze</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">shrink_axis_mask</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">axes_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axes_to_squeeze</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Squeeze</span><span class="p">(</span><span class="n">sliced</span><span class="p">,</span> <span class="n">axes_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">sliced</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_pack">
+<a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_pack">[docs]</a>
+<span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;Pack&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_pack</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts TF ``Pack`` (``tf.stack``) → ONNX ``Unsqueeze`` + ``Concat``.</span>
+
+<span class="sd">    ``Pack`` stacks N tensors along a new axis.  In ONNX this is expressed</span>
+<span class="sd">    as unsqueezing each input along the new axis and then concatenating them.</span>
+
+<span class="sd">    Each input is cast to ``int64`` so that the resulting tensor can be used</span>
+<span class="sd">    as an ONNX ``Reshape`` shape argument (which requires ``int64``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;axis&quot;</span><span class="p">))</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">inp</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>
+    <span class="n">axes_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">axis</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+    <span class="n">unsqueezed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">inp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+        <span class="c1"># Cast to int64: shape computations in ONNX use int64.</span>
+        <span class="n">casted</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">us</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">casted</span><span class="p">,</span> <span class="n">axes_arr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_us_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">unsqueezed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">us</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unsqueezed</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">unsqueezed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="o">*</span><span class="n">unsqueezed</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_expand_dims">
+<a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_expand_dims">[docs]</a>
+<span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;ExpandDims&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_expand_dims</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts TF ``ExpandDims`` (``tf.expand_dims``) → ONNX ``Unsqueeze``.</span>
+
+<span class="sd">    The ``dim`` input (second input) must be a scalar constant; its value is</span>
+<span class="sd">    read and forwarded as the ``axes`` argument of ``Unsqueeze``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim_op</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">op</span>
+    <span class="n">dim_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">make_ndarray</span><span class="p">(</span><span class="n">dim_op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)))</span>
+    <span class="n">axes_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dim_val</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axes_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_transpose">
+<a class="viewcode-back" href="../../../../api/tensorflow/ops/shape_ops.html#yobx.tensorflow.ops.shape_ops.convert_transpose">[docs]</a>
+<span class="nd">@register_tf_op_converter</span><span class="p">(</span><span class="s2">&quot;Transpose&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_transpose</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts TF ``Transpose`` → ONNX ``Transpose``.</span>
+
+<span class="sd">    The permutation is given as a second input tensor (a 1-D int32/int64</span>
+<span class="sd">    constant); its value is read and forwarded as the ``perm`` attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">perm_op</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">op</span>
+    <span class="n">perm</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">make_ndarray</span><span class="p">(</span><span class="n">perm_op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
 </pre></div>
 

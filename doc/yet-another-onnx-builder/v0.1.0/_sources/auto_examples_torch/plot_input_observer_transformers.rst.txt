@@ -191,7 +191,7 @@ unregisters them on exit.
 We simulate two decoding steps: one with a short sequence in the cache and
 one with a slightly longer sequence.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-162
+.. GENERATED FROM PYTHON SOURCE LINES 104-159
 
 .. code-block:: Python
 
@@ -244,10 +244,7 @@ one with a slightly longer sequence.
 
     # The `register_flattening_functions` context manager must wrap *both* the
     # inference calls and the subsequent shape / argument inference.
-    with (
-        register_flattening_functions(patch_transformers=True),
-        observer_llm(model_llm),
-    ):
+    with register_flattening_functions(patch_transformers=True), observer_llm(model_llm):
         for kwargs in llm_inputs:
             model_llm(**kwargs)
 
@@ -267,12 +264,12 @@ one with a slightly longer sequence.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-165
+.. GENERATED FROM PYTHON SOURCE LINES 160-162
 
 Retrieve dynamic shapes.  We pass ``set_batch_dimension_for=True`` to mark the
 first dimension of every tensor as dynamic even though both calls used batch=1.
 
-.. GENERATED FROM PYTHON SOURCE LINES 165-173
+.. GENERATED FROM PYTHON SOURCE LINES 162-170
 
 .. code-block:: Python
 
@@ -298,14 +295,14 @@ first dimension of every tensor as dynamic even though both calls used batch=1.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-178
+.. GENERATED FROM PYTHON SOURCE LINES 171-175
 
 The shapes for ``past_key_values`` are expressed as a flat list (one entry per
 key or value tensor across all layers).  Both dimension 0 (batch) and dimension 2
 (sequence length) are marked dynamic, while dimension 1 (heads) and dimension 3
 (head dimension) are static.
 
-.. GENERATED FROM PYTHON SOURCE LINES 180-190
+.. GENERATED FROM PYTHON SOURCE LINES 177-187
 
 3. Multimodal model - pixel_values present only on the first call
 -----------------------------------------------------------------
@@ -318,7 +315,7 @@ Without extra information the observer cannot infer an empty tensor for
 ``pixel_values`` (it was never seen as an empty tensor). The ``value_if_missing``
 argument provides this information explicitly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-266
+.. GENERATED FROM PYTHON SOURCE LINES 187-254
 
 .. code-block:: Python
 
@@ -327,13 +324,7 @@ argument provides this information explicitly.
     class MultimodalModel(torch.nn.Module):
         """Minimal stand-in for a vision-language model forward pass."""
 
-        def forward(
-            self,
-            input_ids,
-            pixel_values=None,
-            attention_mask=None,
-            past_key_values=None,
-        ):
+        def forward(self, input_ids, pixel_values=None, attention_mask=None, past_key_values=None):
             return input_ids, past_key_values
 
 
@@ -382,10 +373,7 @@ argument provides this information explicitly.
         value_if_missing=dict(pixel_values=torch.empty((0, 3, image_h, image_w), dtype=torch.float32))
     )
 
-    with (
-        register_flattening_functions(patch_transformers=True),
-        observer_mm(model_mm),
-    ):
+    with register_flattening_functions(patch_transformers=True), observer_mm(model_mm):
         for kwargs in mm_inputs:
             model_mm(**kwargs)
 
@@ -414,7 +402,7 @@ argument provides this information explicitly.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 267-285
+.. GENERATED FROM PYTHON SOURCE LINES 255-273
 
 Note that ``pixel_values`` now appears in the inferred arguments with an empty
 first dimension (batch=0) even though it was absent in two of the three calls.
@@ -438,7 +426,7 @@ These shapes and arguments can be passed directly to
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.011 seconds)
+   **Total running time of the script:** (0 minutes 4.283 seconds)
 
 
 .. _sphx_glr_download_auto_examples_torch_plot_input_observer_transformers.py:

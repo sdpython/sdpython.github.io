@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>yobx.torch.in_transformers.classes.llama_attention &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic_mod.css?v=9b2032db" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/custom.css?v=1c57a2db" />
+    <script src="../../../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <script src="../../../../../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../../../../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../../../../index.html" title="Go to homepage"><img src="../../../../../_static/logo.svg"/></a></h1>
+            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
+    
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
+        </svg>
+    
+</a>
+        
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../../../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../design/torch/index.html">Torch Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../design/index.html">Elements of Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cmds/index.html">Command Lines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../auto_examples_core/index.html">Core Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index_stats.html">Versions</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for yobx.torch.in_transformers.classes.llama_attention</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Direct ONNX converter for :class:`transformers.models.llama.modeling_llama.LlamaAttention`.</span>
+
+<span class="sd">This converter appends ONNX nodes to an existing :class:`~yobx.xbuilder.GraphBuilder`</span>
+<span class="sd">from a fitted :class:`transformers.models.llama.modeling_llama.LlamaAttention` module,</span>
+<span class="sd">without going through :func:`torch.export.export`.</span>
+
+<span class="sd">Three computation backends are supported, selected automatically based on</span>
+<span class="sd">the opsets registered in the graph builder:</span>
+
+<span class="sd">* **com.microsoft** (``&quot;com.microsoft&quot;`` domain registered in the builder):</span>
+<span class="sd">  Uses the ``com.microsoft.MultiHeadAttention`` contrib op from *onnxruntime*.</span>
+<span class="sd">  GQA key/value heads are expanded (via repeat-interleave) to match the query</span>
+<span class="sd">  head count before being passed to the op.</span>
+<span class="sd">  The model runs efficiently on CPU and CUDA with OnnxRuntime.</span>
+<span class="sd">* **opset ≥ 24** (main opset ≥ 24):</span>
+<span class="sd">  Uses the standard ONNX ``Attention`` operator introduced in opset 23</span>
+<span class="sd">  (revision 24 fixes a correctness bug; this converter therefore requires 24).</span>
+<span class="sd">* **opset ≤ 22** (default fallback):</span>
+<span class="sd">  Uses basic ONNX ops (``MatMul``, ``Softmax``, ``Transpose``, …).</span>
+
+<span class="sd">Supported dtypes:</span>
+<span class="sd">    ``float32``, ``float16``, and ``bfloat16`` are all supported.</span>
+<span class="sd">    The output dtype is inferred from the registered type of *hidden_states*</span>
+<span class="sd">    in the graph builder.</span>
+
+<span class="sd">Expected graph inputs (must be declared in the builder before calling the converter):</span>
+
+<span class="sd">* ``hidden_states``: ``(batch, seq, hidden_size)``</span>
+<span class="sd">* ``cos``: ``(batch, seq, head_dim)``</span>
+<span class="sd">* ``sin``: ``(batch, seq, head_dim)``</span>
+<span class="sd">* ``attention_mask`` *(optional)*: ``(batch, 1, seq_q, total_seq)``</span>
+
+<span class="sd">Output returned by the converter:</span>
+
+<span class="sd">* tensor name ``(batch, seq, hidden_size)`` — the caller must register it as</span>
+<span class="sd">  a graph output via ``g.make_tensor_output``</span>
+
+<span class="sd">Example::</span>
+
+<span class="sd">    import torch</span>
+<span class="sd">    from onnx import TensorProto</span>
+<span class="sd">    from transformers import LlamaConfig</span>
+<span class="sd">    from transformers.models.llama.modeling_llama import LlamaAttention</span>
+<span class="sd">    from yobx.xbuilder import GraphBuilder</span>
+<span class="sd">    from yobx.torch.in_transformers.models import llama_attention_to_onnx</span>
+
+<span class="sd">    config = LlamaConfig(</span>
+<span class="sd">        hidden_size=64, num_attention_heads=4, num_key_value_heads=2, head_dim=16</span>
+<span class="sd">    )</span>
+<span class="sd">    attn = LlamaAttention(config, layer_idx=0).eval()</span>
+
+<span class="sd">    # opset 22 — plain ONNX ops (MatMul, Softmax, …)</span>
+<span class="sd">    g = GraphBuilder({&quot;&quot;: 22}, verbose=0)</span>
+<span class="sd">    g.make_tensor_input(&quot;hidden_states&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">    g.make_tensor_input(&quot;cos&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">    g.make_tensor_input(&quot;sin&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">    out = llama_attention_to_onnx(g, attn, &quot;hidden_states&quot;, &quot;cos&quot;, &quot;sin&quot;)</span>
+<span class="sd">    g.make_tensor_output(out, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">    model = g.to_onnx()</span>
+
+<span class="sd">    # opset 24 — ONNX Attention op</span>
+<span class="sd">    g = GraphBuilder({&quot;&quot;: 24}, verbose=0)</span>
+<span class="sd">    g.make_tensor_input(&quot;hidden_states&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">    g.make_tensor_input(&quot;cos&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">    g.make_tensor_input(&quot;sin&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">    out = llama_attention_to_onnx(g, attn, &quot;hidden_states&quot;, &quot;cos&quot;, &quot;sin&quot;)</span>
+<span class="sd">    g.make_tensor_output(out, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">    model = g.to_onnx()</span>
+
+<span class="sd">    # OnnxRuntime contrib ops</span>
+<span class="sd">    g = GraphBuilder({&quot;&quot;: 22, &quot;com.microsoft&quot;: 1}, verbose=0)</span>
+<span class="sd">    g.make_tensor_input(&quot;hidden_states&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">    g.make_tensor_input(&quot;cos&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">    g.make_tensor_input(&quot;sin&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">    out = llama_attention_to_onnx(g, attn, &quot;hidden_states&quot;, &quot;cos&quot;, &quot;sin&quot;)</span>
+<span class="sd">    g.make_tensor_output(out, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">    model = g.to_onnx()</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorProto</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">....helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">....typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...torch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_numpy</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="c1"># Upper bound for open-ended ONNX Slice (INT64_MAX would work but 2^30 is safe and smaller)</span>
+<span class="n">_MAX_SLICE_END</span> <span class="o">=</span> <span class="mi">922337203685477580</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_np_dtype_for_onnx</span><span class="p">(</span><span class="n">onnx_dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">onnx_dtype</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_rotate_half</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements ``rotate_half(x)``:</span>
+<span class="sd">    split the last dimension into two halves, negate the second, then concatenate::</span>
+
+<span class="sd">        x1 = x[..., :head_dim // 2]</span>
+<span class="sd">        x2 = x[..., head_dim // 2 :]</span>
+<span class="sd">        return concat(-x2, x1, dim=-1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">half</span> <span class="o">=</span> <span class="n">head_dim</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">half</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">half</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_MAX_SLICE_END</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">neg_x2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Neg</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="n">neg_x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_rope</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">states_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">cos_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">sin_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies Rotary Position Embedding to a 4-D tensor</span>
+<span class="sd">    ``(batch, n_heads, seq, head_dim)`` given pre-computed ``cos`` and</span>
+<span class="sd">    ``sin`` tensors broadcast to the same shape.</span>
+
+<span class="sd">    ``cos_4d`` and ``sin_4d`` are expected to be</span>
+<span class="sd">    ``(batch, 1, seq, head_dim)`` (already unsqueezed).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rotated</span> <span class="o">=</span> <span class="n">_rotate_half</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">states_4d</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">cos_mul</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">states_4d</span><span class="p">,</span> <span class="n">cos_4d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">sin_mul</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">rotated</span><span class="p">,</span> <span class="n">sin_4d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">cos_mul</span><span class="p">,</span> <span class="n">sin_mul</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_repeat_kv</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">kv</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">n_rep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">num_kv_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">head_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Repeats key / value heads ``n_rep`` times along the heads dimension</span>
+<span class="sd">    (dimension 1) to expand a GQA tensor from</span>
+<span class="sd">    ``(batch, num_kv_heads, seq, head_dim)`` to</span>
+<span class="sd">    ``(batch, num_kv_heads * n_rep, seq, head_dim)``.</span>
+
+<span class="sd">    Mirrors ``transformers.models.llama.modeling_llama.repeat_kv``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n_rep</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">kv</span>
+    <span class="c1"># (batch, num_kv_heads, seq, head_dim)</span>
+    <span class="c1"># -&gt; (batch, num_kv_heads, 1, seq, head_dim)</span>
+    <span class="n">unsqueezed</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">kv</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Tile along dim 2 -&gt; (batch, num_kv_heads, n_rep, seq, head_dim)</span>
+    <span class="n">tiled</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Tile</span><span class="p">(</span><span class="n">unsqueezed</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Reshape to (batch, num_kv_heads * n_rep, seq, head_dim).</span>
+    <span class="c1"># Use Shape-based dynamic reshape because batch and seq are dynamic.</span>
+    <span class="n">kv_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">kv</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">batch_val</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+        <span class="n">kv_shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">)</span>
+    <span class="n">seq_val</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+        <span class="n">kv_shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">)</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span>
+        <span class="n">batch_val</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">num_kv_heads</span> <span class="o">*</span> <span class="n">n_rep</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">seq_val</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">head_dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">tiled</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_project_and_split</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">hidden_states</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">bias</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">head_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">weight_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies a linear projection followed by a reshape and transpose</span>
+<span class="sd">    to produce a 4-D ``(batch, n_heads, seq, head_dim)`` tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="n">weight_name</span><span class="p">,</span> <span class="n">weight</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">projected</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">weight_name</span><span class="si">}</span><span class="s2">_bias&quot;</span><span class="p">,</span> <span class="n">bias</span><span class="p">)</span>
+        <span class="n">projected</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">projected</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># (batch, seq, n_heads * head_dim) -&gt; (batch, seq, n_heads, head_dim)</span>
+    <span class="n">split_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">reshaped</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">projected</span><span class="p">,</span> <span class="n">split_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># (batch, seq, n_heads, head_dim) -&gt; (batch, n_heads, seq, head_dim)</span>
+    <span class="n">transposed</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">reshaped</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">transposed</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_standard_attention</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">query_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">key_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">value_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
+    <span class="n">scaling</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes scaled dot-product attention using basic ONNX ops::</span>
+
+<span class="sd">        attn_weights = Q @ K^T * scaling</span>
+<span class="sd">        if mask: attn_weights += mask</span>
+<span class="sd">        attn_weights = softmax(attn_weights.float(), dim=-1).to(dtype)</span>
+<span class="sd">        output = attn_weights @ V</span>
+
+<span class="sd">    Returns ``(batch, n_heads, seq, head_dim)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">np_dtype</span> <span class="o">=</span> <span class="n">_np_dtype_for_onnx</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># K^T: (batch, n_heads, head_dim, seq)</span>
+    <span class="n">key_t</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">key_4d</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="c1"># attn_weights: (batch, n_heads, seq_q, seq_kv)</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">query_4d</span><span class="p">,</span> <span class="n">key_t</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">scaled</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">scaling</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np_dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scaled</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">scaled</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># softmax in float32 for numerical stability, then cast back</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">!=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span>
+        <span class="n">scaled_f32</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">scaled</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">soft_f32</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">scaled_f32</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">soft_f32</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">scaled</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">value_4d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_attention_opset24</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">query_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">key_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">value_4d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
+    <span class="n">scaling</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uses the ONNX ``Attention`` operator (opset ≥ 24).</span>
+<span class="sd">    Returns ``(batch, n_heads, seq, head_dim)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Attention</span><span class="p">(</span><span class="n">query_4d</span><span class="p">,</span> <span class="n">key_4d</span><span class="p">,</span> <span class="n">value_4d</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scaling</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mha_com_microsoft</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">query_3d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">key_3d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">value_3d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
+    <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">scaling</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uses ``com.microsoft.MultiHeadAttention``.</span>
+
+<span class="sd">    Inputs are 3-D tensors ``(batch, seq, n_heads * head_dim)``.</span>
+<span class="sd">    Query, key and value must all have the same last dimension, so GQA</span>
+<span class="sd">    key/value heads must be repeated before calling this function.</span>
+
+<span class="sd">    Returns the 3-D output ``(batch, seq, n_heads * head_dim)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">query_3d</span><span class="p">,</span> <span class="n">key_3d</span><span class="p">,</span> <span class="n">value_3d</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MultiHeadAttention</span><span class="p">(</span>
+        <span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;com.microsoft&quot;</span><span class="p">,</span> <span class="n">num_heads</span><span class="o">=</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scaling</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">)</span>
+    <span class="c1"># MultiHeadAttention returns (output [, present_key, present_value]); keep only output</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="llama_attention_to_onnx">
+<a class="viewcode-back" href="../../../../../api/torch/in_transformers/classes/llama_attention.html#yobx.torch.in_transformers.classes.llama_attention.llama_attention_to_onnx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">llama_attention_to_onnx</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">attn</span><span class="p">:</span> <span class="s2">&quot;LlamaAttention&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">hidden_states</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">cos</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">sin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;llama_attention&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Appends ONNX nodes implementing</span>
+<span class="sd">    :class:`transformers.models.llama.modeling_llama.LlamaAttention` to *g*.</span>
+
+<span class="sd">    The output dtype (``float32``, ``float16``, or ``bfloat16``) is inferred</span>
+<span class="sd">    from the registered type of *hidden_states* in *g*.  Model weights are cast</span>
+<span class="sd">    to match.</span>
+
+<span class="sd">    The backend is chosen from the opsets registered in *g*:</span>
+
+<span class="sd">    * **com.microsoft** — ``MultiHeadAttention`` contrib op (OnnxRuntime).</span>
+<span class="sd">      The ``&quot;com.microsoft&quot;`` domain must be registered in *g*.</span>
+<span class="sd">      GQA KV heads are expanded to match the query head count before the op.</span>
+<span class="sd">    * **opset ≥ 24** — standard ONNX ``Attention`` op.</span>
+<span class="sd">    * **opset ≤ 22** — plain ONNX ops (``MatMul``, ``Softmax``,</span>
+<span class="sd">      ``Transpose``, …).  This is the default path.</span>
+
+<span class="sd">    :param g: an existing graph builder — inputs must already be declared with</span>
+<span class="sd">        their types; the function appends nodes without creating new graph inputs</span>
+<span class="sd">        or outputs</span>
+<span class="sd">    :param attn: a fitted ``LlamaAttention`` module (weights must be</span>
+<span class="sd">        initialised; the module may be in any of ``float32``, ``float16``, or</span>
+<span class="sd">        ``bfloat16``)</span>
+<span class="sd">    :param hidden_states: name of the ``(batch, seq, hidden_size)`` input tensor</span>
+<span class="sd">        already declared in *g*</span>
+<span class="sd">    :param cos: name of the ``(batch, seq, head_dim)`` cosine embedding tensor</span>
+<span class="sd">        already declared in *g*</span>
+<span class="sd">    :param sin: name of the ``(batch, seq, head_dim)`` sine embedding tensor</span>
+<span class="sd">        already declared in *g*</span>
+<span class="sd">    :param attention_mask: optional name of the ``(batch, 1, seq_q, total_seq)``</span>
+<span class="sd">        attention mask tensor already declared in *g*; pass ``None`` (default)</span>
+<span class="sd">        when no mask is needed</span>
+<span class="sd">    :param name: prefix used for all node names added to *g*</span>
+<span class="sd">    :return: name of the output tensor ``(batch, seq, hidden_size)``; the</span>
+<span class="sd">        caller is responsible for registering it as a graph output via</span>
+<span class="sd">        ``g.make_tensor_output``</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        from onnx import TensorProto</span>
+<span class="sd">        from yobx.xbuilder import GraphBuilder</span>
+<span class="sd">        from yobx.torch.in_transformers.models import llama_attention_to_onnx</span>
+
+<span class="sd">        g = GraphBuilder({&quot;&quot;: 22}, verbose=0)</span>
+<span class="sd">        g.make_tensor_input(&quot;hidden_states&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">        g.make_tensor_input(&quot;cos&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">        g.make_tensor_input(&quot;sin&quot;, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 16))</span>
+<span class="sd">        out = llama_attention_to_onnx(g, attn, &quot;hidden_states&quot;, &quot;cos&quot;, &quot;sin&quot;)</span>
+<span class="sd">        g.make_tensor_output(out, TensorProto.FLOAT, (&quot;batch&quot;, &quot;seq&quot;, 64))</span>
+<span class="sd">        model = g.to_onnx()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Missing type for </span><span class="si">{</span><span class="n">hidden_states</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">main_opset</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">main_opset</span>
+    <span class="n">has_ms</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">has_opset</span><span class="p">(</span><span class="s2">&quot;com.microsoft&quot;</span><span class="p">))</span>
+    <span class="n">onnx_dtype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+    <span class="n">np_dtype</span> <span class="o">=</span> <span class="n">_np_dtype_for_onnx</span><span class="p">(</span><span class="n">onnx_dtype</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------ #</span>
+    <span class="c1"># Inspect module weights                                               #</span>
+    <span class="c1"># Use to_numpy() so that bfloat16 weights are handled correctly.      #</span>
+    <span class="c1"># ------------------------------------------------------------------ #</span>
+    <span class="n">q_w</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">q_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span>  <span class="c1"># (num_heads*head_dim, hidden)</span>
+    <span class="n">k_w</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">k_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span>  <span class="c1"># (num_kv_heads*head_dim, hidden)</span>
+    <span class="n">v_w</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">v_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span>  <span class="c1"># (num_kv_heads*head_dim, hidden)</span>
+    <span class="n">o_w</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">o_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span>  <span class="c1"># (hidden, num_heads*head_dim)</span>
+
+    <span class="n">q_b</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">q_proj</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">attn</span><span class="o">.</span><span class="n">q_proj</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">k_b</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">k_proj</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">attn</span><span class="o">.</span><span class="n">k_proj</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">v_b</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">v_proj</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">attn</span><span class="o">.</span><span class="n">v_proj</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">o_b</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">o_proj</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">attn</span><span class="o">.</span><span class="n">o_proj</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attn</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+    <span class="n">num_kv_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attn</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_key_value_heads</span>
+    <span class="n">head_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attn</span><span class="o">.</span><span class="n">head_dim</span>
+    <span class="n">n_rep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attn</span><span class="o">.</span><span class="n">num_key_value_groups</span>
+    <span class="n">scaling</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">attn</span><span class="o">.</span><span class="n">scaling</span>
+    <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attn</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+
+    <span class="c1"># -------------------------------------------------------------- #</span>
+    <span class="c1"># Branch: com.microsoft MultiHeadAttention                        #</span>
+    <span class="c1"># -------------------------------------------------------------- #</span>
+    <span class="k">if</span> <span class="n">has_ms</span><span class="p">:</span>
+        <span class="c1"># Project (batch, seq, hidden) -&gt; (batch, seq, heads * head_dim)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_proj_3d</span><span class="p">(</span><span class="n">x_3d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">wname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+            <span class="n">wt</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="n">wname</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">x_3d</span><span class="p">,</span> <span class="n">wt</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bv</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wname</span><span class="si">}</span><span class="s2">_bias&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">bv</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">res</span>
+
+        <span class="n">q_3d</span> <span class="o">=</span> <span class="n">_proj_3d</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">,</span> <span class="n">q_w</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="s2">&quot;w_q&quot;</span><span class="p">)</span>  <span class="c1"># (batch, seq, num_heads * head_dim)</span>
+        <span class="n">k_3d</span> <span class="o">=</span> <span class="n">_proj_3d</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">,</span> <span class="n">k_w</span><span class="p">,</span> <span class="n">k_b</span><span class="p">,</span> <span class="s2">&quot;w_k&quot;</span><span class="p">)</span>  <span class="c1"># (batch, seq, num_kv_heads * head_dim)</span>
+        <span class="n">v_3d</span> <span class="o">=</span> <span class="n">_proj_3d</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">,</span> <span class="n">v_w</span><span class="p">,</span> <span class="n">v_b</span><span class="p">,</span> <span class="s2">&quot;w_v&quot;</span><span class="p">)</span>  <span class="c1"># (batch, seq, num_kv_heads * head_dim)</span>
+
+        <span class="c1"># Apply RoPE: reshape to 4D, apply, reshape back to 3D</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_apply_rope_3d</span><span class="p">(</span><span class="n">x_3d</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">n_h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cos_n</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">sin_n</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+            <span class="c1"># (batch, seq, n_h * head_dim) -&gt; (batch, seq, n_h, head_dim)</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n_h</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="n">x4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">x_3d</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># (batch, seq, n_h, head_dim) -&gt; (batch, n_h, seq, head_dim)</span>
+            <span class="n">x4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">x4d</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># cos/sin: (batch, seq, head_dim) -&gt; (batch, 1, seq, head_dim)</span>
+            <span class="n">cos4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">cos_n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">sin4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">sin_n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">x4d</span> <span class="o">=</span> <span class="n">_apply_rope</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x4d</span><span class="p">,</span> <span class="n">cos4d</span><span class="p">,</span> <span class="n">sin4d</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="c1"># (batch, n_h, seq, head_dim) -&gt; (batch, seq, n_h, head_dim)</span>
+            <span class="n">x4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">x4d</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># (batch, seq, n_h, head_dim) -&gt; (batch, seq, n_h * head_dim)</span>
+            <span class="n">sp3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">x4d</span><span class="p">,</span> <span class="n">sp3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">q_3d</span> <span class="o">=</span> <span class="n">_apply_rope_3d</span><span class="p">(</span><span class="n">q_3d</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">)</span>
+        <span class="n">k_3d</span> <span class="o">=</span> <span class="n">_apply_rope_3d</span><span class="p">(</span><span class="n">k_3d</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">)</span>
+
+        <span class="c1"># Repeat KV for GQA so k/v have same head count as q.</span>
+        <span class="c1"># Use Unsqueeze + Expand (not Tile) to get the same interleaved ordering</span>
+        <span class="c1"># as torch.repeat_interleave: [h0, h0, h1, h1] not [h0, h1, h0, h1].</span>
+        <span class="k">if</span> <span class="n">n_rep</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">_repeat_kv_3d</span><span class="p">(</span><span class="n">x_3d</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+                <span class="c1"># (batch, seq, kv * head_dim)</span>
+                <span class="n">sp_4d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+                <span class="n">x4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">x_3d</span><span class="p">,</span> <span class="n">sp_4d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="c1"># Unsqueeze at dim 3 → (batch, seq, kv, 1, head_dim)</span>
+                <span class="n">x5d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">x4d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="c1"># Compute dynamic shape (batch, seq, kv, n_rep, head_dim)</span>
+                <span class="n">x_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">x_3d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">batch_v</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+                    <span class="n">x_shape</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">seq_v</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+                    <span class="n">x_shape</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">tgt</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span>
+                    <span class="n">batch_v</span><span class="p">,</span>
+                    <span class="n">seq_v</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">x5d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span><span class="n">x5d</span><span class="p">,</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="c1"># Reshape → (batch, seq, kv * n_rep * head_dim) with interleaved heads</span>
+                <span class="n">sp_3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">x5d</span><span class="p">,</span> <span class="n">sp_3d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="n">k_3d</span> <span class="o">=</span> <span class="n">_repeat_kv_3d</span><span class="p">(</span><span class="n">k_3d</span><span class="p">)</span>
+            <span class="n">v_3d</span> <span class="o">=</span> <span class="n">_repeat_kv_3d</span><span class="p">(</span><span class="n">v_3d</span><span class="p">)</span>
+
+        <span class="c1"># MHA: output is (batch, seq, num_heads * head_dim)</span>
+        <span class="n">out_3d</span> <span class="o">=</span> <span class="n">_mha_com_microsoft</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">q_3d</span><span class="p">,</span> <span class="n">k_3d</span><span class="p">,</span> <span class="n">v_3d</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">scaling</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Apply output projection</span>
+        <span class="n">o_wt</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;w_o&quot;</span><span class="p">,</span> <span class="n">o_w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">attn_out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">out_3d</span><span class="p">,</span> <span class="n">o_wt</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">o_b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">o_bv</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;w_o_bias&quot;</span><span class="p">,</span> <span class="n">o_b</span><span class="p">)</span>
+            <span class="n">attn_out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">attn_out</span><span class="p">,</span> <span class="n">o_bv</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># -------------------------------------------------------------- #</span>
+    <span class="c1"># Branch: ONNX Attention (opset &gt;= 24)                            #</span>
+    <span class="c1"># -------------------------------------------------------------- #</span>
+    <span class="k">elif</span> <span class="n">main_opset</span> <span class="o">&gt;=</span> <span class="mi">24</span><span class="p">:</span>
+        <span class="c1"># Project to 4D</span>
+        <span class="n">q_4d</span> <span class="o">=</span> <span class="n">_project_and_split</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">q_w</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w_q&quot;</span><span class="p">)</span>
+        <span class="n">k_4d</span> <span class="o">=</span> <span class="n">_project_and_split</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">k_w</span><span class="p">,</span> <span class="n">k_b</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w_k&quot;</span><span class="p">)</span>
+        <span class="n">v_4d</span> <span class="o">=</span> <span class="n">_project_and_split</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">v_w</span><span class="p">,</span> <span class="n">v_b</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w_v&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Apply RoPE</span>
+        <span class="n">cos4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">cos</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">sin4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">sin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">q_4d</span> <span class="o">=</span> <span class="n">_apply_rope</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">q_4d</span><span class="p">,</span> <span class="n">cos4d</span><span class="p">,</span> <span class="n">sin4d</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">k_4d</span> <span class="o">=</span> <span class="n">_apply_rope</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">k_4d</span><span class="p">,</span> <span class="n">cos4d</span><span class="p">,</span> <span class="n">sin4d</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Expand KV if needed</span>
+        <span class="k">if</span> <span class="n">n_rep</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">k_4d</span> <span class="o">=</span> <span class="n">_repeat_kv</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">k_4d</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">v_4d</span> <span class="o">=</span> <span class="n">_repeat_kv</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">v_4d</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># ONNX Attention op</span>
+        <span class="n">out_4d</span> <span class="o">=</span> <span class="n">_attention_opset24</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">q_4d</span><span class="p">,</span> <span class="n">k_4d</span><span class="p">,</span> <span class="n">v_4d</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">scaling</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># (batch, n_heads, seq, head_dim) -&gt; (batch, seq, hidden_size)</span>
+        <span class="n">transposed</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">out_4d</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">flat_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">flat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">transposed</span><span class="p">,</span> <span class="n">flat_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Output projection</span>
+        <span class="n">o_wt</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;w_o&quot;</span><span class="p">,</span> <span class="n">o_w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">attn_out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">o_wt</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">o_b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">o_bv</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;w_o_bias&quot;</span><span class="p">,</span> <span class="n">o_b</span><span class="p">)</span>
+            <span class="n">attn_out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">attn_out</span><span class="p">,</span> <span class="n">o_bv</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># -------------------------------------------------------------- #</span>
+    <span class="c1"># Branch: Standard ONNX ops (opset ≤ 22)                          #</span>
+    <span class="c1"># -------------------------------------------------------------- #</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Project to 4D</span>
+        <span class="n">q_4d</span> <span class="o">=</span> <span class="n">_project_and_split</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">q_w</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w_q&quot;</span><span class="p">)</span>
+        <span class="n">k_4d</span> <span class="o">=</span> <span class="n">_project_and_split</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">k_w</span><span class="p">,</span> <span class="n">k_b</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w_k&quot;</span><span class="p">)</span>
+        <span class="n">v_4d</span> <span class="o">=</span> <span class="n">_project_and_split</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">v_w</span><span class="p">,</span> <span class="n">v_b</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w_v&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Apply RoPE</span>
+        <span class="n">cos4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">cos</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">sin4d</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">sin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">q_4d</span> <span class="o">=</span> <span class="n">_apply_rope</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">q_4d</span><span class="p">,</span> <span class="n">cos4d</span><span class="p">,</span> <span class="n">sin4d</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">k_4d</span> <span class="o">=</span> <span class="n">_apply_rope</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">k_4d</span><span class="p">,</span> <span class="n">cos4d</span><span class="p">,</span> <span class="n">sin4d</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Expand KV if needed</span>
+        <span class="k">if</span> <span class="n">n_rep</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">k_4d</span> <span class="o">=</span> <span class="n">_repeat_kv</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">k_4d</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">v_4d</span> <span class="o">=</span> <span class="n">_repeat_kv</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">v_4d</span><span class="p">,</span> <span class="n">n_rep</span><span class="p">,</span> <span class="n">num_kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Standard attention</span>
+        <span class="n">out_4d</span> <span class="o">=</span> <span class="n">_standard_attention</span><span class="p">(</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">q_4d</span><span class="p">,</span> <span class="n">k_4d</span><span class="p">,</span> <span class="n">v_4d</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">scaling</span><span class="p">,</span> <span class="n">onnx_dtype</span><span class="p">,</span> <span class="n">name</span>
+        <span class="p">)</span>
+
+        <span class="c1"># (batch, n_heads, seq, head_dim) -&gt; (batch, seq, hidden_size)</span>
+        <span class="n">transposed</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">out_4d</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">flat_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">flat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">transposed</span><span class="p">,</span> <span class="n">flat_shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Output projection</span>
+        <span class="n">o_wt</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;w_o&quot;</span><span class="p">,</span> <span class="n">o_w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">attn_out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">o_wt</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">o_b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">o_bv</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;w_o_bias&quot;</span><span class="p">,</span> <span class="n">o_b</span><span class="p">)</span>
+            <span class="n">attn_out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">attn_out</span><span class="p">,</span> <span class="n">o_bv</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">attn_out</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+            </div>
+
+            <div class="right">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>

@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -759,7 +762,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">shape_2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">last_dim</span> <span class="o">=</span> <span class="n">shape_2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">transB</span><span class="p">]</span>
         <span class="n">shape_bias</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">bias2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">last_dim</span> <span class="o">!=</span> <span class="n">shape_bias</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shape_bias</span> <span class="ow">or</span> <span class="n">last_dim</span> <span class="o">!=</span> <span class="n">shape_bias</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_bias</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">shape_node_out</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">else</span> <span class="kc">None</span>
@@ -789,10 +792,7 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_apply_matmmul</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">matmul_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">add_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">matmul_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">add_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">bias2</span> <span class="o">=</span> <span class="n">add_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">add_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">matmul_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">matmul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -802,9 +802,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">sh2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">matmul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">matmul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">sh1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">sh1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sh1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">sh2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">new_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-                <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-                <span class="n">source</span><span class="o">=</span><span class="s2">&quot;MatMulAddPattern.new_shape.1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;MatMulAddPattern.new_shape.1&quot;</span>
             <span class="p">)</span>
             <span class="n">reshaped</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">matmul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">reshape_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -838,9 +836,7 @@ window.runMermaid = runMermaid;</script>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">matmul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
                     <span class="n">minus1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-                        <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                        <span class="n">g</span><span class="o">.</span><span class="n">MINUS_ONE</span><span class="p">,</span>
-                        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;MatMulAddPattern.new_shape.7&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">MINUS_ONE</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;MatMulAddPattern.new_shape.7&quot;</span>
                     <span class="p">)</span>
                     <span class="n">reshape_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -892,9 +888,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="p">)</span>
                 <span class="n">shape_back</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">matmul_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">minus1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-                    <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                    <span class="n">g</span><span class="o">.</span><span class="n">MINUS_ONE</span><span class="p">,</span>
-                    <span class="n">source</span><span class="o">=</span><span class="s2">&quot;MatMulAddPattern.new_shape.3&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">MINUS_ONE</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;MatMulAddPattern.new_shape.3&quot;</span>
                 <span class="p">)</span>
                 <span class="n">reshape_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -933,10 +927,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="MatMulAddPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_matmul.html#yobx.xoptim.patterns.onnx_matmul.MatMulAddPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">matmul_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">add_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">matmul_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">add_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">matmul_node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;MatMul&quot;</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">matmul_node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_matmmul</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">matmul_node</span><span class="p">,</span> <span class="n">add_node</span><span class="p">)</span>
@@ -1065,11 +1056,7 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="GemmTransposePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_matmul.html#yobx.xoptim.patterns.onnx_matmul.GemmTransposePattern.apply">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">tr</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -1648,11 +1635,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="MulMulMatMulPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_matmul.html#yobx.xoptim.patterns.onnx_matmul.MulMulMatMulPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">mul1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">mul2</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">mul1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">mul2</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">cst</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">mul1</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="o">*</span><span class="n">mul2</span><span class="o">.</span><span class="n">input</span><span class="p">]</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
         <span class="n">not_cst</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">mul1</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="o">*</span><span class="n">mul2</span><span class="o">.</span><span class="n">input</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cst</span><span class="p">]</span>
@@ -1666,10 +1649,7 @@ window.runMermaid = runMermaid;</script>
 
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                <span class="s2">&quot;MatMul&quot;</span><span class="p">,</span>
-                <span class="n">not_cst</span><span class="p">,</span>
-                <span class="p">[</span><span class="n">mul_name</span><span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;MatMul&quot;</span><span class="p">,</span> <span class="n">not_cst</span><span class="p">,</span> <span class="p">[</span><span class="n">mul_name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-1&quot;</span>
             <span class="p">),</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
                 <span class="s2">&quot;Mul&quot;</span><span class="p">,</span>
@@ -1836,9 +1816,7 @@ window.runMermaid = runMermaid;</script>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="p">[</span><span class="n">node_before_left</span><span class="p">,</span> <span class="n">node_before_right</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">node_before_left</span><span class="p">,</span> <span class="n">node_before_right</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span>
         <span class="p">)</span></div>
 
 
@@ -2589,10 +2567,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ShapeBasedMatMulToMulPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_matmul.html#yobx.xoptim.patterns.onnx_matmul.ShapeBasedMatMulToMulPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">mm_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">transpose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">mm_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">transpose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">transpose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span>

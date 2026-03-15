@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -890,9 +893,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="PatternOptimization.apply">
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.PatternOptimization.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The method does the rewriting. It assumes it can happen.</span>
@@ -950,10 +951,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="EasyPatternOptimization.match_pattern">
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.EasyPatternOptimization.match_pattern">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">match_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the pattern to match.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -962,9 +960,7 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">.graph_builder_optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderPatternOptimization</span>
 
@@ -999,6 +995,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">itype</span> <span class="o">=</span> <span class="n">string_to_elem_type</span><span class="p">(</span><span class="n">ann</span><span class="p">)</span>
             <span class="n">g2</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">itype</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;_build_pattern2_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">g2</span><span class="o">.</span><span class="n">_debug_shape_missing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_local_functions_to_builder</span><span class="p">(</span><span class="n">g2</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">fct</span><span class="p">(</span><span class="n">g2</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1022,8 +1019,7 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_match_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cache_key</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
@@ -1034,8 +1030,7 @@ window.runMermaid = runMermaid;</script>
         <span class="k">return</span> <span class="n">pat</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_apply_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cache_key</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
@@ -1093,13 +1088,7 @@ window.runMermaid = runMermaid;</script>
         <span class="c1"># predecessors</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">input</span><span class="p">):</span>
             <span class="c1"># not the same number of inputs</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span>
-                <span class="s2">&quot;BACKWARD: not the same number of inputs&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-- pattern&quot;</span><span class="p">,</span>
-                <span class="n">pn</span><span class="p">,</span>
-                <span class="s2">&quot;-- model&quot;</span><span class="p">,</span>
-                <span class="n">n</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span><span class="s2">&quot;BACKWARD: not the same number of inputs&quot;</span><span class="p">,</span> <span class="s2">&quot;-- pattern&quot;</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="s2">&quot;-- model&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
         <span class="n">pattern_input_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pat</span><span class="o">.</span><span class="n">input_names</span><span class="p">)</span>
@@ -1136,13 +1125,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">pred</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">pred</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># No node in the graph.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span>
-                    <span class="s2">&quot;BACKWARD: no node in the graph&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;-- pred&quot;</span><span class="p">,</span>
-                    <span class="n">pred</span><span class="p">,</span>
-                    <span class="s2">&quot;-- ppred&quot;</span><span class="p">,</span>
-                    <span class="n">ppred</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span><span class="s2">&quot;BACKWARD: no node in the graph&quot;</span><span class="p">,</span> <span class="s2">&quot;-- pred&quot;</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="s2">&quot;-- ppred&quot;</span><span class="p">,</span> <span class="n">ppred</span><span class="p">)</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">pred</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">ppred</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ppred</span><span class="o">.</span><span class="n">input</span><span class="p">):</span>
                 <span class="c1"># Distinct type</span>
@@ -1221,11 +1204,7 @@ window.runMermaid = runMermaid;</script>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">output</span><span class="p">):</span>
                 <span class="c1"># not the same number of outputs</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span>
-                    <span class="s2">&quot;FORWARD: not the same number of outputs&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;-- pattern&quot;</span><span class="p">,</span>
-                    <span class="n">pn</span><span class="p">,</span>
-                    <span class="s2">&quot;-- model&quot;</span><span class="p">,</span>
-                    <span class="n">n</span><span class="p">,</span>
+                    <span class="s2">&quot;FORWARD: not the same number of outputs&quot;</span><span class="p">,</span> <span class="s2">&quot;-- pattern&quot;</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span> <span class="s2">&quot;-- model&quot;</span><span class="p">,</span> <span class="n">n</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
             <span class="n">matched_results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
@@ -1830,9 +1809,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="EasyPatternOptimization.apply">
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.EasyPatternOptimization.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="c1"># Why build the pattern gain</span>
         <span class="n">pat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_match_pattern</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
@@ -1954,11 +1931,7 @@ window.runMermaid = runMermaid;</script>
                     <span class="k">continue</span>
 
             <span class="n">new_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span>
-                <span class="n">new_inputs</span><span class="p">,</span>
-                <span class="n">new_outputs</span><span class="p">,</span>
-                <span class="n">domain</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">new_inputs</span><span class="p">,</span> <span class="n">new_outputs</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span>
             <span class="p">)</span>
             <span class="n">new_node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>
             <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
@@ -2001,9 +1974,7 @@ window.runMermaid = runMermaid;</script>
         <span class="bp">self</span><span class="o">.</span><span class="n">_apply_model</span> <span class="o">=</span> <span class="n">apply_model</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_pattern</span><span class="p">:</span>
             <span class="n">onx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match_model</span>

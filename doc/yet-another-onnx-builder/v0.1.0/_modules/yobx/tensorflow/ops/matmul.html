@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -602,13 +605,81 @@ window.runMermaid = runMermaid;</script>
             
   <h1>Source code for yobx.tensorflow.ops.matmul</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Converter for the TF ``MatMul`` / ``BatchMatMulV2`` op → ONNX ``MatMul``.</span>
+<span class="sd">Converter for the TF ``MatMul`` / ``BatchMatMulV2`` / ``BatchMatMul`` op →</span>
+<span class="sd">ONNX ``MatMul``.</span>
+
+<span class="sd">Matrix multiplication</span>
+<span class="sd">---------------------</span>
+<span class="sd">``MatMul``, ``BatchMatMulV2``, ``BatchMatMul``</span>
+
+<span class="sd">All three TF op variants produce standard matrix multiplication (or batched</span>
+<span class="sd">matrix multiplication) and map directly to a single ONNX ``MatMul`` node.</span>
+
+<span class="sd">Transposition / adjoint</span>
+<span class="sd">-----------------------</span>
+<span class="sd">TF supports two families of &quot;reverse-input&quot; attributes that indicate the</span>
+<span class="sd">operands should be transposed before multiplying:</span>
+
+<span class="sd">* ``transpose_a`` / ``transpose_b`` — used by 2-D ``MatMul``</span>
+<span class="sd">* ``adj_x`` / ``adj_y`` — used by ``BatchMatMulV2`` and ``BatchMatMul``</span>
+
+<span class="sd">For real-valued tensors the *adjoint* is identical to the *transpose*, so</span>
+<span class="sd">both families are handled identically: when an attribute is ``True`` an ONNX</span>
+<span class="sd">``Transpose`` node that swaps the **last two dimensions** is inserted before</span>
+<span class="sd">the ``MatMul``.</span>
+
+<span class="sd">Because the batch dimensions can be of arbitrary rank the permutation is</span>
+<span class="sd">computed dynamically by :func:`_transpose_last_two` rather than using</span>
+<span class="sd">hard-coded indices like ``[-1, -2]``.</span>
+
+<span class="sd">Example</span>
+<span class="sd">-------</span>
+<span class="sd">The following TF graph fragment:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    # batched matmul with transposed B: result[b, i, j] = sum_k A[b, i, k] * B[b, j, k]</span>
+<span class="sd">    tf.matmul(A, B, adjoint_b=True)   # BatchMatMulV2 with adj_y=True</span>
+
+<span class="sd">is converted to:</span>
+
+<span class="sd">.. code-block:: text</span>
+
+<span class="sd">    Transpose(B, perm=[0, 2, 1])   # swap last two dims</span>
+<span class="sd">    MatMul(A, transposed_B)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_tf_op_converter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_transpose_last_two</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">inp</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit an ONNX ``Transpose`` node that swaps the last two dimensions of *inp*.</span>
+
+<span class="sd">    :param g: the active :class:`~yobx.xbuilder.GraphBuilder` instance used to</span>
+<span class="sd">        emit ONNX nodes.</span>
+<span class="sd">    :param name: base name for the new ONNX node (typically the TF op name).</span>
+<span class="sd">    :param inp: the TF input tensor whose last two axes are to be swapped;</span>
+<span class="sd">        its ``.shape`` is inspected to build a rank-aware permutation.</span>
+<span class="sd">    :param tag: short suffix appended to *name* to form a unique node name</span>
+<span class="sd">        (e.g. ``&quot;tA&quot;`` or ``&quot;tB&quot;``).</span>
+<span class="sd">    :returns: the name of the new ONNX tensor produced by the ``Transpose``</span>
+<span class="sd">        node.</span>
+<span class="sd">    :raises ValueError: if *inp* has fewer than 2 dimensions.</span>
+
+<span class="sd">    The permutation keeps all leading batch axes in place and only swaps</span>
+<span class="sd">    the last two axes, e.g. for rank 3 it produces ``perm=[0, 2, 1]``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot transpose last two dims of a tensor with rank </span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">perm</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
+    <span class="n">perm</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">perm</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">perm</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">perm</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="convert_matmul">
@@ -618,21 +689,46 @@ window.runMermaid = runMermaid;</script>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">op</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Operation</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Converts TF ``MatMul`` / ``BatchMatMulV2`` to ONNX ``MatMul``.</span>
+<span class="sd">    Converts TF ``MatMul`` / ``BatchMatMulV2`` / ``BatchMatMul`` → ONNX ``MatMul``.</span>
 
-<span class="sd">    TF&#39;s transpose flags (``transpose_a`` / ``transpose_b``) are honoured by</span>
-<span class="sd">    inserting ONNX ``Transpose`` nodes when needed.</span>
+<span class="sd">    :param g: the active :class:`~yobx.xbuilder.GraphBuilder` instance.</span>
+<span class="sd">    :param sts: metadata dictionary (unused, always ``{}``).</span>
+<span class="sd">    :param outputs: list of pre-allocated output tensor names; ``outputs[0]``</span>
+<span class="sd">        receives the result of the multiplication.</span>
+<span class="sd">    :param op: the TF ``MatMul``, ``BatchMatMulV2``, or ``BatchMatMul``</span>
+<span class="sd">        operation.  Its first two inputs are the left and right operands.</span>
+<span class="sd">    :returns: the name of the primary output tensor.</span>
+
+<span class="sd">    TF&#39;s transpose flags (``transpose_a`` / ``transpose_b``) and adjoint flags</span>
+<span class="sd">    (``adj_x`` / ``adj_y`` used by ``BatchMatMulV2``) are honoured by inserting</span>
+<span class="sd">    ONNX ``Transpose`` nodes when needed.  For real-valued tensors, adjoint is</span>
+<span class="sd">    equivalent to transpose.</span>
+
+<span class="sd">    The permutation used for transposition is always rank-aware: it swaps only</span>
+<span class="sd">    the last two axes so that arbitrary batch dimensions are left intact.  See</span>
+<span class="sd">    :func:`_transpose_last_two` for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Honour optional transpose flags (present on MatMul and BatchMatMulV2).</span>
     <span class="n">attr_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">op_def</span><span class="o">.</span><span class="n">attr</span><span class="p">}</span> <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">op_def</span> <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_set</span><span class="p">(</span><span class="n">attr_a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attr_b</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True when either attribute alias is present and truthy.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="n">attr_a</span><span class="p">,</span> <span class="n">attr_b</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attr_names</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="n">attr</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">):</span>
+                    <span class="k">pass</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
     <span class="n">a</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_tA&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;transpose_a&quot;</span> <span class="ow">in</span> <span class="n">attr_names</span> <span class="ow">and</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;transpose_a&quot;</span><span class="p">)</span>
+        <span class="n">_transpose_last_two</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;tA&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_is_set</span><span class="p">(</span><span class="s2">&quot;transpose_a&quot;</span><span class="p">,</span> <span class="s2">&quot;adj_x&quot;</span><span class="p">)</span>
         <span class="k">else</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span>
     <span class="n">b</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_tB&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;transpose_b&quot;</span> <span class="ow">in</span> <span class="n">attr_names</span> <span class="ow">and</span> <span class="n">op</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s2">&quot;transpose_b&quot;</span><span class="p">)</span>
+        <span class="n">_transpose_last_two</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;tB&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_is_set</span><span class="p">(</span><span class="s2">&quot;transpose_b&quot;</span><span class="p">,</span> <span class="s2">&quot;adj_y&quot;</span><span class="p">)</span>
         <span class="k">else</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>

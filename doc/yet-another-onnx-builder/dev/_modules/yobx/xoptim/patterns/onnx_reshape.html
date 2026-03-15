@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -647,11 +650,7 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="ReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ReshapePattern.apply">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;Identity&quot;</span><span class="p">,</span>
             <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
@@ -676,10 +675,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span>
 <span class="sd">            C[Constant &lt;br/&gt; value: 0, 0, -1]</span>
@@ -703,10 +702,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            X[Input: X] --&gt; ID[Identity]</span>
 <span class="sd">            S[Input: shape2] -.-&gt;|Invalid?| ID</span>
 <span class="sd">            ID --&gt; xrr[Output: xrr]</span>
@@ -755,10 +754,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 3, 2])</span>
 <span class="sd">            C[Constant &lt;br/&gt; value: 3]</span>
@@ -787,10 +786,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 3, 2])</span>
 <span class="sd">            RS[[ReduceSum &lt;br/&gt; axes=1, keepdims=0]]</span>
@@ -864,10 +863,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ReduceReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ReduceReshapePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">axes</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;axes&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -908,10 +904,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, 128])</span>
 <span class="sd">            C1[Constant &lt;br/&gt; value: 4096, 7, 7, 128]</span>
@@ -943,10 +939,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, 128])</span>
 <span class="sd">            C2[Constant &lt;br/&gt; value: 4096, 49, 128]</span>
@@ -1097,10 +1093,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ReshapeReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ReshapeReshapePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">next_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">cst2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -1228,10 +1221,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, 4])</span>
 <span class="sd">            Y([Input: Y &lt;br/&gt; float, 2, 3, 4])</span>
@@ -1282,10 +1275,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, 4])</span>
 <span class="sd">            Y([Input: Y &lt;br/&gt; float, 2, 3, 4])</span>
@@ -1516,10 +1509,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 4])</span>
 <span class="sd">            Y([Input: Y &lt;br/&gt; float, &#39;a&#39;, 4])</span>
@@ -1559,10 +1552,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 4])</span>
 <span class="sd">            Y([Input: Y &lt;br/&gt; float, &#39;a&#39;, 4])</span>
@@ -1636,11 +1629,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ReshapeReshapeBinaryPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">right</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span>
@@ -1672,10 +1661,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])</span>
 <span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
@@ -1719,10 +1708,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])</span>
 <span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
@@ -1809,15 +1798,10 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="ConcatReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ConcatReshapePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">concat</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">concat</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">m1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">source</span><span class="o">=</span><span class="s2">&quot;ConcatReshapePattern.m1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;ConcatReshapePattern.m1&quot;</span>
         <span class="p">)</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1881,10 +1865,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
 <span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
@@ -1919,10 +1903,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
 <span class="sd">            I1([Input: I1 &lt;br/&gt; int64, 1])</span>
@@ -1991,15 +1975,10 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="StaticConcatReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.StaticConcatReshapePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">concat</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">concat</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">m1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">source</span><span class="o">=</span><span class="s2">&quot;ConcatReshapePattern.m1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;ConcatReshapePattern.m1&quot;</span>
         <span class="p">)</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
@@ -2061,10 +2040,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
 <span class="sd">            I1[Initializer &lt;br/&gt; value: -1]</span>
@@ -2099,10 +2078,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
 <span class="sd">            C[Constant &lt;br/&gt; value: 6, -1]</span>
@@ -2267,18 +2246,12 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="ShapeBasedEditDistanceReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ShapeBasedEditDistanceReshapePattern.apply">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">aligned_reshape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_shapes</span><span class="p">(</span>
             <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">new_shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">aligned_reshape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">source</span><span class="o">=</span><span class="s2">&quot;EditDistanceReshapePattern.m1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">aligned_reshape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;EditDistanceReshapePattern.m1&quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -2306,10 +2279,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
 <span class="sd">            one[Initializer &lt;br/&gt; value: 1]</span>
@@ -2345,10 +2318,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, 2, 3, &#39;d&#39;])</span>
 <span class="sd">            C[Constant &lt;br/&gt; value: 0, 4]</span>
@@ -2439,18 +2412,12 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="ShapeBasedReshapeIsSqueezePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.ShapeBasedReshapeIsSqueezePattern.apply">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">op_type</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_squeeze_axes</span><span class="p">(</span>
             <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape_renamed</span><span class="p">(</span><span class="n">reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">new_axes</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">source</span><span class="o">=</span><span class="s2">&quot;ReshapeIsSqueezePattern.m1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;ReshapeIsSqueezePattern.m1&quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -2477,10 +2444,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span>
 <span class="sd">            C1[Constant &lt;br/&gt; value: 2]</span>
@@ -2512,10 +2479,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span>
 <span class="sd">            C[Constant &lt;br/&gt; value: 1]</span>
@@ -2580,19 +2547,14 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="UnsqueezeReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.UnsqueezeReshapePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">unsqueeze</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">unsqueeze</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">new_axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_new_axes</span><span class="p">(</span>
             <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">unsqueeze</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span>
             <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">reshape</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span>
         <span class="p">)</span>
         <span class="n">axes</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_axes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">source</span><span class="o">=</span><span class="s2">&quot;UnsqueezeReshapePattern.a1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_axes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;UnsqueezeReshapePattern.a1&quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -2601,7 +2563,7 @@ window.runMermaid = runMermaid;</script>
                 <span class="p">[</span><span class="n">reshape</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
                 <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">unsqueeze</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">doc_string</span><span class="o">=</span><span class="n">unsqueeze</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
-            <span class="p">),</span>
+            <span class="p">)</span>
         <span class="p">]</span></div>
 </div>
 
@@ -2619,10 +2581,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 8, 16])</span>
 <span class="sd">            S3([Input: shape3 &lt;br/&gt; int64, 2])</span>
@@ -2654,10 +2616,10 @@ window.runMermaid = runMermaid;</script>
 
 <span class="sd">        graph TD</span>
 
-<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px</span>
-<span class="sd">            classDef ioNode fill:#dfd,stroke:#333</span>
-<span class="sd">            classDef interNode fill:#eee,stroke:#999</span>
+<span class="sd">            classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333</span>
+<span class="sd">            classDef ioNode fill:#dfd,stroke:#333,color:#333</span>
+<span class="sd">            classDef interNode fill:#eee,stroke:#999,color:#333</span>
 <span class="sd">            %% Nodes</span>
 <span class="sd">            X([Input: X &lt;br/&gt; float, &#39;a&#39;, 8, 16])</span>
 <span class="sd">            S3([Input: shape3 &lt;br/&gt; int64, 2])</span>
@@ -2723,10 +2685,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="UnsqueezeOrSqueezeReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_reshape.html#yobx.xoptim.patterns.onnx_reshape.UnsqueezeOrSqueezeReshapePattern.apply">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-        <span class="n">node_before</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-        <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node_before</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>

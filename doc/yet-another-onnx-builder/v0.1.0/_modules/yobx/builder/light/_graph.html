@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=65bd008a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -572,6 +572,9 @@ window.runMermaid = runMermaid;</script>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../design/torch/index.html">Torch Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../design/index.html">Elements of Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a></li>
 </ul>
@@ -607,13 +610,7 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">SparseTensorProto</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">,</span> <span class="n">TensorShapeProto</span><span class="p">,</span> <span class="n">ValueInfoProto</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.checker</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_model</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.defs</span><span class="w"> </span><span class="kn">import</span> <span class="n">onnx_opset_version</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">make_graph</span><span class="p">,</span>
-    <span class="n">make_model</span><span class="p">,</span>
-    <span class="n">make_node</span><span class="p">,</span>
-    <span class="n">make_opsetid</span><span class="p">,</span>
-    <span class="n">make_tensor_value_info</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_graph</span><span class="p">,</span> <span class="n">make_model</span><span class="p">,</span> <span class="n">make_node</span><span class="p">,</span> <span class="n">make_opsetid</span><span class="p">,</span> <span class="n">make_tensor_value_info</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_array</span>
 
 
@@ -782,10 +779,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="OnnxGraph.make_input">
 <a class="viewcode-back" href="../../../../api/builder/light/graph.html#yobx.builder.light.OnnxGraph.make_input">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_input</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
-        <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueInfoProto</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Registers an input tensor and returns its :class:`onnx.ValueInfoProto`.</span>
@@ -806,10 +800,7 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="OnnxGraph.vin">
 <a class="viewcode-back" href="../../../../api/builder/light/graph.html#yobx.builder.light.OnnxGraph.vin">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">vin</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
-        <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Declares a new graph input and returns a :class:`Var`.</span>
@@ -822,21 +813,13 @@ window.runMermaid = runMermaid;</script>
         <span class="kn">from</span><span class="w"> </span><span class="nn">._var</span><span class="w"> </span><span class="kn">import</span> <span class="n">Var</span>
 
         <span class="n">proto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_input</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Var</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">elem_type</span><span class="o">=</span><span class="n">proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span><span class="p">,</span>
-            <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="OnnxGraph.make_output">
 <a class="viewcode-back" href="../../../../api/builder/light/graph.html#yobx.builder.light.OnnxGraph.make_output">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_output</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
-        <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueInfoProto</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Registers a graph output and returns its :class:`onnx.ValueInfoProto`.</span>
@@ -972,11 +955,7 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="n">proto</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tr</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">Var</span><span class="p">(</span>
-                <span class="bp">self</span><span class="p">,</span>
-                <span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">elem_type</span><span class="o">=</span><span class="n">proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">Var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">proto</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">dims</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">Var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tr</span><span class="p">)</span></div>
