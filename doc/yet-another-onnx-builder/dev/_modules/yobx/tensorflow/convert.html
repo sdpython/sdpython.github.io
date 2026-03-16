@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=b23dd4a3" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -606,10 +606,11 @@ window.runMermaid = runMermaid;</script>
   <h1>Source code for yobx.tensorflow.convert</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">ValueInfoProto</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..container</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedModelContainer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">OptimizationOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.register</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tf_op_converter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.tensorflow_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tf_dtype_to_np_dtype</span>
@@ -637,7 +638,10 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    converted individually to an equivalent ONNX node by a registered converter.</span>
 
 <span class="sd">    :param model: a Keras model or layer (must be built / called at least once)</span>
-<span class="sd">    :param args: dummy inputs (numpy arrays); used to determine dtypes and shapes</span>
+<span class="sd">    :param args: dummy inputs (numpy arrays **or** :class:`onnx.ValueInfoProto`</span>
+<span class="sd">        descriptors); used to determine dtypes and shapes.  When a</span>
+<span class="sd">        :class:`~onnx.ValueInfoProto` is provided no actual data is needed —</span>
+<span class="sd">        the element type and shape are taken directly from the proto.</span>
 <span class="sd">    :param input_names: optional list of names for the ONNX input tensors</span>
 <span class="sd">    :param dynamic_shapes: optional per-input axis-to-dim-name mappings.</span>
 <span class="sd">        When *None*, axis 0 is treated as a dynamic batch dimension for every input.</span>
@@ -678,7 +682,14 @@ window.runMermaid = runMermaid;</script>
     <span class="k">if</span> <span class="n">input_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Length mismatch: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">=}</span><span class="s2"> but input_names=</span><span class="si">{</span><span class="n">input_names</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">input_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">input_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;X</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))]</span>
+        <span class="c1"># For ValueInfoProto arguments use the embedded name as the default.</span>
+        <span class="n">default_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">):</span>
+                <span class="n">default_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;X</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;X&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">default_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;X&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;X</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">input_names</span> <span class="o">=</span> <span class="n">default_names</span>
 
     <span class="c1"># Build TensorSpec objects for tracing (make batch dim dynamic by default).</span>
     <span class="n">input_specs</span> <span class="o">=</span> <span class="n">_build_input_specs</span><span class="p">(</span><span class="n">input_names</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">)</span>
@@ -696,9 +707,43 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="s2">&quot;com.microsoft&quot;</span> <span class="ow">in</span> <span class="n">dict_target_opset</span>
         <span class="k">else</span> <span class="p">{}</span>
     <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">builder_cls</span><span class="p">,</span> <span class="n">GraphBuilder</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verbose</span>  <span class="c1"># type: ignore</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yobx.tensorflow.to_onnx] export with builder </span><span class="si">{</span><span class="n">builder_cls</span><span class="si">!r}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yobx.tensorflow.to_onnx] </span><span class="si">{</span><span class="n">dict_target_opset</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yobx.tensorflow.to_onnx] args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extra_converters</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yobx.tensorflow.to_onnx] with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">extra_converters</span><span class="p">)</span><span class="si">}</span><span class="s2"> extra converters&quot;</span><span class="p">)</span>
+
     <span class="n">g</span> <span class="o">=</span> <span class="n">builder_cls</span><span class="p">(</span><span class="n">dict_target_opset</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
     <span class="n">_convert_concrete_function</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">input_specs</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">extra_converters</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">GraphBuilder</span><span class="p">):</span>
+        <span class="n">onx</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">large_model</span><span class="o">=</span><span class="n">large_model</span><span class="p">,</span>
+            <span class="n">external_threshold</span><span class="o">=</span><span class="n">external_threshold</span><span class="p">,</span>
+            <span class="n">return_optimize_report</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yobx.tensorflow.to_onnx] done, output type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="s2">&quot;removed&quot;</span><span class="p">]:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">agg</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;pattern&quot;</span><span class="p">)[[</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="s2">&quot;removed&quot;</span><span class="p">,</span> <span class="s2">&quot;time_in&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="n">agg</span> <span class="o">=</span> <span class="n">agg</span><span class="p">[(</span><span class="n">agg</span><span class="p">[</span><span class="s2">&quot;added&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="s2">&quot;removed&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+                <span class="s2">&quot;removed&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">agg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">agg</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">onx</span>  <span class="c1"># type: ignore</span>
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span><span class="n">large_model</span><span class="o">=</span><span class="n">large_model</span><span class="p">,</span> <span class="n">external_threshold</span><span class="o">=</span><span class="n">external_threshold</span><span class="p">)</span>  <span class="c1"># type: ignore</span></div>
 
 
@@ -709,17 +754,36 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_build_input_specs</span><span class="p">(</span><span class="n">input_names</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Builds a :class:`tensorflow.TensorSpec` for each dummy input.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Builds a :class:`tensorflow.TensorSpec` for each dummy input.</span>
+
+<span class="sd">    Each element of *args* may be a numpy array **or** an</span>
+<span class="sd">    :class:`onnx.ValueInfoProto`.  In the latter case the shape and dtype are</span>
+<span class="sd">    extracted from the proto; ``None`` is used for any dimension that is not</span>
+<span class="sd">    a positive integer (symbolic or unknown dimensions are treated as dynamic).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">specs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">input_names</span><span class="p">,</span> <span class="n">args</span><span class="p">)):</span>
-        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="n">shape</span><span class="p">:</span>
-            <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># default: make the batch dimension dynamic</span>
-        <span class="n">specs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">TensorSpec</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">as_dtype</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">):</span>
+            <span class="c1"># Extract dtype and shape from the ValueInfoProto.</span>
+            <span class="n">tt</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span>
+            <span class="n">np_dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">elem_type</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tt</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;shape&quot;</span><span class="p">):</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">dim</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">else</span> <span class="p">(</span><span class="n">dim</span><span class="o">.</span><span class="n">dim_value</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">idim</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="n">specs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">TensorSpec</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">as_dtype</span><span class="p">(</span><span class="n">np_dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">elif</span> <span class="n">shape</span><span class="p">:</span>
+                <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># default: make the batch dimension dynamic</span>
+            <span class="n">specs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">TensorSpec</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">as_dtype</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">specs</span>
 
 

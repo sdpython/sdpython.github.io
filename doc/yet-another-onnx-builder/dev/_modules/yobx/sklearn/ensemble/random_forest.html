@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=b23dd4a3" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -617,7 +617,12 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..tree.decision_tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">_LEAF</span><span class="p">,</span> <span class="n">_NODE_MODE_LEQ</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tree.decision_tree</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_LEAF</span><span class="p">,</span>
+    <span class="n">_NODE_MODE_LEQ</span><span class="p">,</span>
+    <span class="n">_emit_decision_path_for_tree</span><span class="p">,</span>
+    <span class="n">_emit_decision_leaf_for_tree</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_extract_forest_attributes_legacy</span><span class="p">(</span>
@@ -949,6 +954,58 @@ window.runMermaid = runMermaid;</script>
     <span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_emit_decision_path_for_estimators</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">estimators</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emits ONNX nodes to compute the ``decision_path`` output for an ensemble.</span>
+
+<span class="sd">    Computes a per-tree path string for each estimator and concatenates them</span>
+<span class="sd">    along axis 1 to produce a ``(N, n_estimators)`` string tensor.</span>
+
+<span class="sd">    :param g: graph builder</span>
+<span class="sd">    :param estimators: list of fitted base estimators (``estimator.estimators_``)</span>
+<span class="sd">    :param X: input tensor name</span>
+<span class="sd">    :param output_name: desired output tensor name</span>
+<span class="sd">    :param name: prefix for the internal node names</span>
+<span class="sd">    :return: *output_name*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">per_tree_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">base_est</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">estimators</span><span class="p">):</span>
+        <span class="n">path_i</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_t</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_path&quot;</span><span class="p">)</span>
+        <span class="n">_emit_decision_path_for_tree</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">base_est</span><span class="o">.</span><span class="n">tree_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">path_i</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_t</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">per_tree_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path_i</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+        <span class="s2">&quot;Concat&quot;</span><span class="p">,</span> <span class="n">per_tree_paths</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">output_name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_path_concat&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">output_name</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_emit_decision_leaf_for_estimators</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">estimators</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit ONNX nodes to compute the ``decision_leaf`` output for an ensemble.</span>
+
+<span class="sd">    Computes a per-tree leaf index for each estimator and concatenates them</span>
+<span class="sd">    along axis 1 to produce a ``(N, n_estimators)`` int64 tensor.</span>
+
+<span class="sd">    :param g: graph builder</span>
+<span class="sd">    :param estimators: list of fitted base estimators (``estimator.estimators_``)</span>
+<span class="sd">    :param X: input tensor name</span>
+<span class="sd">    :param output_name: desired output tensor name</span>
+<span class="sd">    :param name: prefix for the internal node names</span>
+<span class="sd">    :return: *output_name*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">per_tree_leaves</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">base_est</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">estimators</span><span class="p">):</span>
+        <span class="n">leaf_i</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_t</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_leaf&quot;</span><span class="p">)</span>
+        <span class="n">_emit_decision_leaf_for_tree</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">base_est</span><span class="o">.</span><span class="n">tree_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">leaf_i</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_t</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">per_tree_leaves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">leaf_i</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+        <span class="s2">&quot;Concat&quot;</span><span class="p">,</span> <span class="n">per_tree_leaves</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">output_name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_leaf_concat&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">output_name</span>
+
+
 <div class="viewcode-block" id="sklearn_random_forest_classifier">
 <a class="viewcode-back" href="../../../../api/sklearn/ensemble/random_forest.html#yobx.sklearn.ensemble.random_forest.sklearn_random_forest_classifier">[docs]</a>
 <span class="nd">@register_sklearn_converter</span><span class="p">((</span><span class="n">RandomForestClassifier</span><span class="p">,))</span>
@@ -1020,14 +1077,23 @@ window.runMermaid = runMermaid;</script>
     <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
         <span class="s2">&quot;TreeEnsembleClassifier&quot;</span><span class="p">,</span>
         <span class="p">[</span><span class="n">X</span><span class="p">],</span>
-        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
         <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="n">post_transform</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
         <span class="o">**</span><span class="n">label_kwargs</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span></div>
+
+    <span class="n">extra_idx</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_path&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_path in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_path_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp&quot;</span><span class="p">)</span>
+        <span class="n">extra_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_leaf&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_leaf in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_leaf_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dl&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span></div>
 
 
 
@@ -1073,7 +1139,7 @@ window.runMermaid = runMermaid;</script>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
     <span class="c1"># Rename scores to the desired probabilities output name.</span>
-    <span class="n">proba</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_proba&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">proba</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_proba&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
     <span class="c1"># Derive the predicted label via ArgMax over the class axis.</span>
@@ -1097,7 +1163,15 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
             <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">label</span><span class="p">,</span> <span class="n">proba</span>
+    <span class="n">extra_idx</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_path&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_path in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_path_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp&quot;</span><span class="p">)</span>
+        <span class="n">extra_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_leaf&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_leaf in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_leaf_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dl&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="sklearn_random_forest_regressor">
@@ -1167,10 +1241,17 @@ window.runMermaid = runMermaid;</script>
     <span class="n">tree_result</span> <span class="o">=</span> <span class="n">node_result</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_result</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">node_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># Cast float32 output back to float64 to match the input dtype.</span>
-    <span class="n">cast_result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-        <span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">tree_result</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast_f64&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">cast_result</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cast_result</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">cast_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">tree_result</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast_f64&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">)</span>
+
+    <span class="n">extra_idx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_path&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_path in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_path_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp&quot;</span><span class="p">)</span>
+        <span class="n">extra_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_leaf&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_leaf in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_leaf_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dl&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span></div>
 
 
 
@@ -1200,10 +1281,10 @@ window.runMermaid = runMermaid;</script>
         <span class="n">estimators</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_classifier</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="n">n_estimators</span><span class="p">,</span> <span class="n">itype</span><span class="o">=</span><span class="n">itype</span>
     <span class="p">)</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
         <span class="s2">&quot;TreeEnsemble&quot;</span><span class="p">,</span>
         <span class="p">[</span><span class="n">X</span><span class="p">],</span>
-        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
         <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_te&quot;</span><span class="p">,</span>
         <span class="n">post_transform</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># NONE</span>
@@ -1211,7 +1292,15 @@ window.runMermaid = runMermaid;</script>
         <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">result</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">extra_idx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_path&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_path in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_path_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp&quot;</span><span class="p">)</span>
+        <span class="n">extra_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_leaf&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_leaf in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_leaf_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dl&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="sklearn_extra_trees_classifier">
@@ -1285,14 +1374,23 @@ window.runMermaid = runMermaid;</script>
     <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
         <span class="s2">&quot;TreeEnsembleClassifier&quot;</span><span class="p">,</span>
         <span class="p">[</span><span class="n">X</span><span class="p">],</span>
-        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
         <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="n">post_transform</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">attrs</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
         <span class="o">**</span><span class="n">label_kwargs</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span></div>
+
+    <span class="n">extra_idx</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_path&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_path in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_path_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp&quot;</span><span class="p">)</span>
+        <span class="n">extra_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_leaf&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_leaf in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_leaf_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dl&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span></div>
 
 
 
@@ -1367,10 +1465,17 @@ window.runMermaid = runMermaid;</script>
     <span class="n">tree_result</span> <span class="o">=</span> <span class="n">node_result</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_result</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">node_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># Cast float32 output back to float64 to match the input dtype.</span>
-    <span class="n">cast_result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-        <span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">tree_result</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast_f64&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">cast_result</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cast_result</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">cast_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">tree_result</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast_f64&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">)</span>
+
+    <span class="n">extra_idx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_path&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_path in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_path_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dp&quot;</span><span class="p">)</span>
+        <span class="n">extra_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_leaf&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">extra_idx</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing output for decision_leaf in </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">_emit_decision_leaf_for_estimators</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">estimators</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="n">extra_idx</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_dl&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span></div>
 
 </pre></div>
 

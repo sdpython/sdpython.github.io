@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b23dd4a3" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -604,7 +604,20 @@ window.runMermaid = runMermaid;</script>
           <div class="body" role="main">
             
   <h1>Source code for yobx.typing</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Iterator</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Protocol</span><span class="p">,</span>
+    <span class="n">Set</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">runtime_checkable</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="TensorLike">
@@ -623,6 +636,35 @@ window.runMermaid = runMermaid;</script>
 <span class="nd">@runtime_checkable</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">InferenceSessionLike</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feeds</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TensorLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TensorLike</span><span class="p">]:</span> <span class="o">...</span></div>
+
+
+
+<div class="viewcode-block" id="ConvertOptionsProtocol">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.ConvertOptionsProtocol">[docs]</a>
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvertOptionsProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol for a class giving indications on how to convert a model.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConvertOptionsProtocol.has">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.ConvertOptionsProtocol.has">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">piece</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if option `option_name` applies to `piece`&quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DefaultConvertOptions">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.DefaultConvertOptions">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DefaultConvertOptions</span><span class="p">(</span><span class="n">ConvertOptionsProtocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;All options are disabled.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DefaultConvertOptions.has">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.DefaultConvertOptions.has">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">piece</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns always False.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+</div>
 
 
 
@@ -646,6 +688,11 @@ window.runMermaid = runMermaid;</script>
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the list of output names.&quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConvertOptionsProtocol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns converting options.&quot;&quot;&quot;</span>
         <span class="o">...</span>
 
 <div class="viewcode-block" id="GraphBuilderProtocol.get_opset">
@@ -967,6 +1014,1159 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">        exception raised while converting a model.</span>
 
 <span class="sd">        :return: information in a string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol">[docs]</a>
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GraphBuilderTorchProtocol</span><span class="p">(</span><span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol for graph builders that support the full torch-exporter API.</span>
+
+<span class="sd">    This protocol extends :class:`GraphBuilderExtendedProtocol` with the</span>
+<span class="sd">    additional methods and attributes used by</span>
+<span class="sd">    :class:`~yobx.torch.interpreter.DynamoInterpreter` (the *torch exporter*)</span>
+<span class="sd">    when translating a ``torch.fx`` graph into ONNX.</span>
+
+<span class="sd">    The extra surface covers:</span>
+
+<span class="sd">    * **Rank helpers** — :meth:`has_rank`, :meth:`get_rank`, :meth:`set_rank`.</span>
+<span class="sd">    * **Device helpers** — :meth:`has_device`, :meth:`get_device`,</span>
+<span class="sd">      :meth:`set_device`.</span>
+<span class="sd">    * **Extended type / shape** — :meth:`get_type_known`,</span>
+<span class="sd">      :meth:`set_shapes_types`.</span>
+<span class="sd">    * **Tensor-sequence support** — :meth:`is_sequence`, :meth:`get_sequence`,</span>
+<span class="sd">      :meth:`set_sequence`, :meth:`make_tensor_sequence_input`.</span>
+<span class="sd">    * **Dynamic-shape helpers** — :meth:`is_dynamic_shape`,</span>
+<span class="sd">      :meth:`get_input_dynamic_shape`, :meth:`get_is_dimension`,</span>
+<span class="sd">      :meth:`verify_dynamic_shape`, :meth:`register_dynamic_objects_from_shape`,</span>
+<span class="sd">      :meth:`make_dynamic_object`, :meth:`add_dynamic_object`,</span>
+<span class="sd">      :meth:`make_new_dynamic_shape`.</span>
+<span class="sd">    * **Sub-builder / local-function support** — :meth:`make_nodes`,</span>
+<span class="sd">      :meth:`make_local_function`, :meth:`make_subset_builder`.</span>
+<span class="sd">    * **Miscellaneous** — :meth:`add_stat`, :meth:`pretty_text`,</span>
+<span class="sd">      :meth:`register_users`, :meth:`extract_input_names_from_args`.</span>
+<span class="sd">    * **State attributes** — ``anyop``, ``as_function``, ``local_domain``,</span>
+<span class="sd">      ``verbose``, ``torch``, ``optimization_options``, ``dynamic_shapes``,</span>
+<span class="sd">      ``dynamic_objects``, ``dynamic_dimensions_source``, ``nodes``,</span>
+<span class="sd">      ``outputs``, ``opsets``, ``initializers_dict``, ``raise_list``,</span>
+<span class="sd">      ``was_inputs_renamed``, ``last_added_node``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Attributes / properties</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">anyop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OpsetProtocol&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An opset helper that allows operators from any domain.</span>
+
+<span class="sd">        Identical to :attr:`~GraphBuilderExtendedProtocol.op` but configured</span>
+<span class="sd">        to accept unknown domains.  Used by the torch exporter to emit</span>
+<span class="sd">        custom-domain operators such as ``ai.onnx.complex``.</span>
+
+<span class="sd">        :return: an :class:`OpsetProtocol`-compatible object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">last_added_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The most recently appended ONNX node, or ``None`` when the graph</span>
+<span class="sd">        is still empty.</span>
+
+<span class="sd">        :return: an :class:`~onnx.NodeProto` or ``None``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Rank helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.has_rank">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.has_rank">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when the rank of tensor *name* is known.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.get_rank">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.get_rank">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the rank (number of dimensions) of tensor *name*.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :return: non-negative integer rank</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.set_rank">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.set_rank">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Records the rank for tensor *name*.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :param value: rank (number of dimensions)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Device helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.has_device">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.has_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when the device of tensor *name* is known.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.get_device">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.get_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the device index for tensor *name*.</span>
+
+<span class="sd">        The convention is ``-1`` for CPU and a non-negative index for a</span>
+<span class="sd">        CUDA device.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :return: device index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.set_device">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.set_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_device</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">keep_this_device</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Records the device for tensor *name*.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :param device: device identifier — an :class:`int` index, a</span>
+<span class="sd">            :class:`torch.device`, or a constant name</span>
+<span class="sd">        :param exc: raise an exception on inconsistency</span>
+<span class="sd">        :param keep_this_device: overwrite an already-known device</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Extended type / shape knowledge</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.get_type_known">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.get_type_known">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_type_known</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the ONNX element type inferred by torch for *name*, or</span>
+<span class="sd">        ``None`` when unavailable.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :param exc: raise an exception when the value is malformed</span>
+<span class="sd">        :return: ONNX element type integer or ``None``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.set_shapes_types">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.set_shapes_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_shapes_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">where</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Records a torch-side ``(where, value)`` annotation for *name*.</span>
+
+<span class="sd">        The annotation is later consulted by :meth:`get_type_known` to</span>
+<span class="sd">        resolve type mismatches between ONNX and torch.</span>
+
+<span class="sd">        :param name: tensor name (or a :class:`torch.fx.Node`)</span>
+<span class="sd">        :param where: source label (e.g. ``&quot;run_node&quot;``)</span>
+<span class="sd">        :param value: annotation value (a tuple describing type / shape)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Tensor-sequence support</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.is_sequence">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.is_sequence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* has been registered as a tensor</span>
+<span class="sd">        sequence.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.get_sequence">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.get_sequence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns sequence metadata for *name*.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :return: dictionary with keys such as ``&quot;dtype&quot;``, ``&quot;shapes&quot;``,</span>
+<span class="sd">            ``&quot;ranks&quot;``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.set_sequence">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.set_sequence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_sequence</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ranks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">unknown</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Marks *name* as a tensor sequence.</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :param dtype: element type (ONNX integer or tuple of integers)</span>
+<span class="sd">        :param shapes: optional tuple of per-element shapes</span>
+<span class="sd">        :param ranks: optional tuple of per-element ranks</span>
+<span class="sd">        :param unknown: set ``True`` when sequence contents are unknown</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.make_tensor_sequence_input">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.make_tensor_sequence_input">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_tensor_sequence_input</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">marker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers a tensor-sequence graph input and returns its name.</span>
+
+<span class="sd">        :param name: desired input name</span>
+<span class="sd">        :param elem_type: ONNX element type for the sequence elements</span>
+<span class="sd">        :param shape: shape of each element</span>
+<span class="sd">        :param marker: optional label for debugging / provenance</span>
+<span class="sd">        :return: the registered input name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Dynamic-shape helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.is_dynamic_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.is_dynamic_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_dynamic_shape</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shape</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">allow_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">allow_new_dynamic_dimension</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *shape* contains at least one dynamic</span>
+<span class="sd">        (non-integer) dimension.</span>
+
+<span class="sd">        :param shape: shape tuple to check</span>
+<span class="sd">        :param verify: verify that symbolic names are registered</span>
+<span class="sd">        :param allow_none: treat ``None`` entries as dynamic</span>
+<span class="sd">        :param allow_new_dynamic_dimension: allow unregistered symbolic dims</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.get_input_dynamic_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.get_input_dynamic_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_input_dynamic_shape</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">input_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">example_shape</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">example_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dynamic shape specification for a graph input.</span>
+
+<span class="sd">        :param name: input name</span>
+<span class="sd">        :param input_index: positional index of the input</span>
+<span class="sd">        :param example_shape: concrete shape of an example input</span>
+<span class="sd">        :param dynamic_shapes: override the builder&#39;s ``dynamic_shapes``</span>
+<span class="sd">        :param example_value: one example tensor value</span>
+<span class="sd">        :return: shape tuple (mixing ``int`` for static dimensions and</span>
+<span class="sd">            ``str`` for dynamic ones)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.get_is_dimension">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.get_is_dimension">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_is_dimension</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">elem_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_outputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* represents a scalar dynamic-dimension</span>
+<span class="sd">        value (e.g. the result of ``aten.sym_size``).</span>
+
+<span class="sd">        :param name: tensor name</span>
+<span class="sd">        :param elem_type: expected ONNX element type hint</span>
+<span class="sd">        :param shape: expected shape hint</span>
+<span class="sd">        :param n_outputs: number of outputs produced by the enclosing node</span>
+<span class="sd">        :param exc: raise when ambiguous</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.verify_dynamic_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.verify_dynamic_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">verify_dynamic_shape</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalises *shape*, replacing symbolic dimensions with their</span>
+<span class="sd">        registered string names.</span>
+
+<span class="sd">        :param shape: raw shape (may contain :class:`torch.SymInt`)</span>
+<span class="sd">        :param name: tensor name for context messages</span>
+<span class="sd">        :param add: register newly encountered symbolic dims automatically</span>
+<span class="sd">        :return: normalised shape tuple or ``None`` if *shape* is ``None``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.register_dynamic_objects_from_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.register_dynamic_objects_from_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_dynamic_objects_from_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers all dynamic-dimension objects found in *shape*.</span>
+
+<span class="sd">        :param shape: shape tuple potentially containing symbolic dimensions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.make_dynamic_object">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.make_dynamic_object">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_dynamic_object</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">shape_as_input</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">input_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates and registers a dynamic dimension object.</span>
+
+<span class="sd">        :param name: name for the dynamic dimension</span>
+<span class="sd">        :param value: :class:`torch.SymInt` or similar symbolic value</span>
+<span class="sd">        :param shape_as_input: add the dimension as a scalar graph input</span>
+<span class="sd">        :param input_name: the tensor input this dimension originates from</span>
+<span class="sd">        :param axis: the axis of *input_name* this dimension corresponds to</span>
+<span class="sd">        :return: the registered name, or ``None``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.add_dynamic_object">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.add_dynamic_object">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dynamic_object</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">parse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">check_tokens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers *value* as the dynamic dimension named *key*.</span>
+
+<span class="sd">        :param key: symbolic dimension name</span>
+<span class="sd">        :param value: :class:`torch.SymInt`, :class:`int`, or similar</span>
+<span class="sd">        :param name: tensor input this dimension originates from</span>
+<span class="sd">        :param dim: axis of *name* this dimension corresponds to</span>
+<span class="sd">        :param parse: also register sub-expressions of *value*</span>
+<span class="sd">        :param check_tokens: verify sub-tokens are registered first</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.make_new_dynamic_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.make_new_dynamic_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_new_dynamic_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a dynamic shape of the given *rank* with fresh symbolic</span>
+<span class="sd">        dimensions.</span>
+
+<span class="sd">        :param rank: number of dimensions</span>
+<span class="sd">        :param prefix: prefix for the generated dimension names</span>
+<span class="sd">        :return: tuple of :class:`torch.SymInt` objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Sub-builder and local-function support</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.make_nodes">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.make_nodes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_nodes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">builder</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">input_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">output_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">function_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">force_rename_with_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Appends all nodes and initializers from *builder* into this</span>
+<span class="sd">        graph.</span>
+
+<span class="sd">        :param builder: source :class:`GraphBuilder`</span>
+<span class="sd">        :param input_names: names of the inputs that correspond to</span>
+<span class="sd">            *builder*&#39;s inputs in the current graph</span>
+<span class="sd">        :param output_names: desired output names in the current graph</span>
+<span class="sd">        :param prefix: prefix applied to every result name from *builder*</span>
+<span class="sd">            when *function_options* is ``None``</span>
+<span class="sd">        :param function_options: when set the sub-graph is exported as a</span>
+<span class="sd">            local ONNX function</span>
+<span class="sd">        :param optimize: run optimizations on the appended sub-graph</span>
+<span class="sd">        :param force_rename_with_prefix: force this prefix regardless of</span>
+<span class="sd">            *function_options*</span>
+<span class="sd">        :return: output name(s) in the current graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.make_local_function">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.make_local_function">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_local_function</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">builder</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">function_options</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">metadata_props</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts *builder* into a local ONNX function and registers it.</span>
+
+<span class="sd">        :param builder: source :class:`GraphBuilder` for the function body</span>
+<span class="sd">        :param function_options: controls naming, inlining, and weight</span>
+<span class="sd">            handling</span>
+<span class="sd">        :param optimize: run optimizations on the function body</span>
+<span class="sd">        :param metadata_props: extra key/value metadata for the function</span>
+<span class="sd">        :return: ``(added_initializers, (domain, name))``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.make_subset_builder">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.make_subset_builder">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_subset_builder</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">add_local_functions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a reduced copy of this builder that covers only the</span>
+<span class="sd">        tensors reachable from *input_names*.</span>
+
+<span class="sd">        :param input_names: graph inputs for the subset</span>
+<span class="sd">        :param name: local-function name for the subset</span>
+<span class="sd">        :param domain: local-function domain for the subset</span>
+<span class="sd">        :param add_local_functions: copy local functions into the subset</span>
+<span class="sd">        :return: new :class:`GraphBuilder` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Miscellaneous methods</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.add_stat">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.add_stat">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_stat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Records a conversion statistic (no-op in most implementations).</span>
+
+<span class="sd">        :param kind: statistic category</span>
+<span class="sd">        :param name: statistic name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.pretty_text">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.pretty_text">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pretty_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">add_fx_graph</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a human-readable multi-line description of the graph.</span>
+
+<span class="sd">        :param add_fx_graph: include the original FX graph text</span>
+<span class="sd">        :param recursive: include local functions</span>
+<span class="sd">        :return: formatted string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.register_users">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.register_users">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">users</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers the consumers of tensor *name* (used for validation).</span>
+
+<span class="sd">        :param name: producer tensor name</span>
+<span class="sd">        :param users: iterable of consumer tensor names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderTorchProtocol.extract_input_names_from_args">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderTorchProtocol.extract_input_names_from_args">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_input_names_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts all known tensor names from a (possibly nested) args</span>
+<span class="sd">        structure.</span>
+
+<span class="sd">        :param args: flat or nested sequence of values; strings that are</span>
+<span class="sd">            known graph names are collected</span>
+<span class="sd">        :return: deduplicated list of input tensor names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol">[docs]</a>
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GraphBuilderPatternOptimizationProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol describing the expected API of the graph pattern optimizer.</span>
+
+<span class="sd">    Any class that implements this protocol can be passed as the *g* argument</span>
+<span class="sd">    to :meth:`~yobx.xoptim.PatternOptimization.match` and related methods.</span>
+<span class="sd">    The concrete implementation is</span>
+<span class="sd">    :class:`yobx.xoptim.GraphBuilderPatternOptimization`.</span>
+
+<span class="sd">    The protocol covers all attributes and methods that pattern authors</span>
+<span class="sd">    typically call on the optimizer object inside their ``match()``</span>
+<span class="sd">    implementations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Instance attributes surfaced as Protocol members</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current verbosity level.&quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">processor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Target processor(s), e.g. ``&quot;CPU&quot;`` or ``&quot;CPU,CUDA&quot;``.&quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">builder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The underlying :class:`~yobx.xbuilder.GraphBuilder` instance.&quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Graph-level properties</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">main_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opset version for the main (``&quot;&quot;``/ONNX) domain.</span>
+
+<span class="sd">        :return: integer opset version</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">opsets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mapping from domain name to opset version.</span>
+
+<span class="sd">        :return: dict of domain → opset version</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ordered list of :class:`~onnx.NodeProto` objects in the graph.</span>
+
+<span class="sd">        :return: list of nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Names of the graph inputs.</span>
+
+<span class="sd">        :return: list of input names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Names of the graph outputs.</span>
+
+<span class="sd">        :return: list of output names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Graph input value infos.</span>
+
+<span class="sd">        :return: list of :class:`~onnx.ValueInfoProto` objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Graph output value infos.</span>
+
+<span class="sd">        :return: list of :class:`~onnx.ValueInfoProto` objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Node navigation</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.iter_nodes">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.iter_nodes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterates over all nodes in the graph.</span>
+
+<span class="sd">        :return: iterator of :class:`~onnx.NodeProto`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.node_before">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.node_before">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">node_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the node that produces output *name*, or ``None``.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :return: :class:`~onnx.NodeProto` or ``None`` if *name* is an input</span>
+<span class="sd">            or initializer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.next_node">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.next_node">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the unique consumer of *name*.  Raises if there is not</span>
+<span class="sd">        exactly one consumer.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :return: :class:`~onnx.NodeProto`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.next_nodes">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.next_nodes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all nodes that consume *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :return: list of :class:`~onnx.NodeProto`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_position">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_position">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the position (index) of *node* in the graph node list.</span>
+
+<span class="sd">        :param node: a :class:`~onnx.NodeProto`</span>
+<span class="sd">        :return: zero-based index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Liveness / usage queries</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.is_used">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.is_used">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_used</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* is consumed by any node or is a</span>
+<span class="sd">        graph output.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.is_used_more_than_once">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.is_used_more_than_once">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_used_more_than_once</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* has more than one consumer, is a</span>
+<span class="sd">        graph output, or is referenced by a sub-graph.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.is_used_only_by">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.is_used_only_by">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_used_only_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* is consumed exclusively by the</span>
+<span class="sd">        given nodes.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :param nodes: the only permitted consumers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.is_output">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.is_output">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* is a graph output.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.is_used_by_subgraph">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.is_used_by_subgraph">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_used_by_subgraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* is used inside a sub-graph.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Constant queries</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.is_constant">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.is_constant">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* is a known constant (initializer</span>
+<span class="sd">        or the output of a constant-foldable node chain).</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.is_constant_scalar">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.is_constant_scalar">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_constant_scalar</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *name* is a scalar constant.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :param value: if not ``None``, also check that the scalar equals</span>
+<span class="sd">            this value</span>
+<span class="sd">        :param broadcast: treat shapes ``(1,)``, ``(1,1)``, … as scalar</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_constant_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_constant_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_constant_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape of constant *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :param exc: raise an exception if the shape cannot be determined</span>
+<span class="sd">        :return: shape tuple, or ``None`` when *exc* is ``False``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_computed_constant">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_computed_constant">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_computed_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">statistics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the evaluated value of constant *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :param statistics: optional list of summary statistics to compute</span>
+<span class="sd">            (``&quot;min&quot;``, ``&quot;max&quot;``); when given, a list of values is returned</span>
+<span class="sd">        :return: :class:`numpy.ndarray` or a list of statistics</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_constant_scalar">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_constant_scalar">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_constant_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the scalar value of constant *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :param broadcast: accept shapes such as ``(1,)`` or ``(1,1)``</span>
+<span class="sd">        :return: ``int``, ``float``, or ``complex``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_constant_or_attribute">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_constant_or_attribute">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_constant_or_attribute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cvt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value of an operator attribute or input depending on</span>
+<span class="sd">        the opset version.  Some attributes became inputs in newer opsets.</span>
+
+<span class="sd">        :param node: :class:`~onnx.NodeProto`</span>
+<span class="sd">        :param attribute: attribute name (used in older opsets)</span>
+<span class="sd">        :param input_index: input index (used in newer opsets)</span>
+<span class="sd">        :param cvt: optional conversion callable applied to the result</span>
+<span class="sd">        :return: attribute or constant value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Type / shape queries</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.has_type">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.has_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when the element type of *name* is known.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_type">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the ONNX element type integer for *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :return: element type (e.g. ``TensorProto.FLOAT``)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.has_rank">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.has_rank">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when the rank of *name* is known.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_rank">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_rank">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the rank of *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :return: number of dimensions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.has_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.has_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when the full shape of *name* is known.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape of *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :return: tuple where each element is an ``int`` or a symbolic</span>
+<span class="sd">            dimension string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.same_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.same_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">same_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *a* and *b* have the same shape,</span>
+<span class="sd">        taking registered constraints into account.</span>
+
+<span class="sd">        :param a: first result name</span>
+<span class="sd">        :param b: second result name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_shape_renamed">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_shape_renamed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape_renamed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape of *name* using user-visible dimension names.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :return: shape tuple with user dimension names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.try_infer_type">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.try_infer_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">try_infer_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tries to infer the element type of *name*, propagating through</span>
+<span class="sd">        the graph if necessary.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :param exc: raise an exception when the type cannot be determined</span>
+<span class="sd">        :return: element type integer, or ``0`` when unknown</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.try_infer_shape">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.try_infer_shape">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">try_infer_shape</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tries to infer the shape of *name*.</span>
+
+<span class="sd">        :param name: result name</span>
+<span class="sd">        :param exc: raise an exception when the shape cannot be determined</span>
+<span class="sd">        :return: shape tuple or ``None``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Attribute helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_attribute">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_attribute">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">att_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the :class:`~onnx.AttributeProto` named *att_name* on</span>
+<span class="sd">        *node*.</span>
+
+<span class="sd">        :param node: :class:`~onnx.NodeProto`</span>
+<span class="sd">        :param att_name: attribute name</span>
+<span class="sd">        :param exc: raise an exception if the attribute is missing</span>
+<span class="sd">        :return: :class:`~onnx.AttributeProto` or ``None``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_attribute_with_default">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_attribute_with_default">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_attribute_with_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value of attribute *name* on *node*, or</span>
+<span class="sd">        *default_value* if the attribute is absent.</span>
+
+<span class="sd">        :param node: :class:`~onnx.NodeProto`</span>
+<span class="sd">        :param name: attribute name</span>
+<span class="sd">        :param default_value: fallback value</span>
+<span class="sd">        :return: attribute value or *default_value*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_attributes_with_default">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_attributes_with_default">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_attributes_with_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">default_values</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dict of attribute values for *node*, substituting</span>
+<span class="sd">        *default_values* for any missing attributes.</span>
+
+<span class="sd">        :param node: :class:`~onnx.NodeProto`</span>
+<span class="sd">        :param default_values: keyword arguments mapping attribute names to</span>
+<span class="sd">            their default values</span>
+<span class="sd">        :return: dict of attribute name → value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_axis">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_axis">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">default_axis</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the ``axis`` attribute of *node*.</span>
+
+<span class="sd">        :param node: :class:`~onnx.NodeProto`</span>
+<span class="sd">        :param default_axis: default value when the attribute is absent</span>
+<span class="sd">        :return: axis integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Processor / constraint helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.has_processor">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.has_processor">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_processor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when *processor* is in the active processor list.</span>
+
+<span class="sd">        :param processor: processor name, e.g. ``&quot;CUDA&quot;``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.get_registered_constraints">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.get_registered_constraints">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_registered_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape constraints registered on the builder.</span>
+
+<span class="sd">        :return: mapping from constraint name to set of allowed values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.has_exact_same_constant_in_context">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.has_exact_same_constant_in_context">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_exact_same_constant_in_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks whether an identical constant already exists in the graph.</span>
+
+<span class="sd">        :param name: constant name to look up</span>
+<span class="sd">        :return: ``True``/``False`` when known, ``None`` otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.do_not_turn_constant_initializers_maybe_because_of_showing">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.do_not_turn_constant_initializers_maybe_because_of_showing">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">do_not_turn_constant_initializers_maybe_because_of_showing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ``True`` when the initializer for *name* must not be</span>
+<span class="sd">        folded into a ``Constant`` node (e.g. because it is displayed).</span>
+
+<span class="sd">        :param name: initializer name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Node / initializer creation</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.make_initializer">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.make_initializer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_initializer</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">give_unique</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a constant initializer and returns its (possibly</span>
+<span class="sd">        auto-generated) name.</span>
+
+<span class="sd">        :param name: desired name (may be empty for auto-naming)</span>
+<span class="sd">        :param value: :class:`numpy.ndarray` or</span>
+<span class="sd">            :class:`~onnx.TensorProto` value</span>
+<span class="sd">        :param external: store as external data</span>
+<span class="sd">        :param msg: optional debug message</span>
+<span class="sd">        :param source: optional source tag for debugging</span>
+<span class="sd">        :param give_unique: generate a unique name when *name* is already</span>
+<span class="sd">            taken</span>
+<span class="sd">        :return: the registered name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.unique_name">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.unique_name">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unique_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a name derived from *prefix* that has not been used yet.</span>
+
+<span class="sd">        :param prefix: name prefix</span>
+<span class="sd">        :return: unique name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.make_node">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.make_node">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_node</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an ONNX node (without adding it to the graph) and</span>
+<span class="sd">        returns the :class:`~onnx.NodeProto`.</span>
+
+<span class="sd">        :param op_type: operator type</span>
+<span class="sd">        :param inputs: input name(s)</span>
+<span class="sd">        :param outputs: number of outputs (``int``), single output name</span>
+<span class="sd">            (``str``), or list of output names</span>
+<span class="sd">        :param domain: operator domain</span>
+<span class="sd">        :param attributes: list of :class:`~onnx.AttributeProto` objects</span>
+<span class="sd">        :param name: node name</span>
+<span class="sd">        :param kwargs: operator attributes as Python primitives</span>
+<span class="sd">        :return: :class:`~onnx.NodeProto`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.make_node_check_opset">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.make_node_check_opset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_node_check_opset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Like :meth:`make_node` but adapts certain operators for the</span>
+<span class="sd">        active opset (e.g. ``Squeeze``/``Unsqueeze`` axis handling changed</span>
+<span class="sd">        between opset 11 and 13).</span>
+
+<span class="sd">        :param op_type: operator type</span>
+<span class="sd">        :param inputs: input name(s)</span>
+<span class="sd">        :param outputs: number of outputs (``int``), single output name</span>
+<span class="sd">            (``str``), or list of output names</span>
+<span class="sd">        :param domain: operator domain (must be ``&quot;&quot;`` for the main domain)</span>
+<span class="sd">        :param attributes: list of :class:`~onnx.AttributeProto` objects</span>
+<span class="sd">        :param name: node name</span>
+<span class="sd">        :param kwargs: operator attributes as Python primitives</span>
+<span class="sd">        :return: :class:`~onnx.NodeProto`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Miscellaneous</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimizationProtocol.pretty_text">
+<a class="viewcode-back" href="../../api/typing.html#yobx.typing.GraphBuilderPatternOptimizationProtocol.pretty_text">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pretty_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">add_fx_graph</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a human-readable text rendering of the graph.</span>
+
+<span class="sd">        :param add_fx_graph: include the FX graph representation when</span>
+<span class="sd">            available</span>
+<span class="sd">        :param recursive: recurse into sub-graphs</span>
+<span class="sd">        :return: multi-line string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 </div>

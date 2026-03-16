@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b23dd4a3" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -183,7 +183,8 @@
   <section id="external-libraries-based-on-scikit-learn">
 <span id="l-design-sklearn-like-converters"></span><h1>External Libraries Based on scikit-learn<a class="headerlink" href="#external-libraries-based-on-scikit-learn" title="Link to this heading">¶</a></h1>
 <p><a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code></a> converts fitted estimators to ONNX
-from <a class="reference external" href="https://xgboost.readthedocs.io/en/stable/get_started.html">xgboost</a>, <a class="reference external" href="https://lightgbm.readthedocs.io/en/latest/">lightgbm</a>, <a class="reference external" href="https://contrib.scikit-learn.org/category_encoders/">category_encoders</a>
+from <a class="reference external" href="https://xgboost.readthedocs.io/en/stable/get_started.html">xgboost</a>, <a class="reference external" href="https://lightgbm.readthedocs.io/en/latest/">lightgbm</a>, <a class="reference external" href="https://contrib.scikit-learn.org/category_encoders/">category_encoders</a>,
+and <a class="reference external" href="https://imbalanced-learn.org/stable/">imbalanced-learn</a>
 using the same registry-based architecture as the other
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.sklearn</span></code> converters.</p>
 <table class="docutils align-default">
@@ -201,6 +202,9 @@ using the same registry-based architecture as the other
 </tr>
 <tr class="row-even"><td><p><a class="reference external" href="https://lightgbm.readthedocs.io/en/latest/">lightgbm</a></p></td>
 <td><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.sklearn.lightgbm</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://imbalanced-learn.org/stable/">imbalanced-learn</a></p></td>
+<td><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.sklearn.imblearn</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -252,6 +256,15 @@ for xgboost and lightgbm.</p>
 </tbody>
 </table>
 </section>
+<section id="imbalanced-learn">
+<h2>imbalanced-learn<a class="headerlink" href="#imbalanced-learn" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://imbalanced-learn.org/stable/">imbalanced-learn</a> extends <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> with resampling
+techniques for imbalanced datasets.  Resampling only happens at training
+time, so ONNX inference pipelines skip any step that exposes
+<code class="docutils literal notranslate"><span class="pre">fit_resample</span></code> and only convert the remaining transformers and the
+final estimator.</p>
+<p>See <code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.sklearn.imblearn</span></code> for the full API reference.</p>
+</section>
 </section>
 
 
@@ -270,6 +283,7 @@ for xgboost and lightgbm.</p>
                 <ul>
 <li><a class="reference internal" href="#">External Libraries Based on scikit-learn</a><ul>
 <li><a class="reference internal" href="#comparison-xgboost-vs-lightgbm">Comparison: XGBoost vs LightGBM</a></li>
+<li><a class="reference internal" href="#imbalanced-learn">imbalanced-learn</a></li>
 </ul>
 </li>
 </ul>

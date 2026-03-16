@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b23dd4a3" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -604,9 +604,14 @@ window.runMermaid = runMermaid;</script>
           <div class="body" role="main">
             
   <h1>Source code for yobx.sklearn</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.convert</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">ConvertOptions</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NumericalDiscrepancyWarning&quot;</span><span class="p">,</span> <span class="s2">&quot;register_sklearn_converters&quot;</span><span class="p">,</span> <span class="s2">&quot;to_onnx&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ConvertOptions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NumericalDiscrepancyWarning&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;register_sklearn_converters&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_onnx&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">has_sklearn</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
@@ -648,12 +653,15 @@ window.runMermaid = runMermaid;</script>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_cluster</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_compose</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_covariance</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.cross_decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_cross_decomposition</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_decomposition</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.discriminant_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_discriminant_analysis</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.dummy</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_dummy</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_ensemble</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.feature_extraction</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_feature_extraction</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.feature_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_feature_selection</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.gaussian_process</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_gaussian_process</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.imblearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_imblearn</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.impute</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_impute</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.isotonic</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_isotonic</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.kernel_approximation</span><span class="w"> </span><span class="kn">import</span> <span class="n">register</span> <span class="k">as</span> <span class="n">register_kernel_approximation</span>
@@ -679,12 +687,15 @@ window.runMermaid = runMermaid;</script>
     <span class="n">register_cluster</span><span class="p">()</span>
     <span class="n">register_compose</span><span class="p">()</span>
     <span class="n">register_covariance</span><span class="p">()</span>
+    <span class="n">register_cross_decomposition</span><span class="p">()</span>
     <span class="n">register_decomposition</span><span class="p">()</span>
     <span class="n">register_discriminant_analysis</span><span class="p">()</span>
     <span class="n">register_dummy</span><span class="p">()</span>
     <span class="n">register_ensemble</span><span class="p">()</span>
+    <span class="n">register_feature_extraction</span><span class="p">()</span>
     <span class="n">register_feature_selection</span><span class="p">()</span>
     <span class="n">register_gaussian_process</span><span class="p">()</span>
+    <span class="n">register_imblearn</span><span class="p">()</span>
     <span class="n">register_impute</span><span class="p">()</span>
     <span class="n">register_isotonic</span><span class="p">()</span>
     <span class="n">register_kernel_approximation</span><span class="p">()</span>

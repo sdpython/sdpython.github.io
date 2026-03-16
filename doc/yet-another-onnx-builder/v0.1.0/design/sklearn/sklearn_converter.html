@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b23dd4a3" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -360,6 +360,29 @@ is loaded when <a class="reference internal" href="../../api/sklearn/index.html#
 </pre></div>
 </div>
 </section>
+<section id="converting-options">
+<h2>Converting Options<a class="headerlink" href="#converting-options" title="Link to this heading">¶</a></h2>
+<p>The user may need extra outputs coming from the model.
+This is driven by class <a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.ConvertOptions" title="yobx.sklearn.ConvertOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.sklearn.ConvertOptions</span></code></a>
+which exposes all the possible ways to change the default behaviour
+if the converters.
+See <a class="reference internal" href="../../auto_examples_sklearn/plot_sklearn_convert_options.html#l-plot-sklearn-convert-options"><span class="std std-ref">Exporting sklearn tree models with convert options</span></a> for a worked example.</p>
+</section>
+<section id="yobx-vs-skl2onnx">
+<h2>yobx VS skl2onnx<a class="headerlink" href="#yobx-vs-skl2onnx" title="Link to this heading">¶</a></h2>
+<p>Both libraries convert <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> models to ONNX in a similar way.
+But <cite>yobx</cite> implements a unified way to convert models across different packages
+and is more scalable than <cite>sklearn-onnx</cite>.</p>
+<ul class="simple">
+<li><p><cite>yobx</cite> can then easily be extended to libraries such as <a class="reference external" href="https://skorch.readthedocs.io/en/latest/">sktorch</a>
+since both exporters can use the same <cite>GraphBuilder</cite>.</p></li>
+<li><p>It enables <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> optimizations whenever possible.</p></li>
+<li><p>It allows the user to export estimator in a pipeline as local functions
+(see <a class="reference internal" href="../../auto_examples_sklearn/plot_sklearn_function_options.html#l-plot-sklearn-function-options"><span class="std std-ref">Exporting sklearn estimators as ONNX local functions</span></a>).</p></li>
+<li><p>By using protocol, the default GraphBuilder can be replaced by other
+GraphBuilder based on other packages such as <a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a> or <cite>spox</cite>.</p></li>
+</ul>
+</section>
 </section>
 
 
@@ -386,6 +409,8 @@ is loaded when <a class="reference internal" href="../../api/sklearn/index.html#
 <li><a class="reference internal" href="#converter-function-signature">Converter function signature</a></li>
 <li><a class="reference internal" href="#output-naming">Output naming</a></li>
 <li><a class="reference internal" href="#adding-a-new-converter">Adding a new converter</a></li>
+<li><a class="reference internal" href="#converting-options">Converting Options</a></li>
+<li><a class="reference internal" href="#yobx-vs-skl2onnx">yobx VS skl2onnx</a></li>
 </ul>
 </li>
 </ul>

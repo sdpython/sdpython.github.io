@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=b23dd4a3" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -605,8 +605,10 @@ window.runMermaid = runMermaid;</script>
             
   <h1>Source code for yobx.sklearn.xgboost.xgb</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">ONNX converters for :class:`xgboost.XGBClassifier` and</span>
-<span class="sd">:class:`xgboost.XGBRegressor`.</span>
+<span class="sd">ONNX converters for :class:`xgboost.XGBClassifier`,</span>
+<span class="sd">:class:`xgboost.XGBRFClassifier`,</span>
+<span class="sd">:class:`xgboost.XGBRegressor`, :class:`xgboost.XGBRFRegressor`,</span>
+<span class="sd">and :class:`xgboost.XGBRanker`.</span>
 
 <span class="sd">The trees are extracted from the fitted booster via</span>
 <span class="sd">``booster.get_dump(dump_format=&#39;json&#39;)`` and encoded using the ONNX ML</span>
@@ -646,7 +648,7 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">xgboost</span><span class="w"> </span><span class="kn">import</span> <span class="n">XGBRegressor</span><span class="p">,</span> <span class="n">XGBClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xgboost</span><span class="w"> </span><span class="kn">import</span> <span class="n">XGBRegressor</span><span class="p">,</span> <span class="n">XGBClassifier</span><span class="p">,</span> <span class="n">XGBRFRegressor</span><span class="p">,</span> <span class="n">XGBRFClassifier</span><span class="p">,</span> <span class="n">XGBRanker</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
@@ -676,6 +678,14 @@ window.runMermaid = runMermaid;</script>
 <span class="c1">#: Regression objectives that apply ``exp`` as the output transform</span>
 <span class="c1">#: (log-link objectives).</span>
 <span class="n">_REG_EXP_OBJECTIVES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;count:poisson&quot;</span><span class="p">,</span> <span class="s2">&quot;reg:gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;reg:tweedie&quot;</span><span class="p">,</span> <span class="s2">&quot;survival:cox&quot;</span><span class="p">})</span>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Supported ranking objectives (all use the identity link).</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="c1">#: Ranking objectives supported by the XGBRanker converter.</span>
+<span class="c1">#: All ranking objectives use the identity link (no output transform).</span>
+<span class="n">_RANK_IDENTITY_OBJECTIVES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;rank:pairwise&quot;</span><span class="p">,</span> <span class="s2">&quot;rank:ndcg&quot;</span><span class="p">,</span> <span class="s2">&quot;rank:map&quot;</span><span class="p">})</span>
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
@@ -741,11 +751,30 @@ window.runMermaid = runMermaid;</script>
         <span class="k">return</span> <span class="mf">0.5</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_num_parallel_tree</span><span class="p">(</span><span class="n">booster</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the ``num_parallel_tree`` value from an XGBoost booster config.</span>
+
+<span class="sd">    For :class:`~xgboost.XGBRFClassifier` and</span>
+<span class="sd">    :class:`~xgboost.XGBRFRegressor`, this equals ``n_estimators``.  For</span>
+<span class="sd">    gradient-boosted models it is ``1``.  Falls back to ``1`` on any error.</span>
+
+<span class="sd">    :param booster: fitted :class:`xgboost.Booster`</span>
+<span class="sd">    :return: ``num_parallel_tree`` as a Python int (&gt;= 1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">booster</span><span class="o">.</span><span class="n">save_config</span><span class="p">())</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;learner&quot;</span><span class="p">][</span><span class="s2">&quot;gradient_booster&quot;</span><span class="p">][</span><span class="s2">&quot;gbtree_model_param&quot;</span><span class="p">][</span><span class="s2">&quot;num_parallel_tree&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_build_xgb_tree_attrs_legacy</span><span class="p">(</span>
     <span class="n">trees_json</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">n_targets</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">feature_name_to_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">is_classifier</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_parallel_tree</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build legacy ``TreeEnsembleRegressor`` / ``TreeEnsembleClassifier`` attribute arrays.</span>
 
@@ -757,10 +786,12 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    the ONNX ``BRANCH_LT`` *true* branch (``x &lt; threshold``), matching</span>
 <span class="sd">    XGBoost&#39;s exact semantics.</span>
 
-<span class="sd">    Each tree is assigned ``target_id = tree_idx % n_targets`` so that for</span>
-<span class="sd">    multi-class models (``n_targets = n_classes``) tree contributions are</span>
+<span class="sd">    Each tree is assigned ``target_id = (tree_idx // num_parallel_tree) % n_targets``</span>
+<span class="sd">    so that for multi-class models (``n_targets = n_classes``) tree contributions are</span>
 <span class="sd">    routed to the correct class channel; for binary/regression models</span>
-<span class="sd">    ``n_targets = 1`` and all trees contribute to target 0.</span>
+<span class="sd">    ``n_targets = 1`` and all trees contribute to target 0.  For random-forest</span>
+<span class="sd">    variants (``num_parallel_tree &gt; 1``) the grouping accounts for the fact that</span>
+<span class="sd">    XGBoost dumps all parallel trees for one class before moving to the next.</span>
 
 <span class="sd">    :param trees_json: list of root node dicts from</span>
 <span class="sd">        ``booster.get_dump(dump_format=&#39;json&#39;)``</span>
@@ -770,6 +801,8 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    :param is_classifier: when ``True`` the returned dict uses ``class_*``</span>
 <span class="sd">        attribute keys (for ``TreeEnsembleClassifier``) instead of the</span>
 <span class="sd">        ``target_*`` keys used by ``TreeEnsembleRegressor``</span>
+<span class="sd">    :param num_parallel_tree: ``num_parallel_tree`` from the booster config</span>
+<span class="sd">        (1 for gradient-boosted models, ``n_estimators`` for RF variants)</span>
 <span class="sd">    :return: flat attribute dict for the tree ensemble operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">all_featureids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -790,7 +823,7 @@ window.runMermaid = runMermaid;</script>
     <span class="k">for</span> <span class="n">tree_idx</span><span class="p">,</span> <span class="n">tree_root</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trees_json</span><span class="p">):</span>
         <span class="n">nodes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">_collect_nodes</span><span class="p">(</span><span class="n">tree_root</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
-        <span class="n">target_id</span> <span class="o">=</span> <span class="n">tree_idx</span> <span class="o">%</span> <span class="n">n_targets</span>
+        <span class="n">target_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">tree_idx</span> <span class="o">//</span> <span class="n">num_parallel_tree</span><span class="p">)</span> <span class="o">%</span> <span class="n">n_targets</span>
 
         <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">node</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
@@ -867,7 +900,11 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_build_xgb_tree_attrs_v5</span><span class="p">(</span>
-    <span class="n">trees_json</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">n_targets</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">feature_name_to_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">trees_json</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">n_targets</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">feature_name_to_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">num_parallel_tree</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build ``TreeEnsemble`` (``ai.onnx.ml`` opset 5) attribute arrays.</span>
 
@@ -878,9 +915,10 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    :param trees_json: list of root node dicts from</span>
 <span class="sd">        ``booster.get_dump(dump_format=&#39;json&#39;)``</span>
 <span class="sd">    :param n_targets: number of output targets</span>
-<span class="sd">    :param dtype: numpy float dtype for splits / weights; defaults to</span>
-<span class="sd">        ``np.float32``</span>
 <span class="sd">    :param feature_name_to_idx: optional feature-name → index mapping</span>
+<span class="sd">    :param itype: onnx float dtype for numeric attributes</span>
+<span class="sd">    :param num_parallel_tree: ``num_parallel_tree`` from the booster config</span>
+<span class="sd">        (1 for gradient-boosted models, ``n_estimators`` for RF variants)</span>
 <span class="sd">    :return: attribute dict for ``TreeEnsemble``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">all_nodes_featureids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -903,7 +941,7 @@ window.runMermaid = runMermaid;</script>
     <span class="k">for</span> <span class="n">tree_idx</span><span class="p">,</span> <span class="n">tree_root</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trees_json</span><span class="p">):</span>
         <span class="n">nodes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">_collect_nodes</span><span class="p">(</span><span class="n">tree_root</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
-        <span class="n">target_id</span> <span class="o">=</span> <span class="n">tree_idx</span> <span class="o">%</span> <span class="n">n_targets</span>
+        <span class="n">target_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">tree_idx</span> <span class="o">//</span> <span class="n">num_parallel_tree</span><span class="p">)</span> <span class="o">%</span> <span class="n">n_targets</span>
 
         <span class="c1"># Partition nodes into internal (has children) and leaf (no children).</span>
         <span class="n">internal_nodes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nid</span> <span class="k">for</span> <span class="n">nid</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="s2">&quot;leaf&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">n</span><span class="p">)</span>
@@ -1073,6 +1111,7 @@ window.runMermaid = runMermaid;</script>
     <span class="n">intermediate_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">is_classifier</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">num_parallel_tree</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit a ``TreeEnsembleRegressor`` / ``TreeEnsembleClassifier`` / ``TreeEnsemble`` ONNX node.</span>
 
@@ -1089,13 +1128,19 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">        ``TreeEnsembleClassifier`` node instead of ``TreeEnsembleRegressor``</span>
 <span class="sd">        and returns the scores (second output)</span>
 <span class="sd">    :param itype: onnx float dtype for numeric attributes</span>
+<span class="sd">    :param num_parallel_tree: ``num_parallel_tree`` from the booster config</span>
+<span class="sd">        (1 for gradient-boosted models, ``n_estimators`` for RF variants)</span>
 <span class="sd">    :return: output tensor name (shape ``[N, n_targets]``)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">out_arg</span> <span class="o">=</span> <span class="p">[</span><span class="n">intermediate_name</span><span class="p">]</span> <span class="k">if</span> <span class="n">intermediate_name</span> <span class="k">else</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="n">ml_opset</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="n">_build_xgb_tree_attrs_v5</span><span class="p">(</span>
-            <span class="n">trees_json</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">,</span> <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span><span class="p">,</span> <span class="n">itype</span><span class="o">=</span><span class="n">itype</span>
+            <span class="n">trees_json</span><span class="p">,</span>
+            <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">,</span>
+            <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span><span class="p">,</span>
+            <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span>
+            <span class="n">num_parallel_tree</span><span class="o">=</span><span class="n">num_parallel_tree</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;TreeEnsemble&quot;</span><span class="p">,</span>
@@ -1113,6 +1158,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">,</span>
             <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span><span class="p">,</span>
             <span class="n">is_classifier</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">num_parallel_tree</span><span class="o">=</span><span class="n">num_parallel_tree</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># The ONNX reference evaluator requires at least 2 class labels.</span>
         <span class="c1"># For binary (n_targets=1) we declare [0, 1] so the output scores</span>
@@ -1197,13 +1243,13 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
-<span class="c1"># XGBClassifier converter</span>
+<span class="c1"># XGBClassifier / XGBRFClassifier converter</span>
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sklearn_xgb_classifier">
 <a class="viewcode-back" href="../../../../api/sklearn/xgboost/xgb.html#yobx.sklearn.xgboost.xgb.sklearn_xgb_classifier">[docs]</a>
-<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">XGBClassifier</span><span class="p">)</span>
+<span class="nd">@register_sklearn_converter</span><span class="p">((</span><span class="n">XGBClassifier</span><span class="p">,</span> <span class="n">XGBRFClassifier</span><span class="p">))</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">sklearn_xgb_classifier</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -1212,7 +1258,7 @@ window.runMermaid = runMermaid;</script>
     <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;xgb_classifier&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an :class:`xgboost.XGBClassifier` to ONNX.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an :class:`xgboost.XGBClassifier` or :class:`xgboost.XGBRFClassifier` to ONNX.</span>
 
 <span class="sd">    The converter supports:</span>
 
@@ -1225,10 +1271,16 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    Both ``ai.onnx.ml`` legacy (opset ≤ 4) and modern (opset ≥ 5) encodings</span>
 <span class="sd">    are emitted based on the active opset in *g*.</span>
 
+<span class="sd">    :class:`~xgboost.XGBRFClassifier` is a random-forest-style variant of</span>
+<span class="sd">    :class:`~xgboost.XGBClassifier`.  It sets ``num_parallel_tree`` equal to</span>
+<span class="sd">    ``n_estimators`` and performs a single boosting round, so the ONNX</span>
+<span class="sd">    representation uses the same operators with the correct per-class tree</span>
+<span class="sd">    grouping.</span>
+
 <span class="sd">    :param g: the graph builder to add nodes to</span>
 <span class="sd">    :param sts: shapes dict (passed through, not used internally)</span>
 <span class="sd">    :param outputs: desired output names ``[label, probabilities]``</span>
-<span class="sd">    :param estimator: a fitted ``XGBClassifier``</span>
+<span class="sd">    :param estimator: a fitted ``XGBClassifier`` or ``XGBRFClassifier``</span>
 <span class="sd">    :param X: input tensor name</span>
 <span class="sd">    :param name: prefix for node names added to the graph</span>
 <span class="sd">    :return: tuple ``(label_result_name, proba_result_name)``</span>
@@ -1246,6 +1298,7 @@ window.runMermaid = runMermaid;</script>
     <span class="n">feature_name_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">fn</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)}</span> <span class="k">if</span> <span class="n">feature_names</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="n">n_targets</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">is_binary</span> <span class="k">else</span> <span class="n">n_classes</span>
+    <span class="n">num_parallel_tree</span> <span class="o">=</span> <span class="n">_get_num_parallel_tree</span><span class="p">(</span><span class="n">booster</span><span class="p">)</span>
 
     <span class="n">raw_scores</span> <span class="o">=</span> <span class="n">_emit_tree_node</span><span class="p">(</span>
         <span class="n">g</span><span class="p">,</span>
@@ -1257,6 +1310,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">ml_opset</span><span class="o">=</span><span class="n">ml_opset</span><span class="p">,</span>
         <span class="n">is_classifier</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span>
+        <span class="n">num_parallel_tree</span><span class="o">=</span><span class="n">num_parallel_tree</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">classes</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">classes_</span>
@@ -1304,7 +1358,7 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="sklearn_xgb_regressor">
 <a class="viewcode-back" href="../../../../api/sklearn/xgboost/xgb.html#yobx.sklearn.xgboost.xgb.sklearn_xgb_regressor">[docs]</a>
-<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">XGBRegressor</span><span class="p">)</span>
+<span class="nd">@register_sklearn_converter</span><span class="p">((</span><span class="n">XGBRegressor</span><span class="p">,</span> <span class="n">XGBRFRegressor</span><span class="p">))</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">sklearn_xgb_regressor</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -1313,24 +1367,31 @@ window.runMermaid = runMermaid;</script>
     <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;xgb_regressor&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an :class:`xgboost.XGBRegressor` to ONNX.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an :class:`xgboost.XGBRegressor` or :class:`xgboost.XGBRFRegressor` to ONNX.</span>
 
 <span class="sd">    The raw margin (sum of all tree leaf values) is computed via a</span>
 <span class="sd">    ``TreeEnsembleRegressor`` / ``TreeEnsemble`` node, the XGBoost</span>
 <span class="sd">    ``base_score`` bias is added, and then an objective-dependent output</span>
-<span class="sd">    transform is applied to match :meth:`~xgboost.XGBRegressor.predict`:</span>
+<span class="sd">    transform is applied to match :meth:`~xgboost.XGBRegressor.predict` /</span>
+<span class="sd">    :meth:`~xgboost.XGBRFRegressor.predict`:</span>
 
 <span class="sd">    * Identity (``reg:squarederror``, ``reg:absoluteerror``, …): no transform.</span>
 <span class="sd">    * ``reg:logistic``: ``sigmoid(margin)``.</span>
 <span class="sd">    * ``count:poisson``, ``reg:gamma``, ``reg:tweedie``, ``survival:cox``:</span>
 <span class="sd">      ``exp(margin)``.</span>
 
+<span class="sd">    :class:`~xgboost.XGBRFRegressor` is a random-forest-style variant of</span>
+<span class="sd">    :class:`~xgboost.XGBRegressor`.  It sets ``num_parallel_tree`` equal to</span>
+<span class="sd">    ``n_estimators`` and performs a single boosting round, so all trees</span>
+<span class="sd">    contribute to the same output target and the ONNX representation is</span>
+<span class="sd">    identical to the gradient-boosting case.</span>
+
 <span class="sd">    Unsupported objectives raise :class:`NotImplementedError`.</span>
 
 <span class="sd">    :param g: the graph builder to add nodes to</span>
 <span class="sd">    :param sts: shapes dict (passed through, not used internally)</span>
 <span class="sd">    :param outputs: desired output names ``[predictions]``</span>
-<span class="sd">    :param estimator: a fitted ``XGBRegressor``</span>
+<span class="sd">    :param estimator: a fitted ``XGBRegressor`` or ``XGBRFRegressor``</span>
 <span class="sd">    :param X: input tensor name</span>
 <span class="sd">    :param name: prefix for node names added to the graph</span>
 <span class="sd">    :return: output tensor name (shape ``[N, 1]``)</span>
@@ -1392,6 +1453,80 @@ window.runMermaid = runMermaid;</script>
         <span class="n">raw_scores</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span><span class="n">raw_scores</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_exp&quot;</span><span class="p">)</span>
     <span class="c1"># out_transform is None → identity, no node needed.</span>
 
+    <span class="n">cast_result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+        <span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">raw_scores</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cast_result</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># XGBRanker converter</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sklearn_xgb_ranker">
+<a class="viewcode-back" href="../../../../api/sklearn/xgboost/xgb.html#yobx.sklearn.xgboost.xgb.sklearn_xgb_ranker">[docs]</a>
+<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">XGBRanker</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sklearn_xgb_ranker</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">estimator</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;xgb_ranker&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an :class:`xgboost.XGBRanker` to ONNX.</span>
+
+<span class="sd">    The raw margin (sum of all tree leaf values) is computed via a</span>
+<span class="sd">    ``TreeEnsembleRegressor`` / ``TreeEnsemble`` node.  Ranking objectives</span>
+<span class="sd">    always use the identity link, so no output transform is applied.</span>
+
+<span class="sd">    Supported objectives: ``rank:pairwise`` (default), ``rank:ndcg``,</span>
+<span class="sd">    ``rank:map``.</span>
+
+<span class="sd">    :param g: the graph builder to add nodes to</span>
+<span class="sd">    :param sts: shapes dict (passed through, not used internally)</span>
+<span class="sd">    :param outputs: desired output names ``[scores]``</span>
+<span class="sd">    :param estimator: a fitted ``XGBRanker``</span>
+<span class="sd">    :param X: input tensor name</span>
+<span class="sd">    :param name: prefix for node names added to the graph</span>
+<span class="sd">    :return: output tensor name (shape ``[N, 1]``)</span>
+<span class="sd">    :raises NotImplementedError: if the model&#39;s objective is not supported</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">booster</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">get_booster</span><span class="p">()</span>
+    <span class="n">objective</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">objective</span> <span class="ow">or</span> <span class="s2">&quot;rank:pairwise&quot;</span>
+
+    <span class="c1"># Strip any extra parameters (e.g. &quot;rank:pairwise&quot;) and validate.</span>
+    <span class="n">base_obj</span> <span class="o">=</span> <span class="n">objective</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">base_obj</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_RANK_IDENTITY_OBJECTIVES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;XGBRanker ONNX converter: objective </span><span class="si">{</span><span class="n">objective</span><span class="si">!r}</span><span class="s2"> is not yet supported. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Supported objectives: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_RANK_IDENTITY_OBJECTIVES</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">ml_opset</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_opset</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">)</span>
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">trees_json</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">booster</span><span class="o">.</span><span class="n">get_dump</span><span class="p">(</span><span class="n">dump_format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">)]</span>
+    <span class="n">feature_names</span> <span class="o">=</span> <span class="n">booster</span><span class="o">.</span><span class="n">feature_names</span>
+    <span class="n">feature_name_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">fn</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)}</span> <span class="k">if</span> <span class="n">feature_names</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">tree_out_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_tree_out&quot;</span>
+
+    <span class="n">raw_scores</span> <span class="o">=</span> <span class="n">_emit_tree_node</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">trees_json</span><span class="o">=</span><span class="n">trees_json</span><span class="p">,</span>
+        <span class="n">feature_name_to_idx</span><span class="o">=</span><span class="n">feature_name_to_idx</span><span class="p">,</span>
+        <span class="n">ml_opset</span><span class="o">=</span><span class="n">ml_opset</span><span class="p">,</span>
+        <span class="n">intermediate_name</span><span class="o">=</span><span class="n">tree_out_name</span><span class="p">,</span>
+        <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Normalize dtype — identity link, no transform needed.</span>
     <span class="n">cast_result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
         <span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">raw_scores</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span>
     <span class="p">)</span>

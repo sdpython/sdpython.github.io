@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=b23dd4a3" />
     <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -605,8 +605,8 @@ window.runMermaid = runMermaid;</script>
             
   <h1>Source code for yobx.sklearn.lightgbm.lgbm</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">ONNX converters for :class:`lightgbm.LGBMClassifier` and</span>
-<span class="sd">:class:`lightgbm.LGBMRegressor`.</span>
+<span class="sd">ONNX converters for :class:`lightgbm.LGBMClassifier`,</span>
+<span class="sd">:class:`lightgbm.LGBMRegressor`, and :class:`lightgbm.LGBMRanker`.</span>
 
 <span class="sd">The trees are extracted from the fitted booster via</span>
 <span class="sd">``booster_.dump_model()`` and encoded using the ONNX ML</span>
@@ -626,6 +626,9 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">  * Exp objectives (``poisson``, ``tweedie``): ``exp(margin)``; prediction</span>
 <span class="sd">    is in positive-real space.</span>
 
+<span class="sd">* **Ranking** — raw margin output (identity transform); output shape</span>
+<span class="sd">  ``[N, 1]``.  Supported objectives: ``lambdarank``, ``rank_xendcg``.</span>
+
 <span class="sd">**Numerical splits**: LightGBM&#39;s condition *&quot;go to left child when</span>
 <span class="sd">x ≤ split_condition&quot;* maps to ``BRANCH_LEQ`` for both ``ai.onnx.ml``</span>
 <span class="sd">opset ≤ 4 and opset ≥ 5 — exact match.</span>
@@ -643,7 +646,7 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LGBMRegressor</span><span class="p">,</span> <span class="n">LGBMClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LGBMRegressor</span><span class="p">,</span> <span class="n">LGBMClassifier</span><span class="p">,</span> <span class="n">LGBMRanker</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_sklearn_converter</span>
@@ -674,6 +677,9 @@ window.runMermaid = runMermaid;</script>
 <span class="c1">#: Regression objectives that apply ``exp`` as the output transform</span>
 <span class="c1">#: (log-link objectives).</span>
 <span class="n">_REG_EXP_OBJECTIVES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;poisson&quot;</span><span class="p">,</span> <span class="s2">&quot;tweedie&quot;</span><span class="p">})</span>
+
+<span class="c1">#: Ranking objectives that use the identity link (no output transform).</span>
+<span class="n">_RANK_IDENTITY_OBJECTIVES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;lambdarank&quot;</span><span class="p">,</span> <span class="s2">&quot;rank_xendcg&quot;</span><span class="p">})</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_reg_output_transform</span><span class="p">(</span><span class="n">objective</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -1347,6 +1353,79 @@ window.runMermaid = runMermaid;</script>
         <span class="n">raw_scores</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span><span class="n">raw_scores</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_exp&quot;</span><span class="p">)</span>
     <span class="c1"># out_transform is None → identity, no node needed.</span>
 
+    <span class="n">cast_result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+        <span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">raw_scores</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cast_result</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># LGBMRanker converter</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sklearn_lgbm_ranker">
+<a class="viewcode-back" href="../../../../api/sklearn/lightgbm/lgbm.html#yobx.sklearn.lightgbm.lgbm.sklearn_lgbm_ranker">[docs]</a>
+<span class="nd">@register_sklearn_converter</span><span class="p">(</span><span class="n">LGBMRanker</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sklearn_lgbm_ranker</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">estimator</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lgbm_ranker&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an :class:`lightgbm.LGBMRanker` to ONNX.</span>
+
+<span class="sd">    The raw margin (sum of all tree leaf values) is computed via a</span>
+<span class="sd">    ``TreeEnsembleRegressor`` / ``TreeEnsemble`` node.  Ranking objectives</span>
+<span class="sd">    always use the identity link, so no output transform is applied.</span>
+
+<span class="sd">    Supported objectives: ``lambdarank`` (default), ``rank_xendcg``.</span>
+
+<span class="sd">    :param g: the graph builder to add nodes to</span>
+<span class="sd">    :param sts: shapes dict (passed through, not used internally)</span>
+<span class="sd">    :param outputs: desired output names ``[scores]``</span>
+<span class="sd">    :param estimator: a fitted ``LGBMRanker``</span>
+<span class="sd">    :param X: input tensor name</span>
+<span class="sd">    :param name: prefix for node names added to the graph</span>
+<span class="sd">    :return: output tensor name (shape ``[N, 1]``)</span>
+<span class="sd">    :raises NotImplementedError: if the model&#39;s objective is not supported</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">booster</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">booster_</span>
+    <span class="n">model_dict</span> <span class="o">=</span> <span class="n">booster</span><span class="o">.</span><span class="n">dump_model</span><span class="p">()</span>
+    <span class="n">objective</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;objective&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Strip any extra parameters and validate the objective.</span>
+    <span class="n">base_obj</span> <span class="o">=</span> <span class="n">objective</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">base_obj</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_RANK_IDENTITY_OBJECTIVES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;LGBMRanker ONNX converter: objective </span><span class="si">{</span><span class="n">objective</span><span class="si">!r}</span><span class="s2"> is not yet supported. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Supported objectives: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_RANK_IDENTITY_OBJECTIVES</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">ml_opset</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_opset</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">)</span>
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">trees</span> <span class="o">=</span> <span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;tree_info&quot;</span><span class="p">]</span>
+    <span class="n">tree_out_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_tree_out&quot;</span>
+
+    <span class="n">raw_scores</span> <span class="o">=</span> <span class="n">_emit_lgbm_tree_node</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">trees</span><span class="o">=</span><span class="n">trees</span><span class="p">,</span>
+        <span class="n">ml_opset</span><span class="o">=</span><span class="n">ml_opset</span><span class="p">,</span>
+        <span class="n">intermediate_name</span><span class="o">=</span><span class="n">tree_out_name</span><span class="p">,</span>
+        <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Normalise dtype (same rationale as LGBMRegressor).</span>
+    <span class="n">raw_scores</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">raw_scores</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_tree_cast&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">)</span>
+
+    <span class="c1"># Identity link — no output transform needed.</span>
     <span class="n">cast_result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
         <span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">raw_scores</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_cast&quot;</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span>
     <span class="p">)</span>

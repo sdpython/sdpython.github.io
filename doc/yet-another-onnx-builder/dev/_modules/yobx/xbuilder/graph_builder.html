@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=b23dd4a3" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -644,6 +644,7 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.external_data_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">uses_external_data</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.model_container</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_large_tensor_proto</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.shape_inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">infer_shapes</span> <span class="k">as</span> <span class="n">onnx_infer_shapes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvertOptionsProtocol</span><span class="p">,</span> <span class="n">DefaultConvertOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..container.model_container</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedModelContainer</span><span class="p">,</span> <span class="n">_get_type</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..helpers.mini_onnx_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">proto_from_array</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">string_signature</span><span class="p">,</span> <span class="n">string_type</span>
@@ -749,6 +750,7 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    :param _opsets: to overwrite opsets when the builder receives a `GraphProto`</span>
 <span class="sd">    :param _context: known names from the parent graph is any</span>
 <span class="sd">    :param _parent: parent owning the builder is any</span>
+<span class="sd">    :param convert_options: options to modify the way estimators are converted</span>
 
 <span class="sd">    Important attributes:</span>
 
@@ -887,6 +889,7 @@ window.runMermaid = runMermaid;</script>
         <span class="n">_opsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">convert_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ConvertOptionsProtocol</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maybe_disable_fake_tensor_mode</span> <span class="o">=</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">nullcontext</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NOTORCH&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">):</span>
@@ -909,6 +912,7 @@ window.runMermaid = runMermaid;</script>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">TEMPLATE_TYPE</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_convert_options</span> <span class="o">=</span> <span class="n">convert_options</span> <span class="ow">or</span> <span class="n">DefaultConvertOptions</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span> <span class="o">=</span> <span class="n">optimization_options</span> <span class="ow">or</span> <span class="n">OptimizationOptions</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_domain</span> <span class="o">=</span> <span class="n">local_domain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">as_function</span> <span class="o">=</span> <span class="n">as_function</span>
@@ -1061,6 +1065,11 @@ window.runMermaid = runMermaid;</script>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">target_opset_or_existing_proto</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConvertOptionsProtocol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the converting options.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_options</span>
+
 <div class="viewcode-block" id="GraphBuilder.has_exact_same_constant_in_context">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.has_exact_same_constant_in_context">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_exact_same_constant_in_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
@@ -1169,6 +1178,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">local_domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_domain</span><span class="p">,</span>
             <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">ds2</span><span class="p">,</span>
             <span class="n">_parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">convert_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_options</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">new_builder</span><span class="o">.</span><span class="n">dynamic_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 

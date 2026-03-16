@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b23dd4a3" />
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -481,6 +481,124 @@ manually supplied metadata.</p>
 </div>
 </section>
 </section>
+<section id="convert-options">
+<h2>Convert Options<a class="headerlink" href="#convert-options" title="Link to this heading">¶</a></h2>
+<p><a class="reference internal" href="../../api/typing.html#yobx.typing.ConvertOptionsProtocol" title="yobx.typing.ConvertOptionsProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvertOptionsProtocol</span></code></a> is a lightweight protocol that
+lets callers <strong>opt-in to extra outputs</strong> on a per-estimator basis without
+changing the core converter signatures.</p>
+<section id="protocol-contract">
+<h3>Protocol contract<a class="headerlink" href="#protocol-contract" title="Link to this heading">¶</a></h3>
+<p>Any object that implements the single method below satisfies the protocol and
+can be passed to <a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx()</span></code></a> as the <code class="docutils literal notranslate"><span class="pre">convert_options</span></code>
+argument:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">has(option_name:</span> <span class="pre">str,</span> <span class="pre">piece:</span> <span class="pre">object)</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code></p></td>
+<td><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> when the option identified by <em>option_name</em> should be
+activated for the estimator <em>piece</em>.  The second argument is the fitted
+scikit-learn estimator currently being converted, which lets callers
+enable an option only for a specific step inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Inside a converter, the options object is accessible via the graph builder’s
+<code class="docutils literal notranslate"><span class="pre">convert_options</span></code> property (<code class="docutils literal notranslate"><span class="pre">g.convert_options</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inside a converter function:</span>
+<span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;decision_path&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">):</span>
+    <span class="c1"># emit the extra decision-path output</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="built-in-options-convertoptions">
+<h3>Built-in options: <code class="docutils literal notranslate"><span class="pre">ConvertOptions</span></code><a class="headerlink" href="#built-in-options-convertoptions" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../api/sklearn/index.html#yobx.sklearn.ConvertOptions" title="yobx.sklearn.ConvertOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvertOptions</span></code></a> is the default implementation shipped
+with the package.  It currently exposes two boolean flags:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Option name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">decision_path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">True</span></code>, an extra output tensor is appended for each tree/ensemble
+estimator.  For a single <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code></a>
+or <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeRegressor</span></code></a> the shape is
+<code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">1)</span></code>; for ensemble models
+(<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a>,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code></a>,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtraTreesClassifier</span></code></a>,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html#sklearn.ensemble.ExtraTreesRegressor" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtraTreesRegressor</span></code></a>) the shape is
+<code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">n_estimators)</span></code>.  Each value is a binary string encoding the
+root-to-leaf path through the tree.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">decision_leaf</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">True</span></code>, an extra output tensor (<code class="docutils literal notranslate"><span class="pre">int64</span></code>) is appended containing
+the zero-based leaf node index reached by each sample.  Shapes follow
+the same convention as <code class="docutils literal notranslate"><span class="pre">decision_path</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="passing-options-to-to-onnx">
+<h3>Passing options to <code class="docutils literal notranslate"><span class="pre">to_onnx</span></code><a class="headerlink" href="#passing-options-to-to-onnx" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">ConvertOptions</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="n">ConvertOptions</span><span class="p">(</span><span class="n">decision_path</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model_onnx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,),</span> <span class="n">convert_options</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+<span class="c1"># The exported model now has three outputs:</span>
+<span class="c1">#   output_0 – label (int64, shape [N])</span>
+<span class="c1">#   output_1 – probabilities (float32, shape [N, 2])</span>
+<span class="c1">#   output_2 – decision path (object/string, shape [N, 1])</span>
+</pre></div>
+</div>
+</section>
+<section id="implementing-a-custom-protocol">
+<h3>Implementing a custom protocol<a class="headerlink" href="#implementing-a-custom-protocol" title="Link to this heading">¶</a></h3>
+<p>You can supply any object with a <code class="docutils literal notranslate"><span class="pre">has</span></code> method.  The simplest way is to
+subclass <a class="reference internal" href="../../api/typing.html#yobx.typing.DefaultConvertOptions" title="yobx.typing.DefaultConvertOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">DefaultConvertOptions</span></code></a> and override <code class="docutils literal notranslate"><span class="pre">has</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultConvertOptions</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyOptions</span><span class="p">(</span><span class="n">DefaultConvertOptions</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">piece</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># Only enable decision_leaf for RandomForestClassifier:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+        <span class="k">if</span> <span class="n">option_name</span> <span class="o">==</span> <span class="s2">&quot;decision_leaf&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Alternatively, any object whose class implements the single-method
+<a class="reference internal" href="../../api/typing.html#yobx.typing.ConvertOptionsProtocol" title="yobx.typing.ConvertOptionsProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvertOptionsProtocol</span></code></a> is accepted directly.</p>
+<p>See <a class="reference internal" href="../../auto_examples_sklearn/plot_sklearn_convert_options.html#l-plot-sklearn-convert-options"><span class="std std-ref">Exporting sklearn tree models with convert options</span></a> for a full runnable example
+of <code class="docutils literal notranslate"><span class="pre">decision_path</span></code> and <code class="docutils literal notranslate"><span class="pre">decision_leaf</span></code> on single trees and ensembles.</p>
+</section>
+</section>
 <section id="alternative-implementations">
 <h2>Alternative implementations<a class="headerlink" href="#alternative-implementations" title="Link to this heading">¶</a></h2>
 <p>Any class that satisfies the two-part API above can be passed as
@@ -553,6 +671,13 @@ passes and dynamic shapes.</p>
 <li><a class="reference internal" href="#shape-and-type-api">Shape and type API</a><ul>
 <li><a class="reference internal" href="#shape-and-type-representation">Shape and Type representation</a></li>
 <li><a class="reference internal" href="#propagating-shape-and-type-in-a-converter">Propagating shape and type in a converter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#convert-options">Convert Options</a><ul>
+<li><a class="reference internal" href="#protocol-contract">Protocol contract</a></li>
+<li><a class="reference internal" href="#built-in-options-convertoptions">Built-in options: <code class="docutils literal notranslate"><span class="pre">ConvertOptions</span></code></a></li>
+<li><a class="reference internal" href="#passing-options-to-to-onnx">Passing options to <code class="docutils literal notranslate"><span class="pre">to_onnx</span></code></a></li>
+<li><a class="reference internal" href="#implementing-a-custom-protocol">Implementing a custom protocol</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#alternative-implementations">Alternative implementations</a></li>

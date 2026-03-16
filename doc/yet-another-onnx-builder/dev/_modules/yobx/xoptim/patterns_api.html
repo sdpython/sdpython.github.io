@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c57a2db" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=b23dd4a3" />
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -613,6 +613,7 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_idn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span>
 
 
 <div class="viewcode-block" id="string_to_elem_type">
@@ -760,7 +761,7 @@ window.runMermaid = runMermaid;</script>
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.PatternOptimization.enumerate_matches">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">enumerate_matches</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span>
         <span class="n">subset_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -808,7 +809,7 @@ window.runMermaid = runMermaid;</script>
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.PatternOptimization.match">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">matched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
@@ -960,7 +961,7 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span>  <span class="c1"># noqa: F821</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">.graph_builder_optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderPatternOptimization</span>
 
@@ -1019,7 +1020,7 @@ window.runMermaid = runMermaid;</script>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_match_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span>  <span class="c1"># noqa: F821</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cache_key</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
@@ -1030,7 +1031,7 @@ window.runMermaid = runMermaid;</script>
         <span class="k">return</span> <span class="n">pat</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_apply_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span>  <span class="c1"># noqa: F821</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cache_key</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
@@ -1056,7 +1057,7 @@ window.runMermaid = runMermaid;</script>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_match_backward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">pat</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">marked</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">]],</span>
@@ -1167,7 +1168,7 @@ window.runMermaid = runMermaid;</script>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_match_forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">pat</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">marked</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">]],</span>
@@ -1465,7 +1466,7 @@ window.runMermaid = runMermaid;</script>
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.EasyPatternOptimization.validate_mapping">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_mapping</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span>
         <span class="n">deleted_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
         <span class="n">pattern_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -1484,7 +1485,7 @@ window.runMermaid = runMermaid;</script>
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.EasyPatternOptimization.validate_attribute_mapping">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_attribute_mapping</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span>
         <span class="n">deleted_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
         <span class="n">pattern_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -1627,7 +1628,7 @@ window.runMermaid = runMermaid;</script>
 <a class="viewcode-back" href="../../../api/xoptim/index.html#yobx.xoptim.EasyPatternOptimization.match">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">matched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
@@ -1974,7 +1975,7 @@ window.runMermaid = runMermaid;</script>
         <span class="bp">self</span><span class="o">.</span><span class="n">_apply_model</span> <span class="o">=</span> <span class="n">apply_model</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_pattern</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span>  <span class="c1"># noqa: F821</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderPatternOptimizationProtocol</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_pattern</span><span class="p">:</span>
             <span class="n">onx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match_model</span>
