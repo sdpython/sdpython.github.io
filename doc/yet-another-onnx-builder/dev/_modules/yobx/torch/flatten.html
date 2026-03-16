@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -610,6 +610,7 @@ window.runMermaid = runMermaid;</script>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">optree</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.utils._pytree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pytree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..pv_version</span><span class="w"> </span><span class="kn">import</span> <span class="n">PvVersion</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
 
 <span class="n">PATCH_OF_PATCHES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -794,8 +795,6 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    :param verbosity: verbosity level</span>
 <span class="sd">    :return: information to unpatch</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
-
     <span class="n">wrong</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">transformers_version</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">patch_transformers</span><span class="p">:</span>
@@ -803,7 +802,7 @@ window.runMermaid = runMermaid;</script>
         <span class="kn">from</span><span class="w"> </span><span class="nn">.in_transformers.flatten_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">WRONG_REGISTRATIONS</span>
 
         <span class="n">wrong</span> <span class="o">|=</span> <span class="n">WRONG_REGISTRATIONS</span>
-        <span class="n">transformers_version</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">transformers_version</span> <span class="o">=</span> <span class="n">PvVersion</span><span class="p">(</span><span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 
     <span class="n">registration_functions</span> <span class="o">=</span> <span class="n">flattening_functions</span><span class="p">(</span>
         <span class="n">patch_transformers</span><span class="o">=</span><span class="n">patch_transformers</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
@@ -821,10 +820,10 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">cls</span> <span class="ow">in</span> <span class="n">pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span>
             <span class="ow">and</span> <span class="bp">cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PATCH_OF_PATCHES</span>
-            <span class="c1"># and pv.Version(torch.__version__) &lt; pv.Version(&quot;2.7&quot;)</span>
+            <span class="c1"># and PvVersion(torch.__version__) &lt; PvVersion(&quot;2.7&quot;)</span>
             <span class="ow">and</span> <span class="p">(</span>
                 <span class="n">version</span> <span class="ow">is</span> <span class="kc">None</span>
-                <span class="ow">or</span> <span class="p">(</span><span class="n">transformers_version</span> <span class="ow">and</span> <span class="n">transformers_version</span> <span class="o">&gt;=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">))</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">transformers_version</span> <span class="ow">and</span> <span class="n">transformers_version</span> <span class="o">&gt;=</span> <span class="n">PvVersion</span><span class="p">(</span><span class="n">version</span><span class="p">))</span>
             <span class="p">)</span>
         <span class="p">):</span>
             <span class="k">assert</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">registration_functions</span><span class="p">,</span> <span class="p">(</span>
