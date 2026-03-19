@@ -440,7 +440,17 @@
 <p><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder">yet-another-onnx-builder on GitHub</a></p>
 <p><strong>yet-another-onnx-builder</strong> (<code class="docutils literal notranslate"><span class="pre">yobx</span></code>) proposes a unique API to convert machine learning models
 to <a class="reference external" href="https://onnx.ai">ONNX</a> format and manipulating ONNX graphs programmatically.
-It can export from many libraries:</p>
+It can export from many libraries. Each converters relies on a common GraphBuider API
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuiderExtendedProtocol</span></code>)
+to build the final ONNX model. One default implementation is provided but
+it can also be replaced by any implementation of your own.
+Any user can implement its own. You can see
+<a class="reference internal" href="api/builder/onnxscript/bridge_graph_builder.html#yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder" title="yobx.builder.onnxscript.bridge_graph_builder.OnnxScriptGraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">OnnxScriptGraphBuilder</span></code></a>
+or <code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.builder.spox.gridge_graph_spox.SpoxGraphBuilder</span></code> for a reference.
+These API are close to <a class="reference external" href="https://onnx.ai/onnx/">onnx</a> API, using <cite>NodeProto</cite> for nodes
+and strings for names. This is on purpose: what this API produces is
+what you see in the final ONNX model. You can add your own metadata,
+choose your own names.</p>
 <p><strong>standard machine learning</strong></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
