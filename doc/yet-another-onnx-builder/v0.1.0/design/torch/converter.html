@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -528,7 +528,7 @@ intermediate representation for ATen-to-ONNX mappings</p></td>
 <tr class="row-odd"><td><p><strong>Export strategy</strong></p></td>
 <td><p>Multiple strategies selectable via
 <a class="reference internal" href="../../api/torch/export_options.html#yobx.torch.export_options.ExportOptions" title="yobx.torch.export_options.ExportOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportOptions</span></code></a>:
-<code class="docutils literal notranslate"><span class="pre">strict</span></code>, <code class="docutils literal notranslate"><span class="pre">nostrict</span></code>, <code class="docutils literal notranslate"><span class="pre">tracing</span></code>, <code class="docutils literal notranslate"><span class="pre">jit</span></code>, <code class="docutils literal notranslate"><span class="pre">dynamo</span></code>, <code class="docutils literal notranslate"><span class="pre">fake</span></code>, …
+<code class="docutils literal notranslate"><span class="pre">strict</span></code>, <code class="docutils literal notranslate"><span class="pre">nostrict</span></code>, <code class="docutils literal notranslate"><span class="pre">tracing</span></code>, <code class="docutils literal notranslate"><span class="pre">fake</span></code>, …
 The <code class="docutils literal notranslate"><span class="pre">tracing</span></code> strategy uses
 <a class="reference internal" href="../../api/torch/tracing.html#yobx.torch.tracing.CustomTracer" title="yobx.torch.tracing.CustomTracer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomTracer</span></code></a> (symbolic tracing) and can
 handle models where <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> fails.</p></td>
@@ -545,11 +545,10 @@ until a dedicated converter is added.</p></td>
 making the exporter robust to new high-level ops at the cost of
 larger, less readable ONNX graphs</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Built-in optimization</strong></p></td>
-<td><p><a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a> runs constant folding, cast
-elimination, redundant identity removal, and peephole passes controlled
-by <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.OptimizationOptions" title="yobx.xbuilder.OptimizationOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptimizationOptions</span></code></a></p></td>
-<td><p>Relies on ONNX Runtime or third-party tools for post-export optimization</p></td>
+<tr class="row-odd"><td><p><strong>Pattern Optimization</strong></p></td>
+<td><p>Supports any kind of pattern matching, multiple outputs, variable number of
+nodes, outputs, types.</p></td>
+<td><p>Supports a fixed number of outputs.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Shape &amp; type propagation</strong></p></td>
 <td><p>Every intermediate result is typed and (when possible) given a concrete
@@ -558,22 +557,11 @@ easier debugging</p></td>
 <td><p>Shape information comes from the traced graph; no additional in-builder
 propagation step</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Custom op overrides</strong></p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dispatcher</span></code> /
-<code class="xref py py-class docutils literal notranslate"><span class="pre">ForceDispatcher</span></code> let callers swap any
-ATen converter without touching library code</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">custom_opsets</span></code> parameter or <code class="docutils literal notranslate"><span class="pre">OnnxRegistry</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Large-model support</strong></p></td>
+<tr class="row-odd"><td><p><strong>Large-model support</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">large_model=True</span></code> returns an
 <a class="reference external" href="https://onnx.ai/onnx/api/model_container.html#onnx.model_container.ModelContainer" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.model_container.ModelContainer</span></code></a>; weights can be stored as
 external data files via <code class="docutils literal notranslate"><span class="pre">external_threshold</span></code></p></td>
 <td><p>External data handled by the caller after export</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Built-in validation</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">validate_onnx=True</span></code> (or a float tolerance) runs the exported model
-with ONNX Runtime and compares outputs against PyTorch automatically</p></td>
-<td><p>Validation is left to the caller</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Debugging</strong></p></td>
 <td><p>Rich set of environment variables (<code class="docutils literal notranslate"><span class="pre">ONNXSTOP</span></code>, <code class="docutils literal notranslate"><span class="pre">ONNXSTOPSHAPE</span></code>,
@@ -582,16 +570,6 @@ which node assigns a suspicious shape or type; see
 <a class="reference internal" href="#l-design-torch-debugging"><span class="std std-ref">Debugging when Exporting with GraphBuilder</span></a> and
 <a class="reference internal" href="../builder/graph_builder.html#l-graphbuilder-debugging-env"><span class="std std-ref">Debugging</span></a></p></td>
 <td><p>Standard Python / PyTorch debugging tools</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Dynamic shape inference</strong></p></td>
-<td><p><a class="reference internal" href="../../api/torch/input_observer.html#yobx.torch.input_observer.InputObserver" title="yobx.torch.input_observer.InputObserver"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputObserver</span></code></a> can infer
-<code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code> automatically from real forward passes; useful for
-LLMs with prefill/decode phases</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code> must be supplied manually by the caller</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Maintenance</strong></p></td>
-<td><p>Community project; part of <em>yet-another-onnx-builder</em> (<code class="docutils literal notranslate"><span class="pre">yobx</span></code>)</p></td>
-<td><p>Official PyTorch / ONNX maintained exporter</p></td>
 </tr>
 </tbody>
 </table>
@@ -708,7 +686,7 @@ that can override the default ATen-to-ONNX mapping for specific operators.</p></
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[0]&quot;</span>
-      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_124685442565248.&lt;locals&gt;.Neuron&quot;</span>
+      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_137568985002880.&lt;locals&gt;.Neuron&quot;</span>
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[1]&quot;</span>
@@ -742,7 +720,7 @@ that can override the default ATen-to-ONNX mapping for specific operators.</p></
     <span class="n">domain</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[0]&quot;</span>
-      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_124685442565248.&lt;locals&gt;.Neuron&quot;</span>
+      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_137568985002880.&lt;locals&gt;.Neuron&quot;</span>
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;intypes&quot;</span>
