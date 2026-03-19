@@ -63,13 +63,11 @@ See also
 --------
 
 * :class:`yobx.xshape.BasicShapeBuilder` — main implementation
-* :func:`yobx.xshape.simplify_expressions.simplify_expression` — expression
-  canonicalisation
-* :func:`yobx.xshape.evaluate_expressions.evaluate_expression` — expression
-  evaluation
+* :func:`yobx.xexpressions.simplify_expression` — expression canonicalisation
+* :func:`yobx.xexpressions.evaluate_expression` — expression evaluation
 * :mod:`yobx.xshape.shape_type_compute` — per-operator shape handlers
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-62
+.. GENERATED FROM PYTHON SOURCE LINES 53-60
 
 Concat: summing two dynamic dimensions
 ----------------------------------------
@@ -79,7 +77,7 @@ dimension is the sum of the two input dimensions.  Because both
 ``seq1`` and ``seq2`` are unknown at graph-construction time, the result
 is the symbolic expression ``"seq1+seq2"``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-93
+.. GENERATED FROM PYTHON SOURCE LINES 60-91
 
 .. code-block:: Python
 
@@ -88,8 +86,8 @@ is the symbolic expression ``"seq1+seq2"``.
     import numpy as np
     import onnx.helper as oh
     import onnx.numpy_helper as onh
+    from yobx.xexpressions import simplify_expression
     from yobx.xshape import BasicShapeBuilder
-    from yobx.xshape.simplify_expressions import simplify_expression
 
     TFLOAT = onnx.TensorProto.FLOAT
 
@@ -129,7 +127,7 @@ is the symbolic expression ``"seq1+seq2"``.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-100
+.. GENERATED FROM PYTHON SOURCE LINES 92-98
 
 Evaluating symbolic shapes with concrete values
 ------------------------------------------------
@@ -138,7 +136,7 @@ Once we know the actual sizes of the input dimensions we can resolve
 every symbolic dimension to an integer with :meth:`evaluate_shape
 <yobx.xshape.ShapeBuilder.evaluate_shape>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-104
+.. GENERATED FROM PYTHON SOURCE LINES 98-102
 
 .. code-block:: Python
 
@@ -159,7 +157,7 @@ every symbolic dimension to an integer with :meth:`evaluate_shape
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-111
+.. GENERATED FROM PYTHON SOURCE LINES 103-109
 
 Reshape: floor-division expressions
 -------------------------------------
@@ -168,7 +166,7 @@ A ``Reshape`` node that halves a dynamic dimension produces the
 symbolic expression ``"c//2"``.  The ``-1`` sentinel in the target
 shape is resolved to the appropriate quotient expression.
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-131
+.. GENERATED FROM PYTHON SOURCE LINES 109-129
 
 .. code-block:: Python
 
@@ -206,7 +204,7 @@ shape is resolved to the appropriate quotient expression.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-140
+.. GENERATED FROM PYTHON SOURCE LINES 130-138
 
 Split: ceiling-division expressions
 -------------------------------------
@@ -217,7 +215,7 @@ odd the two halves differ by one, which is captured by the expression
 ``CeilToInt(b+c, 2)`` for the first output and
 ``b+c - CeilToInt(b+c, 2)`` for the second.
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-172
+.. GENERATED FROM PYTHON SOURCE LINES 138-170
 
 .. code-block:: Python
 
@@ -270,7 +268,7 @@ odd the two halves differ by one, which is captured by the expression
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 173-179
+.. GENERATED FROM PYTHON SOURCE LINES 171-177
 
 Automatic expression simplification
 -------------------------------------
@@ -279,7 +277,7 @@ Before storing a symbolic dimension,
 :func:`simplify_expression <yobx.xshape.simplify_expressions.simplify_expression>`
 reduces the expression to its simplest equivalent form.
 
-.. GENERATED FROM PYTHON SOURCE LINES 179-191
+.. GENERATED FROM PYTHON SOURCE LINES 177-189
 
 .. code-block:: Python
 
@@ -311,7 +309,7 @@ reduces the expression to its simplest equivalent form.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 192-197
+.. GENERATED FROM PYTHON SOURCE LINES 190-195
 
 Plot: symbolic shape expressions summary
 -----------------------------------------
@@ -319,7 +317,7 @@ Plot: symbolic shape expressions summary
 The table below collects all of the symbolic shape expressions computed in
 this example and their simplified forms side-by-side.
 
-.. GENERATED FROM PYTHON SOURCE LINES 197-247
+.. GENERATED FROM PYTHON SOURCE LINES 195-245
 
 .. code-block:: Python
 
@@ -388,7 +386,7 @@ this example and their simplified forms side-by-side.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.117 seconds)
+   **Total running time of the script:** (0 minutes 0.109 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_shape_expressions.py:

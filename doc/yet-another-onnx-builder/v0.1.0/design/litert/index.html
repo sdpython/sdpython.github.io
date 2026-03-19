@@ -1,0 +1,939 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>LiteRT / TFLite Export to ONNX &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1c8377ea" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'design/litert/index';</script>
+    <link rel="icon" href="../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="scikit-learn Export to ONNX" href="../sklearn/index.html" />
+    <link rel="prev" title="Converters" href="../../converters.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="yet-another-onnx-builder 0.1.0 documentation - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="yet-another-onnx-builder 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../converters.html">
+    Converters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../galleries.html">
+    Galleries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cmds/index.html">
+    Command Lines
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../install.html">
+    Installation
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/yet-another-onnx-builder" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../converters.html">
+    Converters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../galleries.html">
+    Galleries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cmds/index.html">
+    Command Lines
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../install.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/yet-another-onnx-builder" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">LiteRT / TFLite Export to ONNX</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/expected_api.html">Expected API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/sklearn_converter.html">Sklearn Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/sklearn_like_converter.html">External Libraries Based on scikit-learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/supported_converters.html">Supported Converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/function_transformer_tracing.html">Numpy-Tracing and FunctionTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/copilot_draft.html">Drafting Converters with GitHub Copilot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/debug.html">Debugging with Environment Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../sql/index.html">SQL-to-ONNX Converter Design</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tensorflow/index.html">TensorFlow / JAX Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/supported_ops.html">Supported TF Ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/supported_jax_ops.html">Supported JAX Ops</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../torch/converter.html">Torch Converter to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/flatten_list.html">Flattening List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/patches.html">Patches (torch export)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/patches_list.html">Patches List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/input_observer.html">InputObserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/supported_aten_functions.html">Supported Aten Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/case_coverage.html">Overview of Exportability</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index.html">Elements of Design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../builder/index.html">GraphBuilder to build and optimize ONNX Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../builder/shape.html">ShapeBuilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../builder/graph_builder.html">GraphBuilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../builder/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../builder/optimizer_patterns.html">Available Patterns</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../misc/index.html">Miscellaneous</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../misc/container.html">ExtendedModelContainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/cube.html">Statistics on Logs Through a Cube of Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/evaluator.html">Evaluators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/graph_builder_protocol.html">Alternative GraphBuilderExtendedProtocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/light_api.html">Fluent ONNX Builder (Light API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/helpers.html">Interesting Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/onnx_inspection.html">ONNX Inspection Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/translate.html">Translate</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../converters.html" class="nav-link">Converters</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">LiteRT / TFLite Export to ONNX</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="litert-tflite-export-to-onnx">
+<span id="l-design-litert-converter"></span><h1>LiteRT / TFLite Export to ONNX<a class="headerlink" href="#litert-tflite-export-to-onnx" title="Link to this heading">#</a></h1>
+<p><a class="reference internal" href="../../api/litert/index.html#yobx.litert.to_onnx" title="yobx.litert.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.litert.to_onnx()</span></code></a> converts a <a class="reference external" href="https://ai.google.dev/edge/litert">TFLite</a>/<a class="reference external" href="https://ai.google.dev/edge/litert/">LiteRT</a>
+<code class="docutils literal notranslate"><span class="pre">.tflite</span></code> model into an <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a>.  The implementation is
+a <strong>proof-of-concept</strong> that parses the binary
+<a class="reference external" href="https://flatbuffers.dev/">FlatBuffer</a> format of <code class="docutils literal notranslate"><span class="pre">.tflite</span></code> files with a
+minimal pure-Python parser (no external library required) and converts each
+operator in the graph to its ONNX equivalent via a registry of op-level
+converters.</p>
+<section id="high-level-workflow">
+<h2>High-level workflow<a class="headerlink" href="#high-level-workflow" title="Link to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.tflite file / bytes
+       │
+       ▼
+   to_onnx()           ← parse_tflite_model() + build TFLiteModel
+       │
+       ▼
+TFLiteModel             (pure-Python object hierarchy)
+       │
+       ▼
+_convert_subgraph()
+       │  for every operator in the subgraph …
+       ▼
+op converter            ← emits ONNX node(s) via GraphBuilder.op.*
+       │
+       ▼
+GraphBuilder.to_onnx()  ← validates and returns ModelProto
+</pre></div>
+</div>
+<p>The steps in detail:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="../../api/litert/index.html#yobx.litert.to_onnx" title="yobx.litert.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> accepts the model as a file path
+or raw bytes together with a tuple of representative <em>numpy</em> inputs (used
+to determine input dtypes and shapes when they are not fully specified in
+the TFLite model).</p></li>
+<li><p><a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.parse_tflite_model" title="yobx.litert.litert_helper.parse_tflite_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_tflite_model()</span></code></a> reads the binary
+FlatBuffer and returns a <a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.TFLiteModel" title="yobx.litert.litert_helper.TFLiteModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TFLiteModel</span></code></a>
+object containing a list of
+<a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.TFLiteSubgraph" title="yobx.litert.litert_helper.TFLiteSubgraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">TFLiteSubgraph</span></code></a> objects, each with its
+tensors and operators.</p></li>
+<li><p>A fresh <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a> is created and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_convert_subgraph()</span></code> walks the operator list:</p>
+<ol class="loweralpha simple">
+<li><p><strong>Weight tensors</strong> (tensors that carry buffer data and are not graph
+inputs) are registered as ONNX initializers.</p></li>
+<li><p><strong>Input tensors</strong> are registered via
+<a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.make_tensor_input" title="yobx.xbuilder.GraphBuilder.make_tensor_input"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_tensor_input()</span></code></a>.</p></li>
+<li><p>Every operator is dispatched to a registered converter (or to an entry
+in <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code>).</p></li>
+</ol>
+</li>
+<li><p>The ONNX outputs are declared with
+<a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.make_tensor_output" title="yobx.xbuilder.GraphBuilder.make_tensor_output"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_tensor_output()</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder.to_onnx" title="yobx.xbuilder.GraphBuilder.to_onnx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GraphBuilder.to_onnx</span></code></a> finalises
+and returns the <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a>.</p></li>
+</ol>
+</section>
+<section id="quick-example">
+<h2>Quick example<a class="headerlink" href="#quick-example" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="s2">&quot;model.tflite&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+</pre></div>
+</div>
+</section>
+<section id="tflite-flatbuffer-parser">
+<h2>TFLite FlatBuffer parser<a class="headerlink" href="#tflite-flatbuffer-parser" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="../../api/litert/litert_helper.html#module-yobx.litert.litert_helper" title="yobx.litert.litert_helper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.litert.litert_helper</span></code></a> contains a self-contained, zero-dependency
+FlatBuffer reader (<code class="xref py py-class docutils literal notranslate"><span class="pre">_FlatBuf</span></code>) together
+with the parsed data-classes
+(<a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.TFLiteModel" title="yobx.litert.litert_helper.TFLiteModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TFLiteModel</span></code></a>,
+<a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.TFLiteSubgraph" title="yobx.litert.litert_helper.TFLiteSubgraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">TFLiteSubgraph</span></code></a>,
+<a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.TFLiteTensor" title="yobx.litert.litert_helper.TFLiteTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TFLiteTensor</span></code></a>,
+<a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.TFLiteOperator" title="yobx.litert.litert_helper.TFLiteOperator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TFLiteOperator</span></code></a>) and the
+<a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.BuiltinOperator" title="yobx.litert.litert_helper.BuiltinOperator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BuiltinOperator</span></code></a> enum.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert.litert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_make_sample_tflite_model</span><span class="p">,</span>
+    <span class="n">parse_tflite_model</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">parse_tflite_model</span><span class="p">(</span><span class="n">_make_sample_tflite_model</span><span class="p">())</span>
+<span class="n">sg</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">subgraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;subgraphs : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">subgraphs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tensors   : </span><span class="si">{</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">sg</span><span class="o">.</span><span class="n">tensors</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;inputs    : </span><span class="si">{</span><span class="n">sg</span><span class="o">.</span><span class="n">inputs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;outputs   : </span><span class="si">{</span><span class="n">sg</span><span class="o">.</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">sg</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;operator  : </span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">  inputs=</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="si">}</span><span class="s2">  outputs=</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">subgraphs</span> <span class="p">:</span> <span class="mi">1</span>
+    <span class="n">tensors</span>   <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="s1">&#39;relu&#39;</span><span class="p">]</span>
+    <span class="n">inputs</span>    <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
+    <span class="n">outputs</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span>
+    <span class="n">operator</span>  <span class="p">:</span> <span class="n">RELU</span>  <span class="n">inputs</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>  <span class="n">outputs</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span>
+</pre></div>
+</div>
+</section>
+<section id="converter-registry">
+<h2>Converter registry<a class="headerlink" href="#converter-registry" title="Link to this heading">#</a></h2>
+<p>The registry is a module-level dictionary
+<code class="docutils literal notranslate"><span class="pre">LITERT_OP_CONVERTERS:</span> <span class="pre">Dict[Union[int,</span> <span class="pre">str],</span> <span class="pre">Callable]</span></code> defined in
+<a class="reference internal" href="../../api/litert/register.html#module-yobx.litert.register" title="yobx.litert.register"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.litert.register</span></code></a>.  Keys are
+<a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.BuiltinOperator" title="yobx.litert.litert_helper.BuiltinOperator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BuiltinOperator</span></code></a> integers
+(e.g. <code class="docutils literal notranslate"><span class="pre">BuiltinOperator.RELU</span></code> = <code class="docutils literal notranslate"><span class="pre">19</span></code>); custom ops use their string name.
+Values are converter callables.</p>
+<section id="registering-a-converter">
+<h3>Registering a converter<a class="headerlink" href="#registering-a-converter" title="Link to this heading">#</a></h3>
+<p>Use the <a class="reference internal" href="../../api/litert/register.html#yobx.litert.register.register_litert_op_converter" title="yobx.litert.register.register_litert_op_converter"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_litert_op_converter()</span></code></a> decorator.
+Pass a single op-code integer, a custom-op name string, or a tuple thereof:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert.register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_litert_op_converter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert.litert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">BuiltinOperator</span>
+
+
+<span class="nd">@register_litert_op_converter</span><span class="p">(</span><span class="n">BuiltinOperator</span><span class="o">.</span><span class="n">RELU</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_relu</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Relu</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="converter-function-signature">
+<h2>Converter function signature<a class="headerlink" href="#converter-function-signature" title="Link to this heading">#</a></h2>
+<p>Every op converter follows the same contract:</p>
+<p><code class="docutils literal notranslate"><span class="pre">(g,</span> <span class="pre">sts,</span> <span class="pre">outputs,</span> <span class="pre">op)</span> <span class="pre">→</span> <span class="pre">output_name</span></code></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g</span></code></p></td>
+<td><p><a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>
+— call <code class="docutils literal notranslate"><span class="pre">g.op.&lt;OpType&gt;(…)</span></code> to emit ONNX nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sts</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Dict</span></code> of metadata (currently always <code class="docutils literal notranslate"><span class="pre">{}</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">outputs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code> of pre-allocated output tensor names
+that the converter <strong>must</strong> write to.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">op</span></code></p></td>
+<td><p>An <code class="xref py py-class docutils literal notranslate"><span class="pre">_OpProxy</span></code> whose
+<code class="docutils literal notranslate"><span class="pre">inputs</span></code> and <code class="docutils literal notranslate"><span class="pre">outputs</span></code> are <strong>string names</strong> of
+the tensors, and <code class="docutils literal notranslate"><span class="pre">builtin_options</span></code> is a decoded
+attribute dict.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">op.inputs[i]</span></code> is the ONNX tensor name (a string, not an integer index)
+of the <em>i</em>-th operator input.  Use it directly in <code class="docutils literal notranslate"><span class="pre">g.op.*()</span></code> calls.</p>
+</section>
+<section id="dynamic-shapes">
+<h2>Dynamic shapes<a class="headerlink" href="#dynamic-shapes" title="Link to this heading">#</a></h2>
+<p>By default <a class="reference internal" href="../../api/litert/index.html#yobx.litert.to_onnx" title="yobx.litert.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a> marks axis 0 of every
+input as dynamic (unnamed batch dimension).  To control which axes are
+dynamic, pass <code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code> — a tuple of one <code class="docutils literal notranslate"><span class="pre">Dict[int,</span> <span class="pre">str]</span></code> per
+input where keys are axis indices and values are symbolic dimension names:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="s2">&quot;model.tflite&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,),</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch&quot;</span><span class="p">},))</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-op-converters">
+<h2>Custom op converters<a class="headerlink" href="#custom-op-converters" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code> parameter of <a class="reference internal" href="../../api/litert/index.html#yobx.litert.to_onnx" title="yobx.litert.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a>
+accepts a mapping from <a class="reference internal" href="../../api/litert/litert_helper.html#yobx.litert.litert_helper.BuiltinOperator" title="yobx.litert.litert_helper.BuiltinOperator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BuiltinOperator</span></code></a>
+integer (or custom-op name string) to converter function.  Entries here take
+<strong>priority</strong> over the built-in registry:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert.litert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">BuiltinOperator</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">custom_relu</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace RELU with Clip(0, 6).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Clip</span><span class="p">(</span>
+        <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">6.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relu6&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="s2">&quot;model.tflite&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,),</span>
+              <span class="n">extra_converters</span><span class="o">=</span><span class="p">{</span><span class="n">BuiltinOperator</span><span class="o">.</span><span class="n">RELU</span><span class="p">:</span> <span class="n">custom_relu</span><span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-a-new-built-in-converter">
+<h2>Adding a new built-in converter<a class="headerlink" href="#adding-a-new-built-in-converter" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Create a new file under <code class="docutils literal notranslate"><span class="pre">yobx/litert/ops/</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">yobx/litert/ops/cast_ops.py</span></code>).</p></li>
+<li><p>Implement a converter function following the signature above.</p></li>
+<li><p>Decorate it with <code class="docutils literal notranslate"><span class="pre">&#64;register_litert_op_converter(BuiltinOperator.CAST)</span></code>.</p></li>
+<li><p>Import the new module inside the <code class="docutils literal notranslate"><span class="pre">register()</span></code> function in
+<code class="docutils literal notranslate"><span class="pre">yobx/litert/ops/__init__.py</span></code>.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># yobx/litert/ops/cast_ops.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..register</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_litert_op_converter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..litert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">BuiltinOperator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
+
+<span class="nd">@register_litert_op_converter</span><span class="p">(</span><span class="n">BuiltinOperator</span><span class="o">.</span><span class="n">CAST</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_cast</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;TFLite CAST → ONNX Cast.&quot;&quot;&quot;</span>
+    <span class="c1"># op.builtin_options carries &quot;in_data_type&quot; / &quot;out_data_type&quot; integers.</span>
+    <span class="n">out_type</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">builtin_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;out_data_type&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert.litert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">litert_dtype_to_np_dtype</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="n">np_dtype</span> <span class="o">=</span> <span class="n">litert_dtype_to_np_dtype</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+    <span class="n">onnx_dtype</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>  <span class="c1"># map np_dtype → TensorProto int</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">to</span><span class="o">=</span><span class="n">onnx_dtype</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="supported-ops">
+<h2>Supported ops<a class="headerlink" href="#supported-ops" title="Link to this heading">#</a></h2>
+<p>The built-in converter registry covers the following TFLite ops:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_litert_converters</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert.register</span><span class="w"> </span><span class="kn">import</span> <span class="n">LITERT_OP_CONVERTERS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.litert.litert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">builtin_op_name</span>
+
+<span class="n">register_litert_converters</span><span class="p">()</span>
+
+<span class="n">PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;TFLite\s+``(\w+)``\s+→\s+ONNX\s+(.+)&quot;</span><span class="p">)</span>
+<span class="n">MODULE_LABELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;yobx.litert.ops.activations&quot;</span><span class="p">:</span> <span class="s2">&quot;Activations&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;yobx.litert.ops.elementwise&quot;</span><span class="p">:</span> <span class="s2">&quot;Element-wise&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;yobx.litert.ops.nn_ops&quot;</span><span class="p">:</span> <span class="s2">&quot;Neural network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;yobx.litert.ops.reshape_ops&quot;</span><span class="p">:</span> <span class="s2">&quot;Shape / tensor manipulation&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">MODULE_ORDER</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">MODULE_LABELS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">groups</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODULE_ORDER</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">LITERT_OP_CONVERTERS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__module__</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">PATTERN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">tflite_op</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="p">(</span><span class="n">builtin_op_name</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">code</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">onnx_op</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="s2">&quot;?&quot;</span>
+    <span class="k">if</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+        <span class="n">groups</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tflite_op</span><span class="p">,</span> <span class="n">onnx_op</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">MODULE_ORDER</span><span class="p">:</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">MODULE_LABELS</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">groups</span><span class="p">[</span><span class="n">mod</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;**</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">**&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">tflite_op</span><span class="p">,</span> <span class="n">onnx_op</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* ``</span><span class="si">{</span><span class="n">tflite_op</span><span class="si">}</span><span class="s2">`` → </span><span class="si">{</span><span class="n">onnx_op</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<p><strong>Activations</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ELU</span></code> → <code class="docutils literal notranslate"><span class="pre">Elu(alpha=1.0)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GELU</span></code> → <code class="docutils literal notranslate"><span class="pre">Gelu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HARD_SWISH</span></code> → <code class="docutils literal notranslate"><span class="pre">HardSwish</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LEAKY_RELU</span></code> → <code class="docutils literal notranslate"><span class="pre">LeakyRelu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOG_SOFTMAX</span></code> → <code class="docutils literal notranslate"><span class="pre">LogSoftmax(axis=-1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RELU</span></code> → <code class="docutils literal notranslate"><span class="pre">Relu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RELU_N1_TO_1</span></code> → <code class="docutils literal notranslate"><span class="pre">Clip(min=-1,</span> <span class="pre">max=1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SOFTMAX</span></code> → <code class="docutils literal notranslate"><span class="pre">Softmax(axis=-1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TANH</span></code> → <code class="docutils literal notranslate"><span class="pre">Tanh</span></code></p></li>
+</ul>
+<p><strong>Element-wise</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ABS</span></code> → <code class="docutils literal notranslate"><span class="pre">Abs</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADD</span></code> → <code class="docutils literal notranslate"><span class="pre">Add</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CEIL</span></code> → <code class="docutils literal notranslate"><span class="pre">Ceil</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DIV</span></code> → <code class="docutils literal notranslate"><span class="pre">Div</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXP</span></code> → <code class="docutils literal notranslate"><span class="pre">Exp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FLOOR</span></code> → <code class="docutils literal notranslate"><span class="pre">Floor</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FLOOR_DIV</span></code> → <code class="docutils literal notranslate"><span class="pre">Floor(Div(a,</span> <span class="pre">b))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOG</span></code> → <code class="docutils literal notranslate"><span class="pre">Log</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOGICAL_AND</span></code> → <code class="docutils literal notranslate"><span class="pre">And</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOGICAL_NOT</span></code> → <code class="docutils literal notranslate"><span class="pre">Not</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOGICAL_OR</span></code> → <code class="docutils literal notranslate"><span class="pre">Or</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MUL</span></code> → <code class="docutils literal notranslate"><span class="pre">Mul</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NEG</span></code> → <code class="docutils literal notranslate"><span class="pre">Neg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POW</span></code> → <code class="docutils literal notranslate"><span class="pre">Pow</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROUND</span></code> → <code class="docutils literal notranslate"><span class="pre">Round</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RSQRT</span></code> → <code class="docutils literal notranslate"><span class="pre">Reciprocal(Sqrt(x))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SIN</span></code> → <code class="docutils literal notranslate"><span class="pre">Sin</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SQRT</span></code> → <code class="docutils literal notranslate"><span class="pre">Sqrt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SQUARED_DIFFERENCE</span></code> → <code class="docutils literal notranslate"><span class="pre">Pow(Sub(a,</span> <span class="pre">b),</span> <span class="pre">2)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SUB</span></code> → <code class="docutils literal notranslate"><span class="pre">Sub</span></code></p></li>
+</ul>
+<p><strong>Neural network</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AVERAGE_POOL_2D</span></code> → <code class="docutils literal notranslate"><span class="pre">AveragePool</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BATCH_MATMUL</span></code> → <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> with optional transposes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONV_2D</span></code> → <code class="docutils literal notranslate"><span class="pre">Conv</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEPTHWISE_CONV_2D</span></code> → <code class="docutils literal notranslate"><span class="pre">Conv</span></code> with <code class="docutils literal notranslate"><span class="pre">group=in_channels</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FULLY_CONNECTED</span></code> → <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> (+ optional <code class="docutils literal notranslate"><span class="pre">Add</span></code> bias)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAX_POOL_2D</span></code> → <code class="docutils literal notranslate"><span class="pre">MaxPool</span></code></p></li>
+</ul>
+<p><strong>Shape / tensor manipulation</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONCATENATION</span></code> → <code class="docutils literal notranslate"><span class="pre">Concat</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXPAND_DIMS</span></code> → <code class="docutils literal notranslate"><span class="pre">Unsqueeze</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MEAN</span></code> → <code class="docutils literal notranslate"><span class="pre">ReduceMean</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REDUCE_MAX</span></code> → <code class="docutils literal notranslate"><span class="pre">ReduceMax</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REDUCE_MIN</span></code> → <code class="docutils literal notranslate"><span class="pre">ReduceMin</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RESHAPE</span></code> → <code class="docutils literal notranslate"><span class="pre">Reshape</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SQUEEZE</span></code> → <code class="docutils literal notranslate"><span class="pre">Squeeze</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SUM</span></code> → <code class="docutils literal notranslate"><span class="pre">ReduceSum</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TRANSPOSE</span></code> → <code class="docutils literal notranslate"><span class="pre">Transpose</span></code></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../converters.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Converters</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../sklearn/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">scikit-learn Export to ONNX</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-level-workflow">High-level workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-example">Quick example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tflite-flatbuffer-parser">TFLite FlatBuffer parser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#converter-registry">Converter registry</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-a-converter">Registering a converter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#converter-function-signature">Converter function signature</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-shapes">Dynamic shapes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-op-converters">Custom op converters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-new-built-in-converter">Adding a new built-in converter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-ops">Supported ops</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/design/litert/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

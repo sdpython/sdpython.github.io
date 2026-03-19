@@ -1,215 +1,965 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../../../">
+
+<html lang="en" data-content_root="../../../" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>yobx.torch.in_transformers.cache_helper &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=9b2032db" />
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=b23dd4a3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1c8377ea" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
     <script src="../../../_static/documentation_options.js?v=01f34227"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <script src="../../../_static/js/petite-vue.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/torch/in_transformers/cache_helper';</script>
     <link rel="icon" href="../../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="yobx.torch.in_transformers.flatten_class" href="flatten_class.html" />
-    <link rel="prev" title="yobx.torch.in_transformers._patches_model_rope_utils" href="_patches_model_rope_utils.html" /> 
-  </head><body data-dark_mode_code_blocks="true">
+    <link rel="prev" title="yobx.torch.in_transformers._patches_model_rope_utils" href="_patches_model_rope_utils.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-<div id="top_nav">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
     
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-    <nav>
-        
-            
-        
-
-        <p id="toggle_sidebar">
-            <a href="#" title="Toggle sidebar">|||</a>
-        </p>
-        <h1><a href="../../../index.html" title="Go to homepage"><img src="../../../_static/logo.svg"/></a></h1>
-            <a id="source_link" href="https://github.com/xadupre/yet-another-onnx-builder">
-    
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
-            <path fill="white" d="M 244.8,8 C 106.1,8 0,113.3 0,252 c 0,110.9 69.8,205.8 169.5,239.2 12.8,2.3 17.3,-5.6 17.3,-12.1 0,-6.2 -0.3,-40.4 -0.3,-61.4 0,0 -70,15 -84.7,-29.8 0,0 -11.4,-29.1 -27.8,-36.6 0,0 -22.9,-15.7 1.6,-15.4 0,0 24.9,2 38.6,25.8 21.9,38.6 58.6,27.5 72.9,20.9 2.3,-16 8.8,-27.1 16,-33.7 -55.9,-6.2 -112.3,-14.3 -112.3,-110.5 0,-27.5 7.6,-41.3 23.6,-58.9 -2.6,-6.5 -11.1,-33.3 2.6,-67.9 20.9,-6.5 69,27 69,27 20,-5.6 41.5,-8.5 62.8,-8.5 21.3,0 42.8,2.9 62.8,8.5 0,0 48.1,-33.6 69,-27 13.7,34.7 5.2,61.4 2.6,67.9 16,17.7 25.8,31.5 25.8,58.9 0,96.5 -58.9,104.2 -114.8,110.5 9.2,7.9 17,22.9 17,46.4 0,33.7 -0.3,75.4 -0.3,83.6 0,6.5 4.6,14.4 17.3,12.1 C 428.2,457.8 496,362.9 496,252 496,113.3 383.5,8 244.8,8 Z"/>
-        </svg>
-    
-</a>
-        
-
-        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
-    <template v-if="mode == 'light'">
-        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
-    </template>
-
-    <template v-if="mode == 'dark'">
-        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
-    </template>
-
-    <template v-if="mode == 'darkest'">
-        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
-    </template>
-</a>
-
-<script>
-(function() {
-    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
-
-    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
-
-    if (initialMode) {
-        // Make sure the value in local storage is valid
-        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
-            initialMode = 'light'
-            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
-        }
-    } else {
-        // Check if the client prefers dark mode
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            initialMode = 'dark'
-        } else {
-            initialMode = 'light'
-        }
-        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
-    }
-
-    document.documentElement.dataset.mode = initialMode
-
-    PetiteVue.createApp({
-        'mode': initialMode,
-        handleClick() {
-            let currentMode = this.mode
-
-            if (currentMode == 'light') {
-                this.mode = 'dark'
-            } else if (currentMode == 'dark') {
-                this.mode = 'darkest'
-            } else if (currentMode == 'darkest') {
-                this.mode = 'light'
-            }
-
-            document.documentElement.dataset.mode = this.mode
-            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
-
-            console.log(this.mode)
-        }
-    }).mount('#mode_toggle')
-})()
-</script>
-            <p class="mobile_search_link">
-                <a href="../../../search.html" title="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
-                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
-                    </svg>
-                </a>
-            </p>
-        
-
-        <div class="searchbox_wrapper">
-            
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-    </nav>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Contents</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../design/tensorflow/index.html">TensorFlow Export to ONNX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../design/torch/index.html">Torch Export to ONNX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../design/index.html">Elements of Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Galleries</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_core/index.html">Core Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_sklearn/index.html">Scikit-learn Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_torch/index.html">PyTorch Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples_tensorflow/index.html">TensorFlow Gallery</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../doc.html">yobx.doc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ext_test_case.html">yobx.ext_test_case</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pv_version.html">yobx.pv_version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../typing.html">yobx.typing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../builder/index.html">yobx.builder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../container/index.html">yobx.container</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../helpers/index.html">yobx.helpers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../reference/index.html">yobx.reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../sklearn/index.html">yobx.sklearn</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tensorflow/index.html">yobx.tensorflow</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">yobx.torch</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../_model_eval_cases.html">yobx.torch._model_eval_cases</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../export_helper.html">yobx.torch.export_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../export_options.html">yobx.torch.export_options</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fake_tensor_helper.html">yobx.torch.fake_tensor_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../flatten.html">yobx.torch.flatten</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../flatten_helper.html">yobx.torch.flatten_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../input_observer.html">yobx.torch.input_observer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../model_eval_cases.html">yobx.torch.model_eval_cases</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../patch.html">yobx.torch.patch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../tiny_models.html">yobx.torch.tiny_models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../torch_helper.html">yobx.torch.torch_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../tracing.html">yobx.torch.tracing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validate.html">yobx.torch.validate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../in_torch/index.html">yobx.torch.in_torch</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html">yobx.torch.in_transformers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../interpreter/index.html">yobx.torch.interpreter</a></li>
-</ul>
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.svg" class="logo__image only-light" alt="yet-another-onnx-builder 0.1.0 documentation - Home"/>
+    <img src="../../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="yet-another-onnx-builder 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    API
+  </a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../translate/index.html">yobx.translate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/index.html">yobx.xbuilder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../xoptim/index.html">yobx.xoptim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../xshape/index.html">yobx.xshape</a></li>
-</ul>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../converters.html">
+    Converters
+  </a>
 </li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">misc</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index_stats.html">Versions</a></li>
-</ul>
-
-        </div>
-      </div>
 
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../galleries.html">
+    Galleries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../cmds/index.html">
+    Command Lines
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../install.html">
+    Installation
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+                </ul>
+            </li>
             
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/yet-another-onnx-builder" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../converters.html">
+    Converters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../galleries.html">
+    Galleries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../cmds/index.html">
+    Command Lines
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../install.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/yet-another-onnx-builder" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../doc.html">yobx.doc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ext_test_case.html">yobx.ext_test_case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pv_version.html">yobx.pv_version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../typing.html">yobx.typing</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../builder/index.html">yobx.builder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../builder/light/index.html">yobx.builder.light</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../builder/light/graph.html">yobx.builder.light – Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../builder/light/var.html">yobx.builder.light – Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../builder/light/op_var.html">yobx.builder.light – Single-input Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../builder/light/op_vars.html">yobx.builder.light – Multi-input Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../builder/onnxscript/index.html">yobx.builder.onnxscript</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../builder/onnxscript/bridge_graph_builder.html">yobx.builder.onnxscript.bridge_graph_builder</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../builder/spox/index.html">yobx.builder.spox</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../builder/spox/bridge_graph_builder.html">yobx.builder.spox.bridge_graph_builder</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../container/index.html">yobx.container</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../container/build_stats.html">yobx.container.build_stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../container/model_container.html">yobx.container.model_container</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../helpers/index.html">yobx.helpers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/copilot.html">yobx.helpers.copilot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/cube_helper.html">yobx.helpers.cube_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/dot_helper.html">yobx.helpers.dot_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/helper.html">yobx.helpers.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/patch_helper.html">yobx.helpers.patch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/rt_helper.html">yobx.helpers.rt_helper</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../reference/index.html">yobx.reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/evaluator.html">yobx.reference.evaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/onnxruntime_evaluator.html">yobx.reference.onnxruntime_evaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/report_results_comparison.html">yobx.reference.report_results_comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/runtime_info.html">yobx.reference.runtime_info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/torch_evaluator.html">yobx.reference.torch_evaluator</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../reference/ops/index.html">yobx.reference.ops</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../reference/ops/op__overwrite_gather.html">yobx.reference.ops.op__overwrite_gather</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/torch_ops/index.html">yobx.reference.torch_ops</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../litert/index.html">yobx.litert</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../litert/convert.html">yobx.litert.convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../litert/register.html">yobx.litert.register</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../litert/litert_helper.html">yobx.litert.litert_helper</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../litert/ops/index.html">yobx.litert.ops</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../litert/ops/activations.html">yobx.litert.ops.activations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../litert/ops/elementwise.html">yobx.litert.ops.elementwise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../litert/ops/nn_ops.html">yobx.litert.ops.nn_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../litert/ops/reshape_ops.html">yobx.litert.ops.reshape_ops</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../sklearn/index.html">yobx.sklearn</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sklearn/convert.html">yobx.sklearn.convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sklearn/register.html">yobx.sklearn.register</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sklearn/sklearn_helper.html">yobx.sklearn.sklearn_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sklearn/tests_helper.html">yobx.sklearn.tests_helper</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/calibration/index.html">yobx.sklearn.calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/calibration/calibrated_classifier.html">yobx.sklearn.calibration.calibrated_classifier</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/category_encoders/index.html">yobx.sklearn.category_encoders</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/category_encoders/ce_binary_encoder.html">yobx.sklearn.category_encoders.binary_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/category_encoders/ce_one_hot_encoder.html">yobx.sklearn.category_encoders.one_hot_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/category_encoders/ce_ordinal_encoder.html">yobx.sklearn.category_encoders.ordinal_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/category_encoders/polynomial_encoder.html">yobx.sklearn.category_encoders.polynomial_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/category_encoders/quantile_encoder.html">yobx.sklearn.category_encoders.quantile_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/category_encoders/target_encoder.html">yobx.sklearn.category_encoders.target_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/category_encoders/woe_encoder.html">yobx.sklearn.category_encoders.woe_encoder</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/cluster/index.html">yobx.sklearn.cluster</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cluster/affinity_propagation.html">yobx.sklearn.cluster.affinity_propagation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cluster/birch.html">yobx.sklearn.cluster.birch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cluster/bisecting_kmeans.html">yobx.sklearn.cluster.bisecting_kmeans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cluster/feature_agglomeration.html">yobx.sklearn.cluster.feature_agglomeration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cluster/kmeans.html">yobx.sklearn.cluster.kmeans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cluster/mean_shift.html">yobx.sklearn.cluster.mean_shift</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cluster/mini_batch_kmeans.html">yobx.sklearn.cluster.mini_batch_kmeans</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/compose/index.html">yobx.sklearn.compose</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/compose/column_transformer.html">yobx.sklearn.compose.column_transformer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/covariance/index.html">yobx.sklearn.covariance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/covariance/elliptic_envelope.html">yobx.sklearn.covariance.elliptic_envelope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/covariance/empirical_covariance.html">yobx.sklearn.covariance.empirical_covariance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/covariance/graphical_lasso.html">yobx.sklearn.covariance.graphical_lasso</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/covariance/ledoit_wolf.html">yobx.sklearn.covariance.ledoit_wolf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/covariance/min_cov_det.html">yobx.sklearn.covariance.min_cov_det</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/covariance/oas.html">yobx.sklearn.covariance.oas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/covariance/shrunk_covariance.html">yobx.sklearn.covariance.shrunk_covariance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/cross_decomposition/index.html">yobx.sklearn.cross_decomposition</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/cross_decomposition/cca.html">yobx.sklearn.cross_decomposition.cca</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/decomposition/index.html">yobx.sklearn.decomposition</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/factor_analysis.html">yobx.sklearn.decomposition.factor_analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/fast_ica.html">yobx.sklearn.decomposition.fast_ica</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/gaussian_random_projection.html">yobx.sklearn.decomposition.gaussian_random_projection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/incremental_pca.html">yobx.sklearn.decomposition.incremental_pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/kernel_pca.html">yobx.sklearn.decomposition.kernel_pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/latent_dirichlet_allocation.html">yobx.sklearn.decomposition.latent_dirichlet_allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/nmf.html">yobx.sklearn.decomposition.nmf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/pca.html">yobx.sklearn.decomposition.pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/pls_regression.html">yobx.sklearn.decomposition.pls_regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/pls_svd.html">yobx.sklearn.decomposition.pls_svd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/sparse_pca.html">yobx.sklearn.decomposition.sparse_pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/decomposition/truncated_svd.html">yobx.sklearn.decomposition.truncated_svd</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/discriminant_analysis/index.html">yobx.sklearn.discriminant_analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/discriminant_analysis/lda.html">yobx.sklearn.discriminant_analysis.lda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/discriminant_analysis/qda.html">yobx.sklearn.discriminant_analysis.qda</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/dummy/index.html">yobx.sklearn.dummy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/dummy/dummy.html">yobx.sklearn.dummy.dummy</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/ensemble/index.html">yobx.sklearn.ensemble</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/adaboost.html">yobx.sklearn.ensemble.adaboost</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/bagging.html">yobx.sklearn.ensemble.bagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/gradient_boosting.html">yobx.sklearn.ensemble.gradient_boosting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/hist_gradient_boosting.html">yobx.sklearn.ensemble.hist_gradient_boosting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/isolation_forest.html">yobx.sklearn.ensemble.isolation_forest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/random_forest.html">yobx.sklearn.ensemble.random_forest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/stacking.html">yobx.sklearn.ensemble.stacking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/ensemble/voting.html">yobx.sklearn.ensemble.voting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/feature_extraction/index.html">yobx.sklearn.feature_extraction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_extraction/count_vectorizer.html">yobx.sklearn.feature_extraction.count_vectorizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_extraction/feature_hasher.html">yobx.sklearn.feature_extraction.feature_hasher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_extraction/patch_extractor.html">yobx.sklearn.feature_extraction.patch_extractor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_extraction/tfidf_transformer.html">yobx.sklearn.feature_extraction.tfidf_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_extraction/tfidf_vectorizer.html">yobx.sklearn.feature_extraction.tfidf_vectorizer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/feature_selection/index.html">yobx.sklearn.feature_selection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/rfe.html">yobx.sklearn.feature_selection.rfe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/select_fdr.html">yobx.sklearn.feature_selection.select_fdr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/select_from_model.html">yobx.sklearn.feature_selection.select_from_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/select_fpr.html">yobx.sklearn.feature_selection.select_fpr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/select_fwe.html">yobx.sklearn.feature_selection.select_fwe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/select_k_best.html">yobx.sklearn.feature_selection.select_k_best</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/select_percentile.html">yobx.sklearn.feature_selection.select_percentile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/feature_selection/variance_threshold.html">yobx.sklearn.feature_selection.variance_threshold</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/gaussian_process/index.html">yobx.sklearn.gaussian_process</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/gaussian_process/gp.html">yobx.sklearn.gaussian_process.gp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/impute/index.html">yobx.sklearn.impute</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/impute/knn_imputer.html">yobx.sklearn.impute.knn_imputer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/impute/missing_indicator.html">yobx.sklearn.impute.missing_indicator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/impute/simple_imputer.html">yobx.sklearn.impute.simple_imputer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/imblearn/index.html">yobx.sklearn.imblearn</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/imblearn/balanced_random_forest.html">yobx.sklearn.imblearn.balanced_random_forest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/imblearn/easy_ensemble.html">yobx.sklearn.imblearn.easy_ensemble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/imblearn/balanced_bagging.html">yobx.sklearn.imblearn.balanced_bagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/imblearn/rus_boost.html">yobx.sklearn.imblearn.rus_boost</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/isotonic/index.html">yobx.sklearn.isotonic</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/isotonic/isotonic_regression.html">yobx.sklearn.isotonic.isotonic_regression</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/kernel_approximation/index.html">yobx.sklearn.kernel_approximation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/kernel_approximation/additive_chi2_sampler.html">yobx.sklearn.kernel_approximation.additive_chi2_sampler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/kernel_approximation/nystroem.html">yobx.sklearn.kernel_approximation.nystroem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/kernel_approximation/rbf_sampler.html">yobx.sklearn.kernel_approximation.rbf_sampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/kernel_ridge/index.html">yobx.sklearn.kernel_ridge</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/kernel_ridge/kernel_ridge.html">yobx.sklearn.kernel_ridge.kernel_ridge</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/lightgbm/index.html">yobx.sklearn.lightgbm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/lightgbm/lgbm.html">yobx.sklearn.lightgbm.lgbm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/lightgbm/lgbm_model.html">yobx.sklearn.lightgbm.lgbm_model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/linear_model/index.html">yobx.sklearn.linear_model</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/linear_model/glm.html">yobx.sklearn.linear_model.glm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/linear_model/linear_classifier.html">yobx.sklearn.linear_model.linear_classifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/linear_model/linear_regressor.html">yobx.sklearn.linear_model.linear_regressor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/linear_model/logistic_regression.html">yobx.sklearn.linear_model.logistic_regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/linear_model/ransac.html">yobx.sklearn.linear_model.ransac</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/linear_model/sgd_one_class_svm.html">yobx.sklearn.linear_model.sgd_one_class_svm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/manifold/index.html">yobx.sklearn.manifold</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/manifold/isomap.html">yobx.sklearn.manifold.isomap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/manifold/locally_linear_embedding.html">yobx.sklearn.manifold.locally_linear_embedding</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/mixture/index.html">yobx.sklearn.mixture</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/mixture/bayesian_gaussian_mixture.html">yobx.sklearn.mixture.bayesian_gaussian_mixture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/mixture/gaussian_mixture.html">yobx.sklearn.mixture.gaussian_mixture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/model_selection/index.html">yobx.sklearn.model_selection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/model_selection/grid_search.html">yobx.sklearn.model_selection.grid_search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/model_selection/halving_search.html">yobx.sklearn.model_selection.halving_search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/model_selection/random_search.html">yobx.sklearn.model_selection.random_search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/model_selection/tuned_threshold_classifier_cv.html">yobx.sklearn.model_selection.tuned_threshold_classifier_cv</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/multiclass/index.html">yobx.sklearn.multiclass</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/multiclass/one_vs_one.html">yobx.sklearn.multiclass.one_vs_one</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/multiclass/one_vs_rest.html">yobx.sklearn.multiclass.one_vs_rest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/multiclass/output_code.html">yobx.sklearn.multiclass.output_code</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/multioutput/index.html">yobx.sklearn.multioutput</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/multioutput/classifier_chain.html">yobx.sklearn.multioutput.classifier_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/multioutput/multioutput.html">yobx.sklearn.multioutput.multioutput</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/multioutput/regressor_chain.html">yobx.sklearn.multioutput.regressor_chain</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/naive_bayes/index.html">yobx.sklearn.naive_bayes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/naive_bayes/categorical_nb.html">yobx.sklearn.naive_bayes.categorical_nb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/naive_bayes/nb.html">yobx.sklearn.naive_bayes.nb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/neural_network/index.html">yobx.sklearn.neural_network</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neural_network/bernoulli_rbm.html">yobx.sklearn.neural_network.bernoulli_rbm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neural_network/mlp.html">yobx.sklearn.neural_network.mlp</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/neighbors/index.html">yobx.sklearn.neighbors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/kneighbors.html">yobx.sklearn.neighbors.kneighbors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/kneighbors_transformer.html">yobx.sklearn.neighbors.kneighbors_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/kernel_density.html">yobx.sklearn.neighbors.kernel_density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/local_outlier_factor.html">yobx.sklearn.neighbors.local_outlier_factor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/nearest_centroid.html">yobx.sklearn.neighbors.nearest_centroid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/neighborhood_components_analysis.html">yobx.sklearn.neighbors.neighborhood_components_analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/radiusneighbors.html">yobx.sklearn.neighbors.radiusneighbors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/neighbors/radiusneighbors_transformer.html">yobx.sklearn.neighbors.radiusneighbors_transformer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/pipeline/index.html">yobx.sklearn.pipeline</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/pipeline/feature_union.html">yobx.sklearn.pipeline.feature_union</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/pipeline/pipeline.html">yobx.sklearn.pipeline.pipeline</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/preprocessing/index.html">yobx.sklearn.preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/binarizer.html">yobx.sklearn.preprocessing.binarizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/function_transformer.html">yobx.sklearn.preprocessing.function_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/kbins_discretizer.html">yobx.sklearn.preprocessing.kbins_discretizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/kernel_centerer.html">yobx.sklearn.preprocessing.kernel_centerer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/max_abs_scaler.html">yobx.sklearn.preprocessing.max_abs_scaler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/min_max_scaler.html">yobx.sklearn.preprocessing.min_max_scaler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/normalizer.html">yobx.sklearn.preprocessing.normalizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/one_hot_encoder.html">yobx.sklearn.preprocessing.one_hot_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/ordinal_encoder.html">yobx.sklearn.preprocessing.ordinal_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/polynomial_features.html">yobx.sklearn.preprocessing.polynomial_features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/power_transformer.html">yobx.sklearn.preprocessing.power_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/quantile_transformer.html">yobx.sklearn.preprocessing.quantile_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/robust_scaler.html">yobx.sklearn.preprocessing.robust_scaler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/spline_transformer.html">yobx.sklearn.preprocessing.spline_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/preprocessing/standard_scaler.html">yobx.sklearn.preprocessing.standard_scaler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/sksurv/index.html">yobx.sklearn.sksurv</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/sksurv/linear_model.html">yobx.sklearn.sksurv.linear_model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/svm/index.html">yobx.sklearn.svm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/svm/linear_svm.html">yobx.sklearn.svm.linear_svm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/svm/one_class_svm.html">yobx.sklearn.svm.one_class_svm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/svm/svm.html">yobx.sklearn.svm.svm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/tree/index.html">yobx.sklearn.tree</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/tree/decision_tree.html">yobx.sklearn.tree.decision_tree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/tree/extra_tree.html">yobx.sklearn.tree (ExtraTree)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sklearn/xgboost/index.html">yobx.sklearn.xgboost</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sklearn/xgboost/xgb.html">yobx.sklearn.xgboost.xgb</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tensorflow/index.html">yobx.tensorflow</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tensorflow/convert.html">yobx.tensorflow.convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tensorflow/register.html">yobx.tensorflow.register</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tensorflow/tensorflow_helper.html">yobx.tensorflow.tensorflow_helper</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../tensorflow/ops/index.html">yobx.tensorflow.ops</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/activations.html">yobx.tensorflow.ops.activations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/binary_ops.html">yobx.tensorflow.ops.binary_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/const.html">yobx.tensorflow.ops.const</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/conv.html">yobx.tensorflow.ops.conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/element_wise.html">yobx.tensorflow.ops.element_wise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/gather_ops.html">yobx.tensorflow.ops.gather_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/jax_ops.html">yobx.tensorflow.ops.jax_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/math_ops.html">yobx.tensorflow.ops.math_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/matmul.html">yobx.tensorflow.ops.matmul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/nn_ops.html">yobx.tensorflow.ops.nn_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/padding.html">yobx.tensorflow.ops.padding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/pooling.html">yobx.tensorflow.ops.pooling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/random_ops.html">yobx.tensorflow.ops.random_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/reduction_ops.html">yobx.tensorflow.ops.reduction_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/shape_ops.html">yobx.tensorflow.ops.shape_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/special_ops.html">yobx.tensorflow.ops.special_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/unary_ops.html">yobx.tensorflow.ops.unary_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tensorflow/ops/xla_call_module.html">yobx.tensorflow.ops.xla_call_module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">yobx.torch</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../_model_eval_cases.html">yobx.torch._model_eval_cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../export_helper.html">yobx.torch.export_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../export_options.html">yobx.torch.export_options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fake_tensor_helper.html">yobx.torch.fake_tensor_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flatten.html">yobx.torch.flatten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flatten_helper.html">yobx.torch.flatten_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input_observer.html">yobx.torch.input_observer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_eval_cases.html">yobx.torch.model_eval_cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../patch.html">yobx.torch.patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tiny_models.html">yobx.torch.tiny_models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch_helper.html">yobx.torch.torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing.html">yobx.torch.tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validate.html">yobx.torch.validate</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../in_torch/index.html">yobx.torch.in_torch</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../in_torch/patches.html">yobx.torch.in_torch.patches</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">yobx.torch.in_transformers</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="_patches_model_rope_utils.html">yobx.torch.in_transformers._patches_model_rope_utils</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">yobx.torch.in_transformers.cache_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flatten_class.html">yobx.torch.in_transformers.flatten_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="patches.html">yobx.torch.in_transformers.patches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="register.html">yobx.torch.in_transformers.register</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="models/index.html">yobx.torch.in_transformers.models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="models/configs.html">yobx.torch.in_transformers.models.configs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="classes/index.html">yobx.torch.in_transformers.classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes/llama_attention.html">yobx.torch.in_transformers.classes.llama_attention</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../interpreter/index.html">yobx.torch.interpreter</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_functions.html">yobx.torch.interpreter._aten_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_functions_attention.html">yobx.torch.interpreter._aten_functions_attention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_functions_transformers.html">yobx.torch.interpreter._aten_functions_transformers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_methods.html">yobx.torch.interpreter._aten_methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_doc_.html">yobx.torch.interpreter._doc_</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_exceptions.html">yobx.torch.interpreter._exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_math_functions.html">yobx.torch.interpreter._math_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_non_aten_functions.html">yobx.torch.interpreter._non_aten_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_prims_functions.html">yobx.torch.interpreter._prims_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_torch_helper.html">yobx.torch.interpreter._torch_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/aten_functions.html">yobx.torch.interpreter.aten_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/aten_functions_transformers.html">yobx.torch.interpreter.aten_functions_transformers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/aten_methods.html">yobx.torch.interpreter.aten_methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/dispatcher.html">yobx.torch.interpreter.dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/interpreter.html">yobx.torch.interpreter.interpreter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/onnx_export.html">yobx.torch.interpreter.onnx_export</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../translate/index.html">yobx.translate</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/base_emitter.html">yobx.translate.base_emitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/builder_emitter.html">yobx.translate.builder_emitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/inner_emitter.html">yobx.translate.inner_emitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/light_emitter.html">yobx.translate.light_emitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/make_helper.html">yobx.translate.make_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/mermaid_emitter.html">yobx.translate.mermaid_emitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/reverse_graph_builder.html">yobx.translate.reverse_graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../translate/translator.html">yobx.translate.translator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../xbuilder/index.html">yobx.xbuilder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/builder_stats_helper.html">yobx.xbuilder.builder_stats_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/function_options.html">yobx.xbuilder.function_options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/graph_builder.html">yobx.xbuilder.graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/graph_builder_opset.html">yobx.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/infer_shapes_options.html">yobx.xbuilder.infer_shapes_options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/optimization_options.html">yobx.xbuilder.optimization_options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xbuilder/order_optim.html">yobx.xbuilder.order_optim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../xoptim/index.html">yobx.xoptim</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../xoptim/graph_builder_optim.html">yobx.xoptim.graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xoptim/patterns_api.html">yobx.xoptim.patterns_api</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xoptim/patterns/index.html">yobx.xoptim.patterns</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_any.html">yobx.xoptim.patterns.onnx_any</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_attention.html">yobx.xoptim.patterns.onnx_attention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_cast.html">yobx.xoptim.patterns.onnx_cast</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_clip.html">yobx.xoptim.patterns.onnx_clip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_concat.html">yobx.xoptim.patterns.onnx_concat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_constants.html">yobx.xoptim.patterns.onnx_constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_conv.html">yobx.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_dropout.html">yobx.xoptim.patterns.onnx_dropout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_equal.html">yobx.xoptim.patterns.onnx_equal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_expand.html">yobx.xoptim.patterns.onnx_expand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_functions.html">yobx.xoptim.patterns.onnx_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_layer_normalization.html">yobx.xoptim.patterns.onnx_layer_normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_matmul.html">yobx.xoptim.patterns.onnx_matmul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_mul.html">yobx.xoptim.patterns.onnx_mul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_range.html">yobx.xoptim.patterns.onnx_range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_reduce.html">yobx.xoptim.patterns.onnx_reduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_reshape.html">yobx.xoptim.patterns.onnx_reshape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_rotary.html">yobx.xoptim.patterns.onnx_rotary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_sequence.html">yobx.xoptim.patterns.onnx_sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_shape.html">yobx.xoptim.patterns.onnx_shape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_slice.html">yobx.xoptim.patterns.onnx_slice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_split.html">yobx.xoptim.patterns.onnx_split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_sub.html">yobx.xoptim.patterns.onnx_sub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_transpose.html">yobx.xoptim.patterns.onnx_transpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_unsqueeze.html">yobx.xoptim.patterns.onnx_unsqueeze</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_where.html">yobx.xoptim.patterns.onnx_where</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xoptim/patterns_exp/index.html">yobx.xoptim.patterns_exp</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_exp/binary_operators.html">yobx.xoptim.patterns_exp.binary_operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_exp/constant_of_shape_scatter_nd.html">yobx.xoptim.patterns_exp.constant_of_shape_scatter_nd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_exp/constants.html">yobx.xoptim.patterns_exp.constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_exp/simple_rotary.html">yobx.xoptim.patterns_exp.simple_rotary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_exp/unary_operators.html">yobx.xoptim.patterns_exp.unary_operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_exp/where_replace.html">yobx.xoptim.patterns_exp.where_replace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xoptim/patterns_fix/index.html">yobx.xoptim.patterns_fix</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_fix/add_reduction_scatter_nd.html">yobx.xoptim.patterns_fix.add_reduction_scatter_nd</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xoptim/patterns_investigation/index.html">yobx.xoptim.patterns_investigation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_investigation/element_wise.html">yobx.xoptim.patterns_investigation.element_wise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_investigation/llm_patterns.html">yobx.xoptim.patterns_investigation.llm_patterns</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xoptim/patterns_ml/index.html">yobx.xoptim.patterns_ml</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ml/tree_ensemble.html">yobx.xoptim.patterns_ml.tree_ensemble</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xoptim/patterns_ort/index.html">yobx.xoptim.patterns_ort</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/activation.html">yobx.xoptim.patterns_ort.activation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/fused_conv.html">yobx.xoptim.patterns_ort.fused_conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/fused_matmul.html">yobx.xoptim.patterns_ort.fused_matmul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/llm_optim.html">yobx.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/missing_kernels.html">yobx.xoptim.patterns_ort.missing_kernels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/simplified_layer_normalization.html">yobx.xoptim.patterns_ort.simplified_layer_normalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xoptim/repeated_optim.html">yobx.xoptim.repeated_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xoptim/unfused.html">yobx.xoptim.unfused</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../xexpressions/index.html">yobx.xexpressions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../xexpressions/expressions_torch.html">yobx.xexpressions.expressions_torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xexpressions/evaluate_expressions.html">yobx.xexpressions.evaluate_expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xexpressions/rename_expressions.html">yobx.xexpressions.rename_expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xexpressions/simplify_expressions.html">yobx.xexpressions.simplify_expressions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../xshape/index.html">yobx.xshape</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/_builder_runtime.html">yobx.xshape._builder_runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/_inference_runtime.html">yobx.xshape._inference_runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/_shape_runtime.html">yobx.xshape._shape_runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/_shape_helper.html">yobx.xshape._shape_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/shape_builder.html">yobx.xshape.shape_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/shape_builder_impl.html">yobx.xshape.shape_builder_impl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/shape_type_compute.html">yobx.xshape.shape_type_compute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xshape/type_inference.html">yobx.xshape.type_inference</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../xtracing/index.html">yobx.xtracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../xtracing/numpy_array.html">yobx.xtracing.numpy_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xtracing/tracing.html">yobx.xtracing.tracing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../sql/index.html">yobx.sql</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sql/parse.html">yobx.sql — parse module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sql/convert.html">yobx.sql — convert module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sql/_expr.html">yobx.sql — _expr module</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sql/ops/index.html">yobx.sql.ops</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sql/ops/register.html">yobx.sql.ops — register module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sql/ops/filter_op.html">yobx.sql.ops — filter_op module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sql/ops/join_op.html">yobx.sql.ops — join_op module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">yobx.torch</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">yobx.torch.in_transformers</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">yobx.torch.in_transformers.cache_helper</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="module-yobx.torch.in_transformers.cache_helper">
-<span id="yobx-torch-in-transformers-cache-helper"></span><h1>yobx.torch.in_transformers.cache_helper<a class="headerlink" href="#module-yobx.torch.in_transformers.cache_helper" title="Link to this heading">¶</a></h1>
+<span id="yobx-torch-in-transformers-cache-helper"></span><h1>yobx.torch.in_transformers.cache_helper<a class="headerlink" href="#module-yobx.torch.in_transformers.cache_helper" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.CacheKeyValue">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">CacheKeyValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L27"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#CacheKeyValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">CacheKeyValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L27"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue" title="Link to this definition">#</a></dt>
 <dd><p>Starting transformers&gt;=4.54, the cache API has deprecated
 <code class="docutils literal notranslate"><span class="pre">cache.key_cache</span></code> and <code class="docutils literal notranslate"><span class="pre">cache.value_cache</span></code>.
 This class wraps a cache independently from transformers version and enables
@@ -221,19 +971,19 @@ attributes <code class="docutils literal notranslate"><span class="pre">key_cach
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.CacheKeyValue.aslist">
-<span class="sig-name descname"><span class="pre">aslist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L97"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#CacheKeyValue.aslist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.aslist" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">aslist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L97"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.aslist" title="Link to this definition">#</a></dt>
 <dd><p>Returns tensors in a list.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.CacheKeyValue.make_dynamic_cache">
-<span class="sig-name descname"><span class="pre">make_dynamic_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L80"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#CacheKeyValue.make_dynamic_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.make_dynamic_cache" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">make_dynamic_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L80"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.make_dynamic_cache" title="Link to this definition">#</a></dt>
 <dd><p>Does the reverse operation.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.CacheKeyValue.n_layers">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">n_layers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.n_layers" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">n_layers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.n_layers" title="Link to this definition">#</a></dt>
 <dd><p>Returns the number of layers.</p>
 </dd></dl>
 
@@ -241,14 +991,14 @@ attributes <code class="docutils literal notranslate"><span class="pre">key_cach
 
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.finalize_cache">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">finalize_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Cache</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Cache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L336"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#finalize_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.finalize_cache" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">finalize_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Cache</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Cache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L336"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.finalize_cache" title="Link to this definition">#</a></dt>
 <dd><p>Ensures the created cache is consistent.
 Returns the cache modified inplace.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.flatten_unflatten_for_dynamic_shapes">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">flatten_unflatten_for_dynamic_shapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L108"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#flatten_unflatten_for_dynamic_shapes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.flatten_unflatten_for_dynamic_shapes" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">flatten_unflatten_for_dynamic_shapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L108"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.flatten_unflatten_for_dynamic_shapes" title="Link to this definition">#</a></dt>
 <dd><p>Returns the object in a different structure similar to what
 the definition of the dynamic shapes should use.</p>
 <dl class="field-list simple">
@@ -272,7 +1022,7 @@ like replace them by a shape</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.make_dynamic_cache">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_dynamic_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_value_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DynamicCache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L164"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#make_dynamic_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_cache" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_dynamic_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_value_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DynamicCache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L164"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_cache" title="Link to this definition">#</a></dt>
 <dd><p>Creates an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.cache_utils.DynamicCache</span></code>.
 This version is valid for <code class="docutils literal notranslate"><span class="pre">transformers</span> <span class="pre">&gt;=</span> <span class="pre">4.50</span></code>.</p>
 <dl class="field-list simple">
@@ -322,7 +1072,7 @@ are supported.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.make_dynamic_shapes_kv_cache">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_dynamic_shapes_kv_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_of_one</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L323"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#make_dynamic_shapes_kv_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_shapes_kv_cache" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_dynamic_shapes_kv_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_of_one</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L323"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_shapes_kv_cache" title="Link to this definition">#</a></dt>
 <dd><p>Returns the dynamic shapes for key-value cache</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -339,13 +1089,13 @@ are supported.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.make_encoder_decoder_cache">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_encoder_decoder_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self_attention_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DynamicCache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_attention_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DynamicCache</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">EncoderDecoderCache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L435"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#make_encoder_decoder_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_encoder_decoder_cache" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_encoder_decoder_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self_attention_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DynamicCache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_attention_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DynamicCache</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">EncoderDecoderCache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L435"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_encoder_decoder_cache" title="Link to this definition">#</a></dt>
 <dd><p>Creates an EncoderDecoderCache.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.cache_helper.make_static_cache">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_static_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_value_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cache_len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DynamicCache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/b558a85/yobx/torch/in_transformers/cache_helper.py#L360"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../../_modules/yobx/torch/in_transformers/cache_helper.html#make_static_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_static_cache" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.cache_helper.</span></span><span class="sig-name descname"><span class="pre">make_static_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_value_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.10)"><span class="pre">Tensor</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cache_len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DynamicCache</span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/12e95a5/yobx/torch/in_transformers/cache_helper.py#L360"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.cache_helper.make_static_cache" title="Link to this definition">#</a></dt>
 <dd><p>Creates an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.cache_utils.StaticCache</span></code>.
 :param key_value_pairs: list of pairs of (key, values)
 :param max_cache_len: max_cache_length or something inferred from the vector
@@ -381,65 +1131,121 @@ are supported.</p>
 </section>
 
 
-            <div class="clearer"></div>
-          </div>
-        </div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="_patches_model_rope_utils.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">yobx.torch.in_transformers._patches_model_rope_utils</p>
       </div>
-    
-        <div id="show_right_sidebar">
-            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
-        </div>
+    </a>
+    <a class="right-next"
+       href="flatten_class.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">yobx.torch.in_transformers.flatten_class</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-        <div id="right_sidebar">
-            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
-            <div class="page_toc">
-                <ul>
-<li><a class="reference internal" href="#">yobx.torch.in_transformers.cache_helper</a><ul>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue</span></code></a><ul>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.aslist"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue.aslist()</span></code></a></li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.make_dynamic_cache"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue.make_dynamic_cache()</span></code></a></li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.n_layers"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue.n_layers</span></code></a></li>
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.aslist"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue.aslist()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.make_dynamic_cache"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue.make_dynamic_cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.CacheKeyValue.n_layers"><code class="docutils literal notranslate"><span class="pre">CacheKeyValue.n_layers</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.finalize_cache"><code class="docutils literal notranslate"><span class="pre">finalize_cache()</span></code></a></li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.flatten_unflatten_for_dynamic_shapes"><code class="docutils literal notranslate"><span class="pre">flatten_unflatten_for_dynamic_shapes()</span></code></a></li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_cache"><code class="docutils literal notranslate"><span class="pre">make_dynamic_cache()</span></code></a></li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_shapes_kv_cache"><code class="docutils literal notranslate"><span class="pre">make_dynamic_shapes_kv_cache()</span></code></a></li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.make_encoder_decoder_cache"><code class="docutils literal notranslate"><span class="pre">make_encoder_decoder_cache()</span></code></a></li>
-<li><a class="reference internal" href="#yobx.torch.in_transformers.cache_helper.make_static_cache"><code class="docutils literal notranslate"><span class="pre">make_static_cache()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.finalize_cache"><code class="docutils literal notranslate"><span class="pre">finalize_cache()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.flatten_unflatten_for_dynamic_shapes"><code class="docutils literal notranslate"><span class="pre">flatten_unflatten_for_dynamic_shapes()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_cache"><code class="docutils literal notranslate"><span class="pre">make_dynamic_cache()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.make_dynamic_shapes_kv_cache"><code class="docutils literal notranslate"><span class="pre">make_dynamic_shapes_kv_cache()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.make_encoder_decoder_cache"><code class="docutils literal notranslate"><span class="pre">make_encoder_decoder_cache()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.cache_helper.make_static_cache"><code class="docutils literal notranslate"><span class="pre">make_static_cache()</span></code></a></li>
 </ul>
-</li>
-</ul>
+  </nav></div>
 
-            </div>
-        </div>
-    
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/api/torch/in_transformers/cache_helper.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
-      <div class="clearer"></div>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
-    <div class="button_nav_wrapper">
-        <div class="button_nav">
-            <div class="left">
-                
-                <a href="_patches_model_rope_utils.html">
-                    <span class="icon">&lt;</span><span>yobx.torch.in_transformers._patches_model_rope_utils</span></a>
-                
-            </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
-            <div class="right">
-                
-                    <a href="flatten_class.html"><span>yobx.torch.in_transformers.flatten_class</span><span class="icon">&gt;</span></a>
-                
-            </div>
-        </div>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
     </div>
-
-
-    <div class="footer" role="contentinfo">
-    &#169; Copyright .
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
     </div>
+  
+</div>
 
-<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </footer>
   </body>
 </html>
