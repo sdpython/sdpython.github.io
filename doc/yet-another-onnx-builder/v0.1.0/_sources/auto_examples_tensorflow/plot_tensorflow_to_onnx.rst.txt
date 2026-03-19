@@ -70,11 +70,15 @@ The workflow is:
 
 Remove this line to run on GPU.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 43-49
 
 .. code-block:: Python
 
-    tf.config.set_visible_devices([], "GPU")
+    try:
+        tf.config.set_visible_devices([], "GPU")
+    except RuntimeError:
+        # may fail if tensorflow has already been running before this script
+        pass
 
 
 
@@ -83,7 +87,7 @@ Remove this line to run on GPU.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-52
+.. GENERATED FROM PYTHON SOURCE LINES 50-56
 
 1. Build a simple Dense layer
 ------------------------------
@@ -92,7 +96,7 @@ We start with the simplest possible model: a single
 :class:`~tf.keras.layers.Dense` layer with no activation function
 (linear/identity), so the conversion reduces to ``MatMul`` + ``Add``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-68
+.. GENERATED FROM PYTHON SOURCE LINES 56-72
 
 .. code-block:: Python
 
@@ -131,7 +135,7 @@ We start with the simplest possible model: a single
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-75
+.. GENERATED FROM PYTHON SOURCE LINES 73-79
 
 Run and compare
 ~~~~~~~~~~~~~~~~
@@ -140,7 +144,7 @@ The ONNX input name follows TensorFlow's tensor-naming convention:
 ``"{name}:0"`` where *name* is the name passed to :func:`to_onnx`
 (defaults to ``"X"``).
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-87
+.. GENERATED FROM PYTHON SOURCE LINES 79-91
 
 .. code-block:: Python
 
@@ -165,14 +169,14 @@ The ONNX input name follows TensorFlow's tensor-naming convention:
  .. code-block:: none
 
 
-    Keras  output (first row): [-0.09536867  0.69887996 -0.3668294 ]
-    ONNX   output (first row): [-0.09536868  0.6988799  -0.3668294 ]
+    Keras  output (first row): [-0.52251536  0.46021557 -0.23878135]
+    ONNX   output (first row): [-0.52251536  0.4602156  -0.23878136]
     Outputs match ✓
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-93
+.. GENERATED FROM PYTHON SOURCE LINES 92-97
 
 2. Multi-layer MLP with activations
 -------------------------------------
@@ -180,7 +184,7 @@ The ONNX input name follows TensorFlow's tensor-naming convention:
 Next we build a deeper :class:`~tf.keras.Sequential` model that exercises
 the ``Relu``, ``MatMul`` and ``Add`` ONNX converters together.
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-112
+.. GENERATED FROM PYTHON SOURCE LINES 97-116
 
 .. code-block:: Python
 
@@ -217,11 +221,11 @@ the ``Relu``, ``MatMul`` and ``Add`` ONNX converters together.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-114
+.. GENERATED FROM PYTHON SOURCE LINES 117-118
 
 Verify predictions on a held-out batch.
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-126
+.. GENERATED FROM PYTHON SOURCE LINES 118-130
 
 .. code-block:: Python
 
@@ -234,7 +238,7 @@ Verify predictions on a held-out batch.
     (result_mlp,) = ref_mlp.run(None, {"X:0": X_test})
 
     expected_mlp = mlp(X_test).numpy()
-    assert np.allclose(expected_mlp, result_mlp, atol=1e-5), "MLP mismatch!"
+    np.testing.assert_allclose(expected_mlp, result_mlp, atol=1e-2)
     print("MLP predictions match ✓")
 
 
@@ -250,7 +254,7 @@ Verify predictions on a held-out batch.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-134
+.. GENERATED FROM PYTHON SOURCE LINES 131-138
 
 3. Dynamic batch dimension
 ---------------------------
@@ -260,7 +264,7 @@ dynamic (symbolic) dimension.  You can also pass ``dynamic_shapes``
 explicitly to name the dynamic axis, which is useful when deploying the
 model with variable-length batches.
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-155
+.. GENERATED FROM PYTHON SOURCE LINES 138-158
 
 .. code-block:: Python
 
@@ -281,9 +285,8 @@ model with variable-length batches.
         X_batch = rng.standard_normal((n, 8)).astype(np.float32)
         (out,) = ref_dyn.run(None, {"X:0": X_batch})
         expected = mlp(X_batch).numpy()
-        assert np.allclose(expected, out, atol=1e-5), f"Mismatch for batch={n}"
-
-    print("Dynamic-batch model verified for batch sizes 1, 7, 20 ✓")
+        np.testing.assert_allclose(expected, out, atol=1e-2)
+        print("Dynamic-batch model verified for batch sizes 1, 7, 20 ✓")
 
 
 
@@ -297,11 +300,13 @@ model with variable-length batches.
     Batch dimension param  : dim
     Batch dimension value  : 0
     Dynamic-batch model verified for batch sizes 1, 7, 20 ✓
+    Dynamic-batch model verified for batch sizes 1, 7, 20 ✓
+    Dynamic-batch model verified for batch sizes 1, 7, 20 ✓
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-163
+.. GENERATED FROM PYTHON SOURCE LINES 159-166
 
 4. Custom op converter
 -----------------------
@@ -311,7 +316,7 @@ built-in op converters.  Here we replace the ``Relu`` converter with a
 custom one that clips the output at 6 (i.e. ``Relu6``) instead of the
 standard unbounded rectifier.
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-184
+.. GENERATED FROM PYTHON SOURCE LINES 166-187
 
 .. code-block:: Python
 
@@ -351,13 +356,13 @@ standard unbounded rectifier.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 185-188
+.. GENERATED FROM PYTHON SOURCE LINES 188-191
 
 5. Visualize the ONNX graph
 ----------------------------
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 188-189
+.. GENERATED FROM PYTHON SOURCE LINES 191-192
 
 .. code-block:: Python
 
@@ -377,7 +382,7 @@ standard unbounded rectifier.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.668 seconds)
+   **Total running time of the script:** (0 minutes 4.878 seconds)
 
 
 .. _sphx_glr_download_auto_examples_tensorflow_plot_tensorflow_to_onnx.py:

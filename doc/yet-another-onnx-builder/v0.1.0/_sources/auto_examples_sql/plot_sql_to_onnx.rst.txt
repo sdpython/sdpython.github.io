@@ -36,16 +36,19 @@ This example covers:
 4. **Custom Python functions** — user-defined numpy functions called directly
    from SQL via the ``custom_functions`` parameter; the function body is
    traced to ONNX nodes using :func:`~yobx.xtracing.trace_numpy_function`.
+5. **Graph visualization** — rendering the produced ONNX model with
+   :func:`~yobx.doc.plot_dot`.
 
 See :ref:`l-design-sql` for the full design discussion.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-29
+.. GENERATED FROM PYTHON SOURCE LINES 25-32
 
 .. code-block:: Python
 
 
     import numpy as np
     import onnxruntime
+    from yobx.helpers.onnx_helper import pretty_onnx
     from yobx.reference import ExtendedReferenceEvaluator
     from yobx.sql import sql_to_onnx
 
@@ -56,7 +59,7 @@ See :ref:`l-design-sql` for the full design discussion.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-35
+.. GENERATED FROM PYTHON SOURCE LINES 33-38
 
 Helper
 ------
@@ -64,7 +67,7 @@ Helper
 A small helper runs a model with both the reference evaluator and
 onnxruntime and verifies the results agree.
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-52
+.. GENERATED FROM PYTHON SOURCE LINES 38-55
 
 .. code-block:: Python
 
@@ -92,7 +95,7 @@ onnxruntime and verifies the results agree.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-58
+.. GENERATED FROM PYTHON SOURCE LINES 56-61
 
 1. Basic SELECT
 ---------------
@@ -100,7 +103,7 @@ onnxruntime and verifies the results agree.
 The simplest query selects two columns and computes their element-wise sum.
 Each column in *input_dtypes* becomes a separate ONNX graph input.
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-71
+.. GENERATED FROM PYTHON SOURCE LINES 61-74
 
 .. code-block:: Python
 
@@ -131,7 +134,34 @@ Each column in *input_dtypes* becomes a separate ONNX graph input.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-77
+.. GENERATED FROM PYTHON SOURCE LINES 75-76
+
+The model
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-78
+
+.. code-block:: Python
+
+    print(pretty_onnx(onx_add))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=21
+    input: name='a' type=dtype('float32') shape=['N']
+    input: name='b' type=dtype('float32') shape=['N']
+    Add(a, b) -> total
+    output: name='total' type='NOTENSOR' shape=None
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 79-84
 
 2. WHERE clause (row filtering)
 --------------------------------
@@ -139,7 +169,7 @@ Each column in *input_dtypes* becomes a separate ONNX graph input.
 The ``WHERE`` clause is translated to a boolean mask followed by
 ``Compress`` nodes that select only the matching rows from every column.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-86
+.. GENERATED FROM PYTHON SOURCE LINES 84-93
 
 .. code-block:: Python
 
@@ -167,7 +197,39 @@ The ``WHERE`` clause is translated to a boolean mask followed by
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-92
+.. GENERATED FROM PYTHON SOURCE LINES 94-95
+
+The model
+
+.. GENERATED FROM PYTHON SOURCE LINES 95-97
+
+.. code-block:: Python
+
+    print(pretty_onnx(onx_where))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=21
+    input: name='a' type=dtype('float32') shape=['N']
+    input: name='b' type=dtype('float32') shape=['N']
+    init: name='filter_mask_r_lit' type=float32 shape=(1,) -- array([1.5], dtype=float32)
+    CastLike(filter_mask_r_lit, a) -> _onx_castlike_filter_mask_r_lit
+      Greater(a, _onx_castlike_filter_mask_r_lit) -> _onx_greater_a
+        Compress(a, _onx_greater_a, axis=0) -> output_0
+    Compress(b, _onx_greater_a, axis=0) -> output_1
+    output: name='output_0' type='NOTENSOR' shape=None
+    output: name='output_1' type='NOTENSOR' shape=None
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 98-103
 
 3. Aggregation functions
 -------------------------
@@ -175,7 +237,7 @@ The ``WHERE`` clause is translated to a boolean mask followed by
 ``SUM``, ``AVG``, ``MIN``, and ``MAX`` in the SELECT list are emitted as
 ``ReduceSum``, ``ReduceMean``, ``ReduceMin``, and ``ReduceMax`` ONNX nodes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-103
+.. GENERATED FROM PYTHON SOURCE LINES 103-114
 
 .. code-block:: Python
 
@@ -204,14 +266,44 @@ The ``WHERE`` clause is translated to a boolean mask followed by
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-108
+.. GENERATED FROM PYTHON SOURCE LINES 115-116
+
+The model
+
+.. GENERATED FROM PYTHON SOURCE LINES 116-118
+
+.. code-block:: Python
+
+    print(pretty_onnx(onx_agg))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=21
+    input: name='a' type=dtype('float32') shape=['N']
+    input: name='b' type=dtype('float32') shape=['N']
+    init: name='select_s_axes' type=int64 shape=(1,) -- array([0])
+    ReduceMean(b, select_s_axes, keepdims=0) -> m
+    ReduceSum(a, select_s_axes, keepdims=0) -> s
+    output: name='s' type='NOTENSOR' shape=None
+    output: name='m' type='NOTENSOR' shape=None
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 119-123
 
 4. WHERE + arithmetic SELECT
 ----------------------------
 
 Filters and expressions can be combined freely.
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-117
+.. GENERATED FROM PYTHON SOURCE LINES 123-132
 
 .. code-block:: Python
 
@@ -237,7 +329,39 @@ Filters and expressions can be combined freely.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-130
+.. GENERATED FROM PYTHON SOURCE LINES 133-134
+
+The model
+
+.. GENERATED FROM PYTHON SOURCE LINES 134-136
+
+.. code-block:: Python
+
+    print(pretty_onnx(onx_combined))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=21
+    input: name='a' type=dtype('float32') shape=['N']
+    input: name='b' type=dtype('float32') shape=['N']
+    init: name='filter_mask_r_lit' type=int64 shape=(1,) -- array([0])
+    CastLike(filter_mask_r_lit, a) -> _onx_castlike_filter_mask_r_lit
+      Greater(a, _onx_castlike_filter_mask_r_lit) -> _onx_greater_a
+        Compress(a, _onx_greater_a, axis=0) -> _onx_compress_a
+    Compress(b, _onx_greater_a, axis=0) -> _onx_compress_b
+      Add(_onx_compress_a, _onx_compress_b) -> total
+    output: name='total' type='NOTENSOR' shape=None
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 137-149
 
 5. Custom Python functions
 ---------------------------
@@ -252,7 +376,7 @@ real inputs with lightweight proxy objects that record every numpy
 operation as an ONNX node, so the resulting graph is equivalent to
 running the Python function at inference time.
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-150
+.. GENERATED FROM PYTHON SOURCE LINES 149-169
 
 .. code-block:: Python
 
@@ -290,14 +414,42 @@ running the Python function at inference time.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-155
+.. GENERATED FROM PYTHON SOURCE LINES 170-171
+
+The model
+
+.. GENERATED FROM PYTHON SOURCE LINES 171-173
+
+.. code-block:: Python
+
+    print(pretty_onnx(onx_func))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=21
+    input: name='a' type=dtype('float32') shape=['N']
+    init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- Opset.make_node.1/Small
+    Max(a, init1_s_) -> _onx_max_a
+      Sqrt(_onx_max_a) -> r
+    output: name='r' type='NOTENSOR' shape=None
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 174-178
 
 6. Custom function in WHERE clause
 -----------------------------------
 
 Custom functions also work in ``WHERE`` predicates.
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-165
+.. GENERATED FROM PYTHON SOURCE LINES 178-188
 
 .. code-block:: Python
 
@@ -325,14 +477,47 @@ Custom functions also work in ``WHERE`` predicates.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 166-170
+.. GENERATED FROM PYTHON SOURCE LINES 189-190
+
+The model
+
+.. GENERATED FROM PYTHON SOURCE LINES 190-193
+
+.. code-block:: Python
+
+    print(pretty_onnx(onx_where_func))
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=21
+    input: name='a' type=dtype('float32') shape=['N']
+    init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- Opset.make_node.1/Small
+    init: name='filter_mask_r_lit' type=int64 shape=(1,) -- array([1])
+    Max(a, init1_s_) -> _onx_max_a
+      Sqrt(_onx_max_a) -> _onx_sqrt_max_a
+        CastLike(filter_mask_r_lit, _onx_sqrt_max_a) -> _onx_castlike_filter_mask_r_lit
+        Greater(_onx_sqrt_max_a, _onx_castlike_filter_mask_r_lit) -> _onx_greater_filter_mask_l_clip_sqrt
+          Compress(a, _onx_greater_filter_mask_l_clip_sqrt, axis=0) -> output_0
+    output: name='output_0' type='NOTENSOR' shape=None
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 194-198
 
 7. Two-argument custom function
 ---------------------------------
 
 Functions with more than one argument receive one tensor per argument.
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-188
+.. GENERATED FROM PYTHON SOURCE LINES 198-216
 
 .. code-block:: Python
 
@@ -368,7 +553,37 @@ Functions with more than one argument receive one tensor per argument.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 189-194
+.. GENERATED FROM PYTHON SOURCE LINES 217-218
+
+The model
+
+.. GENERATED FROM PYTHON SOURCE LINES 218-220
+
+.. code-block:: Python
+
+    print(pretty_onnx(onx_ws))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=21
+    input: name='a' type=dtype('float32') shape=['N']
+    input: name='b' type=dtype('float32') shape=['N']
+    init: name='init1_s_' type=float32 shape=() -- array([0.5], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small
+    Mul(init1_s_, a) -> _onx_mul_init1_s_
+    Mul(init1_s_, b) -> _onx_mul_init1_s_2
+      Add(_onx_mul_init1_s_, _onx_mul_init1_s_2) -> ws
+    output: name='ws' type='NOTENSOR' shape=None
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 221-226
 
 8. Visualise the ONNX node types
 -----------------------------------
@@ -376,7 +591,7 @@ Functions with more than one argument receive one tensor per argument.
 The bar chart below compares how many ONNX nodes each query produces and
 which node types appear in the custom-function query.
 
-.. GENERATED FROM PYTHON SOURCE LINES 194-238
+.. GENERATED FROM PYTHON SOURCE LINES 226-271
 
 .. code-block:: Python
 
@@ -427,6 +642,7 @@ which node types appear in the custom-function query.
 
 
 
+
 .. image-sg:: /auto_examples_sql/images/sphx_glr_plot_sql_to_onnx_001.png
    :alt: ONNX node count per SQL query, Node types in 'clip_sqrt' query
    :srcset: /auto_examples_sql/images/sphx_glr_plot_sql_to_onnx_001.png
@@ -436,10 +652,40 @@ which node types appear in the custom-function query.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 272-279
+
+9. Display the ONNX model graph
+--------------------------------
+
+:func:`~yobx.doc.plot_dot` renders the ONNX graph as an image so you can
+inspect nodes, edges, and tensor shapes at a glance.  Here we visualize the
+basic ``SELECT a + b`` query — a single ``Add`` node connecting two inputs
+to one output.
+
+.. GENERATED FROM PYTHON SOURCE LINES 279-283
+
+.. code-block:: Python
+
+
+    from yobx.doc import plot_dot  # noqa: E402
+
+    plot_dot(onx_add)
+
+
+
+.. image-sg:: /auto_examples_sql/images/sphx_glr_plot_sql_to_onnx_002.png
+   :alt: plot sql to onnx
+   :srcset: /auto_examples_sql/images/sphx_glr_plot_sql_to_onnx_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.419 seconds)
+   **Total running time of the script:** (0 minutes 0.591 seconds)
 
 
 .. _sphx_glr_download_auto_examples_sql_plot_sql_to_onnx.py:
