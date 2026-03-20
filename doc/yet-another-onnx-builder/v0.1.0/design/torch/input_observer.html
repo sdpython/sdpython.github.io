@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -395,6 +395,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../export_artifact.html">to_onnx and ExportArtifact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">Coverage</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../litert/index.html">LiteRT / TFLite Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../litert/supported_ops.html">Supported LiteRT Ops</a></li>
 </ul>
@@ -607,6 +608,171 @@ forward calls were captured.  The <code class="docutils literal notranslate"><sp
 <a class="reference internal" href="../../api/torch/input_observer.html#yobx.torch.input_observer.InputObserverInfo" title="yobx.torch.input_observer.InputObserverInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputObserverInfo</span></code></a> object, which contains
 the full per-call input and output records along with the inferred argument
 alignment.</p>
+</section>
+<section id="how-it-works-internals">
+<h2>How it works — internals<a class="headerlink" href="#how-it-works-internals" title="Link to this heading">#</a></h2>
+<p>The observer operates in four phases.</p>
+<p><strong>Phase 1 — Recording.</strong>
+When the <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">observer(model):</span></code> block is entered, the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method
+(or any other named method) is replaced by a thin lambda that calls the
+original method and stores a deep-copy of its inputs and outputs as an
+<a class="reference internal" href="../../api/torch/input_observer.html#yobx.torch.input_observer.InputCandidate" title="yobx.torch.input_observer.InputCandidate"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputCandidate</span></code></a>.  Recording stops after
+<code class="docutils literal notranslate"><span class="pre">store_n_calls</span></code> invocations (default 3) to bound memory usage; any
+subsequent calls pass through to the real method without recording.</p>
+<p>Every argument is immediately flattened via
+<code class="docutils literal notranslate"><span class="pre">torch.utils._pytree.tree_flatten</span></code> into a flat list of tensors.
+Non-tensor scalars (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>) whose values
+differ from the parameter default are stored separately as <em>constant kwargs</em>
+and will be passed back as-is to <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> without dynamic
+shape annotations.  All other scalars and <code class="docutils literal notranslate"><span class="pre">None</span></code> values are dropped.</p>
+<p><strong>Phase 2 — Best-candidate selection and alignment.</strong>
+When either <code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_dynamic_shapes()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_arguments()</span></code> is called,
+the observer first picks a <em>best candidate</em>: the recorded call that produced
+the largest total number of flattened tensors.  This candidate is used as the
+reference layout for all other calls.</p>
+<p>Each other candidate is then <em>aligned</em> against the best candidate.  For every
+positional or named argument slot in the best candidate the aligner checks
+whether that slot is present in the other call.  If it is absent or <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+it inserts a <code class="docutils literal notranslate"><span class="pre">None</span></code> placeholder so that every aligned flat list has the same
+length.  This is what makes the observer resilient to optional arguments.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At least one observed call must supply <em>all</em> the arguments that appear in
+<em>any</em> other observed call.  If no single call covers the full union of
+arguments, alignment fails with <code class="docutils literal notranslate"><span class="pre">RuntimeError:</span> <span class="pre">At</span> <span class="pre">least</span> <span class="pre">one</span> <span class="pre">call</span> <span class="pre">to</span> <span class="pre">the</span>
+<span class="pre">observed</span> <span class="pre">model</span> <span class="pre">must</span> <span class="pre">contain</span> <span class="pre">all</span> <span class="pre">the</span> <span class="pre">named</span> <span class="pre">arguments</span></code>.</p>
+</div>
+<p><strong>Phase 3 — Dynamic shape inference.</strong>
+With every candidate now aligned to the same flat structure, the observer
+iterates over each tensor slot and collects the sequence of shapes seen across
+all calls.  A dimension is marked <strong>dynamic</strong> (<code class="docutils literal notranslate"><span class="pre">torch.export.Dim.DYNAMIC</span></code>)
+when its size differs across at least two calls.  If only one call was
+recorded, no dimension varies and no axis is automatically marked dynamic;
+<code class="docutils literal notranslate"><span class="pre">set_batch_dimension_for</span></code> can override this per-input.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">dim_names=True</span></code> the observer assigns <em>named</em> dynamic dimension labels
+instead of <code class="docutils literal notranslate"><span class="pre">torch.export.Dim.DYNAMIC</span></code>.  Tensor slots whose observed size
+sequences are identical across every call share the same label, instructing
+<a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> to treat those dimensions as <em>constrained equal</em>.
+Well-known transformer parameter names (<code class="docutils literal notranslate"><span class="pre">input_ids</span></code>, <code class="docutils literal notranslate"><span class="pre">position_ids</span></code>,
+<code class="docutils literal notranslate"><span class="pre">attention_mask</span></code>, <code class="docutils literal notranslate"><span class="pre">past_key_values</span></code>, <code class="docutils literal notranslate"><span class="pre">pixel_values</span></code>, etc.) receive
+pre-defined semantic labels such as <code class="docutils literal notranslate"><span class="pre">&quot;batch_size&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;sequence_length&quot;</span></code>; all other parameters receive auto-generated
+<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;_dim_&lt;n&gt;</span></code> labels.</p>
+<p><strong>Phase 4 — Argument inference.</strong>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_arguments()</span></code> selects the first recorded call that has the same
+number of positional and named arguments as the best candidate — usually the
+first call.  For every <code class="docutils literal notranslate"><span class="pre">None</span></code> slot in the flat list (an optional argument
+that was absent in that call), it manufactures an <em>empty tensor</em>:</p>
+<ul class="simple">
+<li><p>If the corresponding slot has no dynamic dimensions, a zero tensor with the
+same shape and dtype is used (<code class="docutils literal notranslate"><span class="pre">torch.zeros</span></code>).</p></li>
+<li><p>Otherwise the largest dynamic dimension is zeroed out (<code class="docutils literal notranslate"><span class="pre">torch.empty</span></code> with
+that dimension set to 0), signalling to <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> that
+the argument is optional.</p></li>
+</ul>
+<p>The resulting flat list is unflattened back into the original pytree structure
+and returned as either a tuple (positional-only), a dict (keyword-only), or
+a <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">tensor}</span></code> dict that merges positional and keyword arguments.</p>
+</section>
+<section id="known-failure-cases">
+<h2>Known failure cases<a class="headerlink" href="#known-failure-cases" title="Link to this heading">#</a></h2>
+<p>The following situations cause <code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_dynamic_shapes()</span></code> or
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_arguments()</span></code> to raise an exception.  Each entry describes the
+root cause and — where applicable — the fix.</p>
+<p><strong>No forward calls were observed.</strong>
+Calling either inference method before the <code class="docutils literal notranslate"><span class="pre">with</span></code> block exits, or when the
+model was never actually called inside the block, raises
+<code class="docutils literal notranslate"><span class="pre">RuntimeError:</span> <span class="pre">No</span> <span class="pre">inputs</span> <span class="pre">were</span> <span class="pre">captured</span></code>.  Make sure the model is called at
+least once inside the observer context.</p>
+<p><strong>No single call covers all optional arguments.</strong>
+If argument <code class="docutils literal notranslate"><span class="pre">A</span></code> appears only in call 1 and argument <code class="docutils literal notranslate"><span class="pre">B</span></code> appears only in
+call 2, alignment fails:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RuntimeError: At least one call to the observed model must contain
+all the named arguments.
+</pre></div>
+</div>
+<p>Fix: include at least one <em>combined</em> call where both <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> are
+present, or supply the missing argument via <code class="docutils literal notranslate"><span class="pre">value_if_missing</span></code>.</p>
+<p><strong>An argument’s tensor count changes between calls.</strong>
+When an argument is a container (e.g. a list of tensors) and that container
+has a different <em>number</em> of tensors in different calls, alignment raises:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RuntimeError: Named argument &#39;y&#39; has N tensors but previously got M tensors.
+Inference is impossible in that case.
+</pre></div>
+</div>
+<p>This happens, for example, when <code class="docutils literal notranslate"><span class="pre">y=[t1]</span></code> in one call and <code class="docutils literal notranslate"><span class="pre">y=[t1,</span> <span class="pre">t2]</span></code> in
+another.  <code class="xref py py-class docutils literal notranslate"><span class="pre">InputObserver</span></code> cannot reconcile a changing tensor count; the
+model must be called with a consistent container size across all observations.</p>
+<p><strong>Constant kwargs differ between calls.</strong>
+When a scalar argument (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, or <code class="docutils literal notranslate"><span class="pre">str</span></code>) is passed
+with <em>different</em> values in different calls the observer cannot pick a single
+representative:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RuntimeError: Two calls were made with different constant values,
+{&#39;add&#39;: True} != {&#39;add&#39;: False}
+</pre></div>
+</div>
+<p>The export target must be a single-behaviour graph.  Observe the model with a
+consistent scalar value or export two separate graphs.</p>
+<p><strong>Only one call was made and no batch dimension is forced.</strong>
+With a single observation every dimension appears constant.
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_dynamic_shapes()</span></code> returns an empty dict <code class="docutils literal notranslate"><span class="pre">{}</span></code> for every tensor,
+meaning no axis is treated as dynamic.  This is usually incorrect.  Fix by
+either running the model with several different input shapes or by passing
+<code class="docutils literal notranslate"><span class="pre">set_batch_dimension_for=True</span></code> (or a specific set of argument names/indices)
+to force the first dimension to be treated as dynamic.</p>
+<p><strong>Custom container types not registered as pytree nodes.</strong>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">InputObserver</span></code> uses <code class="docutils literal notranslate"><span class="pre">torch.utils._pytree.tree_flatten</span></code> to decompose
+arguments into a flat list of tensors.  If a model argument is an instance of
+a custom class (such as <code class="docutils literal notranslate"><span class="pre">DynamicCache</span></code> from <code class="docutils literal notranslate"><span class="pre">transformers</span></code>) that has not
+been registered as a pytree node, flattening silently treats the whole object
+as a single leaf.  The miscount then causes alignment to fail with:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NotImplementedError: infer_dynamic_shapes is not implemented when the
+best candidate is not &#39;aligned&#39;. … You need to register the flattening
+function: with register_flattening_functions(patch_transformers=True): …
+</pre></div>
+</div>
+<p>Fix: call <a class="reference internal" href="../../api/torch/flatten.html#yobx.torch.flatten.register_class_flattening" title="yobx.torch.flatten.register_class_flattening"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.flatten.register_class_flattening()</span></code></a> (or use the
+<code class="docutils literal notranslate"><span class="pre">patch_transformers=True</span></code> shorthand) <strong>before</strong> the observer context so that
+the custom class is known to the pytree machinery.  See <a class="reference internal" href="flatten.html#l-design-flatten"><span class="std std-ref">Flattening Functionalities (torch)</span></a>
+for details.</p>
+<p><strong>Missing ``value_if_missing`` for arguments absent in all recorded calls.</strong>
+If an optional argument never appears in any recorded call (for example
+<code class="docutils literal notranslate"><span class="pre">pixel_values</span></code> is only used in the prefill step but all recorded calls are
+decode steps), alignment succeeds but <code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_arguments()</span></code> raises:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RuntimeError: There is no tensor at position N in any flattened inputs.
+</pre></div>
+</div>
+<p>Fix: pass the argument with its expected shape through <code class="docutils literal notranslate"><span class="pre">value_if_missing</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">observer</span> <span class="o">=</span> <span class="n">InputObserver</span><span class="p">(</span>
+    <span class="n">value_if_missing</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">896</span><span class="p">,</span> <span class="mi">896</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The zero batch dimension signals that this is an <em>empty</em> placeholder; the data
+is never forwarded to the model.</p>
+<p><strong>``value_if_missing`` key is not in the model’s signature.</strong>
+If the key provided in <code class="docutils literal notranslate"><span class="pre">value_if_missing</span></code> does not match any parameter in
+the <code class="docutils literal notranslate"><span class="pre">forward</span></code> signature (and the signature does not accept <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>), the
+first observed call raises:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ValueError: Unexpected keyword argument &#39;nonexistent&#39; provided as a
+value_if_missing input for a function that does not accept it.
+</pre></div>
+</div>
+<p>Verify the spelling of argument names against the model’s <code class="docutils literal notranslate"><span class="pre">forward</span></code>
+signature.</p>
+<p><strong>Mixed positional and keyword calls with ``*args``.</strong>
+When the signature contains a variadic positional parameter (<code class="docutils literal notranslate"><span class="pre">*args</span></code>) and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_arguments()</span></code> cannot express the result as a plain tuple or dict, it
+raises:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RuntimeError: Cannot return arguments as a single tuple or a single
+dictionary because of &#39;*args&#39; in the function signature.
+You need to set `as_args_kwargs=True`.
+</pre></div>
+</div>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">as_args_kwargs=True</span></code> to receive a <code class="docutils literal notranslate"><span class="pre">(args_tuple,</span> <span class="pre">kwargs_dict)</span></code> pair
+instead.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="flatten.html#l-design-flatten"><span class="std std-ref">Flattening Functionalities (torch)</span></a> — registering pytree nodes for <code class="docutils literal notranslate"><span class="pre">DynamicCache</span></code>
@@ -673,6 +839,8 @@ internals to enable symbolic tracing during <a class="reference external" href="
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-optional-arguments-with-value-if-missing">Handling optional arguments with <code class="docutils literal notranslate"><span class="pre">value_if_missing</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inferring-dynamic-shapes">Inferring dynamic shapes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-observations">Inspecting observations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works-internals">How it works — internals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-failure-cases">Known failure cases</a></li>
 </ul>
   </nav></div>
 
