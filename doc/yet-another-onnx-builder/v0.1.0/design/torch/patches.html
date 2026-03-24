@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -408,6 +408,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../sql/index.html">SQL-to-ONNX Converter Design</a></li>
@@ -495,19 +496,19 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This section covers functionality that is <strong>specific to PyTorch</strong>.
-It is only relevant when exporting <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> models with
-<a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> and has no bearing on ONNX models built
+It is only relevant when exporting <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> models with
+<a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> and has no bearing on ONNX models built
 directly with the builder APIs.</p>
 </div>
-<p>Before exporting a <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> with <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>,
-certain internal functions in <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.10)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">transformers</span></code> must be
+<p>Before exporting a <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> with <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>,
+certain internal functions in <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.11)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">transformers</span></code> must be
 temporarily <strong>replaced</strong> with corrected versions to avoid crashes or incorrect
 behaviour during tracing.  The patching infrastructure in
 <a class="reference internal" href="../../api/helpers/patch_helper.html#module-yobx.helpers.patch_helper" title="yobx.helpers.patch_helper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.helpers.patch_helper</span></code></a> and <a class="reference internal" href="../../api/torch/patch.html#module-yobx.torch.patch" title="yobx.torch.patch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.patch</span></code></a> provides a
 structured, reversible way to apply, track and report such replacements.</p>
 <section id="why-patches-are-needed">
 <h2>Why patches are needed<a class="headerlink" href="#why-patches-are-needed" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> symbolically traces a model, meaning that every
+<p><a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> symbolically traces a model, meaning that every
 operation is recorded with <em>symbolic</em> dimension variables rather than concrete
 sizes.  Several low-level torch and transformers helpers were not written to
 cope with symbolic dimensions and raise exceptions or silently return wrong
@@ -515,14 +516,14 @@ results when they encounter them.</p>
 <section id="control-flow-is-the-primary-source-of-failures">
 <h3>Control flow is the primary source of failures<a class="headerlink" href="#control-flow-is-the-primary-source-of-failures" title="Link to this heading">#</a></h3>
 <p>The most fundamental issue is <strong>Python control flow</strong> inside traced functions.
-During symbolic tracing, dimension values are <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymInt" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.SymInt</span></code></a> objects
+During symbolic tracing, dimension values are <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymInt" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.SymInt</span></code></a> objects
 rather than plain integers.  Any code written as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition_on_size</span><span class="p">:</span>
     <span class="k">raise</span> <span class="n">SomeError</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>will crash the exporter because evaluating the <code class="docutils literal notranslate"><span class="pre">if</span></code> forces the symbolic
-integer to a concrete boolean — a <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymBool" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymBool</span></code></a> — which cannot be
+integer to a concrete boolean — a <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymBool" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymBool</span></code></a> — which cannot be
 resolved at trace time, raising <code class="docutils literal notranslate"><span class="pre">GuardOnDataDependentSymNode</span></code>.</p>
 <p>The fix is to replace such guards with <code class="xref py py-func docutils literal notranslate"><span class="pre">torch._check()</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">condition_on_size</span><span class="p">)</span>
@@ -700,7 +701,7 @@ function name.</p></li>
 <li><p><a class="reference internal" href="../../api/helpers/patch_helper.html#yobx.helpers.patch_helper.PatchDetails.patches_involved_in_graph" title="yobx.helpers.patch_helper.PatchDetails.patches_involved_in_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">patches_involved_in_graph()</span></code></a>
 — identify which patches contributed nodes to a graph by
 cross-referencing <code class="docutils literal notranslate"><span class="pre">node.meta[&quot;stack_trace&quot;]</span></code> with each patch’s source
-location.  The method is designed for <a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> but accepts
+location.  The method is designed for <a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> but accepts
 any object that provides:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">graph.nodes</span></code> — an iterable of node objects;</p></li>
@@ -740,12 +741,12 @@ with its diff and the affected graph nodes.</p></li>
 <ul class="simple">
 <li><p><strong>patch_torch</strong> — applies the four patches in
 <a class="reference internal" href="../../api/torch/in_torch/patches.html#module-yobx.torch.in_torch.patches" title="yobx.torch.in_torch.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_torch.patches</span></code></a> that fix symbolic-shape handling inside
-<a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.10)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a>.</p></li>
+<a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.11)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a>.</p></li>
 <li><p><strong>patch_transformers</strong> — applies the <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> patches from
 <a class="reference internal" href="../../api/torch/in_transformers/patches.html#module-yobx.torch.in_transformers.patches" title="yobx.torch.in_transformers.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_transformers.patches</span></code></a>.  When <em>model</em> is provided, the
 function inspects each sub-module for wrapped <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding.forward</span></code>
 implementations and adds a model-specific patch automatically.</p></li>
-<li><p><strong>model</strong> — the <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> being exported.  Supplying it
+<li><p><strong>model</strong> — the <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> being exported.  Supplying it
 enables automatic detection of non-standard <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> variants.</p></li>
 <li><p><strong>verbose</strong> — print each patch name as it is applied or removed.</p></li>
 </ul>

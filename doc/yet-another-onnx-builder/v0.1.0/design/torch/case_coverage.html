@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -408,6 +408,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../sql/index.html">SQL-to-ONNX Converter Design</a></li>
@@ -663,7 +664,7 @@ Go to <a class="reference internal" href="#l-this-bottom-page-coverage"><span cl
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-ZVK] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-CNW] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -731,10 +732,10 @@ set()
 -- process.progress --
 node 1/3 target=aten.as_strided.default
 -- 1 INPUTS
-[GraphBuilder-ZVK.1.make_tensor_input] x[1:batchx2x8x8]
+[GraphBuilder-CNW.1.make_tensor_input] x[1:batchx2x8x8]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-ZVK] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-CNW] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -812,7 +813,7 @@ output: name=&#39;shape_10&#39; type=dtype(&#39;int64&#39;) shape=None
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-DPW] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-MHK] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -871,12 +872,12 @@ graph():
 -- process.inputs_to_remove --
 set()
 -- process.progress --
-node 1/3 target=&lt;built-in method as_strided of type object at 0x774968d59180&gt;
+node 1/3 target=&lt;built-in method as_strided of type object at 0x73253bd59180&gt;
 -- 1 INPUTS
-[GraphBuilder-DPW.1.make_tensor_input] x[1:batchx2x8x8]
+[GraphBuilder-MHK.1.make_tensor_input] x[1:batchx2x8x8]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-DPW] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-MHK] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -1032,15 +1033,12 @@ output: name=&#39;output_1&#39; type=dtype(&#39;int64&#39;) shape=[&#39;u0&#39;]
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([0])
-init: name=&#39;val_4&#39; type=int64 shape=(1,) -- array([1])
-init: name=&#39;val_9&#39; type=int64 shape=(1,) -- array([2])
+init: name=&#39;val_7&#39; type=int64 shape=(1,) -- array([1])
 NonZero(x) -&gt; val_0
   Transpose(val_0, perm=[1,0]) -&gt; nonzero
-    Slice(nonzero, val_3, val_4, val_4) -&gt; val_6
-      Squeeze(val_6, val_4) -&gt; getitem
-    Slice(nonzero, val_4, val_9, val_4) -&gt; val_11
-      Squeeze(val_11, val_4) -&gt; getitem_1
+    Split(nonzero, num_outputs=2, axis=-1) -&gt; val_6, val_11
+      Squeeze(val_6, val_7) -&gt; getitem
+Squeeze(val_11, val_7) -&gt; getitem_1
 output: name=&#39;getitem&#39; type=dtype(&#39;int64&#39;) shape=[&#39;u0&#39;]
 output: name=&#39;getitem_1&#39; type=dtype(&#39;int64&#39;) shape=[&#39;u0&#39;]
 </pre></div>
@@ -1096,7 +1094,7 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 <section id="id15">
 <h3>dynamo-ir<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x7748e1b1fc80&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x7748e1cdb950&gt;&#39;]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x73230e461a90&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x73230e460830&gt;&#39;]
 </pre></div>
 </div>
 </section>
@@ -1216,8 +1214,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.5214683 ,  0.04031977, -0.00123108], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.3428945], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.22 ,  0.118, -0.32 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.315], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -1238,8 +1236,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.05486564, -0.22859885,  0.30336285], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.2998829], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.199, -0.106, -0.389], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.017], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -1263,9 +1261,9 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([-0.29290032], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.232], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.2865807 , -0.1763894 , -0.24757935], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.463, -0.354,  0.245], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
   Sigmoid(_sub_ime___traced_m2_linear_linear) -&gt; sigmoid
     Sub(sigmoid, _traced_m2_buff) -&gt; sub
@@ -1302,8 +1300,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.47121698,  0.01898655, -0.06386657], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.1396021], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.324, -0.446,  0.469], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.374], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -1328,8 +1326,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([0.32035097, 0.1531577 , 0.5001054 ], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.47227296], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.08 , -0.518, -0.565], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.113], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -1357,9 +1355,9 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.04243588], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.535], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.565865  , -0.25075462,  0.14777505], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.51 ,  0.246, -0.112], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
   Sigmoid(_sub_ime___traced_m2_linear_linear) -&gt; sigmoid
     Sub(sigmoid, _traced_m2_buff) -&gt; sub
@@ -1806,7 +1804,7 @@ output: name=&#39;add_6_false_graph_0&#39; type=dtype(&#39;float32&#39;) shape=[
 
 Encountered aliasing during higher order op tracing
   Higher Order Operator: torch.cond
-  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x7748f8fa8fb0&gt;&gt;
+  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x7324cc228f80&gt;&gt;
   Hint: Replace `return input` with `return input.clone()` to avoid aliasing.
   Hint: Consider using the debug context to change user code to avoid aliasing.
   Hint: Please open an issue.
@@ -1842,7 +1840,7 @@ Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especiall
 
 Encountered aliasing during higher order op tracing
   Higher Order Operator: torch.cond
-  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x7748f8fa8fb0&gt;&gt;
+  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x7324cc228f80&gt;&gt;
   Hint: Replace `return input` with `return input.clone()` to avoid aliasing.
   Hint: Consider using the debug context to change user code to avoid aliasing.
   Hint: Please open an issue.
@@ -2053,7 +2051,7 @@ node.__dict__={}
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-TGA] Message starts, there are 2 initializers, 11 nodes, 3 inputs, 3 outputs.
+[GraphBuilder-LJK] Message starts, there are 2 initializers, 11 nodes, 3 inputs, 3 outputs.
 input_names=[&#39;input_ids&#39;, &#39;image_features&#39;, &#39;vocab_size&#39;]
 output_names=[]
 --LOCAL FUNCTIONS--
@@ -2120,7 +2118,7 @@ _parameter_renaming=
 --TORCH-USERS--
     _cb_cond_else_branch_0 -&gt; {condcc}
     _cb_cond_then_branch_0 -&gt; {condcc}
-    condcc -&gt; {getitem_1, getitem_2, getitem}
+    condcc -&gt; {getitem_2, getitem_1, getitem}
     getitem -&gt; {output}
     getitem_1 -&gt; {output}
     getitem_2 -&gt; {output}
@@ -2184,37 +2182,37 @@ set()
 -- process.progress --
 node 11/12 target=output
 -- 3 INPUTS
-[GraphBuilder-TGA.1.make_tensor_input] input_ids[7:batchx12]
-[GraphBuilder-TGA.1.make_tensor_input] image_features[1:batchxseq_length]
-[GraphBuilder-TGA.1.make_tensor_input] vocab_size[7:]
+[GraphBuilder-LJK.1.make_tensor_input] input_ids[7:batchx12]
+[GraphBuilder-LJK.1.make_tensor_input] image_features[1:batchxseq_length]
+[GraphBuilder-LJK.1.make_tensor_input] vocab_size[7:]
 -- 2 INITIALIZERS
-[GraphBuilder-TGA.1.make_initializer] init7_s_0[int64:int64:[0]] - SOURCE: shape_type_compute._cast_inputs.1(gt)
-[GraphBuilder-TGA.1.make_initializer] init7_s1_1[int64:int64:[1]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape
-[GraphBuilder-TGA.4.make_node] meth_numel      [@:@   ] Size:[&#39;image_features&#39;]-&gt;[&#39;numel&#39;]
-[GraphBuilder-TGA.4.make_node] gt              [@#:@  ] Reshape:[&#39;numel&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;numel::RSh1&#39;]
-[GraphBuilder-TGA.4.make_node] gt2             [##:#  ] Reshape:[&#39;init7_s_0&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;init7_s_0::RSh1&#39;]
-[GraphBuilder-TGA.4.make_node] gt3             [@#:@  ] Greater:[&#39;numel&#39;, &#39;init7_s_0&#39;]-&gt;[&#39;gt&#39;]
-[GraphBuilder-TGA.4.make_node] cond            [@:--- ] If:[&#39;gt&#39;]-&gt;[&#39;condcc#0&#39;, &#39;condcc#1&#39;, &#39;condcc#2&#39;]
-[GraphBuilder-TGA.4.make_node] -- subgraph &#39;else_branch&#39;...
+[GraphBuilder-LJK.1.make_initializer] init7_s_0[int64:int64:[0]] - SOURCE: shape_type_compute._cast_inputs.1(gt)
+[GraphBuilder-LJK.1.make_initializer] init7_s1_1[int64:int64:[1]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape
+[GraphBuilder-LJK.4.make_node] meth_numel      [@:@   ] Size:[&#39;image_features&#39;]-&gt;[&#39;numel&#39;]
+[GraphBuilder-LJK.4.make_node] gt              [@#:@  ] Reshape:[&#39;numel&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;numel::RSh1&#39;]
+[GraphBuilder-LJK.4.make_node] gt2             [##:#  ] Reshape:[&#39;init7_s_0&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;init7_s_0::RSh1&#39;]
+[GraphBuilder-LJK.4.make_node] gt3             [@#:@  ] Greater:[&#39;numel&#39;, &#39;init7_s_0&#39;]-&gt;[&#39;gt&#39;]
+[GraphBuilder-LJK.4.make_node] cond            [@:--- ] If:[&#39;gt&#39;]-&gt;[&#39;condcc#0&#39;, &#39;condcc#1&#39;, &#39;condcc#2&#39;]
+[GraphBuilder-LJK.4.make_node] -- subgraph &#39;else_branch&#39;...
     _cb_cond_else_branch_0[local_functions](input_ids, image_features, vocab_size) -&gt; condcc#0, condcc#1, condcc#2
     output: name=&#39;condcc#0&#39; type=&#39;NOTENSOR&#39; shape=None
     output: name=&#39;condcc#1&#39; type=&#39;NOTENSOR&#39; shape=None
     output: name=&#39;condcc#2&#39; type=&#39;NOTENSOR&#39; shape=None
-[GraphBuilder-TGA.4.make_node] -- subgraph &#39;else_branch&#39; -- done
-[GraphBuilder-TGA.4.make_node] -- subgraph &#39;then_branch&#39;...
+[GraphBuilder-LJK.4.make_node] -- subgraph &#39;else_branch&#39; -- done
+[GraphBuilder-LJK.4.make_node] -- subgraph &#39;then_branch&#39;...
     _cb_cond_then_branch_0[local_functions](input_ids, image_features, vocab_size) -&gt; condcc#0, condcc#1, condcc#2
     output: name=&#39;condcc#0&#39; type=&#39;NOTENSOR&#39; shape=None
     output: name=&#39;condcc#1&#39; type=&#39;NOTENSOR&#39; shape=None
     output: name=&#39;condcc#2&#39; type=&#39;NOTENSOR&#39; shape=None
-[GraphBuilder-TGA.4.make_node] -- subgraph &#39;then_branch&#39; -- done
-[GraphBuilder-TGA.4.make_node] getitemB_tuple  [-:-   ] Identity:[&#39;condcc#0&#39;]-&gt;[&#39;getitem&#39;]
-[GraphBuilder-TGA.4.make_node] getitemB_tuple2 [-:-   ] Identity:[&#39;condcc#1&#39;]-&gt;[&#39;getitem_1&#39;]
-[GraphBuilder-TGA.4.make_node] getitemB_tuple3 [-:-   ] Identity:[&#39;condcc#2&#39;]-&gt;[&#39;getitem_2&#39;]
-[GraphBuilder-TGA.4.make_node] .output         [-:-   ] Identity:[&#39;getitem&#39;]-&gt;[&#39;output_0&#39;]
-[GraphBuilder-TGA.4.make_node] .output2        [-:-   ] Identity:[&#39;getitem_1&#39;]-&gt;[&#39;output_1&#39;]
-[GraphBuilder-TGA.4.make_node] .output3        [-:-   ] Identity:[&#39;getitem_2&#39;]-&gt;[&#39;output_2&#39;]
+[GraphBuilder-LJK.4.make_node] -- subgraph &#39;then_branch&#39; -- done
+[GraphBuilder-LJK.4.make_node] getitemB_tuple  [-:-   ] Identity:[&#39;condcc#0&#39;]-&gt;[&#39;getitem&#39;]
+[GraphBuilder-LJK.4.make_node] getitemB_tuple2 [-:-   ] Identity:[&#39;condcc#1&#39;]-&gt;[&#39;getitem_1&#39;]
+[GraphBuilder-LJK.4.make_node] getitemB_tuple3 [-:-   ] Identity:[&#39;condcc#2&#39;]-&gt;[&#39;getitem_2&#39;]
+[GraphBuilder-LJK.4.make_node] .output         [-:-   ] Identity:[&#39;getitem&#39;]-&gt;[&#39;output_0&#39;]
+[GraphBuilder-LJK.4.make_node] .output2        [-:-   ] Identity:[&#39;getitem_1&#39;]-&gt;[&#39;output_1&#39;]
+[GraphBuilder-LJK.4.make_node] .output3        [-:-   ] Identity:[&#39;getitem_2&#39;]-&gt;[&#39;output_2&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-TGA] Message completed, there are 2 initializers, 11 nodes, 3 inputs, 3 outputs.
+[GraphBuilder-LJK] Message completed, there are 2 initializers, 11 nodes, 3 inputs, 3 outputs.
 </pre></div>
 </div>
 </section>
@@ -2384,7 +2382,7 @@ Use tlparse to see full graph. (https://github.com/pytorch/tlparse?tab=readme-ov
 <section id="id68">
 <h3>tracing<a class="headerlink" href="#id68" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScan.add at 0x7748f6ff1120&gt;. Use make_fx or dynamo tracing instead.
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScan.add at 0x73233546e480&gt;. Use make_fx or dynamo tracing instead.
 </pre></div>
 </div>
 </section>
@@ -2467,7 +2465,7 @@ Use tlparse to see full graph. (https://github.com/pytorch/tlparse?tab=readme-ov
 <section id="id72">
 <h3>tracing<a class="headerlink" href="#id72" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScan2Carried.add at 0x7748f6ff1300&gt;. Use make_fx or dynamo tracing instead.
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScan2Carried.add at 0x73233546e660&gt;. Use make_fx or dynamo tracing instead.
 </pre></div>
 </div>
 </section>
@@ -2547,7 +2545,7 @@ output: name=&#39;pow_1_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) 
 <section id="id76">
 <h3>tracing<a class="headerlink" href="#id76" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScanCDist.dist at 0x7748f6ff14e0&gt;. Use make_fx or dynamo tracing instead.
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScanCDist.dist at 0x73233546e840&gt;. Use make_fx or dynamo tracing instead.
 </pre></div>
 </div>
 </section>
@@ -2710,7 +2708,7 @@ output: name=&#39;sqrt_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) s
 <section id="id84">
 <h3>tracing<a class="headerlink" href="#id84" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScanCDistXY.dist at 0x7748f6ff18a0&gt;. Use make_fx or dynamo tracing instead.
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to symbolically trace the HigherOrderOperator scan because it received an arbitrary callable argument &lt;function ControlFlowScanCDistXY.dist at 0x73233546ec00&gt;. Use make_fx or dynamo tracing instead.
 </pre></div>
 </div>
 </section>
@@ -2884,12 +2882,12 @@ output: name=&#39;slice_scatter_scan_combine_graph_0&#39; type=dtype(&#39;float3
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-ABG] Message starts, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs.
+[GraphBuilder-AOE] Message starts, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs.
 input_names=[&#39;ci&#39;, &#39;a&#39;, &#39;b&#39;]
 output_names=[]
 --LOCAL FUNCTIONS--
     local_functions,while_loop_cond_graph_0([&#39;arg0_1&#39;, &#39;arg1_1&#39;, &#39;arg2_1&#39;]) -&gt; [&#39;output&#39;]
-    local_functions,while_loop_body_graph_0([&#39;arg0_1&#39;, &#39;arg1_1&#39;, &#39;arg2_1&#39;]) -&gt; [&#39;output_dim_0&#39;, &#39;output_1&#39;, &#39;output_2&#39;]
+    local_functions,while_loop_body_graph_0([&#39;arg0_1&#39;, &#39;arg1_1&#39;, &#39;arg2_1&#39;]) -&gt; [&#39;output_0&#39;, &#39;output_1&#39;, &#39;output_2&#39;]
 --CONSTRAINTS--
     DYN0 = {&#39;s97&#39;}
     DYN1 = {&#39;s98&#39;}
@@ -2936,7 +2934,7 @@ _parameter_renaming=
     a -&gt; {while_loop}
     b -&gt; {while_loop}
     ci -&gt; {while_loop}
-    while_loop -&gt; {getitem, getitem_2, getitem_1}
+    while_loop -&gt; {getitem_2, getitem, getitem_1}
     while_loop_body_graph_0 -&gt; {while_loop}
     while_loop_cond_graph_0 -&gt; {while_loop}
 --TORCH-SHAPES--
@@ -2955,7 +2953,7 @@ function_options=None
 ExportedProgram:
     class GraphModule(torch.nn.Module):
         def forward(self, ci: &quot;i64[]&quot;, a: &quot;f32[s52, s98]&quot;, b: &quot;f32[s52, 3]&quot;):
-            # File: &lt;eval_with_key&gt;.1904:10 in forward, code: while_loop = torch.ops.higher_order.while_loop(cond_fn_0, body_fn_0, (l_args_2_0_, l_args_2_1_, l_args_2_2_), ());  cond_fn_0 = body_fn_0 = l_args_2_0_ = l_args_2_1_ = l_args_2_2_ = None
+            # File: &lt;eval_with_key&gt;.1928:10 in forward, code: while_loop = torch.ops.higher_order.while_loop(cond_fn_0, body_fn_0, (l_args_2_0_, l_args_2_1_, l_args_2_2_), ());  cond_fn_0 = body_fn_0 = l_args_2_0_ = l_args_2_1_ = l_args_2_2_ = None
             while_loop_cond_graph_0 = self.while_loop_cond_graph_0
             while_loop_body_graph_0 = self.while_loop_body_graph_0
             while_loop = torch.ops.higher_order.while_loop(while_loop_cond_graph_0, while_loop_body_graph_0, (ci, a, b), ());  while_loop_cond_graph_0 = while_loop_body_graph_0 = ci = a = b = None
@@ -2966,19 +2964,19 @@ ExportedProgram:
 
         class while_loop_cond_graph_0(torch.nn.Module):
             def forward(self, arg0_1: &quot;i64[]&quot;, arg1_1: &quot;f32[s52, s98]&quot;, arg2_1: &quot;f32[s52, 3]&quot;):
-                # File: &lt;eval_with_key&gt;.1905:5 in forward, code: gt = child &gt; 0;  child = None
+                # File: &lt;eval_with_key&gt;.1929:5 in forward, code: gt = child &gt; 0;  child = None
                 gt: &quot;b8[]&quot; = torch.ops.aten.gt.Scalar(arg0_1, 0);  arg0_1 = None
                 return gt
 
         class while_loop_body_graph_0(torch.nn.Module):
             def forward(self, arg0_1: &quot;i64[]&quot;, arg1_1: &quot;f32[s52, s98]&quot;, arg2_1: &quot;f32[s52, 3]&quot;):
-                # File: &lt;eval_with_key&gt;.1906:5 in forward, code: child = child_3 - 1;  child_3 = None
+                # File: &lt;eval_with_key&gt;.1930:5 in forward, code: child = child_3 - 1;  child_3 = None
                 sub: &quot;i64[]&quot; = torch.ops.aten.sub.Tensor(arg0_1, 1);  arg0_1 = None
 
-                # File: &lt;eval_with_key&gt;.1906:6 in forward, code: child_6 = child_4 + child_5
+                # File: &lt;eval_with_key&gt;.1930:6 in forward, code: child_6 = child_4 + child_5
                 add: &quot;f32[s52, s98]&quot; = torch.ops.aten.add.Tensor(arg1_1, arg2_1)
 
-                # File: &lt;eval_with_key&gt;.1906:7 in forward, code: child_7 = child_5 - child_4;  child_5 = child_4 = None
+                # File: &lt;eval_with_key&gt;.1930:7 in forward, code: child_7 = child_5 - child_4;  child_5 = child_4 = None
                 sub_1: &quot;f32[s52, 3]&quot; = torch.ops.aten.sub.Tensor(arg2_1, arg1_1);  arg2_1 = arg1_1 = None
                 return (sub, add, sub_1)
 
@@ -3012,12 +3010,12 @@ set()
 -- process.progress --
 node 5/10 target=while_loop
 -- 3 INPUTS
-[GraphBuilder-ABG.1.make_tensor_input] ci[7:]
-[GraphBuilder-ABG.1.make_tensor_input] a[1:DYN0xDYN1]
-[GraphBuilder-ABG.1.make_tensor_input] b[1:DYN2x3]
+[GraphBuilder-AOE.1.make_tensor_input] ci[7:]
+[GraphBuilder-AOE.1.make_tensor_input] a[1:DYN0xDYN1]
+[GraphBuilder-AOE.1.make_tensor_input] b[1:DYN2x3]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-ABG] Message completed, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs., 
+[GraphBuilder-AOE] Message completed, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs., 
 </pre></div>
 </div>
 </section>
@@ -3086,12 +3084,12 @@ output: name=&#39;sub_6_while_loop_body_graph_0&#39; type=dtype(&#39;float32&#39
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-TPO] Message starts, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs.
+[GraphBuilder-ACE] Message starts, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs.
 input_names=[&#39;ci&#39;, &#39;a&#39;, &#39;b&#39;]
 output_names=[]
 --LOCAL FUNCTIONS--
     local_functions,while_loop_cond_graph_0([&#39;arg0_1&#39;, &#39;arg1_1&#39;, &#39;arg2_1&#39;]) -&gt; [&#39;output&#39;]
-    local_functions,while_loop_body_graph_0([&#39;arg0_1&#39;, &#39;arg1_1&#39;, &#39;arg2_1&#39;]) -&gt; [&#39;output_dim_0&#39;, &#39;output_1&#39;, &#39;output_2&#39;]
+    local_functions,while_loop_body_graph_0([&#39;arg0_1&#39;, &#39;arg1_1&#39;, &#39;arg2_1&#39;]) -&gt; [&#39;output_0&#39;, &#39;output_1&#39;, &#39;output_2&#39;]
 --CONSTRAINTS--
     DYN0 = {&#39;s97&#39;}
     DYN1 = {&#39;s98&#39;}
@@ -3157,7 +3155,7 @@ function_options=None
 ExportedProgram:
     class GraphModule(torch.nn.Module):
         def forward(self, ci: &quot;i64[]&quot;, a: &quot;f32[s52, s98]&quot;, b: &quot;f32[s52, 3]&quot;):
-            # File: &lt;eval_with_key&gt;.2035:10 in forward, code: while_loop = torch.ops.higher_order.while_loop(cond_fn_0, body_fn_0, (l_args_2_0_, l_args_2_1_, l_args_2_2_), ());  cond_fn_0 = body_fn_0 = l_args_2_0_ = l_args_2_1_ = l_args_2_2_ = None
+            # File: &lt;eval_with_key&gt;.2059:10 in forward, code: while_loop = torch.ops.higher_order.while_loop(cond_fn_0, body_fn_0, (l_args_2_0_, l_args_2_1_, l_args_2_2_), ());  cond_fn_0 = body_fn_0 = l_args_2_0_ = l_args_2_1_ = l_args_2_2_ = None
             while_loop_cond_graph_0 = self.while_loop_cond_graph_0
             while_loop_body_graph_0 = self.while_loop_body_graph_0
             while_loop = torch.ops.higher_order.while_loop(while_loop_cond_graph_0, while_loop_body_graph_0, (ci, a, b), ());  while_loop_cond_graph_0 = while_loop_body_graph_0 = ci = a = b = None
@@ -3171,19 +3169,19 @@ ExportedProgram:
                 # No stacktrace found for following nodes
                 sym_size_int_3: &quot;Sym(s52)&quot; = torch.ops.aten.sym_size.int(arg2_1, 0);  arg2_1 = None
 
-                # File: &lt;eval_with_key&gt;.2036:6 in forward, code: lt = child &lt; sym_size_int;  child = sym_size_int = None
+                # File: &lt;eval_with_key&gt;.2060:6 in forward, code: lt = child &lt; sym_size_int;  child = sym_size_int = None
                 lt: &quot;b8[]&quot; = torch.ops.aten.lt.Scalar(arg0_1, sym_size_int_3);  arg0_1 = sym_size_int_3 = None
                 return lt
 
         class while_loop_body_graph_0(torch.nn.Module):
             def forward(self, arg0_1: &quot;i64[]&quot;, arg1_1: &quot;f32[s52, s98]&quot;, arg2_1: &quot;f32[s52, 3]&quot;):
-                # File: &lt;eval_with_key&gt;.2037:5 in forward, code: child = child_3 + 1;  child_3 = None
+                # File: &lt;eval_with_key&gt;.2061:5 in forward, code: child = child_3 + 1;  child_3 = None
                 add: &quot;i64[]&quot; = torch.ops.aten.add.Tensor(arg0_1, 1);  arg0_1 = None
 
-                # File: &lt;eval_with_key&gt;.2037:6 in forward, code: child_6 = child_4 + child_5
+                # File: &lt;eval_with_key&gt;.2061:6 in forward, code: child_6 = child_4 + child_5
                 add_1: &quot;f32[s52, s98]&quot; = torch.ops.aten.add.Tensor(arg1_1, arg2_1)
 
-                # File: &lt;eval_with_key&gt;.2037:7 in forward, code: child_7 = child_5 - child_4;  child_5 = child_4 = None
+                # File: &lt;eval_with_key&gt;.2061:7 in forward, code: child_7 = child_5 - child_4;  child_5 = child_4 = None
                 sub: &quot;f32[s52, 3]&quot; = torch.ops.aten.sub.Tensor(arg2_1, arg1_1);  arg2_1 = arg1_1 = None
                 return (add, add_1, sub)
 
@@ -3217,12 +3215,12 @@ set()
 -- process.progress --
 node 5/10 target=while_loop
 -- 3 INPUTS
-[GraphBuilder-TPO.1.make_tensor_input] ci[7:]
-[GraphBuilder-TPO.1.make_tensor_input] a[1:DYN0xDYN1]
-[GraphBuilder-TPO.1.make_tensor_input] b[1:DYN2x3]
+[GraphBuilder-ACE.1.make_tensor_input] ci[7:]
+[GraphBuilder-ACE.1.make_tensor_input] a[1:DYN0xDYN1]
+[GraphBuilder-ACE.1.make_tensor_input] b[1:DYN2x3]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-TPO] Message completed, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs., 
+[GraphBuilder-ACE] Message completed, there are 0 initializers, 0 nodes, 3 inputs, 3 outputs., 
 </pre></div>
 </div>
 </section>
@@ -3430,7 +3428,6 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;dx&#39;,
 </section>
 <section id="id110">
 <h3>yobx<a class="headerlink" href="#id110" title="Link to this heading">#</a></h3>
-<p>W0320 17:50:33.153000 121687 torch/fx/experimental/symbolic_shapes.py:8382] Unable to find user code corresponding to {u0}</p>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Could not extract specialized integer from data-dependent expression u0 (unhinted: u0).  (Size-like symbols: none)
 
@@ -3454,9 +3451,10 @@ The error above occurred when calling torch.export.export. If you would like to 
 </section>
 <section id="id111">
 <h3>dynamo-ir<a class="headerlink" href="#id111" title="Link to this heading">#</a></h3>
-<p>W0320 17:50:34.110000 121687 torch/fx/experimental/symbolic_shapes.py:8382] Unable to find user code corresponding to {u0}
-* <strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s3x4x4,T7s1),(T1s6x4x4,T7s1)]</span></code>
-* <strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},shape:{})</span></code></p>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s3x4x4,T7s1),(T1s6x4x4,T7s1)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},shape:{})</span></code></p></li>
+</ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4, 4]
 input: name=&#39;shape&#39; type=dtype(&#39;int64&#39;) shape=[1]
@@ -3778,7 +3776,7 @@ output: name=&#39;add_3&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-TZK] Message starts, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-LOQ] Message starts, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -3843,11 +3841,11 @@ set()
 -- process.progress --
 node 2/4 target=add_
 -- 1 INPUTS
-[GraphBuilder-TZK.1.make_tensor_input] x[1:batchx4]
+[GraphBuilder-LOQ.1.make_tensor_input] x[1:batchx4]
 -- 1 INITIALIZERS
-[GraphBuilder-TZK.1.make_initializer] bias[torch.float32:torch.float32:[1.0, 1.0, 1.0, 1.0]] - SOURCE: DynamoInterpret.get_attr.0
+[GraphBuilder-LOQ.1.make_initializer] bias[torch.float32:torch.float32:[1.0, 1.0, 1.0, 1.0]] - SOURCE: DynamoInterpret.get_attr.0
 -- 0 OUTPUTS
-[GraphBuilder-TZK] Message completed, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-LOQ] Message completed, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -3902,7 +3900,7 @@ output: name=&#39;mul_4&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-IAQ] Message starts, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-ZTO] Message starts, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -3969,11 +3967,11 @@ set()
 -- process.progress --
 node 2/5 target=add_
 -- 1 INPUTS
-[GraphBuilder-IAQ.1.make_tensor_input] x[1:batchx4]
+[GraphBuilder-ZTO.1.make_tensor_input] x[1:batchx4]
 -- 1 INITIALIZERS
-[GraphBuilder-IAQ.1.make_initializer] bias[torch.float32:torch.float32:[1.0, 1.0, 1.0, 1.0]] - SOURCE: DynamoInterpret.get_attr.0
+[GraphBuilder-ZTO.1.make_initializer] bias[torch.float32:torch.float32:[1.0, 1.0, 1.0, 1.0]] - SOURCE: DynamoInterpret.get_attr.0
 -- 0 OUTPUTS
-[GraphBuilder-IAQ] Message completed, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-ZTO] Message completed, there are 1 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -4025,7 +4023,7 @@ output: name=&#39;add_6&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-XZS] Message starts, there are 1 initializers, 1 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-XWQ] Message starts, there are 1 initializers, 1 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -4094,12 +4092,12 @@ set()
 -- process.progress --
 node 3/5 target=add_
 -- 1 INPUTS
-[GraphBuilder-XZS.1.make_tensor_input] x[1:batchx4]
+[GraphBuilder-XWQ.1.make_tensor_input] x[1:batchx4]
 -- 1 INITIALIZERS
-[GraphBuilder-XZS.1.make_initializer] bias[torch.float32:torch.float32:[1.0, 1.0, 1.0, 1.0]] - SOURCE: DynamoInterpret.get_attr.0
-[GraphBuilder-XZS.4.make_node] .clone          [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;clone&#39;]
+[GraphBuilder-XWQ.1.make_initializer] bias[torch.float32:torch.float32:[1.0, 1.0, 1.0, 1.0]] - SOURCE: DynamoInterpret.get_attr.0
+[GraphBuilder-XWQ.4.make_node] .clone          [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;clone&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-XZS] Message completed, there are 1 initializers, 1 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-XWQ] Message completed, there are 1 initializers, 1 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -4127,36 +4125,6 @@ The error above occurred when calling torch.export.export. If you would like to 
 </section>
 <section id="id143">
 <h3>dynamo-ir<a class="headerlink" href="#id143" title="Link to this heading">#</a></h3>
-<p>E0320 17:50:41.100000 121687 torch/_guards.py:368] Error while creating guard:
-E0320 17:50:41.100000 121687 torch/_guards.py:368] Name: ‘’
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     Source: shape_env
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     Create Function: SHAPE_ENV
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     Guard Types: None
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     Code List: None
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     Object Weakref: None
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     Guarded Class Weakref: None
-E0320 17:50:41.100000 121687 torch/_guards.py:368] Traceback (most recent call last):
-E0320 17:50:41.100000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/_guards.py”, line 366, in create
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     return self.create_fn(builder, self)
-E0320 17:50:41.100000 121687 torch/_guards.py:368]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E0320 17:50:41.100000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/guards.py”, line 3081, in SHAPE_ENV
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     python_code_parts, verbose_code_parts = _get_code_parts(
-E0320 17:50:41.100000 121687 torch/_guards.py:368]                                             ^^^^^^^^^^^^^^^^
-E0320 17:50:41.100000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/guards.py”, line 3054, in _get_code_parts
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     return output_graph.shape_env.produce_guards_verbose(
-E0320 17:50:41.100000 121687 torch/_guards.py:368]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E0320 17:50:41.100000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py”, line 5775, in produce_guards_verbose
-E0320 17:50:41.100000 121687 torch/_guards.py:368]     raise ConstraintViolationError(
-E0320 17:50:41.100000 121687 torch/_guards.py:368] torch.fx.experimental.symbolic_shapes.ConstraintViolationError: L[‘flat_args’][1].size()[0] = 8192 is not equal to L[‘flat_args’][0].size()[0] = 4
-E0320 17:50:41.116000 121687 torch/_guards.py:370] Created at:
-E0320 17:50:41.116000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py”, line 818, in trace_frame
-E0320 17:50:41.116000 121687 torch/_guards.py:370]     tracer = InstructionTranslator(
-E0320 17:50:41.116000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py”, line 4699, in __init__
-E0320 17:50:41.116000 121687 torch/_guards.py:370]     output=OutputGraph(
-E0320 17:50:41.116000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/output_graph.py”, line 704, in __init__
-E0320 17:50:41.116000 121687 torch/_guards.py:370]     self.init_ambient_guards()
-E0320 17:50:41.116000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/output_graph.py”, line 966, in init_ambient_guards
-E0320 17:50:41.116000 121687 torch/_guards.py:370]     self.guards.add(ShapeEnvSource().make_guard(GuardBuilder.SHAPE_ENV))</p>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Failed to export the model with torch.export. [96mThis is step 1/3[0m of exporting the model to ONNX. Next steps:
 - Modify the model code for `torch.export.export` to succeed. Refer to https://pytorch.org/docs/stable/generated/exportdb/index.html for more information.
@@ -4204,36 +4172,6 @@ The error above occurred when calling torch.export.export. If you would like to 
 </section>
 <section id="id147">
 <h3>dynamo-ir<a class="headerlink" href="#id147" title="Link to this heading">#</a></h3>
-<p>E0320 17:50:41.657000 121687 torch/_guards.py:368] Error while creating guard:
-E0320 17:50:41.657000 121687 torch/_guards.py:368] Name: ‘’
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     Source: shape_env
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     Create Function: SHAPE_ENV
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     Guard Types: None
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     Code List: None
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     Object Weakref: None
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     Guarded Class Weakref: None
-E0320 17:50:41.657000 121687 torch/_guards.py:368] Traceback (most recent call last):
-E0320 17:50:41.657000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/_guards.py”, line 366, in create
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     return self.create_fn(builder, self)
-E0320 17:50:41.657000 121687 torch/_guards.py:368]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E0320 17:50:41.657000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/guards.py”, line 3081, in SHAPE_ENV
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     python_code_parts, verbose_code_parts = _get_code_parts(
-E0320 17:50:41.657000 121687 torch/_guards.py:368]                                             ^^^^^^^^^^^^^^^^
-E0320 17:50:41.657000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/guards.py”, line 3054, in _get_code_parts
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     return output_graph.shape_env.produce_guards_verbose(
-E0320 17:50:41.657000 121687 torch/_guards.py:368]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E0320 17:50:41.657000 121687 torch/_guards.py:368]   File “~/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py”, line 5775, in produce_guards_verbose
-E0320 17:50:41.657000 121687 torch/_guards.py:368]     raise ConstraintViolationError(
-E0320 17:50:41.657000 121687 torch/_guards.py:368] torch.fx.experimental.symbolic_shapes.ConstraintViolationError: L[‘flat_args’][1].size()[0] = 8192 is not equal to L[‘flat_args’][0].size()[0] = 4
-E0320 17:50:41.659000 121687 torch/_guards.py:370] Created at:
-E0320 17:50:41.659000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py”, line 818, in trace_frame
-E0320 17:50:41.659000 121687 torch/_guards.py:370]     tracer = InstructionTranslator(
-E0320 17:50:41.659000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py”, line 4699, in __init__
-E0320 17:50:41.659000 121687 torch/_guards.py:370]     output=OutputGraph(
-E0320 17:50:41.659000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/output_graph.py”, line 704, in __init__
-E0320 17:50:41.659000 121687 torch/_guards.py:370]     self.init_ambient_guards()
-E0320 17:50:41.659000 121687 torch/_guards.py:370]   File “~/vv/this312/lib/python3.12/site-packages/torch/_dynamo/output_graph.py”, line 966, in init_ambient_guards
-E0320 17:50:41.659000 121687 torch/_guards.py:370]     self.guards.add(ShapeEnvSource().make_guard(GuardBuilder.SHAPE_ENV))</p>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Failed to export the model with torch.export. [96mThis is step 1/3[0m of exporting the model to ONNX. Next steps:
 - Modify the model code for `torch.export.export` to succeed. Refer to https://pytorch.org/docs/stable/generated/exportdb/index.html for more information.
@@ -4309,7 +4247,7 @@ Unexpected type &lt;class &#39;int&#39;&gt; for name.
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-PJS] Message starts, there are 0 initializers, 1 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-LZS] Message starts, there are 0 initializers, 1 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -4342,7 +4280,7 @@ _parameter_renaming=
 --TORCH-USERS--
     setitem -&gt; {output}
     to -&gt; {setitem}
-    x -&gt; {setitem, to}
+    x -&gt; {to, setitem}
 --TORCH-SHAPES--
     x: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([2, 3, 3])), (&#39;val&#39;, torch.float32, torch.Size([s26, 3, 3])))) --- 1:3:(&#39;batch&#39;, 3, 3):
     to: (&#39;run_node&#39;, (&#39;&#39;, &#39;&#39;)) --- 9:3:(&#39;batch&#39;, 3, 3):
@@ -4374,11 +4312,11 @@ set()
 -- process.progress --
 node 2/4 target=&lt;built-in function setitem&gt;
 -- 1 INPUTS
-[GraphBuilder-PJS.1.make_tensor_input] x[1:batchx3x3]
+[GraphBuilder-LZS.1.make_tensor_input] x[1:batchx3x3]
 -- 0 INITIALIZERS
-[GraphBuilder-PJS.4.make_node] .to             [@:@   ] Cast&gt;9:[&#39;x&#39;]-&gt;[&#39;to&#39;]
+[GraphBuilder-LZS.4.make_node] .to             [@:@   ] Cast&gt;9:[&#39;x&#39;]-&gt;[&#39;to&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-PJS] Message completed, there are 0 initializers, 1 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-LZS] Message completed, there are 0 initializers, 1 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -4472,7 +4410,7 @@ Unexpected type &lt;class &#39;int&#39;&gt; for name.
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-JDW] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-GAY] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -4533,10 +4471,10 @@ set()
 -- process.progress --
 node 1/3 target=&lt;built-in function setitem&gt;
 -- 1 INPUTS
-[GraphBuilder-JDW.1.make_tensor_input] x[1:batchx5]
+[GraphBuilder-GAY.1.make_tensor_input] x[1:batchx5]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-JDW] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-GAY] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -4633,7 +4571,7 @@ Unexpected type &lt;class &#39;int&#39;&gt; for name.
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-UQA] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-NWA] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -4696,10 +4634,10 @@ set()
 -- process.progress --
 node 1/4 target=&lt;built-in function setitem&gt;
 -- 1 INPUTS
-[GraphBuilder-UQA.1.make_tensor_input] x[1:batchx5]
+[GraphBuilder-NWA.1.make_tensor_input] x[1:batchx5]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-UQA] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-NWA] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -4802,7 +4740,7 @@ Unexpected type &lt;class &#39;int&#39;&gt; for name.
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-BGQ] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-GKM] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -4833,7 +4771,7 @@ _known_ranks (with no shape)={}
 --PARAMETERS--
 _parameter_renaming=
 --TORCH-USERS--
-    setitem -&gt; {add_1, add}
+    setitem -&gt; {add, add_1}
     x -&gt; {setitem}
 --TORCH-SHAPES--
     x: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([5, 5])), (&#39;val&#39;, torch.float32, torch.Size([s26, 5])))) --- 1:2:(&#39;batch&#39;, 5):
@@ -4867,10 +4805,10 @@ set()
 -- process.progress --
 node 1/5 target=&lt;built-in function setitem&gt;
 -- 1 INPUTS
-[GraphBuilder-BGQ.1.make_tensor_input] x[1:batchx5]
+[GraphBuilder-GKM.1.make_tensor_input] x[1:batchx5]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-BGQ] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-GKM] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -4894,8 +4832,8 @@ node 1/5 target=&lt;built-in function setitem&gt;
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 init: name=&#39;mul&#39; type=float32 shape=(1,) -- array([0.75], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_onx_mul_b_buff)##_onx_mul_b_buff/GraphBuilder.constant_folding.from/fold(b_buff,init1_s_::RSh1)##b_buff/DynamoInterpret.placeholder.0##init1_s_::RSh1/GraphBuilder.constant_folding.from/fold(init1_s_,init7_s1_1)##init1_s_/shape_type_compute._cast_inputs.1(mul_Tensor)##init7_s1_1/Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.07324108,  0.37863585, -0.43313774], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.36713848], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.531, -0.355,  0.249], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.425], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, mul) -&gt; output_0
@@ -4915,8 +4853,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;, 3]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.5602529 ,  0.18679245,  0.4530812 ], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.5014305], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.456,  0.435,  0.121], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.323], dtype=float32)
 init: name=&#39;mul_2&#39; type=float32 shape=(1,) -- array([0.75], dtype=float32)
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
@@ -4936,7 +4874,7 @@ output: name=&#39;sub_2&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;,
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-FVS] Message starts, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-DQU] Message starts, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
 input_names=[&#39;x&#39;, &#39;alpha&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -5037,21 +4975,21 @@ set()
 -- process.progress --
 node 5/8 target=mul
 -- 2 INPUTS
-[GraphBuilder-FVS.1.make_tensor_input] x[1:batchx3]
-[GraphBuilder-FVS.1.make_tensor_input] alpha[1:]
+[GraphBuilder-DQU.1.make_tensor_input] x[1:batchx3]
+[GraphBuilder-DQU.1.make_tensor_input] alpha[1:]
 -- 3 INITIALIZERS
-[GraphBuilder-FVS.1.make_initializer] linear.weight[torch.float32:torch.float32:[0.42136073112487793, -0.550304114818573, 0.1435273438692093]] - SOURCE: GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)
-[GraphBuilder-FVS.1.make_initializer] linear.bias[torch.float32:torch.float32:[-0.3650479018688202]] - SOURCE: GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
-[GraphBuilder-FVS.1.make_initializer] buff[torch.float32:torch.float32:[0.5]] - SOURCE: DynamoInterpret.get_attr.0
-[GraphBuilder-FVS.4.make_node] .make_nodes     [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;_sub_ime__linear_input_1&#39;]
-[GraphBuilder-FVS.4.make_node] linear          [#:#   ] Transpose:[&#39;linear.weight&#39;]-&gt;[&#39;_sub_ime__linear_weight::T10&#39;]
-[GraphBuilder-FVS.4.make_node] Opset           [@#:#  ] MatMul:[&#39;_sub_ime__linear_input_1&#39;, &#39;_sub_ime__linear_weight::T10&#39;]-&gt;[&#39;_sub_ime__linear__onx_matmul_input_1&#39;]
-[GraphBuilder-FVS.4.make_node] Opset2          [##:#  ] Add:[&#39;_sub_ime__linear__onx_matmul_input_1&#39;, &#39;linear.bias&#39;]-&gt;[&#39;_sub_ime__linear_linear&#39;]
-[GraphBuilder-FVS.4.make_node] .output         [#:#   ] Identity:[&#39;_sub_ime__linear_linear&#39;]-&gt;[&#39;_sub_ime__linear_output&#39;]
-[GraphBuilder-FVS.4.make_node] .make_nodes2    [#:#   ] Identity:[&#39;_sub_ime__linear_output&#39;]-&gt;[&#39;linear&#39;]
-[GraphBuilder-FVS.4.make_node] sigmoid         [#:#   ] Sigmoid:[&#39;linear&#39;]-&gt;[&#39;sigmoid&#39;]
+[GraphBuilder-DQU.1.make_initializer] linear.weight[torch.float32:torch.float32:[0.34468188881874084, -0.1258316934108734, -0.4942462146282196]] - SOURCE: GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)
+[GraphBuilder-DQU.1.make_initializer] linear.bias[torch.float32:torch.float32:[0.21281571686267853]] - SOURCE: GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
+[GraphBuilder-DQU.1.make_initializer] buff[torch.float32:torch.float32:[0.5]] - SOURCE: DynamoInterpret.get_attr.0
+[GraphBuilder-DQU.4.make_node] .make_nodes     [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;_sub_ime__linear_input_1&#39;]
+[GraphBuilder-DQU.4.make_node] linear          [#:#   ] Transpose:[&#39;linear.weight&#39;]-&gt;[&#39;_sub_ime__linear_weight::T10&#39;]
+[GraphBuilder-DQU.4.make_node] Opset           [@#:#  ] MatMul:[&#39;_sub_ime__linear_input_1&#39;, &#39;_sub_ime__linear_weight::T10&#39;]-&gt;[&#39;_sub_ime__linear__onx_matmul_input_1&#39;]
+[GraphBuilder-DQU.4.make_node] Opset2          [##:#  ] Add:[&#39;_sub_ime__linear__onx_matmul_input_1&#39;, &#39;linear.bias&#39;]-&gt;[&#39;_sub_ime__linear_linear&#39;]
+[GraphBuilder-DQU.4.make_node] .output         [#:#   ] Identity:[&#39;_sub_ime__linear_linear&#39;]-&gt;[&#39;_sub_ime__linear_output&#39;]
+[GraphBuilder-DQU.4.make_node] .make_nodes2    [#:#   ] Identity:[&#39;_sub_ime__linear_output&#39;]-&gt;[&#39;linear&#39;]
+[GraphBuilder-DQU.4.make_node] sigmoid         [#:#   ] Sigmoid:[&#39;linear&#39;]-&gt;[&#39;sigmoid&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-FVS] Message completed, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-DQU] Message completed, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
 </pre></div>
 </div>
 </section>
@@ -5077,8 +5015,8 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
 init: name=&#39;init7_s1_2&#39; type=int64 shape=(1,) -- array([2])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.39552668,  0.5525059 , -0.26220244], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.22780867], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.265, -0.541,  0.214], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.132], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -5100,8 +5038,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;, 3]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.27497664, -0.19516239,  0.17536211], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.44936407], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([0.205, 0.546, 0.552], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.484], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 init: name=&#39;val_7&#39; type=int64 shape=(1,) -- array([2])
@@ -5146,8 +5084,8 @@ output: name=&#39;add_12&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s_1&#39; type=int64 shape=() -- array([1])              -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.18020667,  0.16353934, -0.0669876 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.49160832], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.423, -0.427, -0.467], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.109], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gather(x, init7_s_1, axis=1) -&gt; select
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
@@ -5169,8 +5107,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;, 3]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.12631553,  0.49308676,  0.5184858 ], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.24148706], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([0.487, 0.367, 0.231], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.353], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_12&#39; type=int64 shape=() -- array([1])
 Gather(x, val_12, axis=1) -&gt; select
@@ -5193,7 +5131,7 @@ output: name=&#39;add_14&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-VRS] Message starts, there are 5 initializers, 10 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-TWY] Message starts, there are 5 initializers, 10 nodes, 2 inputs, 2 outputs.
 input_names=[&#39;x&#39;, &#39;i&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -5318,26 +5256,26 @@ set()
 -- process.progress --
 node 6/9 target=&lt;built-in function getitem&gt;
 -- 2 INPUTS
-[GraphBuilder-VRS.1.make_tensor_input] x[1:batchx3]
-[GraphBuilder-VRS.1.make_tensor_input] i[7:]
+[GraphBuilder-TWY.1.make_tensor_input] x[1:batchx3]
+[GraphBuilder-TWY.1.make_tensor_input] i[7:]
 -- 5 INITIALIZERS
-[GraphBuilder-VRS.1.make_initializer] linear.weight[torch.float32:torch.float32:[-0.2534167766571045, -0.5291628241539001, -0.0049071903340518475]] - SOURCE: GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)
-[GraphBuilder-VRS.1.make_initializer] linear.bias[torch.float32:torch.float32:[-0.23627716302871704]] - SOURCE: GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
-[GraphBuilder-VRS.1.make_initializer] buff[torch.float32:torch.float32:[0.5]] - SOURCE: DynamoInterpret.get_attr.0
-[GraphBuilder-VRS.1.make_initializer] getitem_axis[int64:int64:[0, 1]] - SOURCE: DynamoInterpreter._getitem_slice.axis.1
-[GraphBuilder-VRS.1.make_initializer] getitem_axis_0[int64:int64:[0]] - SOURCE: DynamoInterpreter._getitem_slice.axis.2
-[GraphBuilder-VRS.4.make_node] .make_nodes     [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;_sub_ime__linear_input_1&#39;]
-[GraphBuilder-VRS.4.make_node] linear          [#:#   ] Transpose:[&#39;linear.weight&#39;]-&gt;[&#39;_sub_ime__linear_weight::T10&#39;]
-[GraphBuilder-VRS.4.make_node] Opset           [@#:#  ] MatMul:[&#39;_sub_ime__linear_input_1&#39;, &#39;_sub_ime__linear_weight::T10&#39;]-&gt;[&#39;_sub_ime__linear__onx_matmul_input_1&#39;]
-[GraphBuilder-VRS.4.make_node] Opset2          [##:#  ] Add:[&#39;_sub_ime__linear__onx_matmul_input_1&#39;, &#39;linear.bias&#39;]-&gt;[&#39;_sub_ime__linear_linear&#39;]
-[GraphBuilder-VRS.4.make_node] .output         [#:#   ] Identity:[&#39;_sub_ime__linear_linear&#39;]-&gt;[&#39;_sub_ime__linear_output&#39;]
-[GraphBuilder-VRS.4.make_node] .make_nodes2    [#:#   ] Identity:[&#39;_sub_ime__linear_output&#39;]-&gt;[&#39;linear&#39;]
-[GraphBuilder-VRS.4.make_node] sigmoid         [#:#   ] Sigmoid:[&#39;linear&#39;]-&gt;[&#39;sigmoid&#39;]
-[GraphBuilder-VRS.4.make_node] sub             [##:#  ] Sub:[&#39;sigmoid&#39;, &#39;buff&#39;]-&gt;[&#39;sub&#39;]
-[GraphBuilder-VRS.4.make_node] _getitem_slicenA [@:@   ] Shape:[&#39;x&#39;]-&gt;[&#39;getitem_shape&#39;]
-[GraphBuilder-VRS.4.make_node] _getitem_slicenB [@#:@  ] GatherElements:[&#39;getitem_shape&#39;, &#39;getitem_axis_0&#39;]-&gt;[&#39;getitem_end&#39;]
+[GraphBuilder-TWY.1.make_initializer] linear.weight[torch.float32:torch.float32:[-0.349815309047699, 0.14313125610351562, 0.35858458280563354]] - SOURCE: GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)
+[GraphBuilder-TWY.1.make_initializer] linear.bias[torch.float32:torch.float32:[-0.12959197163581848]] - SOURCE: GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
+[GraphBuilder-TWY.1.make_initializer] buff[torch.float32:torch.float32:[0.5]] - SOURCE: DynamoInterpret.get_attr.0
+[GraphBuilder-TWY.1.make_initializer] getitem_axis[int64:int64:[0, 1]] - SOURCE: DynamoInterpreter._getitem_slice.axis.1
+[GraphBuilder-TWY.1.make_initializer] getitem_axis_0[int64:int64:[0]] - SOURCE: DynamoInterpreter._getitem_slice.axis.2
+[GraphBuilder-TWY.4.make_node] .make_nodes     [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;_sub_ime__linear_input_1&#39;]
+[GraphBuilder-TWY.4.make_node] linear          [#:#   ] Transpose:[&#39;linear.weight&#39;]-&gt;[&#39;_sub_ime__linear_weight::T10&#39;]
+[GraphBuilder-TWY.4.make_node] Opset           [@#:#  ] MatMul:[&#39;_sub_ime__linear_input_1&#39;, &#39;_sub_ime__linear_weight::T10&#39;]-&gt;[&#39;_sub_ime__linear__onx_matmul_input_1&#39;]
+[GraphBuilder-TWY.4.make_node] Opset2          [##:#  ] Add:[&#39;_sub_ime__linear__onx_matmul_input_1&#39;, &#39;linear.bias&#39;]-&gt;[&#39;_sub_ime__linear_linear&#39;]
+[GraphBuilder-TWY.4.make_node] .output         [#:#   ] Identity:[&#39;_sub_ime__linear_linear&#39;]-&gt;[&#39;_sub_ime__linear_output&#39;]
+[GraphBuilder-TWY.4.make_node] .make_nodes2    [#:#   ] Identity:[&#39;_sub_ime__linear_output&#39;]-&gt;[&#39;linear&#39;]
+[GraphBuilder-TWY.4.make_node] sigmoid         [#:#   ] Sigmoid:[&#39;linear&#39;]-&gt;[&#39;sigmoid&#39;]
+[GraphBuilder-TWY.4.make_node] sub             [##:#  ] Sub:[&#39;sigmoid&#39;, &#39;buff&#39;]-&gt;[&#39;sub&#39;]
+[GraphBuilder-TWY.4.make_node] _getitem_slicenA [@:@   ] Shape:[&#39;x&#39;]-&gt;[&#39;getitem_shape&#39;]
+[GraphBuilder-TWY.4.make_node] _getitem_slicenB [@#:@  ] GatherElements:[&#39;getitem_shape&#39;, &#39;getitem_axis_0&#39;]-&gt;[&#39;getitem_end&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-VRS] Message completed, there are 5 initializers, 10 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-TWY] Message completed, there are 5 initializers, 10 nodes, 2 inputs, 2 outputs.
 </pre></div>
 </div>
 </section>
@@ -5364,8 +5302,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([0.31047642, 0.5060898 , 0.12356719], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.02310906], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.561, -0.127, -0.131], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.03], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -5386,8 +5324,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.5542365 ,  0.08806369,  0.55799127], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.11198634], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.163, -0.117,  0.376], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.089], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -5410,10 +5348,10 @@ output: name=&#39;add_15&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.18033414], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([-0.022], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.30248132, -0.36585504, -0.51857275], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.509, -0.475,  0.17 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
   Sigmoid(_sub_ime___traced_m2_linear_linear) -&gt; sigmoid
     Sub(sigmoid, _traced_m2_buff) -&gt; sub
@@ -5500,8 +5438,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.38840613,  0.15646593, -0.18289775], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.55367196], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.13 , -0.126, -0.569], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.556], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Concat(lx_0, lx_1, axis=1) -&gt; cat
   ReduceSum(cat, init7_s1_1, keepdims=1) -&gt; sum_1
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
@@ -5526,8 +5464,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.0672192 ,  0.55560327, -0.5322041 ], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.41690746], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.339, -0.41 , -0.521], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.503], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Concat(lx_0, lx_1, axis=1) -&gt; cat
@@ -5555,9 +5493,9 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([-0.5361459], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.103], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.33700964, -0.34481072,  0.15492025], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.264, -0.467, -0.019], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Concat(lx_0, lx_1, axis=1) -&gt; cat
   ReduceSum(cat, init7_s1_1, keepdims=1) -&gt; sum_1
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
@@ -5595,8 +5533,8 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;length&#39;]
 init: name=&#39;init7_s1_0&#39; type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([0.08121996, 0.16048905, 0.4227285 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.52820617], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([0.211, 0.019, 0.298], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.129], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Add(sigmoid, x) -&gt; add
@@ -5615,8 +5553,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;length&#39;]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.03327549, -0.24134004,  0.11587078], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.5147109], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([0.232, 0.572, 0.495], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.287], dtype=float32)
 init: name=&#39;val_8&#39; type=int64 shape=(1,) -- array([1])
 init: name=&#39;val_1&#39; type=int64 shape=(1,) -- array([0])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -5637,13 +5575,13 @@ output: name=&#39;slice_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;length&#39;]
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.3334815], dtype=float32)-- GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.521], dtype=float32)-- GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
 init: name=&#39;init7_s1_0&#39; type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
 init: name=&#39;getitem_1_axis&#39; type=int64 shape=(2,) -- array([0, 1])    -- DynamoInterpreter._getitem_slice.axis.1
 init: name=&#39;getitem_1_start&#39; type=int64 shape=(2,) -- array([0, 0])   -- DynamoInterpreter._getitem_slice.2
 init: name=&#39;getitem_1_step&#39; type=int64 shape=(2,) -- array([1, 1])    -- DynamoInterpreter._getitem_slice.3
-init: name=&#39;GemmTransposePattern--_sub_ime__linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.12198944,  0.44552296, -0.14627355], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime__linear_weight::T10,init7_s2_1_3)##_sub_ime__linear_weight::T10/GraphBuilder.constant_folding.from/fold(linear.weight)##linear.weight/GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime__linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([0.517, 0.458, 0.433], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime__linear_weight::T10,init7_s2_1_3)##_sub_ime__linear_weight::T10/GraphBuilder.constant_folding.from/fold(linear.weight)##linear.weight/GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime__linear_weight::T10, linear.bias, transB=1) -&gt; _sub_ime__linear_linear
   Sigmoid(_sub_ime__linear_linear) -&gt; sigmoid
     Add(sigmoid, x) -&gt; add

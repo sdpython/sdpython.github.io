@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="TensorFlow / JAX Export to ONNX" href="../tensorflow/index.html" />
-    <link rel="prev" title="Debugging with Environment Variables" href="../sklearn/debug.html" />
+    <link rel="prev" title="DataFrame Input to a Pipeline with ColumnTransformer" href="../sklearn/dataframe_pipeline.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -408,6 +408,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sklearn/debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">SQL-to-ONNX Converter Design</a></li>
@@ -698,6 +699,97 @@ separate handling path).</p></li>
 </pre></div>
 </div>
 </section>
+<section id="dataframe-function-tracer">
+<h2>DataFrame function tracer<a class="headerlink" href="#dataframe-function-tracer" title="Link to this heading">#</a></h2>
+<p>In addition to accepting SQL strings and <code class="xref py py-class docutils literal notranslate"><span class="pre">polars.LazyFrame</span></code> objects,
+<code class="docutils literal notranslate"><span class="pre">yobx.sql</span></code> provides a lightweight pandas-inspired API for tracing Python
+functions that operate on a virtual DataFrame.</p>
+<p>The tracer works by passing a <a class="reference internal" href="../../api/sql/dataframe_trace.html#yobx.sql.dataframe_trace.TracedDataFrame" title="yobx.sql.dataframe_trace.TracedDataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedDataFrame</span></code></a>
+proxy to the user function.  Every operation performed on the proxy —
+column access, arithmetic, filtering, aggregation — is recorded as an AST
+node rather than being executed.  The resulting AST is assembled into a
+<a class="reference internal" href="../../api/sql/parse.html#yobx.sql.parse.ParsedQuery" title="yobx.sql.parse.ParsedQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParsedQuery</span></code></a> which is then compiled to ONNX by the
+existing SQL converter.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python function (TracedDataFrame)
+    │
+    ▼
+trace_dataframe()   ─── ParsedQuery ──► operations list
+                                            │
+                                            ▼
+parsed_query_to_onnx() ─ GraphBuilder ──► ExportArtifact
+</pre></div>
+</div>
+<section id="key-classes-and-functions">
+<h3>Key classes and functions<a class="headerlink" href="#key-classes-and-functions" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../api/sql/dataframe_trace.html#yobx.sql.dataframe_trace.TracedDataFrame" title="yobx.sql.dataframe_trace.TracedDataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedDataFrame</span></code></a> — proxy DataFrame with
+<code class="docutils literal notranslate"><span class="pre">.filter()</span></code>, <code class="docutils literal notranslate"><span class="pre">.select()</span></code>, <code class="docutils literal notranslate"><span class="pre">.assign()</span></code>, <code class="docutils literal notranslate"><span class="pre">.groupby()</span></code> operations.</p></li>
+<li><p><a class="reference internal" href="../../api/sql/dataframe_trace.html#yobx.sql.dataframe_trace.TracedSeries" title="yobx.sql.dataframe_trace.TracedSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedSeries</span></code></a> — proxy for a column or
+expression; supports arithmetic (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>),
+comparisons (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>),
+aggregations (<code class="docutils literal notranslate"><span class="pre">.sum()</span></code>, <code class="docutils literal notranslate"><span class="pre">.mean()</span></code>, <code class="docutils literal notranslate"><span class="pre">.min()</span></code>, <code class="docutils literal notranslate"><span class="pre">.max()</span></code>, <code class="docutils literal notranslate"><span class="pre">.count()</span></code>)
+and <code class="docutils literal notranslate"><span class="pre">.alias()</span></code>.</p></li>
+<li><p><a class="reference internal" href="../../api/sql/dataframe_trace.html#yobx.sql.dataframe_trace.TracedCondition" title="yobx.sql.dataframe_trace.TracedCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedCondition</span></code></a> — boolean predicate proxy;
+supports <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> (AND) and <code class="docutils literal notranslate"><span class="pre">|</span></code> (OR) combination.</p></li>
+<li><p><a class="reference internal" href="../../api/sql/trace_dataframe.html#yobx.sql.trace_dataframe" title="yobx.sql.trace_dataframe"><code class="xref py py-func docutils literal notranslate"><span class="pre">trace_dataframe()</span></code></a> — traces a function and returns a
+<a class="reference internal" href="../../api/sql/parse.html#yobx.sql.parse.ParsedQuery" title="yobx.sql.parse.ParsedQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParsedQuery</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="../../api/sql/dataframe_to_onnx.html#yobx.sql.dataframe_to_onnx" title="yobx.sql.dataframe_to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataframe_to_onnx()</span></code></a> — end-to-end converter: function →
+<a class="reference internal" href="../../api/container/index.html#yobx.container.ExportArtifact" title="yobx.container.ExportArtifact"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportArtifact</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="../../api/sql/parsed_query_to_onnx.html#yobx.sql.parsed_query_to_onnx" title="yobx.sql.parsed_query_to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">parsed_query_to_onnx()</span></code></a> — convert an already-built
+<a class="reference internal" href="../../api/sql/parse.html#yobx.sql.parse.ParsedQuery" title="yobx.sql.parse.ParsedQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParsedQuery</span></code></a> to ONNX (bypasses SQL string parsing).</p></li>
+</ul>
+</section>
+<section id="id1">
+<h3>Example<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>The following example traces the function and prints the list of captured
+operations before compiling to ONNX:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_dataframe</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">)])</span>
+
+
+<span class="n">pq</span> <span class="o">=</span> <span class="n">trace_dataframe</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">pq</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s2">&quot;—&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    FilterOp — FilterOp(condition=Condition(left=ColumnRef(column=&#39;a&#39;, table=None), op=&#39;&gt;&#39;, right=Literal(value=0)))
+    SelectOp — SelectOp(items=[SelectItem(expr=BinaryExpr(left=ColumnRef(column=&#39;a&#39;, table=None), op=&#39;+&#39;, right=ColumnRef(column=&#39;b&#39;, table=None)), alias=&#39;total&#39;)], distinct=False)
+</pre></div>
+</div>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataframe_to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedReferenceEvaluator</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">)])</span>
+
+
+<span class="n">dtypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">}</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">dataframe_to_onnx</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">)</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="n">ExtendedReferenceEvaluator</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="p">(</span><span class="n">total</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">b</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>  <span class="c1"># → [5.  9.]   (rows where a &gt; 0)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="mf">5.</span> <span class="mf">9.</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 
@@ -711,12 +803,12 @@ separate handling path).</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../sklearn/debug.html"
+       href="../sklearn/dataframe_pipeline.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Debugging with Environment Variables</p>
+        <p class="prev-next-title">DataFrame Input to a Pipeline with ColumnTransformer</p>
       </div>
     </a>
     <a class="right-next"
@@ -759,6 +851,11 @@ separate handling path).</p></li>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-future-work">Limitations and future work</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-function-tracer">DataFrame function tracer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-classes-and-functions">Key classes and functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Example</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

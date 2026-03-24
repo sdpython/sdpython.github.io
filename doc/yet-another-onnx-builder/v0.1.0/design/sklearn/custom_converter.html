@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -408,6 +408,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Custom Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../sql/index.html">SQL-to-ONNX Converter Design</a></li>
@@ -730,6 +731,21 @@ means you no longer have to pass <code class="docutils literal notranslate"><spa
 <span class="c1"># no extra_converters needed</span>
 </pre></div>
 </div>
+</section>
+<section id="multi-output-converters-with-noknownoutputmixin">
+<h2>Multi-output converters with <code class="docutils literal notranslate"><span class="pre">NoKnownOutputMixin</span></code><a class="headerlink" href="#multi-output-converters-with-noknownoutputmixin" title="Link to this heading">#</a></h2>
+<p>By default the framework infers the expected ONNX output names from the
+estimator type (see <a class="reference internal" href="sklearn_converter.html#l-design-sklearn-converter"><span class="std std-ref">Sklearn Converter</span></a>, <em>Output naming</em>
+section).  When a custom estimator produces outputs that don’t fit those
+heuristics — for example an arbitrary set of named columns — the automatic
+inference gets in the way.</p>
+<p>Inheriting from
+<a class="reference internal" href="../../api/sklearn/to_onnx.html#yobx.sklearn.NoKnownOutputMixin" title="yobx.sklearn.NoKnownOutputMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoKnownOutputMixin</span></code></a>
+tells <a class="reference internal" href="../../api/sklearn/sklearn_helper.html#yobx.sklearn.sklearn_helper.get_output_names" title="yobx.sklearn.sklearn_helper.get_output_names"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_output_names</span></code></a>
+to return <code class="docutils literal notranslate"><span class="pre">None</span></code>, which causes <a class="reference internal" href="../../api/sklearn/to_onnx.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a>
+to skip pre-allocating output tensor names and hand full control to the
+converter.  The converter is then free to call <code class="docutils literal notranslate"><span class="pre">g.op.*</span></code> and return as
+many (or as few) output names as it needs.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="sklearn_converter.html#l-design-sklearn-converter"><span class="std std-ref">Sklearn Converter</span></a> — overview of the converter
@@ -791,6 +807,7 @@ the package itself.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-numerically">Validate numerically</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overriding-a-built-in-converter">Overriding a built-in converter</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permanent-registration">Permanent registration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-output-converters-with-noknownoutputmixin">Multi-output converters with <code class="docutils literal notranslate"><span class="pre">NoKnownOutputMixin</span></code></a></li>
 </ul>
   </nav></div>
 

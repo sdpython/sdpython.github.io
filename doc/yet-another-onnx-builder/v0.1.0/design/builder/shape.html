@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -55,7 +55,7 @@
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="GraphBuilder" href="graph_builder.html" />
+    <link rel="next" title="Computation Cost Inference" href="cost.html" />
     <link rel="prev" title="GraphBuilder to build and optimize ONNX Models" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -396,6 +396,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">GraphBuilder to build and optimize ONNX Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">ShapeBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cost.html">Computation Cost Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graph_builder.html">GraphBuilder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimizer.html">Pattern Optimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimizer_patterns.html">Available Patterns</a></li>
@@ -888,6 +889,150 @@ detailed text dump of the builder’s internal state (known shapes, types,
 constants, ranks, and the sequence of calls) which can be printed or logged
 whenever an assertion fails.</p>
 </section>
+<section id="constraint-mechanism">
+<h2>Constraint Mechanism<a class="headerlink" href="#constraint-mechanism" title="Link to this heading">#</a></h2>
+<p>When <a class="reference internal" href="../../api/xshape/index.html#yobx.xshape.BasicShapeBuilder" title="yobx.xshape.shape_builder_impl.BasicShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicShapeBuilder</span></code></a>
+processes a broadcasting operation (e.g. <code class="docutils literal notranslate"><span class="pre">Add</span></code>, <code class="docutils literal notranslate"><span class="pre">Mul</span></code>, <code class="docutils literal notranslate"><span class="pre">Where</span></code>) it computes
+the output shape with
+<a class="reference internal" href="../../api/xshape/shape_type_compute.html#yobx.xshape.shape_type_compute.broadcast_shape" title="yobx.xshape.shape_type_compute.broadcast_shape"><code class="xref py py-func docutils literal notranslate"><span class="pre">broadcast_shape</span></code></a>.
+If one input dimension is a symbolic string (unknown at graph-construction time)
+and the other is a concrete integer that is not <code class="docutils literal notranslate"><span class="pre">1</span></code>, the builder registers a
+<strong>constraint</strong> equating the symbolic name to the concrete value.</p>
+<section id="why-constraints-are-needed">
+<h3>Why constraints are needed<a class="headerlink" href="#why-constraints-are-needed" title="Link to this heading">#</a></h3>
+<p>Without constraints, the shape of the broadcast result would be left as the
+symbolic name (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;d_model&quot;</span></code>), and any operation that follows would inherit
+this uncertainty.  Later, when a downstream node reveals the concrete value, the
+builder would have to <em>backtrack</em> and update all earlier shapes — an expensive
+and error-prone operation that is not implemented.</p>
+<p>With constraints, the concrete value is used <strong>immediately</strong> as the output
+dimension, and the equality <code class="docutils literal notranslate"><span class="pre">symbolic_name</span> <span class="pre">=</span> <span class="pre">concrete_value</span></code> is stored.
+Downstream operations can propagate the concrete shape without revisiting
+previous nodes.</p>
+</section>
+<section id="how-constraints-are-registered">
+<h3>How constraints are registered<a class="headerlink" href="#how-constraints-are-registered" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="../../api/xshape/shape_type_compute.html#yobx.xshape.shape_type_compute.broadcast_shape" title="yobx.xshape.shape_type_compute.broadcast_shape"><code class="xref py py-func docutils literal notranslate"><span class="pre">broadcast_shape</span></code></a> applies
+the following rules for each pair of aligned dimensions <code class="docutils literal notranslate"><span class="pre">(a,</span> <span class="pre">b)</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">a</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">b</span></code></p></th>
+<th class="head"><p>Result</p></th>
+<th class="head"><p>Constraint registered</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>symbolic string</p></td>
+<td><p>concrete int <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">≠</span> <span class="pre">0,</span> <span class="pre">1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">n</span></code></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>concrete int <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">≠</span> <span class="pre">0,</span> <span class="pre">1</span></code> | symbolic string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">n</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>symbolic string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a</span></code></p></td>
+<td><p><em>(none — 1 broadcasts freely)</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>two symbolic strings</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">==</span> <span class="pre">b</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a</span></code></p></td>
+<td><p><em>(none — already equal)</em></p></td>
+</tr>
+<tr class="row-even"><td><p>two symbolic strings</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">!=</span> <span class="pre">b</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a^b</span></code></p></td>
+<td><p><em>(none — max expression)</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The concrete integer is always chosen as the output dimension so that subsequent
+operations see a precise shape immediately.</p>
+</section>
+<section id="example-broadcasting-after-an-unknown-dimension">
+<h3>Example: broadcasting after an unknown dimension<a class="headerlink" href="#example-broadcasting-after-an-unknown-dimension" title="Link to this heading">#</a></h3>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xshape</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicShapeBuilder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xshape.shape_type_compute</span><span class="w"> </span><span class="kn">import</span> <span class="n">broadcast_shape</span>
+
+<span class="n">TFLOAT</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+
+<span class="c1"># X has dynamic last dimension &quot;d_model&quot;; bias has static size 64.</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+    <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Add&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;bias&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]),</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;MatMul&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Out&quot;</span><span class="p">]),</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;graph&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">,</span> <span class="s2">&quot;d_model&quot;</span><span class="p">])],</span>
+        <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="s2">&quot;Out&quot;</span><span class="p">,</span> <span class="n">TFLOAT</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])],</span>
+        <span class="p">[</span>
+            <span class="n">onh</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">64</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bias&quot;</span><span class="p">),</span>
+            <span class="n">onh</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;W&quot;</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">),</span>
+    <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)],</span>
+    <span class="n">ir_version</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">builder</span> <span class="o">=</span> <span class="n">BasicShapeBuilder</span><span class="p">()</span>
+<span class="n">builder</span><span class="o">.</span><span class="n">run_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;Out&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">5s</span><span class="si">}</span><span class="s2">  shape=</span><span class="si">{</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># The constraint records that d_model equals 64</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;constraints:&quot;</span><span class="p">,</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_registered_constraints</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">X</span>      <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="s1">&#39;seq&#39;</span><span class="p">,</span> <span class="s1">&#39;d_model&#39;</span><span class="p">)</span>
+    <span class="n">Z</span>      <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="s1">&#39;seq&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+    <span class="n">Out</span>    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="s1">&#39;seq&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="n">constraints</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d_model&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">64</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>When the <code class="docutils literal notranslate"><span class="pre">Add</span></code> node is processed, <code class="docutils literal notranslate"><span class="pre">broadcast_shape</span></code> aligns
+<code class="docutils literal notranslate"><span class="pre">(&quot;batch&quot;,</span> <span class="pre">&quot;seq&quot;,</span> <span class="pre">&quot;d_model&quot;)</span></code> with <code class="docutils literal notranslate"><span class="pre">(64,)</span></code> (right-padded to
+<code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">64)</span></code>).  The pair <code class="docutils literal notranslate"><span class="pre">(&quot;d_model&quot;,</span> <span class="pre">64)</span></code> triggers the constraint
+<code class="docutils literal notranslate"><span class="pre">&quot;d_model&quot;</span> <span class="pre">=</span> <span class="pre">64</span></code>.  The output shape <code class="docutils literal notranslate"><span class="pre">Z</span></code> therefore becomes
+<code class="docutils literal notranslate"><span class="pre">(&quot;batch&quot;,</span> <span class="pre">&quot;seq&quot;,</span> <span class="pre">64)</span></code> rather than <code class="docutils literal notranslate"><span class="pre">(&quot;batch&quot;,</span> <span class="pre">&quot;seq&quot;,</span> <span class="pre">&quot;d_model&quot;)</span></code>, and
+the <code class="docutils literal notranslate"><span class="pre">MatMul</span></code> handler can propagate the shape of <code class="docutils literal notranslate"><span class="pre">Out</span></code> immediately as
+<code class="docutils literal notranslate"><span class="pre">(&quot;batch&quot;,</span> <span class="pre">&quot;seq&quot;,</span> <span class="pre">32)</span></code> without any backtracking.</p>
+</section>
+<section id="constraint-api">
+<h3>Constraint API<a class="headerlink" href="#constraint-api" title="Link to this heading">#</a></h3>
+<p>Three methods on <a class="reference internal" href="../../api/xshape/index.html#yobx.xshape.ShapeBuilder" title="yobx.xshape.shape_builder.ShapeBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeBuilder</span></code></a>
+expose the constraint registry:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../api/xshape/index.html#yobx.xshape.ShapeBuilder.register_constraint_dimension" title="yobx.xshape.ShapeBuilder.register_constraint_dimension"><code class="xref py py-meth docutils literal notranslate"><span class="pre">register_constraint_dimension(dim_name,</span> <span class="pre">value)</span></code></a> — record that the
+symbolic dimension <code class="docutils literal notranslate"><span class="pre">dim_name</span></code> is equal to <code class="docutils literal notranslate"><span class="pre">value</span></code> (an integer or another
+symbolic name).  Called automatically by <code class="docutils literal notranslate"><span class="pre">broadcast_shape</span></code> when needed.</p></li>
+<li><p><a class="reference internal" href="../../api/xshape/index.html#yobx.xshape.ShapeBuilder.add_to_constraints" title="yobx.xshape.ShapeBuilder.add_to_constraints"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_to_constraints(dim_name,</span> <span class="pre">value)</span></code></a> — lower-level helper that
+accepts a set of values as well as a single value.</p></li>
+<li><p><a class="reference internal" href="../../api/xshape/index.html#yobx.xshape.ShapeBuilder.get_registered_constraints" title="yobx.xshape.ShapeBuilder.get_registered_constraints"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_registered_constraints()</span></code></a> — returns the full
+mapping <code class="docutils literal notranslate"><span class="pre">{dim_name:</span> <span class="pre">{values}}</span></code> accumulated so far.</p></li>
+</ul>
+<p>The registry is also used by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_improves_dynamic_dimension_naming</span></code> to replace
+internal opaque tokens (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;s0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;DYN0&quot;</span></code>) with user-visible names
+once the relationships between them are known.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../auto_examples_core/plot_shape_constraints.html#l-plot-shape-constraints"><span class="std std-ref">Constraint Mechanism in Shape Inference</span></a> — sphinx-gallery example demonstrating the
+constraint mechanism end-to-end.</p>
+</div>
+</section>
+</section>
 <section id="implementing-a-new-shape-function">
 <h2>Implementing a new shape function<a class="headerlink" href="#implementing-a-new-shape-function" title="Link to this heading">#</a></h2>
 <p>Adding support for a new operator (or overriding an existing one) requires
@@ -993,11 +1138,11 @@ processes a <code class="docutils literal notranslate"><span class="pre">Scale</
       </div>
     </a>
     <a class="right-next"
-       href="graph_builder.html"
+       href="cost.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">GraphBuilder</p>
+        <p class="prev-next-title">Computation Cost Inference</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1032,6 +1177,13 @@ processes a <code class="docutils literal notranslate"><span class="pre">Scale</
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validating-computed-shapes">Validating computed shapes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-shapes-back-to-a-model">Writing shapes back to a model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging">Debugging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constraint-mechanism">Constraint Mechanism</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-constraints-are-needed">Why constraints are needed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-constraints-are-registered">How constraints are registered</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-broadcasting-after-an-unknown-dimension">Example: broadcasting after an unknown dimension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraint-api">Constraint API</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-a-new-shape-function">Implementing a new shape function</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-functions-signature">Shape functions signature</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-custom-element-wise-scaling-operator">Example: a custom element-wise scaling operator</a></li>

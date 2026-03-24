@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="-m yobx agg … aggregate statistics from benchmark runs" href="agg.html" />
-    <link rel="prev" title="Converting a TFLite/LiteRT model to ONNX" href="../auto_examples_litert/plot_litert_to_onnx.html" />
+    <link rel="prev" title="Export a LLM to ONNX with InputObserver" href="../auto_examples_transformers/plot_llm_to_onnx.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -463,12 +463,12 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>yobx
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">usage</span><span class="p">:</span> <span class="n">yobx</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">agg</span><span class="p">,</span><span class="n">dot</span><span class="p">,</span><span class="n">find</span><span class="p">,</span><span class="n">partition</span><span class="p">,</span><span class="nb">print</span><span class="p">,</span><span class="n">render</span><span class="o">-</span><span class="n">gallery</span><span class="p">,</span><span class="n">run</span><span class="o">-</span><span class="n">doc</span><span class="o">-</span><span class="n">examples</span><span class="p">,</span><span class="n">validate</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">usage</span><span class="p">:</span> <span class="n">yobx</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">agg</span><span class="p">,</span><span class="n">dot</span><span class="p">,</span><span class="n">find</span><span class="p">,</span><span class="n">partition</span><span class="p">,</span><span class="nb">print</span><span class="p">,</span><span class="n">render</span><span class="o">-</span><span class="n">gallery</span><span class="p">,</span><span class="n">run</span><span class="o">-</span><span class="n">doc</span><span class="o">-</span><span class="n">examples</span><span class="p">,</span><span class="n">stats</span><span class="p">,</span><span class="n">validate</span><span class="p">}</span>
     
     <span class="n">yobx</span> <span class="n">main</span> <span class="n">command</span> <span class="n">line</span><span class="o">.</span>
     
     <span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
-      <span class="p">{</span><span class="n">agg</span><span class="p">,</span><span class="n">dot</span><span class="p">,</span><span class="n">find</span><span class="p">,</span><span class="n">partition</span><span class="p">,</span><span class="nb">print</span><span class="p">,</span><span class="n">render</span><span class="o">-</span><span class="n">gallery</span><span class="p">,</span><span class="n">run</span><span class="o">-</span><span class="n">doc</span><span class="o">-</span><span class="n">examples</span><span class="p">,</span><span class="n">validate</span><span class="p">}</span>
+      <span class="p">{</span><span class="n">agg</span><span class="p">,</span><span class="n">dot</span><span class="p">,</span><span class="n">find</span><span class="p">,</span><span class="n">partition</span><span class="p">,</span><span class="nb">print</span><span class="p">,</span><span class="n">render</span><span class="o">-</span><span class="n">gallery</span><span class="p">,</span><span class="n">run</span><span class="o">-</span><span class="n">doc</span><span class="o">-</span><span class="n">examples</span><span class="p">,</span><span class="n">stats</span><span class="p">,</span><span class="n">validate</span><span class="p">}</span>
                             <span class="n">Selects</span> <span class="n">a</span> <span class="n">command</span><span class="o">.</span>
     
     <span class="n">options</span><span class="p">:</span>
@@ -484,6 +484,7 @@
     <span class="nb">print</span>             <span class="o">-</span> <span class="n">prints</span> <span class="n">the</span> <span class="n">model</span> <span class="n">on</span> <span class="n">standard</span> <span class="n">output</span>
     <span class="n">render</span><span class="o">-</span><span class="n">gallery</span>    <span class="o">-</span> <span class="n">convert</span> <span class="n">a</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">gallery</span> <span class="o">.</span><span class="n">py</span> <span class="n">example</span> <span class="n">to</span> <span class="n">RST</span> <span class="p">(</span><span class="n">no</span> <span class="n">execution</span><span class="p">)</span>
     <span class="n">run</span><span class="o">-</span><span class="n">doc</span><span class="o">-</span><span class="n">examples</span>  <span class="o">-</span> <span class="n">run</span> <span class="nb">all</span> <span class="n">runpython</span><span class="p">::</span> <span class="ow">and</span> <span class="n">gdot</span><span class="p">::</span> <span class="n">examples</span> <span class="ow">in</span> <span class="n">RST</span><span class="o">/</span><span class="n">Python</span> <span class="n">files</span>
+    <span class="n">stats</span>             <span class="o">-</span> <span class="n">compute</span> <span class="n">statistics</span> <span class="n">on</span> <span class="n">an</span> <span class="n">onnx</span> <span class="n">model</span>
     <span class="n">validate</span>          <span class="o">-</span> <span class="n">validate</span> <span class="n">a</span> <span class="n">model</span> <span class="p">(</span><span class="n">knowing</span> <span class="n">its</span> <span class="n">model</span> <span class="nb">id</span> <span class="n">on</span> <span class="n">HuggingFace</span> <span class="n">Hub</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -511,12 +512,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../auto_examples_litert/plot_litert_to_onnx.html"
+       href="../auto_examples_transformers/plot_llm_to_onnx.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Converting a TFLite/LiteRT model to ONNX</p>
+        <p class="prev-next-title">Export a LLM to ONNX with InputObserver</p>
       </div>
     </a>
     <a class="right-next"

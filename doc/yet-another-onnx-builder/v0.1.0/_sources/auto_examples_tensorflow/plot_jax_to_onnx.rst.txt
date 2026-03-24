@@ -193,11 +193,11 @@ whose weights are stored as JAX arrays captured in a closure.
     WARNING:tensorflow:AutoGraph could not transform <bound method StackSummary.extract of <class 'traceback.StackSummary'>> and will run it as-is.
     Cause: generators are not supported
     To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
-    WARNING:tensorflow:AutoGraph could not transform <function samefile at 0x715d805249a0> and will run it as-is.
-    Cause: Unable to locate the source code of <function samefile at 0x715d805249a0>. Note that functions defined in certain environments, like the interactive Python shell, do not expose their source code. If that is the case, you should define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.experimental.do_not_convert. Original error: could not get source code
+    WARNING:tensorflow:AutoGraph could not transform <function samefile at 0x7f3aa5c209a0> and will run it as-is.
+    Cause: Unable to locate the source code of <function samefile at 0x7f3aa5c209a0>. Note that functions defined in certain environments, like the interactive Python shell, do not expose their source code. If that is the case, you should define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.experimental.do_not_convert. Original error: could not get source code
     To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
 
-    Op-types in the MLP graph: ['MatMul', 'Max', 'MatMul']
+    Op-types in the MLP graph: ['MatMul', 'Relu', 'MatMul']
 
 
 
@@ -224,9 +224,8 @@ Display the model.
     input: name='X:0' type=dtype('float32') shape=[10, 8]
     init: name='%cst' type=float32 shape=(8, 16)
     init: name='%cst_1' type=float32 shape=(16, 4)
-    init: name='%cst_1_dup' type=float32 shape=() -- array([0.], dtype=float32)
     MatMul(X:0, %cst) -> _onx_matmul_jax2tf_arg_0:0
-      Max(_onx_matmul_jax2tf_arg_0:0, %cst_1_dup) -> _onx_max_add_matmul_jax2tf_arg_0:0
+      Relu(_onx_matmul_jax2tf_arg_0:0) -> _onx_max_add_matmul_jax2tf_arg_0:0
         MatMul(_onx_max_add_matmul_jax2tf_arg_0:0, %cst_1) -> Identity:0
     output: name='Identity:0' type='NOTENSOR' shape=None
 
@@ -355,7 +354,7 @@ called directly when you want to inspect or reuse the intermediate
 
  .. code-block:: none
 
-    Explicit jax_to_concrete_function verified ✓ -  {'abs': 4.470348358154297e-08, 'rel': 2.2931874917945164e-07, 'sum': 6.062909960746765e-07, 'n': 60.0, 'dnan': 0.0, 'argm': (0, 0)}
+    Explicit jax_to_concrete_function verified ✓ -  {'abs': 2.9802322387695312e-08, 'rel': 2.183310187086828e-07, 'sum': 4.926696419715881e-07, 'n': 60.0, 'dnan': 0.0, 'argm': (2, 7)}
 
 
 
@@ -386,7 +385,7 @@ called directly when you want to inspect or reuse the intermediate
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.176 seconds)
+   **Total running time of the script:** (0 minutes 18.744 seconds)
 
 
 .. _sphx_glr_download_auto_examples_tensorflow_plot_jax_to_onnx.py:

@@ -434,8 +434,7 @@ The model
 
     opset: domain='' version=21
     input: name='a' type=dtype('float32') shape=['N']
-    init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- Opset.make_node.1/Small
-    Max(a, init1_s_) -> _onx_max_a
+    Relu(a) -> _onx_max_a
       Sqrt(_onx_max_a) -> r
     output: name='r' type='NOTENSOR' shape=None
 
@@ -498,9 +497,8 @@ The model
 
     opset: domain='' version=21
     input: name='a' type=dtype('float32') shape=['N']
-    init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- Opset.make_node.1/Small
     init: name='filter_mask_r_lit' type=int64 shape=(1,) -- array([1])
-    Max(a, init1_s_) -> _onx_max_a
+    Relu(a) -> _onx_max_a
       Sqrt(_onx_max_a) -> _onx_sqrt_max_a
         CastLike(filter_mask_r_lit, _onx_sqrt_max_a) -> _onx_castlike_filter_mask_r_lit
         Greater(_onx_sqrt_max_a, _onx_castlike_filter_mask_r_lit) -> _onx_greater_filter_mask_l_clip_sqrt
@@ -685,7 +683,7 @@ to one output.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.591 seconds)
+   **Total running time of the script:** (0 minutes 0.535 seconds)
 
 
 .. _sphx_glr_download_auto_examples_sql_plot_sql_to_onnx.py:

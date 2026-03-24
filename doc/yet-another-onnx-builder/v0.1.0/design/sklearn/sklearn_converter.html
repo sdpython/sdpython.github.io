@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -408,6 +408,7 @@
 <li class="toctree-l2"><a class="reference internal" href="custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../sql/index.html">SQL-to-ONNX Converter Design</a></li>
@@ -639,6 +640,13 @@ when more than one output is expected).</p></li>
 <li><p><strong>Classifiers</strong> default to <code class="docutils literal notranslate"><span class="pre">[&quot;label&quot;,</span> <span class="pre">&quot;probabilities&quot;]</span></code>.</p></li>
 <li><p><strong>Regressors</strong> default to <code class="docutils literal notranslate"><span class="pre">[&quot;predictions&quot;]</span></code>.</p></li>
 <li><p>Everything else defaults to <code class="docutils literal notranslate"><span class="pre">[&quot;Y&quot;]</span></code>.</p></li>
+<li><p><strong>Estimators that inherit from</strong>
+<a class="reference internal" href="../../api/sklearn/to_onnx.html#yobx.sklearn.NoKnownOutputMixin" title="yobx.sklearn.NoKnownOutputMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoKnownOutputMixin</span></code></a> cause
+<code class="docutils literal notranslate"><span class="pre">get_output_names()</span></code> to return <code class="docutils literal notranslate"><span class="pre">None</span></code>, signalling that the converter
+itself is responsible for registering its outputs.  Use this mixin when
+the output shape cannot be determined by the heuristics above — for
+example a transformer that returns an arbitrary number of named columns.
+See <a class="reference internal" href="custom_converter.html#l-design-sklearn-custom-converter"><span class="std std-ref">Custom Converter</span></a> for a worked example.</p></li>
 </ul>
 </section>
 <section id="adding-a-new-converter">
@@ -674,7 +682,7 @@ is loaded when <code class="xref py py-func docutils literal notranslate"><span 
 <section id="converting-options">
 <h2>Converting Options<a class="headerlink" href="#converting-options" title="Link to this heading">#</a></h2>
 <p>The user may need extra outputs coming from the model.
-This is driven by class <a class="reference internal" href="../../api/sklearn/convert_options.html#yobx.sklearn.ConvertOptions" title="yobx.sklearn.ConvertOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.sklearn.ConvertOptions</span></code></a>
+This is driven by class <a class="reference internal" href="../../api/sklearn/to_onnx.html#yobx.sklearn.ConvertOptions" title="yobx.sklearn.ConvertOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.sklearn.ConvertOptions</span></code></a>
 which exposes all the possible ways to change the default behaviour
 if the converters.
 See <a class="reference internal" href="../../auto_examples_sklearn/plot_sklearn_convert_options.html#l-plot-sklearn-convert-options"><span class="std std-ref">Exporting sklearn tree models with convert options</span></a> for a worked example.</p>
