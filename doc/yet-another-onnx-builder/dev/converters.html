@@ -171,7 +171,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -325,7 +325,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -393,9 +393,15 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Pieces</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="design/export_artifact.html">to_onnx and ExportArtifact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="coverage.html">Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_to_onnx.html">Main to_onnx function</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Converters</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="design/litert/index.html">LiteRT / TFLite Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="design/litert/supported_ops.html">Supported LiteRT Ops</a></li>
 </ul>
@@ -407,25 +413,30 @@
 <li class="toctree-l2"><a class="reference internal" href="design/sklearn/supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/sklearn/custom_converter.html">Custom Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/sklearn/contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/sklearn/debug.html">Debugging with Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/sklearn/dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="design/sql/index.html">SQL-to-ONNX Converter Design</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design/sql/index.html">SQL-to-ONNX Converter Design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="design/sql/sql.html">SQL-to-ONNX Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/sql/dataframe.html">DataFrame Function Tracer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/sql/polars.html">Polars LazyFrame to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/sql/coverage.html">SQL / DataFrame Coverage</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="design/tensorflow/index.html">TensorFlow / JAX Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="design/tensorflow/supported_ops.html">Supported TF Ops</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/tensorflow/supported_jax_ops.html">Supported JAX Ops</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="design/torch/index.html">Torch Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="design/torch/converter.html">Torch Converter to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/torch/converter.html">Torch Converters to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/torch/flatten.html">Flattening Functionalities (torch)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/torch/flatten_list.html">Flattening List</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/torch/patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/torch/patches_list.html">Patches List</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/torch/input_observer.html">InputObserver</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/torch/supported_aten_functions.html">Supported Aten Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/torch/case_coverage.html">Overview of Exportability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/torch/case_coverage.html">Overview of Exportability Comparison</a></li>
 </ul>
 </details></li>
 </ul>
@@ -492,9 +503,17 @@ They all relies on a function <code class="docutils literal notranslate"><span c
 the model, converts piece by piece to onnx and connect them.
 They all returns an instance of <a class="reference internal" href="api/container/index.html#yobx.container.ExportArtifact" title="yobx.container.ExportArtifact"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportArtifact</span></code></a>.</p>
 <div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Pieces</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="design/export_artifact.html">to_onnx and ExportArtifact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="coverage.html">Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main_to_onnx.html">Main to_onnx function</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Converters</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="design/litert/index.html">LiteRT / TFLite Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="design/sklearn/index.html">scikit-learn Export to ONNX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="design/sql/index.html">SQL-to-ONNX Converter Design</a></li>

@@ -171,7 +171,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -325,7 +325,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -396,7 +396,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_core/index.html">Core Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_translate_comparison.html">Comparing the five ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_cost_formulas.html">Computation Cost: How It Works and Supported Operator Formulas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
@@ -417,6 +417,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_sklearn_pipeline.html">Converting a scikit-learn Pipeline to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_sklearn_with_spox.html">Converting a scikit-learn model to ONNX with spox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_sklearn_sksurv_ipc_ridge.html">Converting sksurv IPCRidge to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_sklearn_custom_converter_options.html">Custom converter with convert options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_sklearn_dataframe_pipeline.html">DataFrame input to a Pipeline with ColumnTransformer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_sklearn_function_transformer.html">Exporting FunctionTransformer with numpy tracing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_sklearn_function_options.html">Exporting sklearn estimators as ONNX local functions</a></li>
@@ -427,6 +428,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_sql/index.html">SQL Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_lazyframe_to_onnx.html">Polars LazyFrame to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_sql_to_onnx.html">SQL queries to ONNX</a></li>
 </ul>
 </details></li>
@@ -445,7 +447,9 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_transformers/index.html">Transformers Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_transformers/plot_many_exporters.html">Export Tiny-LLM with different ways</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_transformers/plot_llm_to_onnx.html">Export a LLM to ONNX with InputObserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_transformers/plot_validate_model.html">Validate a LLM export and inspect discrepancies</a></li>
 </ul>
 </details></li>
 </ul>
@@ -523,7 +527,7 @@ set of <a class="reference external" href="https://scikit-learn.org/stable/">sci
 <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>, <code class="docutils literal notranslate"><span class="pre">DecisionTree*</span></code>, <code class="docutils literal notranslate"><span class="pre">MLP*</span></code>, and <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code>).
 For any estimator that is <em>not</em> covered by the built-in registry, you can
 supply your own converter through the <code class="docutils literal notranslate"><span class="pre">extra_converters</span></code> keyword argument.</p>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap_skl2onnx_converter()</span></code> makes the conversion from
+<p><a class="reference internal" href="../api/sklearn/to_onnx.html#yobx.sklearn.wrap_skl2onnx_converter" title="yobx.sklearn.wrap_skl2onnx_converter"><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap_skl2onnx_converter()</span></code></a> makes the conversion from
 <a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a>.  One line of setup after
 looking up the skl2onnx converter function.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -547,7 +551,7 @@ looking up the skl2onnx converter function.</p>
 </section>
 <section id="convert-to-onnx-using-the-factory-helper">
 <h2>Convert to ONNX using the factory helper<a class="headerlink" href="#convert-to-onnx-using-the-factory-helper" title="Link to this heading">#</a></h2>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap_skl2onnx_converter()</span></code> makes the function look
+<p><a class="reference internal" href="../api/sklearn/to_onnx.html#yobx.sklearn.wrap_skl2onnx_converter" title="yobx.sklearn.wrap_skl2onnx_converter"><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap_skl2onnx_converter()</span></code></a> makes the function look
 like a converter for <cite>yobx</cite>.`</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -568,7 +572,9 @@ like a converter for <cite>yobx</cite>.`</p>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predictions match ✓&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Predictions match ✓
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:785: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (2000) reached and the optimization hasn&#39;t converged yet.
+  warnings.warn(
+Predictions match ✓
 </pre></div>
 </div>
 </section>
@@ -580,7 +586,7 @@ converter are injected directly into the enclosing graph.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_dot</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_sklearn_with_sklearn_onnx_001.png" srcset="../_images/sphx_glr_plot_sklearn_with_sklearn_onnx_001.png" alt="plot sklearn with sklearn onnx" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.541 seconds)</p>
+<img src="../_images/sphx_glr_plot_sklearn_with_sklearn_onnx_001.png" srcset="../_images/sphx_glr_plot_sklearn_with_sklearn_onnx_001.png" alt="plot sklearn with sklearn onnx" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.698 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-sklearn-plot-sklearn-with-sklearn-onnx-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/6531b81fb864e2599f6be6aa331f10b8/plot_sklearn_with_sklearn_onnx.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_sklearn_with_sklearn_onnx.ipynb</span></code></a></p>
@@ -596,12 +602,12 @@ converter are injected directly into the enclosing graph.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="yobx.sklearn.to_onnx converts fitted scikit-learn estimators and pipelines into onnx.ModelProto objects that can be executed with any ONNX-compatible runtime."><img alt="" src="../_images/sphx_glr_plot_sklearn_pipeline_thumb.png" />
 <p><a class="reference internal" href="plot_sklearn_pipeline.html"><span class="doc">Converting a scikit-learn Pipeline to ONNX</span></a></p>
   <div class="sphx-glr-thumbnail-title">Converting a scikit-learn Pipeline to ONNX</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="yobx.sklearn.to_onnx converts a fitted sklearn.neighbors.KNeighborsClassifier or sklearn.neighbors.KNeighborsRegressor into an onnx.ModelProto."><img alt="" src="../_images/sphx_glr_plot_sklearn_knn_thumb.png" />
-<p><a class="reference internal" href="plot_sklearn_knn.html"><span class="doc">KNeighbors: choosing between CDist and standard ONNX</span></a></p>
-  <div class="sphx-glr-thumbnail-title">KNeighbors: choosing between CDist and standard ONNX</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a scikit-learn Pipeline whose first step is a ColumnTransformer when the training data is a pandas.DataFrame."><img alt="" src="../_images/sphx_glr_plot_sklearn_dataframe_pipeline_thumb.png" />
 <p><a class="reference internal" href="plot_sklearn_dataframe_pipeline.html"><span class="doc">DataFrame input to a Pipeline with ColumnTransformer</span></a></p>
   <div class="sphx-glr-thumbnail-title">DataFrame input to a Pipeline with ColumnTransformer</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="spox is a Python library for constructing ONNX graphs that exposes strongly-typed, opset-versioned operator functions rather than the raw onnx.helper API.  Each operator is a Python function (e.g. op.MatMul(A, B)) so the construction code is type-safe, IDE-friendly, and always produces a graph that is valid for the chosen opset."><img alt="" src="../_images/sphx_glr_plot_sklearn_with_spox_thumb.png" />
+<p><a class="reference internal" href="plot_sklearn_with_spox.html"><span class="doc">Converting a scikit-learn model to ONNX with spox</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Converting a scikit-learn model to ONNX with spox</div>
 </div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>

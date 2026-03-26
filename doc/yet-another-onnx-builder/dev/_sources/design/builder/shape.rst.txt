@@ -22,6 +22,20 @@ in :class:`_BuilderRuntime <yobx.xshape._builder_runtime._BuilderRuntime>`.
 This is used by :class:`_ShapeRuntime <yobx.xshape._shape_runtime._ShapeRuntime>`
 to deduce some shapes.
 
+The whole algorithm relies on four components:
+
+* An **analyser for expressions** able to parse and simplify numerical expressions
+  built upon name for the dynamic dimension sets of the inputs,
+* A list of **functions inferring shapes**, including the numerical
+  expressions for every ONNX operator,
+* A very **simple runtime** able to run a short list of kernels usually used to
+  handle shapes (Add, Sub, Mul, Div, Concat, Squeeze, Unsqueeze, Shape, Size, Reshape),
+* An algorithm solving **constraints** after inferring function was run.
+  An unknown dimension may be known or at least constrained to a short set of values
+  after a binary operator (or any other) was processed. The constraint mechanism is
+  put in place to implement a kind of backward pass where output dimensions
+  restricts the number of possible values for input dimensions.
+
 Class Hierarchy
 ===============
 
@@ -345,8 +359,10 @@ This is useful for visualisation tools and downstream passes that rely on
     shape = tuple(d.dim_param if d.dim_param else d.dim_value for d in t.shape.dim)
     print(f"  {vi.name}: dtype={t.elem_type}  shape={shape}")
 
-Debugging
-=========
+.. _l-design-xshape-debugging:
+
+Debugging Shape Inference with Environment Variables
+====================================================
 
 :class:`BasicShapeBuilder <yobx.xshape.shape_builder_impl.BasicShapeBuilder>`
 respects several environment variables that help narrow down shape-inference

@@ -201,13 +201,13 @@ scikit-learn sets during ``fit``.
 
 
     ONNX graph inputs:
-      'age'         shape=['batch']
-      'income'      shape=['batch']
-      'score'       shape=['batch']
-      'balance'     shape=['batch']
+      'age'         shape=['batch', 1]
+      'income'      shape=['batch', 1]
+      'score'       shape=['batch', 1]
+      'balance'     shape=['batch', 1]
 
     ONNX graph outputs: ['label', 'probabilities']
-    Number of nodes  : 18
+    Number of nodes  : 13
 
 
 
@@ -228,7 +228,7 @@ inputs registered during conversion.
     X_test_raw = rng.standard_normal((30, 4)).astype(np.float32)
     df_test = pd.DataFrame(X_test_raw, columns=df.columns)
 
-    feed = {col: df_test[col].to_numpy() for col in df.columns}
+    feed = {col: df_test[[col]].values for col in df.columns}
 
     sess = onnxruntime.InferenceSession(
         onx.proto.SerializeToString(), providers=["CPUExecutionProvider"]
@@ -280,7 +280,7 @@ The same pattern works when converting only the preprocessing part.
     for inp in onx_ct.proto.graph.input:
         print(f"  {inp.name!r}")
 
-    feed_ct = {col: df_test[col].to_numpy() for col in df.columns}
+    feed_ct = {col: df_test[[col]].values for col in df.columns}
     (ct_out_onnx,) = onnxruntime.InferenceSession(
         onx_ct.proto.SerializeToString(), providers=["CPUExecutionProvider"]
     ).run(None, feed_ct)
@@ -338,7 +338,7 @@ ColumnTransformer's ``Gather`` nodes.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.282 seconds)
+   **Total running time of the script:** (0 minutes 0.209 seconds)
 
 
 .. _sphx_glr_download_auto_examples_sklearn_plot_sklearn_dataframe_pipeline.py:

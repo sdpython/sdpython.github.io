@@ -171,7 +171,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -325,7 +325,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -418,6 +418,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../env_variables.html">Environment Variables for Unit Tests</a></li>
 </ul>
 </div>
 </nav></div>
@@ -602,21 +603,337 @@ expression</strong> that the estimator produces on a representative ONNX backend
 example.  All static input dimensions of that example are replaced by symbolic
 variables (<code class="docutils literal notranslate"><span class="pre">DIM&lt;n&gt;</span></code>) before running the estimator, so the result shows the
 general formula rather than a single concrete number.</p>
+<p>The complete table of supported operators and their symbolic FLOPs formulas is
+generated below by calling <a class="reference internal" href="../../api/xshape/index.html#yobx.xshape.list_op_cost_formulas" title="yobx.xshape.list_op_cost_formulas"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_op_cost_formulas()</span></code></a> at
+documentation-build time:</p>
+<p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xshape</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_op_cost_formulas</span>
 
-<span class="k">for</span> <span class="n">op_type</span><span class="p">,</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">list_op_cost_formulas</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op_type</span><span class="si">:</span><span class="s2">&lt;30s</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">formula</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">formulas</span> <span class="o">=</span> <span class="n">list_op_cost_formulas</span><span class="p">()</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;.. list-table::&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;   :header-rows: 1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;   :widths: 30 70&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;   * - Op type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;     - Symbolic FLOPs&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">op_type</span><span class="p">,</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   * - ``</span><span class="si">{</span><span class="n">op_type</span><span class="si">}</span><span class="s2">``&quot;</span><span class="p">)</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - ``</span><span class="si">{</span><span class="n">formula</span><span class="si">}</span><span class="s2">``&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Example output (selected operators):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MatMul</span>   <span class="mi">2</span><span class="o">*</span><span class="n">DIM3</span><span class="o">*</span><span class="n">DIM3</span><span class="o">*</span><span class="n">DIM4</span>
-<span class="n">Relu</span>     <span class="n">DIM3</span><span class="o">*</span><span class="n">DIM4</span><span class="o">*</span><span class="n">DIM5</span>
-<span class="n">Gemm</span>     <span class="mi">2</span><span class="o">*</span><span class="n">DIM3</span><span class="o">*</span><span class="n">DIM4</span><span class="o">*</span><span class="n">DIM5</span><span class="o">+</span><span class="n">DIM3</span><span class="o">*</span><span class="n">DIM5</span>
-<span class="n">Sigmoid</span>  <span class="mi">3</span><span class="o">*</span><span class="n">DIM3</span><span class="o">*</span><span class="n">DIM4</span><span class="o">*</span><span class="n">DIM5</span>
-</pre></div>
+<p>&gt;&gt;&gt;</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Op type</p></th>
+<th class="head"><p>Symbolic FLOPs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Abs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Acos</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Acosh</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Add</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">And</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Asin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Asinh</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Atan</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Atanh</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BatchNormalization</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM2*DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BitShift</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Cast</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CastLike</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Ceil</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Celu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM1*DIM3*DIM3*DIM3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Concat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM2</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Constant</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">25</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ConstantOfShape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Conv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM1*DIM1*DIM1*DIM3*DIM3*conv_f3_0(DIM5,3,1)*conv_f3_0(DIM5,3,1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Cos</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Cosh</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Div</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Elu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Equal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Erf</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM1*DIM3*DIM32*DIM32</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Exp</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Expand</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Flatten</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_a*dim1_a*dim2_a*dim3_a</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Floor</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GRU</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM1*DIM18*(DIM18//3+DIM2)*DIM3</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Gather</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM2*DIM3*DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GatherElements</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM2*DIM2</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GatherND</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM2*DIM2*DIM2</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Gemm</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM3*DIM4*DIM5+DIM3*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GlobalAveragePool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_x*dim1_x*dim2_x*dim3_x</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GlobalMaxPool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_x*dim1_x*dim2_x*dim3_x</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Greater</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GreaterOrEqual</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HardSigmoid</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">HardSwish</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Identity</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">InstanceNormalization</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">6*DIM2*DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LSTM</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM1*(DIM2+DIM28//4)*DIM28*DIM3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LayerNormalization</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">6*DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LeakyRelu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Less</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LessOrEqual</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Log</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LogSoftmax</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3*DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MatMul</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM3*DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MaxPool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM1*DIM3*conv_f3_0(DIM32,2,1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Mish</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM10000</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Mod</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM2*DIM3*(DIM5^DIM1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Mul</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Neg</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Not</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">OneHot</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Or</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PRelu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Pad</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM1*DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Pow</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RNN</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2*DIM2*DIM3*(DIM3+DIM5)*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceL1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceL2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceLogSum</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceLogSumExp</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceMax</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceMean</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceMin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceProd</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceSum</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ReduceSumSquare</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dim0_data*dim1_data*dim2_data</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Relu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Round</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM15</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Scatter</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM1*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ScatterElements</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM1*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ScatterND</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM4*DIM4*DIM4</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Selu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Shrink</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3*DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Sign</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM11</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Sinh</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Slice</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM10*DIM20*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Softmax</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3*DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Softplus</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Softsign</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Split</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CeilToInt(DIM7,4)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Sqrt</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sub</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Tan</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Tanh</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ThresholdedRelu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Tile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM2*DIM3*DIM4*DIM5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Transpose</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM2*DIM3*DIM4</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Xor</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DIM3*DIM4</span></code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
-<p>See also the gallery example <a class="reference internal" href="../../auto_examples_core/plot_cost_formulas.html#l-plot-cost-formulas"><span class="std std-ref">Computation Cost: How It Works and Supported Operator Formulas</span></a> which runs this code
-and renders the complete operator table.</p>
+<p>See also the gallery example <a class="reference internal" href="../../auto_examples_core/plot_cost_formulas.html#l-plot-cost-formulas"><span class="std std-ref">Computation Cost: How It Works and Supported Operator Formulas</span></a> for additional
+context and worked examples.</p>
 </section>
 </section>
 

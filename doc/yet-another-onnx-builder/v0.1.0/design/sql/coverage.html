@@ -1,0 +1,832 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SQL / DataFrame Coverage &#8212; yet-another-onnx-builder 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1c8377ea" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'design/sql/coverage';</script>
+    <link rel="icon" href="../../_static/logo.svg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="TensorFlow / JAX Export to ONNX" href="../tensorflow/index.html" />
+    <link rel="prev" title="Polars LazyFrame to ONNX" href="polars.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="yet-another-onnx-builder 0.1.0 documentation - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="yet-another-onnx-builder 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../converters.html">
+    Converters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core.html">
+    Core
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../galleries.html">
+    Galleries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cmds/index.html">
+    CMDs
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../install.html">
+    Installation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/yet-another-onnx-builder" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../converters.html">
+    Converters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../core.html">
+    Core
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../galleries.html">
+    Galleries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cmds/index.html">
+    CMDs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../install.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/yet-another-onnx-builder" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Pieces</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../export_artifact.html">to_onnx and ExportArtifact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../coverage.html">Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main_to_onnx.html">Main to_onnx function</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Converters</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../litert/index.html">LiteRT / TFLite Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../litert/supported_ops.html">Supported LiteRT Ops</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../sklearn/index.html">scikit-learn Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/expected_api.html">Expected API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/sklearn_converter.html">Sklearn Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/sklearn_like_converter.html">External Libraries Based on scikit-learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/supported_converters.html">Supported Converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/custom_converter.html">Custom Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sklearn/dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">SQL-to-ONNX Converter Design</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sql.html">SQL-to-ONNX Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html">DataFrame Function Tracer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars.html">Polars LazyFrame to ONNX</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SQL / DataFrame Coverage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tensorflow/index.html">TensorFlow / JAX Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/supported_ops.html">Supported TF Ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tensorflow/supported_jax_ops.html">Supported JAX Ops</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../torch/converter.html">Torch Converters to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/flatten.html">Flattening Functionalities (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/flatten_list.html">Flattening List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/patches.html">Patches (torch export)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/patches_list.html">Patches List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/input_observer.html">InputObserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/supported_aten_functions.html">Supported Aten Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/case_coverage.html">Overview of Exportability Comparison</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../converters.html" class="nav-link">Converters</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">SQL-to-ONNX Converter Design</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">SQL / DataFrame Coverage</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="sql-dataframe-coverage">
+<span id="l-design-sql-coverage"></span><h1>SQL / DataFrame Coverage<a class="headerlink" href="#sql-dataframe-coverage" title="Link to this heading">#</a></h1>
+<p>This page summarises which operations are supported across the three
+input paths — direct SQL strings, pandas-inspired DataFrame tracing, and
+polars <code class="docutils literal notranslate"><span class="pre">LazyFrame</span></code> — when converting tabular data manipulations to ONNX.</p>
+<section id="sql-string-coverage">
+<h2>SQL string coverage<a class="headerlink" href="#sql-string-coverage" title="Link to this heading">#</a></h2>
+<p>The following SQL constructs are handled by <a class="reference internal" href="../../api/sql/sql_to_onnx.html#yobx.sql.sql_to_onnx" title="yobx.sql.sql_to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">sql_to_onnx()</span></code></a>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SQL construct</p></th>
+<th class="head"><p>Status</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">col</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>column pass-through via <code class="docutils literal notranslate"><span class="pre">Identity</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">expr</span> <span class="pre">AS</span> <span class="pre">alias</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>arithmetic: <code class="docutils literal notranslate"><span class="pre">Add</span></code>, <code class="docutils literal notranslate"><span class="pre">Sub</span></code>, <code class="docutils literal notranslate"><span class="pre">Mul</span></code>, <code class="docutils literal notranslate"><span class="pre">Div</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">AGG(col)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SUM</span></code>, <code class="docutils literal notranslate"><span class="pre">AVG</span></code>, <code class="docutils literal notranslate"><span class="pre">MIN</span></code>, <code class="docutils literal notranslate"><span class="pre">MAX</span></code>, <code class="docutils literal notranslate"><span class="pre">COUNT</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">condition</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>comparisons + <code class="docutils literal notranslate"><span class="pre">AND</span></code> / <code class="docutils literal notranslate"><span class="pre">OR</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span> <span class="pre">cols</span></code></p></td>
+<td><p>⚠ partial</p></td>
+<td><p>whole-dataset aggregation only; no per-group rows</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[INNER|LEFT|RIGHT|FULL]</span> <span class="pre">JOIN</span> <span class="pre">…</span> <span class="pre">ON</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">col</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>equi-join on a single key column</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">DISTINCT</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>parsed but raises <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">HAVING</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIMIT</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+<tr class="row-even"><td><p>Subqueries</p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p>String equality (<code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">'val'</span></code>)</p></td>
+<td><p>✘ not supported</p></td>
+<td><p>requires special ONNX string handling</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="dataframe-tracer-coverage">
+<h2>DataFrame tracer coverage<a class="headerlink" href="#dataframe-tracer-coverage" title="Link to this heading">#</a></h2>
+<p>The following <a class="reference internal" href="../../api/xtracing/dataframe_trace.html#yobx.xtracing.dataframe_trace.TracedDataFrame" title="yobx.xtracing.dataframe_trace.TracedDataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedDataFrame</span></code></a> and
+<a class="reference internal" href="../../api/xtracing/dataframe_trace.html#yobx.xtracing.dataframe_trace.TracedSeries" title="yobx.xtracing.dataframe_trace.TracedSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedSeries</span></code></a> operations are handled by
+<a class="reference internal" href="../../api/sql/dataframe_to_onnx.html#yobx.sql.dataframe_to_onnx" title="yobx.sql.dataframe_to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataframe_to_onnx()</span></code></a>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operation</p></th>
+<th class="head"><p>Status</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df[&quot;col&quot;]</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>column access</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">df.filter(condition)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">WHERE</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df.select([series,</span> <span class="pre">…])</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">SELECT</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">df.assign(name=series)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">…</span> <span class="pre">AS</span> <span class="pre">name</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df.groupby(cols)</span></code></p></td>
+<td><p>⚠ partial</p></td>
+<td><p>whole-dataset aggregation only</p></td>
+</tr>
+<tr class="row-odd"><td><p>Series arithmetic (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>)</p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Add</span></code>, <code class="docutils literal notranslate"><span class="pre">Sub</span></code>, <code class="docutils literal notranslate"><span class="pre">Mul</span></code>, <code class="docutils literal notranslate"><span class="pre">Div</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Series comparisons (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>)</p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Greater</span></code>, <code class="docutils literal notranslate"><span class="pre">Less</span></code>, <code class="docutils literal notranslate"><span class="pre">Equal</span></code>, …</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.sum()</span></code> / <code class="docutils literal notranslate"><span class="pre">.mean()</span></code> / <code class="docutils literal notranslate"><span class="pre">.min()</span></code> / <code class="docutils literal notranslate"><span class="pre">.max()</span></code> / <code class="docutils literal notranslate"><span class="pre">.count()</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ReduceSum</span></code>, <code class="docutils literal notranslate"><span class="pre">ReduceMean</span></code>, <code class="docutils literal notranslate"><span class="pre">ReduceMin</span></code>, <code class="docutils literal notranslate"><span class="pre">ReduceMax</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cond1</span> <span class="pre">&amp;</span> <span class="pre">cond2</span></code> / <code class="docutils literal notranslate"><span class="pre">cond1</span> <span class="pre">|</span> <span class="pre">cond2</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">And</span></code>, <code class="docutils literal notranslate"><span class="pre">Or</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">series.alias(&quot;name&quot;)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>output rename</p></td>
+</tr>
+<tr class="row-even"><td><p>Conditional branches (<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code>)</p></td>
+<td><p>✘ not supported</p></td>
+<td><p>tracing captures one execution path only</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="polars-lazyframe-coverage">
+<h2>Polars LazyFrame coverage<a class="headerlink" href="#polars-lazyframe-coverage" title="Link to this heading">#</a></h2>
+<p>The following polars operations are handled by <a class="reference internal" href="../../api/sql/lazyframe_to_onnx.html#yobx.sql.lazyframe_to_onnx" title="yobx.sql.lazyframe_to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">lazyframe_to_onnx()</span></code></a>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Polars operation</p></th>
+<th class="head"><p>Status</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lf.select([…])</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>column selection and arithmetic expressions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lf.filter(condition)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>comparison and boolean predicates</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lf.group_by(cols).agg([…])</span></code></p></td>
+<td><p>⚠ partial</p></td>
+<td><p>whole-dataset aggregation only</p></td>
+</tr>
+<tr class="row-odd"><td><p>Arithmetic (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>)</p></td>
+<td><p>✔ supported</p></td>
+<td><p>inlined into <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> expressions</p></td>
+</tr>
+<tr class="row-even"><td><p>Comparisons (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>)</p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">WHERE</span></code> predicates</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&amp;</span></code> / <code class="docutils literal notranslate"><span class="pre">|</span></code> compound predicates</p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AND</span></code> / <code class="docutils literal notranslate"><span class="pre">OR</span></code> in <code class="docutils literal notranslate"><span class="pre">WHERE</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.alias(&quot;name&quot;)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>output rename</p></td>
+</tr>
+<tr class="row-odd"><td><p>Aggregation methods (<code class="docutils literal notranslate"><span class="pre">.sum()</span></code>, <code class="docutils literal notranslate"><span class="pre">.mean()</span></code>, <code class="docutils literal notranslate"><span class="pre">.min()</span></code>, <code class="docutils literal notranslate"><span class="pre">.max()</span></code>, <code class="docutils literal notranslate"><span class="pre">.count()</span></code>)</p></td>
+<td><p>✔ supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ReduceSum</span></code>, <code class="docutils literal notranslate"><span class="pre">ReduceMean</span></code>, <code class="docutils literal notranslate"><span class="pre">ReduceMin</span></code>, <code class="docutils literal notranslate"><span class="pre">ReduceMax</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lf.join(…)</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lf.sort(…)</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lf.limit(…)</span></code> / <code class="docutils literal notranslate"><span class="pre">lf.head(…)</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lf.unique(…)</span></code></p></td>
+<td><p>✘ not supported</p></td>
+<td><p>not yet implemented</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="sql.html#l-design-sql-converter"><span class="std std-ref">SQL-to-ONNX Converter</span></a> — SQL parser and emission details.</p></li>
+<li><p><a class="reference internal" href="dataframe.html#l-design-sql-dataframe"><span class="std std-ref">DataFrame Function Tracer</span></a> — DataFrame function tracer design.</p></li>
+<li><p><a class="reference internal" href="polars.html#l-design-sql-polars"><span class="std std-ref">Polars LazyFrame to ONNX</span></a> — Polars LazyFrame conversion design.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="polars.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Polars LazyFrame to ONNX</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../tensorflow/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">TensorFlow / JAX Export to ONNX</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-string-coverage">SQL string coverage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-tracer-coverage">DataFrame tracer coverage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-lazyframe-coverage">Polars LazyFrame coverage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/design/sql/coverage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

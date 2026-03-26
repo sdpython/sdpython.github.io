@@ -20,18 +20,21 @@
 
 .. _l-plot-translate-comparison:
 
-Comparing the four ONNX translation APIs
+Comparing the five ONNX translation APIs
 =========================================
 
 :func:`translate <yobx.translate.translate>` converts an
 :class:`onnx.ModelProto` into Python source code that, when executed,
-recreates the same model.  Four output APIs are available:
+recreates the same model.  Five output APIs are available:
 
 * ``"onnx"`` — uses :mod:`onnx.helper` (``oh.make_node``, ``oh.make_graph``, …)
   via :class:`~yobx.translate.inner_emitter.InnerEmitter`.
 * ``"onnx-short"`` — same as ``"onnx"`` but replaces large initializers with
   random values to keep the snippet compact, via
   :class:`~yobx.translate.inner_emitter.InnerEmitterShortInitializer`.
+* ``"onnx-compact"`` — produces a single nested expression instead of assembling
+  separate lists of nodes/inputs/outputs, via
+  :class:`~yobx.translate.inner_emitter.InnerEmitterCompact`.
 * ``"light"`` — fluent ``start(…).vin(…).…`` chain,
   via :class:`~yobx.translate.light_emitter.LightEmitter`.
 * ``"builder"`` — ``GraphBuilder``-based function wrapper,
@@ -41,7 +44,7 @@ This example builds a small model, translates it with every API, shows the
 generated code, and verifies that the ``"onnx"`` snippet can be re-executed to
 reproduce the original model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-32
+.. GENERATED FROM PYTHON SOURCE LINES 28-35
 
 .. code-block:: Python
 
@@ -59,7 +62,7 @@ reproduce the original model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-38
+.. GENERATED FROM PYTHON SOURCE LINES 36-41
 
 Build the model
 ----------------
@@ -67,7 +70,7 @@ Build the model
 We use ``Z = Relu(X @ W + b)`` as a running example:
 a single ``Gemm`` followed by ``Relu``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-59
+.. GENERATED FROM PYTHON SOURCE LINES 41-62
 
 .. code-block:: Python
 
@@ -105,7 +108,7 @@ a single ``Gemm`` followed by ``Relu``.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-66
+.. GENERATED FROM PYTHON SOURCE LINES 63-69
 
 1. ``"onnx"`` API — full initializer values
 ---------------------------------------------
@@ -114,7 +117,7 @@ The generated code uses :func:`onnx.helper.make_node`,
 :func:`onnx.helper.make_graph`, and :func:`onnx.helper.make_model`.
 Every initializer is serialised as an exact ``np.array(…)`` literal.
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-71
+.. GENERATED FROM PYTHON SOURCE LINES 69-74
 
 .. code-block:: Python
 
@@ -143,13 +146,13 @@ Every initializer is serialised as an exact ``np.array(…)`` literal.
     functions = []
     initializers.append(
         onh.from_array(
-            np.array([[-0.24214252829551697, -0.24161545932292938, 1.2461999654769897, -0.4479886293411255, 0.027335068210959435], [-1.6248867511749268, -0.13106703758239746, 0.2333688884973526, 0.44875428080558777, 0.21144898235797882], [-0.654813826084137, 0.11088249832391739, 0.16052654385566711, -0.8578423857688904, -1.1290183067321777], [-1.812950611114502, -0.8043915033340454, 0.2997991442680359, 0.27202358841896057, 1.5794856548309326], [0.3087631165981293, -0.35104623436927795, -1.8455592393875122, -0.9778900146484375, -1.1420986652374268], [0.5188688039779663, -1.0014476776123047, 0.24650061130523682, -1.2048547267913818, 0.7727407217025757], [0.7008242607116699, -0.746417760848999, -0.8555727601051331, -1.0169545412063599, 0.9826726913452148], [0.8552667498588562, 0.35558557510375977, -0.4687969386577606, -0.29920822381973267, 1.4278416633605957]], dtype=np.float32),
+            np.array([[-0.18565154075622559, 2.3938183784484863, -0.06698523461818695, 0.06264330446720123, -1.700982689857483], [0.10709822922945023, 0.958852231502533, 0.11664678156375885, -0.3324819505214691, -0.2633000314235687], [-0.46849849820137024, 1.2218730449676514, 0.2972728908061981, -0.6376153826713562, 0.021820703521370888], [-0.6699790358543396, -0.5198972225189209, 0.13036803901195526, -1.0372817516326904, 1.3067761659622192], [0.5090732574462891, 1.4655660390853882, 0.937709629535675, 0.3235185742378235, -0.22451362013816833], [1.6129612922668457, -1.2641329765319824, -1.1636275053024292, -0.09681335091590881, -1.1472891569137573], [0.30852189660072327, 1.0020725727081299, -0.17225942015647888, -1.0957204103469849, 0.9108691811561584], [-0.07955373078584671, -1.306117057800293, -0.7934383749961853, -0.17625437676906586, -0.4757489562034607]], dtype=np.float32),
             name='W'
         )
     )
     initializers.append(
         onh.from_array(
-            np.array([-0.11730782687664032, -1.0426268577575684, 1.5806572437286377, 1.1643675565719604, -0.21301686763763428], dtype=np.float32),
+            np.array([0.36812129616737366, -0.7448912262916565, -0.31167513132095337, 0.22880607843399048, -1.8717628717422485], dtype=np.float32),
             name='b'
         )
     )
@@ -187,7 +190,7 @@ Every initializer is serialised as an exact ``np.array(…)`` literal.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-78
+.. GENERATED FROM PYTHON SOURCE LINES 75-81
 
 2. ``"onnx-short"`` API — large initializers replaced by random values
 -----------------------------------------------------------------------
@@ -196,7 +199,7 @@ Identical to ``"onnx"`` except that initializers with more than 16 elements
 are replaced by ``np.random.randn(…)`` / ``np.random.randint(…)`` calls.
 This keeps the snippet readable when dealing with large weight tensors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-83
+.. GENERATED FROM PYTHON SOURCE LINES 81-86
 
 .. code-block:: Python
 
@@ -232,7 +235,7 @@ This keeps the snippet readable when dealing with large weight tensors.
     )
     initializers.append(
         onh.from_array(
-            np.array([-0.11730782687664032, -1.0426268577575684, 1.5806572437286377, 1.1643675565719604, -0.21301686763763428], dtype=np.float32),
+            np.array([0.36812129616737366, -0.7448912262916565, -0.31167513132095337, 0.22880607843399048, -1.8717628717422485], dtype=np.float32),
             name='b'
         )
     )
@@ -270,11 +273,11 @@ This keeps the snippet readable when dealing with large weight tensors.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-85
+.. GENERATED FROM PYTHON SOURCE LINES 87-88
 
 Size comparison between the two onnx variants:
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-89
+.. GENERATED FROM PYTHON SOURCE LINES 88-92
 
 .. code-block:: Python
 
@@ -291,20 +294,74 @@ Size comparison between the two onnx variants:
  .. code-block:: none
 
 
-    Full code length  :   1910 characters
-    Short code length :   1116 characters
+    Full code length  :   1912 characters
+    Short code length :   1117 characters
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-94
+.. GENERATED FROM PYTHON SOURCE LINES 93-100
 
-3. ``"light"`` API — fluent chain
+3. ``"onnx-compact"`` API — single nested expression
+-------------------------------------------------------
+
+Instead of building separate lists of nodes, inputs, outputs, and initializers
+before assembling them, this emitter produces a single nested
+``oh.make_model(oh.make_graph([…], …), …)`` expression.
+This is often more concise than ``"onnx"`` while still being fully readable.
+
+.. GENERATED FROM PYTHON SOURCE LINES 100-105
+
+.. code-block:: Python
+
+
+    code_compact = translate(model, api="onnx-compact")
+    print("=== api='onnx-compact' ===")
+    print(code_compact)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    === api='onnx-compact' ===
+    model = oh.make_model(
+        oh.make_graph(
+            [
+                oh.make_node('Gemm', ['X', 'W', 'b'], ['T']),
+                oh.make_node('Relu', ['T'], ['Z']),
+            ],
+            'gemm_relu',
+            [
+                oh.make_tensor_value_info('X', onnx.TensorProto.FLOAT, (None, 8)),
+            ],
+            [
+                oh.make_tensor_value_info('Z', onnx.TensorProto.FLOAT, (None, 5)),
+            ],
+            [
+                onh.from_array(np.array([[-0.18565154075622559, 2.3938183784484863, -0.06698523461818695, 0.06264330446720123, -1.700982689857483], [0.10709822922945023, 0.958852231502533, 0.11664678156375885, -0.3324819505214691, -0.2633000314235687], [-0.46849849820137024, 1.2218730449676514, 0.2972728908061981, -0.6376153826713562, 0.021820703521370888], [-0.6699790358543396, -0.5198972225189209, 0.13036803901195526, -1.0372817516326904, 1.3067761659622192], [0.5090732574462891, 1.4655660390853882, 0.937709629535675, 0.3235185742378235, -0.22451362013816833], [1.6129612922668457, -1.2641329765319824, -1.1636275053024292, -0.09681335091590881, -1.1472891569137573], [0.30852189660072327, 1.0020725727081299, -0.17225942015647888, -1.0957204103469849, 0.9108691811561584], [-0.07955373078584671, -1.306117057800293, -0.7934383749961853, -0.17625437676906586, -0.4757489562034607]], dtype=np.float32), name='W'),
+                onh.from_array(np.array([0.36812129616737366, -0.7448912262916565, -0.31167513132095337, 0.22880607843399048, -1.8717628717422485], dtype=np.float32), name='b'),
+            ],
+        ),
+        functions=[],
+        opset_imports=[oh.make_opsetid('', 17)],
+        ir_version=9,
+    )
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 106-110
+
+4. ``"light"`` API — fluent chain
 -----------------------------------
 
 The output is a single method-chain expression (``start(…).vin(…).…``).
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-99
+.. GENERATED FROM PYTHON SOURCE LINES 110-115
 
 .. code-block:: Python
 
@@ -324,9 +381,9 @@ The output is a single method-chain expression (``start(…).vin(…).…``).
     === api='light' ===
     (
         start(opset=17)
-        .cst(np.array([[-0.24214252829551697, -0.24161545932292938, 1.2461999654769897, -0.4479886293411255, 0.027335068210959435], [-1.6248867511749268, -0.13106703758239746, 0.2333688884973526, 0.44875428080558777, 0.21144898235797882], [-0.654813826084137, 0.11088249832391739, 0.16052654385566711, -0.8578423857688904, -1.1290183067321777], [-1.812950611114502, -0.8043915033340454, 0.2997991442680359, 0.27202358841896057, 1.5794856548309326], [0.3087631165981293, -0.35104623436927795, -1.8455592393875122, -0.9778900146484375, -1.1420986652374268], [0.5188688039779663, -1.0014476776123047, 0.24650061130523682, -1.2048547267913818, 0.7727407217025757], [0.7008242607116699, -0.746417760848999, -0.8555727601051331, -1.0169545412063599, 0.9826726913452148], [0.8552667498588562, 0.35558557510375977, -0.4687969386577606, -0.29920822381973267, 1.4278416633605957]], dtype=np.float32))
+        .cst(np.array([[-0.18565154075622559, 2.3938183784484863, -0.06698523461818695, 0.06264330446720123, -1.700982689857483], [0.10709822922945023, 0.958852231502533, 0.11664678156375885, -0.3324819505214691, -0.2633000314235687], [-0.46849849820137024, 1.2218730449676514, 0.2972728908061981, -0.6376153826713562, 0.021820703521370888], [-0.6699790358543396, -0.5198972225189209, 0.13036803901195526, -1.0372817516326904, 1.3067761659622192], [0.5090732574462891, 1.4655660390853882, 0.937709629535675, 0.3235185742378235, -0.22451362013816833], [1.6129612922668457, -1.2641329765319824, -1.1636275053024292, -0.09681335091590881, -1.1472891569137573], [0.30852189660072327, 1.0020725727081299, -0.17225942015647888, -1.0957204103469849, 0.9108691811561584], [-0.07955373078584671, -1.306117057800293, -0.7934383749961853, -0.17625437676906586, -0.4757489562034607]], dtype=np.float32))
         .rename('W')
-        .cst(np.array([-0.11730782687664032, -1.0426268577575684, 1.5806572437286377, 1.1643675565719604, -0.21301686763763428], dtype=np.float32))
+        .cst(np.array([0.36812129616737366, -0.7448912262916565, -0.31167513132095337, 0.22880607843399048, -1.8717628717422485], dtype=np.float32))
         .rename('b')
         .vin('X', elem_type=onnx.TensorProto.FLOAT, shape=(None, 8))
         .bring('X', 'W', 'b')
@@ -343,14 +400,14 @@ The output is a single method-chain expression (``start(…).vin(…).…``).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-104
+.. GENERATED FROM PYTHON SOURCE LINES 116-120
 
-4. ``"builder"`` API — GraphBuilder
+5. ``"builder"`` API — GraphBuilder
 -------------------------------------
 
 The output uses ``GraphBuilder`` to wrap the graph nodes in a Python function.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-109
+.. GENERATED FROM PYTHON SOURCE LINES 120-125
 
 .. code-block:: Python
 
@@ -373,8 +430,8 @@ The output uses ``GraphBuilder`` to wrap the graph nodes in a Python function.
         op: "GraphBuilder",
         X: "FLOAT[None, 8]",
     ):
-        W = np.array([[-0.24214252829551697, -0.24161545932292938, 1.2461999654769897, -0.4479886293411255, 0.027335068210959435], [-1.6248867511749268, -0.13106703758239746, 0.2333688884973526, 0.44875428080558777, 0.21144898235797882], [-0.654813826084137, 0.11088249832391739, 0.16052654385566711, -0.8578423857688904, -1.1290183067321777], [-1.812950611114502, -0.8043915033340454, 0.2997991442680359, 0.27202358841896057, 1.5794856548309326], [0.3087631165981293, -0.35104623436927795, -1.8455592393875122, -0.9778900146484375, -1.1420986652374268], [0.5188688039779663, -1.0014476776123047, 0.24650061130523682, -1.2048547267913818, 0.7727407217025757], [0.7008242607116699, -0.746417760848999, -0.8555727601051331, -1.0169545412063599, 0.9826726913452148], [0.8552667498588562, 0.35558557510375977, -0.4687969386577606, -0.29920822381973267, 1.4278416633605957]], dtype=np.float32)
-        b = np.array([-0.11730782687664032, -1.0426268577575684, 1.5806572437286377, 1.1643675565719604, -0.21301686763763428], dtype=np.float32)
+        W = np.array([[-0.18565154075622559, 2.3938183784484863, -0.06698523461818695, 0.06264330446720123, -1.700982689857483], [0.10709822922945023, 0.958852231502533, 0.11664678156375885, -0.3324819505214691, -0.2633000314235687], [-0.46849849820137024, 1.2218730449676514, 0.2972728908061981, -0.6376153826713562, 0.021820703521370888], [-0.6699790358543396, -0.5198972225189209, 0.13036803901195526, -1.0372817516326904, 1.3067761659622192], [0.5090732574462891, 1.4655660390853882, 0.937709629535675, 0.3235185742378235, -0.22451362013816833], [1.6129612922668457, -1.2641329765319824, -1.1636275053024292, -0.09681335091590881, -1.1472891569137573], [0.30852189660072327, 1.0020725727081299, -0.17225942015647888, -1.0957204103469849, 0.9108691811561584], [-0.07955373078584671, -1.306117057800293, -0.7934383749961853, -0.17625437676906586, -0.4757489562034607]], dtype=np.float32)
+        b = np.array([0.36812129616737366, -0.7448912262916565, -0.31167513132095337, 0.22880607843399048, -1.8717628717422485], dtype=np.float32)
         T = op.Gemm(X, W, b, outputs=['T'])
         Z = op.Relu(T, outputs=['Z'])
         op.Identity(Z, outputs=["Z"])
@@ -389,7 +446,7 @@ The output uses ``GraphBuilder`` to wrap the graph nodes in a Python function.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-115
+.. GENERATED FROM PYTHON SOURCE LINES 126-131
 
 Round-trip verification
 -----------------------
@@ -397,7 +454,7 @@ Round-trip verification
 The ``"onnx"`` snippet is fully self-contained and executable.
 Running it should recreate a model with the same graph structure.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-132
+.. GENERATED FROM PYTHON SOURCE LINES 131-148
 
 .. code-block:: Python
 
@@ -432,27 +489,36 @@ Running it should recreate a model with the same graph structure.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-139
+.. GENERATED FROM PYTHON SOURCE LINES 149-156
 
 Plot: code size by API
 -----------------------
 
 The bar chart compares the number of characters produced by each API for the
 same model.  ``"onnx-short"`` is always ≤ ``"onnx"`` because it compresses
-large initializers.
+large initializers.  ``"onnx-compact"`` is typically shorter than ``"onnx"``
+because it uses a single nested expression instead of building separate lists.
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-160
+.. GENERATED FROM PYTHON SOURCE LINES 156-185
 
 .. code-block:: Python
 
 
     import matplotlib.pyplot as plt  # noqa: E402
 
-    api_labels = ["onnx", "onnx-short", "light", "builder"]
-    code_sizes = [len(code_onnx), len(code_short), len(code_light), len(code_builder)]
+    api_labels = ["onnx", "onnx-short", "onnx-compact", "light", "builder"]
+    code_sizes = [
+        len(code_onnx),
+        len(code_short),
+        len(code_compact),
+        len(code_light),
+        len(code_builder),
+    ]
 
-    fig, ax = plt.subplots(figsize=(7, 4))
-    bars = ax.bar(api_labels, code_sizes, color=["#4c72b0", "#dd8452", "#55a868", "#c44e52"])
+    fig, ax = plt.subplots(figsize=(8, 4))
+    bars = ax.bar(
+        api_labels, code_sizes, color=["#4c72b0", "#dd8452", "#8172b2", "#55a868", "#c44e52"]
+    )
     ax.set_ylabel("Generated code size (characters)")
     ax.set_title("ONNX translation: code size by API")
     for bar, size in zip(bars, code_sizes):
@@ -481,7 +547,7 @@ large initializers.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.242 seconds)
+   **Total running time of the script:** (0 minutes 0.140 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_translate_comparison.py:

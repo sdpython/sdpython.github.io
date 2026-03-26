@@ -171,7 +171,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -325,7 +325,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -393,9 +393,15 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Pieces</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../export_artifact.html">to_onnx and ExportArtifact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../coverage.html">Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../debug.html">Debugging with Environment Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main_to_onnx.html">Main to_onnx function</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Converters</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../litert/index.html">LiteRT / TFLite Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../litert/supported_ops.html">Supported LiteRT Ops</a></li>
 </ul>
@@ -407,25 +413,30 @@
 <li class="toctree-l2"><a class="reference internal" href="supported_converters.html">Supported Converters</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Custom Converter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contrib_ops.html">ONNX Runtime Contrib Ops (<code class="docutils literal notranslate"><span class="pre">com.microsoft</span></code> domain)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">Debugging with Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataframe_pipeline.html">DataFrame Input to a Pipeline with ColumnTransformer</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../sql/index.html">SQL-to-ONNX Converter Design</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../sql/index.html">SQL-to-ONNX Converter Design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../sql/sql.html">SQL-to-ONNX Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sql/dataframe.html">DataFrame Function Tracer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sql/polars.html">Polars LazyFrame to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sql/coverage.html">SQL / DataFrame Coverage</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tensorflow/index.html">TensorFlow / JAX Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tensorflow/supported_ops.html">Supported TF Ops</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tensorflow/supported_jax_ops.html">Supported JAX Ops</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../torch/index.html">Torch Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../torch/converter.html">Torch Converter to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/converter.html">Torch Converters to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/flatten.html">Flattening Functionalities (torch)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/flatten_list.html">Flattening List</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/patches.html">Patches (torch export)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/patches_list.html">Patches List</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/input_observer.html">InputObserver</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../torch/supported_aten_functions.html">Supported Aten Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../torch/case_coverage.html">Overview of Exportability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../torch/case_coverage.html">Overview of Exportability Comparison</a></li>
 </ul>
 </details></li>
 </ul>
@@ -732,6 +743,125 @@ means you no longer have to pass <code class="docutils literal notranslate"><spa
 </pre></div>
 </div>
 </section>
+<section id="using-convert-options-in-a-custom-converter">
+<h2>Using convert options in a custom converter<a class="headerlink" href="#using-convert-options-in-a-custom-converter" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">convert_options</span></code> parameter of <a class="reference internal" href="../../api/sklearn/to_onnx.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a>
+lets callers request <strong>optional extra outputs</strong> from a converter without
+changing the converter signature.  This pattern is used by the built-in tree
+converters (<code class="docutils literal notranslate"><span class="pre">decision_path</span></code>, <code class="docutils literal notranslate"><span class="pre">decision_leaf</span></code>) and is fully available to
+custom converters.</p>
+<section id="how-it-works">
+<h3>How it works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Define an options class</strong> — any object that satisfies the
+<a class="reference internal" href="../../api/typing.html#yobx.typing.ConvertOptionsProtocol" title="yobx.typing.ConvertOptionsProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvertOptionsProtocol</span></code></a> (two methods:
+<code class="docutils literal notranslate"><span class="pre">available_options()</span></code> and <code class="docutils literal notranslate"><span class="pre">has()</span></code>).</p></li>
+<li><p><strong>``available_options()``</strong> returns the list of option names your class
+recognises.  The framework iterates this list before calling the converter
+and pre-allocates one extra slot in <code class="docutils literal notranslate"><span class="pre">outputs</span></code> for every option that
+<code class="docutils literal notranslate"><span class="pre">has()</span></code> returns <code class="docutils literal notranslate"><span class="pre">True</span></code> for.</p></li>
+<li><p><strong>``has(option_name, piece, name=None)``</strong> returns <code class="docutils literal notranslate"><span class="pre">True</span></code> when the option
+is active for the estimator <em>piece</em>.  The optional <em>name</em> argument carries
+the pipeline step name so you can enable an option only for a specific
+named step in a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>.</p></li>
+<li><p><strong>Check inside the converter</strong> — use <code class="docutils literal notranslate"><span class="pre">g.convert_options.has(...)</span></code> to
+decide whether to emit the optional nodes and fill <code class="docutils literal notranslate"><span class="pre">outputs[extra_idx]</span></code>.</p></li>
+</ol>
+</section>
+<section id="minimal-example">
+<h3>Minimal example<a class="headerlink" href="#minimal-example" title="Link to this heading">#</a></h3>
+<p>The snippet below defines a <code class="docutils literal notranslate"><span class="pre">ClipTransformer</span></code> whose ONNX converter
+optionally emits a boolean clip-mask output controlled by a custom options
+class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderExtendedProtocol</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ClipTransformer</span><span class="p">(</span><span class="n">TransformerMixin</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">clip_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clip_min</span> <span class="o">=</span> <span class="n">clip_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clip_max</span> <span class="o">=</span> <span class="n">clip_max</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_max</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ClipOptions</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clip_mask</span> <span class="o">=</span> <span class="n">clip_mask</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">available_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;clip_mask&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">has</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_name</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">option_name</span> <span class="o">==</span> <span class="s2">&quot;clip_mask&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clip_mask</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="s2">&quot;clip_min&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_clip_transformer</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">estimator</span><span class="p">:</span> <span class="n">ClipTransformer</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;clip&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">clip_min</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">clip_max</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">clipped</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Clip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">convert_options</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;clip_mask&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">below</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Less</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_below&quot;</span><span class="p">)</span>
+        <span class="n">above</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Greater</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_above&quot;</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Or</span><span class="p">(</span><span class="n">below</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mask&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">ClipTransformer</span><span class="p">(</span><span class="n">clip_min</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">clip_max</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Without options: single output</span>
+<span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
+    <span class="n">transformer</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">X</span><span class="p">,),</span>
+    <span class="n">extra_converters</span><span class="o">=</span><span class="p">{</span><span class="n">ClipTransformer</span><span class="p">:</span> <span class="n">convert_clip_transformer</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="c1"># With clip_mask: two outputs</span>
+<span class="n">onx_with_mask</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
+    <span class="n">transformer</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">X</span><span class="p">,),</span>
+    <span class="n">extra_converters</span><span class="o">=</span><span class="p">{</span><span class="n">ClipTransformer</span><span class="p">:</span> <span class="n">convert_clip_transformer</span><span class="p">},</span>
+    <span class="n">convert_options</span><span class="o">=</span><span class="n">ClipOptions</span><span class="p">(</span><span class="n">clip_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">onx_with_mask</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
+<span class="c1"># [&#39;Y&#39;, &#39;clip_mask&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../auto_examples_sklearn/plot_sklearn_custom_converter_options.html#l-plot-sklearn-custom-converter-options"><span class="std std-ref">Custom converter with convert options</span></a> — a full runnable
+gallery example with numerical validation.</p>
+<p><a class="reference internal" href="../../auto_examples_sklearn/plot_sklearn_convert_options.html#l-plot-sklearn-convert-options"><span class="std std-ref">Exporting sklearn tree models with convert options</span></a> — how the built-in
+<code class="docutils literal notranslate"><span class="pre">decision_path</span></code> and <code class="docutils literal notranslate"><span class="pre">decision_leaf</span></code> options work for tree and
+ensemble models.</p>
+<p><a class="reference internal" href="expected_api.html#l-design-expected-api"><span class="std std-ref">Expected API</span></a> — the full <code class="docutils literal notranslate"><span class="pre">convert_options</span></code> protocol
+contract and the built-in <a class="reference internal" href="../../api/sklearn/to_onnx.html#yobx.sklearn.ConvertOptions" title="yobx.sklearn.ConvertOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvertOptions</span></code></a>
+reference.</p>
+</div>
+</section>
+</section>
 <section id="multi-output-converters-with-noknownoutputmixin">
 <h2>Multi-output converters with <code class="docutils literal notranslate"><span class="pre">NoKnownOutputMixin</span></code><a class="headerlink" href="#multi-output-converters-with-noknownoutputmixin" title="Link to this heading">#</a></h2>
 <p>By default the framework infers the expected ONNX output names from the
@@ -807,6 +937,11 @@ the package itself.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-numerically">Validate numerically</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overriding-a-built-in-converter">Overriding a built-in converter</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permanent-registration">Permanent registration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-convert-options-in-a-custom-converter">Using convert options in a custom converter</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How it works</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-example">Minimal example</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-output-converters-with-noknownoutputmixin">Multi-output converters with <code class="docutils literal notranslate"><span class="pre">NoKnownOutputMixin</span></code></a></li>
 </ul>
   </nav></div>

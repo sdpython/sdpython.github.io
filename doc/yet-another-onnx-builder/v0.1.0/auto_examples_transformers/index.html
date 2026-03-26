@@ -55,7 +55,7 @@
     <link rel="icon" href="../_static/logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Export a LLM to ONNX with InputObserver" href="plot_llm_to_onnx.html" />
+    <link rel="next" title="Export Tiny-LLM with different ways" href="plot_many_exporters.html" />
     <link rel="prev" title="Converting a TensorFlow/Keras model to ONNX" href="../auto_examples_tensorflow/plot_tensorflow_to_onnx.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -171,7 +171,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -325,7 +325,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -396,7 +396,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_core/index.html">Core Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_translate_comparison.html">Comparing the five ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_cost_formulas.html">Computation Cost: How It Works and Supported Operator Formulas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
@@ -417,6 +417,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_pipeline.html">Converting a scikit-learn Pipeline to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_with_spox.html">Converting a scikit-learn model to ONNX with spox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_sksurv_ipc_ridge.html">Converting sksurv IPCRidge to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_custom_converter_options.html">Custom converter with convert options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_dataframe_pipeline.html">DataFrame input to a Pipeline with ColumnTransformer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_function_transformer.html">Exporting FunctionTransformer with numpy tracing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_function_options.html">Exporting sklearn estimators as ONNX local functions</a></li>
@@ -427,6 +428,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_sql/index.html">SQL Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_lazyframe_to_onnx.html">Polars LazyFrame to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_sql_to_onnx.html">SQL queries to ONNX</a></li>
 </ul>
 </details></li>
@@ -445,7 +447,9 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Transformers Gallery</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_many_exporters.html">Export Tiny-LLM with different ways</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_llm_to_onnx.html">Export a LLM to ONNX with InputObserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_validate_model.html">Validate a LLM export and inspect discrepancies</a></li>
 </ul>
 </details></li>
 </ul>
@@ -511,9 +515,15 @@
   <section id="transformers-gallery">
 <h1>Transformers Gallery<a class="headerlink" href="#transformers-gallery" title="Link to this heading">#</a></h1>
 <p>Examples about converting HuggingFace Transformers LLMs to ONNX using InputObserver.</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to export a HuggingFace transformers LLM to ONNX using yobx.torch.input_observer.InputObserver."><img alt="" src="../_images/sphx_glr_plot_llm_to_onnx_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The example exports the same model with different ways and compares the model composition (the node distribution)."><img alt="" src="../_images/sphx_glr_plot_many_exporters_thumb.png" />
+<p><a class="reference internal" href="plot_many_exporters.html"><span class="doc">Export Tiny-LLM with different ways</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Export Tiny-LLM with different ways</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to export a HuggingFace transformers LLM to ONNX using yobx.torch.input_observer.InputObserver."><img alt="" src="../_images/sphx_glr_plot_llm_to_onnx_thumb.png" />
 <p><a class="reference internal" href="plot_llm_to_onnx.html"><span class="doc">Export a LLM to ONNX with InputObserver</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export a LLM to ONNX with InputObserver</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="yobx.torch.validate.validate_model is a convenience function that bundles the entire export-and-verify pipeline into a single call:"><img alt="" src="../_images/sphx_glr_plot_validate_model_thumb.png" />
+<p><a class="reference internal" href="plot_validate_model.html"><span class="doc">Validate a LLM export and inspect discrepancies</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Validate a LLM export and inspect discrepancies</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 <div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">
@@ -547,11 +557,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="plot_llm_to_onnx.html"
+       href="plot_many_exporters.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Export a LLM to ONNX with InputObserver</p>
+        <p class="prev-next-title">Export Tiny-LLM with different ways</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

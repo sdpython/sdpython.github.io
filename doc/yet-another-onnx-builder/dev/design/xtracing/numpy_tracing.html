@@ -171,7 +171,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -325,7 +325,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -418,6 +418,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../ci.html">Repository Structure and CI Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../env_variables.html">Environment Variables for Unit Tests</a></li>
 </ul>
 </div>
 </nav></div>
@@ -492,24 +493,24 @@ graph exactly mirrors the Python code — without any manual operator mapping.</
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>The mechanism consists of two layers:</p>
 <ol class="arabic simple">
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code> — a proxy that wraps an ONNX tensor
+<li><p><a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.NumpyArray" title="yobx.xtracing.NumpyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code></a> — a proxy that wraps an ONNX tensor
 name and an object following the
 <a class="reference internal" href="../../api/typing.html#yobx.typing.GraphBuilderExtendedProtocol" title="yobx.typing.GraphBuilderExtendedProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderExtendedProtocol</span></code></a>.  It overloads all
 Python arithmetic operators and registers itself as an implementation for
 both the <code class="docutils literal notranslate"><span class="pre">__array_ufunc__</span></code> and <code class="docutils literal notranslate"><span class="pre">__array_function__</span></code> numpy protocols.
 Whenever numpy (or user code) calls an operation on a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code>, the proxy emits the equivalent ONNX
-node into the graph and returns a new <code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code>
+<a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.NumpyArray" title="yobx.xtracing.NumpyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code></a>, the proxy emits the equivalent ONNX
+node into the graph and returns a new <a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.NumpyArray" title="yobx.xtracing.NumpyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code></a>
 wrapping the result tensor name.</p></li>
 <li><p><strong>:func:`~yobx.xtracing.trace_numpy_function`</strong> — the converter-API
 function.  It receives an object following the
 <a class="reference internal" href="../../api/typing.html#yobx.typing.GraphBuilderExtendedProtocol" title="yobx.typing.GraphBuilderExtendedProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderExtendedProtocol</span></code></a>,
 the desired output names, the callable to trace, and the names of the
 input tensors already registered in that graph.  It wraps those tensors
-as <code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code> proxies, calls the function, and
+as <a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.NumpyArray" title="yobx.xtracing.NumpyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code></a> proxies, calls the function, and
 collects the resulting output tensors.</p></li>
 </ol>
-<p>The high-level helper <a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.trace_numpy_to_onnx" title="yobx.xtracing.trace_numpy_to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">trace_numpy_to_onnx()</span></code></a> creates a
+<p>The high-level helper <code class="xref py py-func docutils literal notranslate"><span class="pre">trace_numpy_to_onnx()</span></code> creates a
 standalone <a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.ModelProto</span></code></a> by building a fresh graph, registering
 sample-array-derived inputs, and delegating to
 <a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.trace_numpy_function" title="yobx.xtracing.trace_numpy_function"><code class="xref py py-func docutils literal notranslate"><span class="pre">trace_numpy_function()</span></code></a>.</p>
@@ -521,7 +522,7 @@ every other converter in this package:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">trace_numpy_function</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilderExtendedProtocol</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;trace&quot;</span><span class="p">,</span>
@@ -604,7 +605,7 @@ emitted instead of tracing.</p>
 </section>
 <section id="supported-numpy-operations">
 <h2>Supported numpy operations<a class="headerlink" href="#supported-numpy-operations" title="Link to this heading">#</a></h2>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code> proxy also supports all Python
+<p>The <a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.NumpyArray" title="yobx.xtracing.NumpyArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyArray</span></code></a> proxy also supports all Python
 arithmetic and comparison operators (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>, <code class="docutils literal notranslate"><span class="pre">//</span></code>,
 <code class="docutils literal notranslate"><span class="pre">**</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>,
 unary <code class="docutils literal notranslate"><span class="pre">-</span></code>).</p>
@@ -712,10 +713,10 @@ directly from the live dispatch tables in
 <section id="standalone-usage">
 <h2>Standalone usage<a class="headerlink" href="#standalone-usage" title="Link to this heading">#</a></h2>
 <p>You can also use the tracing machinery outside of scikit-learn pipelines via
-<a class="reference internal" href="../../api/xtracing/index.html#yobx.xtracing.trace_numpy_to_onnx" title="yobx.xtracing.trace_numpy_to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">trace_numpy_to_onnx()</span></code></a>:</p>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">trace_numpy_to_onnx()</span></code>:</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xtracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_numpy_to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_numpy_to_onnx</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.helpers.onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
 
 
@@ -735,8 +736,8 @@ directly from the live dispatch tables in
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">float32</span> <span class="n">shape</span><span class="o">=</span><span class="p">()</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span><span class="o">--</span> <span class="n">Opset</span><span class="o">.</span><span class="n">make_node</span><span class="mf">.1</span><span class="o">/</span><span class="n">Small</span>
     <span class="n">Abs</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_abs_X</span>
       <span class="n">Add</span><span class="p">(</span><span class="n">_onx_abs_X</span><span class="p">,</span> <span class="n">init1_s_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_add_abs_X</span>
-        <span class="n">Sqrt</span><span class="p">(</span><span class="n">_onx_add_abs_X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">output_0</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;output_0&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+        <span class="n">Sqrt</span><span class="p">(</span><span class="n">_onx_add_abs_X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_sqrt_add_abs_X</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;_onx_sqrt_add_abs_X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;NOTENSOR&#39;</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
 </pre></div>
 </div>
 <p>Or embedded into a larger graph using

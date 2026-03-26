@@ -55,8 +55,8 @@
     <link rel="icon" href="../_static/logo.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Command Lines" href="../cmds/index.html" />
-    <link rel="prev" title="Transformers Gallery" href="index.html" />
+    <link rel="next" title="Validate a LLM export and inspect discrepancies" href="plot_validate_model.html" />
+    <link rel="prev" title="Export Tiny-LLM with different ways" href="plot_many_exporters.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -171,7 +171,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -325,7 +325,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../cmds/index.html">
-    Command Lines
+    CMDs
   </a>
 </li>
 
@@ -396,7 +396,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_core/index.html">Core Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_print_command.html">Command Line: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">yobx</span> <span class="pre">print</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_translate_comparison.html">Comparing the four ONNX translation APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_translate_comparison.html">Comparing the five ONNX translation APIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_cost_formulas.html">Computation Cost: How It Works and Supported Operator Formulas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
@@ -417,6 +417,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_pipeline.html">Converting a scikit-learn Pipeline to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_with_spox.html">Converting a scikit-learn model to ONNX with spox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_sksurv_ipc_ridge.html">Converting sksurv IPCRidge to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_custom_converter_options.html">Custom converter with convert options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_dataframe_pipeline.html">DataFrame input to a Pipeline with ColumnTransformer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_function_transformer.html">Exporting FunctionTransformer with numpy tracing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sklearn/plot_sklearn_function_options.html">Exporting sklearn estimators as ONNX local functions</a></li>
@@ -427,6 +428,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_sql/index.html">SQL Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_lazyframe_to_onnx.html">Polars LazyFrame to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_sql_to_onnx.html">SQL queries to ONNX</a></li>
 </ul>
 </details></li>
@@ -445,7 +447,9 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Transformers Gallery</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_many_exporters.html">Export Tiny-LLM with different ways</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Export a LLM to ONNX with InputObserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_validate_model.html">Validate a LLM export and inspect discrepancies</a></li>
 </ul>
 </details></li>
 </ul>
@@ -658,10 +662,9 @@ download).</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Loading pre-trained weights for &#39;arnir0/Tiny-LLM&#39; ...
-use_kernel_func_from_hub is not available in the installed kernels version. Please upgrade kernels to use this feature.
 
 Loading weights:   0%|          | 0/12 [00:00&lt;?, ?it/s]
-Loading weights: 100%|██████████| 12/12 [00:00&lt;00:00, 902.71it/s]
+Loading weights: 100%|██████████| 12/12 [00:00&lt;00:00, 513.35it/s]
   trained=True  num_hidden_layers=1  #params=12,988,992
 </pre></div>
 </div>
@@ -711,8 +714,7 @@ that needs to be registered as a pytree node before
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;number of stored forward calls: </span><span class="si">{</span><span class="n">observer</span><span class="o">.</span><span class="n">num_obs</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
-number of stored forward calls: 3
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>number of stored forward calls: 3
 </pre></div>
 </div>
 </section>
@@ -743,7 +745,7 @@ kwargs: dict(input_ids:T7s1x13,attention_mask:T7s1x13,position_ids:T7s1x13,past_
 <h2>Export to ONNX<a class="headerlink" href="#export-to-onnx" title="Link to this heading">#</a></h2>
 <p>We now export the model.  Both
 <a class="reference internal" href="../api/torch/flatten.html#yobx.torch.flatten.register_flattening_functions" title="yobx.torch.flatten.register_flattening_functions"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_flattening_functions</span></code></a>
-and <code class="xref py py-func docutils literal notranslate"><span class="pre">apply_patches_for_model</span></code>
+and <a class="reference internal" href="../api/torch/patch.html#yobx.torch.patch.apply_patches_for_model" title="yobx.torch.patch.apply_patches_for_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_patches_for_model</span></code></a>
 must be active during export so that the exporter can correctly handle
 the KV-cache type and any PyTorch ops that need patching.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a></a> <span class="o">=</span> <span class="s2">&quot;plot_llm_to_onnx.onnx&quot;</span>
@@ -761,9 +763,6 @@ the KV-cache type and any PyTorch ops that need patching.</p>
     <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
-</pre></div>
-</div>
 </section>
 <section id="verify-check-discrepancies">
 <h2>Verify: check discrepancies<a class="headerlink" href="#verify-check-discrepancies" title="Link to this heading">#</a></h2>
@@ -776,12 +775,12 @@ for each output.  Values close to zero confirm that the export is correct.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/3 [00:00&lt;?, ?it/s]
- 33%|███▎      | 1/3 [00:00&lt;00:00,  2.36it/s]
-100%|██████████| 3/3 [00:00&lt;00:00,  6.58it/s]
+ 33%|███▎      | 1/3 [00:00&lt;00:00,  2.50it/s]
+100%|██████████| 3/3 [00:00&lt;00:00,  6.61it/s]
         abs       rel        sum        n  dnan  dev  &gt;0.1  &gt;0.01  SUCCESS  index  duration_torch  ort_duration  n_inputs  n_none  n_empty                                             inputs                               outputs_torch                                 outputs_ort
-0  0.006306  0.328028  26.505746  34496.0     0    0     0      0    False      0        0.327510      0.355529         5       2        2  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
-1  0.000009  0.002013   0.062643  34688.0     0    0     0      0     True      1        0.009224      0.014528         5       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
-2  0.000012  0.002171   0.065408  34880.0     0    0     0      0     True      2        0.002307      0.003398         5       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
+0  0.006306  0.328028  26.505746  34496.0     0    0     0      0    False      0        0.083780      0.340146         5       2        2  dict(input_ids:T7s1x13,attention_mask:T7s1x13,...  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]  #3[T1s1x1x32000,T1s1x1x13x96,T1s1x1x13x96]
+1  0.000009  0.002013   0.062643  34688.0     0    0     0      0     True      1        0.025733      0.019217         5       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x14,p...  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]  #3[T1s1x1x32000,T1s1x1x14x96,T1s1x1x14x96]
+2  0.000012  0.002171   0.065408  34880.0     0    0     0      0     True      2        0.005305      0.017634         5       0        0  dict(input_ids:T7s1x1,attention_mask:T7s1x15,p...  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]  #3[T1s1x1x32000,T1s1x1x15x96,T1s1x1x15x96]
 </pre></div>
 </div>
 </section>
@@ -818,7 +817,7 @@ I have a lot of people who are in the world. I have a lot of people who are in t
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">plot_dot</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a></a><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a></a><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_llm_to_onnx_001.png" srcset="../_images/sphx_glr_plot_llm_to_onnx_001.png" alt="plot llm to onnx" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 14.342 seconds)</p>
+<img src="../_images/sphx_glr_plot_llm_to_onnx_001.png" srcset="../_images/sphx_glr_plot_llm_to_onnx_001.png" alt="plot llm to onnx" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.289 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-transformers-plot-llm-to-onnx-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/68a0f59fbc81c47072157f4072fa2342/plot_llm_to_onnx.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_llm_to_onnx.ipynb</span></code></a></p>
@@ -831,7 +830,13 @@ I have a lot of people who are in the world. I have a lot of people who are in t
 </div>
 </div>
 <p class="rubric">Related examples</p>
-<div class="sphx-glr-thumbnails"></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to export a HuggingFace transformers LLM to ONNX using yobx.torch.input_observer.InputObserver."><img alt="" src="../_images/sphx_glr_plot_llm_to_onnx_thumb.png" />
+<p><a class="reference internal" href="#"><span class="doc">Export a LLM to ONNX with InputObserver</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Export a LLM to ONNX with InputObserver</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="yobx.torch.validate.validate_model is a convenience function that bundles the entire export-and-verify pipeline into a single call:"><img alt="" src="../_images/sphx_glr_plot_validate_model_thumb.png" />
+<p><a class="reference internal" href="plot_validate_model.html"><span class="doc">Validate a LLM export and inspect discrepancies</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Validate a LLM export and inspect discrepancies</div>
+</div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 
@@ -846,20 +851,20 @@ I have a lot of people who are in the world. I have a lot of people who are in t
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="plot_many_exporters.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Transformers Gallery</p>
+        <p class="prev-next-title">Export Tiny-LLM with different ways</p>
       </div>
     </a>
     <a class="right-next"
-       href="../cmds/index.html"
+       href="plot_validate_model.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Command Lines</p>
+        <p class="prev-next-title">Validate a LLM export and inspect discrepancies</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
