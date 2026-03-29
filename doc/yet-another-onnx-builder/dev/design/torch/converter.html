@@ -544,8 +544,11 @@ intermediate representation for ATen-to-ONNX mappings</p></td>
 <code class="docutils literal notranslate"><span class="pre">strict</span></code>, <code class="docutils literal notranslate"><span class="pre">nostrict</span></code>, <code class="docutils literal notranslate"><span class="pre">tracing</span></code>, <code class="docutils literal notranslate"><span class="pre">fake</span></code>, …
 The <code class="docutils literal notranslate"><span class="pre">tracing</span></code> strategy uses
 <a class="reference internal" href="../../api/torch/tracing.html#yobx.torch.tracing.CustomTracer" title="yobx.torch.tracing.CustomTracer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomTracer</span></code></a> (symbolic tracing) and can
-handle models where <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> fails.</p></td>
-<td><p>Dynamo-based (<code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> or <code class="docutils literal notranslate"><span class="pre">torch._dynamo.export</span></code>)</p></td>
+handle models where <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> fails. It offers
+the possibility to keep modules as leave, and does not decompose them
+into aten operators.</p></td>
+<td><p>Dynamo-based <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code>, if the default mode fails, it tries
+with <code class="docutils literal notranslate"><span class="pre">strict=True</span></code> a second time.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Graph decomposition</strong></p></td>
 <td><p>The graph is <strong>not</strong> decomposed by default (unless
@@ -563,20 +566,24 @@ larger, less readable ONNX graphs</p></td>
 nodes, outputs, types.</p></td>
 <td><p>Supports a fixed number of outputs.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Shape &amp; type propagation</strong></p></td>
+<tr class="row-even"><td><p><strong>Dummy dimension equal to 0 or 1</strong></p></td>
+<td><p>Option <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.fx.experimental.symbolic_shapes.guard_size_oblivious.html">guard_size_oblivious</a> is determined before exporting.</p></td>
+<td><p>Option <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.fx.experimental.symbolic_shapes.guard_size_oblivious.html">guard_size_oblivious</a> is always used even if not needed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Shape &amp; type propagation</strong></p></td>
 <td><p>Every intermediate result is typed and (when possible) given a concrete
 or symbolic shape inside the builder, enabling richer optimization and
 easier debugging</p></td>
 <td><p>Shape information comes from the traced graph; no additional in-builder
 propagation step</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Large-model support</strong></p></td>
+<tr class="row-even"><td><p><strong>Large-model support</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">large_model=True</span></code> returns an
 <a class="reference external" href="https://onnx.ai/onnx/api/model_container.html#onnx.model_container.ModelContainer" title="(in ONNX v1.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.model_container.ModelContainer</span></code></a>; weights can be stored as
 external data files via <code class="docutils literal notranslate"><span class="pre">external_threshold</span></code></p></td>
 <td><p>External data handled by the caller after export</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Debugging</strong></p></td>
+<tr class="row-odd"><td><p><strong>Debugging</strong></p></td>
 <td><p>Rich set of environment variables (<code class="docutils literal notranslate"><span class="pre">ONNXSTOP</span></code>, <code class="docutils literal notranslate"><span class="pre">ONNXSTOPSHAPE</span></code>,
 <code class="docutils literal notranslate"><span class="pre">ONNXSTOPTYPE</span></code>, <code class="docutils literal notranslate"><span class="pre">ONNXSTOPOUTPUT</span></code>, …) let you pinpoint exactly
 which node assigns a suspicious shape or type; see
@@ -697,7 +704,7 @@ that can override the default ATen-to-ONNX mapping for specific operators.</p></
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[0]&quot;</span>
-      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_127430870505536.&lt;locals&gt;.Neuron&quot;</span>
+      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_124455992279104.&lt;locals&gt;.Neuron&quot;</span>
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[1]&quot;</span>
@@ -731,7 +738,7 @@ that can override the default ATen-to-ONNX mapping for specific operators.</p></
     <span class="n">domain</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[0]&quot;</span>
-      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_127430870505536.&lt;locals&gt;.Neuron&quot;</span>
+      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_124455992279104.&lt;locals&gt;.Neuron&quot;</span>
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;intypes&quot;</span>

@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ExtendedReferenceEvaluator: running models with contrib operators" href="plot_extended_reference_evaluator.html" />
-    <link rel="prev" title="Constraint Mechanism in Shape Inference" href="plot_shape_constraints.html" />
+    <link rel="prev" title="Computed Shapes: Add + Concat + Reshape" href="plot_computed_shapes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -400,7 +400,6 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_cost_formulas.html">Computation Cost: How It Works and Supported Operator Formulas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_shape_constraints.html">Constraint Mechanism in Shape Inference</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Expressions in Shape Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_extended_reference_evaluator.html">ExtendedReferenceEvaluator: running models with contrib operators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_mini_onnx_builder.html">MiniOnnxBuilder: serialize tensors to an ONNX model</a></li>
@@ -530,7 +529,7 @@ string expression built from the names of the input dimensions.</p>
 <ul class="simple">
 <li><p><strong>Concat</strong> — adds dimension names to produce <code class="docutils literal notranslate"><span class="pre">&quot;seq1+seq2&quot;</span></code></p></li>
 <li><p><strong>Reshape with -1</strong> — uses floor-division to produce <code class="docutils literal notranslate"><span class="pre">&quot;c//2&quot;</span></code></p></li>
-<li><p><strong>Split</strong> — introduces ceiling-division via <code class="docutils literal notranslate"><span class="pre">CeilToInt(…)</span></code></p></li>
+<li><p><strong>Split</strong> — introduces ceiling-division via <code class="docutils literal notranslate"><span class="pre">(dim+n-1)//n</span></code></p></li>
 <li><p><strong>Automatic simplification</strong> — <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">+</span> <span class="pre">f</span> <span class="pre">-</span> <span class="pre">f</span></code> → <code class="docutils literal notranslate"><span class="pre">d</span></code>, <code class="docutils literal notranslate"><span class="pre">2*x//2</span></code> → <code class="docutils literal notranslate"><span class="pre">x</span></code></p></li>
 <li><p><strong>Evaluation</strong> — resolving symbolic shapes to concrete integers once the
 actual dimension values are known</p></li>
@@ -653,8 +652,8 @@ shape of Xr : (&#39;a&#39;, &#39;b&#39;, 2, &#39;c//2&#39;)
 <p><code class="docutils literal notranslate"><span class="pre">Split</span></code> with <code class="docutils literal notranslate"><span class="pre">num_outputs=2</span></code> and no explicit <code class="docutils literal notranslate"><span class="pre">split</span></code> attribute
 divides the axis dimension as evenly as possible.  When the dimension is
 odd the two halves differ by one, which is captured by the expression
-<code class="docutils literal notranslate"><span class="pre">CeilToInt(b+c,</span> <span class="pre">2)</span></code> for the first output and
-<code class="docutils literal notranslate"><span class="pre">b+c</span> <span class="pre">-</span> <span class="pre">CeilToInt(b+c,</span> <span class="pre">2)</span></code> for the second.</p>
+<code class="docutils literal notranslate"><span class="pre">(b+c+1)//2</span></code> for the first output and
+<code class="docutils literal notranslate"><span class="pre">b+c</span> <span class="pre">-</span> <span class="pre">(b+c+1)//2</span></code> for the second.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_split</span></a></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_model" title="onnx.helper.make_model" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_model" title="onnx.helper.make_model" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">oh</span><span class="o">.</span><span class="n">make_model</span></a></a><span class="p">(</span>
     <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_graph" title="onnx.helper.make_graph" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_graph" title="onnx.helper.make_graph" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span></a></a><span class="p">(</span>
         <span class="p">[</span>
@@ -688,8 +687,8 @@ odd the two halves differ by one, which is captured by the expression
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>shape of xy : (&#39;a&#39;, &#39;b+c&#39;)
-shape of S1 : (&#39;a&#39;, &#39;CeilToInt(b+c,2)&#39;)
-shape of S2 : (&#39;a&#39;, &#39;b+c-CeilToInt(b+c,2)&#39;)
+shape of S1 : (&#39;a&#39;, &#39;(1+b+c)//2&#39;)
+shape of S2 : (&#39;a&#39;, &#39;b+c-(1+b+c)//2&#39;)
 concrete shape of S1: (3, 5)
 concrete shape of S2: (3, 5)
 </pre></div>
@@ -727,8 +726,8 @@ this example and their simplified forms side-by-side.</p>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rows</span></a></a> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[</span><span class="s2">&quot;Concat (Z, axis=1)&quot;</span><span class="p">,</span> <span class="s2">&quot;(&#39;batch&#39;, &#39;seq1+seq2&#39;)&quot;</span><span class="p">],</span>
     <span class="p">[</span><span class="s2">&quot;Reshape (Xr)&quot;</span><span class="p">,</span> <span class="s2">&quot;(&#39;a&#39;, &#39;b&#39;, 2, &#39;c//2&#39;)&quot;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s2">&quot;Split S1&quot;</span><span class="p">,</span> <span class="s2">&quot;(&#39;a&#39;, &#39;CeilToInt(b+c,2)&#39;)&quot;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s2">&quot;Split S2&quot;</span><span class="p">,</span> <span class="s2">&quot;(&#39;a&#39;, &#39;b+c-CeilToInt(b+c,2)&#39;)&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Split S1&quot;</span><span class="p">,</span> <span class="s2">&quot;(&#39;a&#39;, &#39;(1+b+c)//2&#39;)&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Split S2&quot;</span><span class="p">,</span> <span class="s2">&quot;(&#39;a&#39;, &#39;b+c-(1+b+c)//2&#39;)&quot;</span><span class="p">],</span>
 <span class="p">]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simplify_rows</span></a></a> <span class="o">=</span> <span class="p">[[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expr</span></a></a><span class="p">,</span> <span class="n">simplify_expression</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expr</span></a></a><span class="p">)]</span> <span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expr</span></a></a> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">examples</span></a></a><span class="p">]</span>
 
@@ -773,7 +772,7 @@ this example and their simplified forms side-by-side.</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_shape_expressions_001.png" srcset="../_images/sphx_glr_plot_shape_expressions_001.png" alt="Shape expression examples, Symbolic shapes by operation, Expression simplification" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.144 seconds)</p>
+<img src="../_images/sphx_glr_plot_shape_expressions_001.png" srcset="../_images/sphx_glr_plot_shape_expressions_001.png" alt="Shape expression examples, Symbolic shapes by operation, Expression simplification" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.185 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-core-plot-shape-expressions-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/b9ce31fd17b5624811fae0befe3fa5df/plot_shape_expressions.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_shape_expressions.ipynb</span></code></a></p>
@@ -786,12 +785,12 @@ this example and their simplified forms side-by-side.</p>
 </div>
 </div>
 <p class="rubric">Related examples</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="When yobx.xshape.shape_builder_impl.BasicShapeBuilder encounters a broadcasting operation between a tensor with a symbolic (unknown) dimension and a tensor with a concrete (known) dimension, it registers a constraint that records the equality between the two."><img alt="" src="../_images/sphx_glr_plot_shape_constraints_thumb.png" />
-<p><a class="reference internal" href="plot_shape_constraints.html"><span class="doc">Constraint Mechanism in Shape Inference</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Constraint Mechanism in Shape Inference</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how yobx.xshape.shape_builder_impl.BasicShapeBuilder tracks symbolic dimension expressions through a sequence of Add, Concat, and Reshape nodes, and compares the result with the standard onnx.shape_inference.infer_shapes and the onnx-shape-inference package from PyPI."><img alt="" src="../_images/sphx_glr_plot_computed_shapes_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example shows how yobx.xshape.shape_builder_impl.BasicShapeBuilder tracks symbolic dimension expressions through a sequence of Add, Concat, and Reshape nodes, and compares the result with the standard onnx.shape_inference.infer_shapes and the onnx-shape-inference package from PyPI."><img alt="" src="../_images/sphx_glr_plot_computed_shapes_thumb.png" />
 <p><a class="reference internal" href="plot_computed_shapes.html"><span class="doc">Computed Shapes: Add + Concat + Reshape</span></a></p>
   <div class="sphx-glr-thumbnail-title">Computed Shapes: Add + Concat + Reshape</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example explains how FLOPs (floating-point operations) cost is estimated for ONNX models in yobx, and programmatically lists the formula used for every supported operator."><img alt="" src="../_images/sphx_glr_plot_cost_formulas_thumb.png" />
+<p><a class="reference internal" href="plot_cost_formulas.html"><span class="doc">Computation Cost: How It Works and Supported Operator Formulas</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Computation Cost: How It Works and Supported Operator Formulas</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to compute the symbolic FLOPs cost of an ONNX model using yobx.xshape.shape_builder_impl.BasicShapeBuilder with inference=InferenceMode.COST."><img alt="" src="../_images/sphx_glr_plot_symbolic_cost_thumb.png" />
 <p><a class="reference internal" href="plot_symbolic_cost.html"><span class="doc">Symbolic Cost of a Model: Attention Block</span></a></p>
   <div class="sphx-glr-thumbnail-title">Symbolic Cost of a Model: Attention Block</div>
@@ -810,12 +809,12 @@ this example and their simplified forms side-by-side.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="plot_shape_constraints.html"
+       href="plot_computed_shapes.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Constraint Mechanism in Shape Inference</p>
+        <p class="prev-next-title">Computed Shapes: Add + Concat + Reshape</p>
       </div>
     </a>
     <a class="right-next"

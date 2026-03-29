@@ -611,104 +611,325 @@ arithmetic and comparison operators (<code class="docutils literal notranslate">
 unary <code class="docutils literal notranslate"><span class="pre">-</span></code>).</p>
 <p>The full list of supported ufuncs and array functions is generated below
 directly from the live dispatch tables in
-<a class="reference internal" href="../../api/xtracing/numpy_array.html#module-yobx.xtracing.numpy_array" title="yobx.xtracing.numpy_array"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.xtracing.numpy_array</span></code></a>.</p>
+<a class="reference internal" href="../../api/xtracing/numpy_array.html#module-yobx.xtracing.numpy_array" title="yobx.xtracing.numpy_array"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.xtracing.numpy_array</span></code></a>.  Each numpy name links to the
+<a class="reference external" href="https://numpy.org/">numpy</a> reference documentation, and each ONNX op name links to the
+<a class="reference external" href="https://onnx.ai/onnx/operators/">ONNX Operators</a> specification.</p>
+<p><strong>Ufuncs</strong> (via <code class="docutils literal notranslate"><span class="pre">__array_ufunc__</span></code>)</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xtracing.numpy_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">_UFUNC_TO_ONNX</span><span class="p">,</span> <span class="n">_HANDLED_FUNCTIONS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xtracing.numpy_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">_UFUNC_TO_ONNX</span>
 
-<span class="n">rows_ufunc</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">_NP_BASE</span> <span class="o">=</span> <span class="s2">&quot;https://numpy.org/doc/stable/reference/generated/numpy.</span><span class="si">{}</span><span class="s2">.html&quot;</span>
+<span class="n">_ONNX_BASE</span> <span class="o">=</span> <span class="s2">&quot;https://onnx.ai/onnx/operators/onnx__</span><span class="si">{}</span><span class="s2">.html&quot;</span>
+
+
+<span class="c1"># Descriptions for composite (sentinel-string) mappings</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_onnx_link</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2"> &lt;</span><span class="si">{</span><span class="n">_ONNX_BASE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;`_&quot;</span>
+
+
+<span class="n">_composite_desc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;floor_divide&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Floor&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> ( </span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Div&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> (a, b) )&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;not_equal&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Not&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> ( </span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Equal&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> (a, b) )&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maximum&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;`Max &lt;</span><span class="si">{</span><span class="n">_ONNX_BASE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Max&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;`_ (a, b)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;`Min &lt;</span><span class="si">{</span><span class="n">_ONNX_BASE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Min&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;`_ (a, b)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;log1p&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Log&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> ( </span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Add&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> (x, 1) )&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;expm1&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Sub&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> ( </span><span class="si">{</span><span class="n">_onnx_link</span><span class="p">(</span><span class="s1">&#39;Exp&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> (x), 1 )&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.. list-table::&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   :header-rows: 1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   :widths: 40 60&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   * - NumPy ufunc&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     - ONNX op&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_UFUNC_TO_ONNX</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">_UFUNC_TO_ONNX</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-    <span class="n">onnx_op</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
-    <span class="n">rows_ufunc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* ``np.</span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">`` → ``</span><span class="si">{</span><span class="n">onnx_op</span><span class="si">}</span><span class="s2">``&quot;</span><span class="p">)</span>
-
-<span class="n">rows_func</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_HANDLED_FUNCTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-    <span class="n">rows_func</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* ``np.</span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">``&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;**Ufuncs** (via ``__array_ufunc__``)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows_ufunc</span><span class="p">))</span>
+    <span class="n">np_url</span> <span class="o">=</span> <span class="n">_NP_BASE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">np_cell</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;`np.</span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &lt;</span><span class="si">{</span><span class="n">np_url</span><span class="si">}</span><span class="s2">&gt;`_&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">onnx_op</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">onnx_cell</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">onnx_op</span><span class="si">}</span><span class="s2"> &lt;</span><span class="si">{</span><span class="n">_ONNX_BASE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">onnx_op</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;`_&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">onnx_cell</span> <span class="o">=</span> <span class="n">_composite_desc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;*(see source: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">)*&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   * - </span><span class="si">{</span><span class="n">np_cell</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - </span><span class="si">{</span><span class="n">onnx_cell</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;**Array functions** (via ``__array_function__``)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows_func</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<p><strong>Ufuncs</strong> (via <code class="docutils literal notranslate"><span class="pre">__array_ufunc__</span></code>)</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">np.absolute</span></code> → <code class="docutils literal notranslate"><span class="pre">Abs</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.add</span></code> → <code class="docutils literal notranslate"><span class="pre">Add</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.arccos</span></code> → <code class="docutils literal notranslate"><span class="pre">Acos</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.arcsin</span></code> → <code class="docutils literal notranslate"><span class="pre">Asin</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.arctan</span></code> → <code class="docutils literal notranslate"><span class="pre">Atan</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.bitwise_and</span></code> → <code class="docutils literal notranslate"><span class="pre">And</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.bitwise_or</span></code> → <code class="docutils literal notranslate"><span class="pre">Or</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.bitwise_xor</span></code> → <code class="docutils literal notranslate"><span class="pre">Xor</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.ceil</span></code> → <code class="docutils literal notranslate"><span class="pre">Ceil</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.cos</span></code> → <code class="docutils literal notranslate"><span class="pre">Cos</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.cosh</span></code> → <code class="docutils literal notranslate"><span class="pre">Cosh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.divide</span></code> → <code class="docutils literal notranslate"><span class="pre">Div</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.equal</span></code> → <code class="docutils literal notranslate"><span class="pre">Equal</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.exp</span></code> → <code class="docutils literal notranslate"><span class="pre">Exp</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.expm1</span></code> → <code class="docutils literal notranslate"><span class="pre">expm1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.floor</span></code> → <code class="docutils literal notranslate"><span class="pre">Floor</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.floor_divide</span></code> → <code class="docutils literal notranslate"><span class="pre">floor_divide</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.fmod</span></code> → <code class="docutils literal notranslate"><span class="pre">Mod</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.greater</span></code> → <code class="docutils literal notranslate"><span class="pre">Greater</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.greater_equal</span></code> → <code class="docutils literal notranslate"><span class="pre">GreaterOrEqual</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.invert</span></code> → <code class="docutils literal notranslate"><span class="pre">Not</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.isnan</span></code> → <code class="docutils literal notranslate"><span class="pre">IsNaN</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.less</span></code> → <code class="docutils literal notranslate"><span class="pre">Less</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.less_equal</span></code> → <code class="docutils literal notranslate"><span class="pre">LessOrEqual</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.log</span></code> → <code class="docutils literal notranslate"><span class="pre">Log</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.log1p</span></code> → <code class="docutils literal notranslate"><span class="pre">log1p</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.logical_and</span></code> → <code class="docutils literal notranslate"><span class="pre">And</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.logical_not</span></code> → <code class="docutils literal notranslate"><span class="pre">Not</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.logical_or</span></code> → <code class="docutils literal notranslate"><span class="pre">Or</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.logical_xor</span></code> → <code class="docutils literal notranslate"><span class="pre">Xor</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.matmul</span></code> → <code class="docutils literal notranslate"><span class="pre">MatMul</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.maximum</span></code> → <code class="docutils literal notranslate"><span class="pre">maximum</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.minimum</span></code> → <code class="docutils literal notranslate"><span class="pre">minimum</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.multiply</span></code> → <code class="docutils literal notranslate"><span class="pre">Mul</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.negative</span></code> → <code class="docutils literal notranslate"><span class="pre">Neg</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.not_equal</span></code> → <code class="docutils literal notranslate"><span class="pre">not_equal</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.power</span></code> → <code class="docutils literal notranslate"><span class="pre">Pow</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.reciprocal</span></code> → <code class="docutils literal notranslate"><span class="pre">Reciprocal</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.remainder</span></code> → <code class="docutils literal notranslate"><span class="pre">Mod</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.sign</span></code> → <code class="docutils literal notranslate"><span class="pre">Sign</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.sin</span></code> → <code class="docutils literal notranslate"><span class="pre">Sin</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.sinh</span></code> → <code class="docutils literal notranslate"><span class="pre">Sinh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.sqrt</span></code> → <code class="docutils literal notranslate"><span class="pre">Sqrt</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.subtract</span></code> → <code class="docutils literal notranslate"><span class="pre">Sub</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.tan</span></code> → <code class="docutils literal notranslate"><span class="pre">Tan</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.tanh</span></code> → <code class="docutils literal notranslate"><span class="pre">Tanh</span></code></p></li>
-</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>NumPy ufunc</p></th>
+<th class="head"><p>ONNX op</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html">np.absolute</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Abs.html">Abs</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.add.html">np.add</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Add.html">Add</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccos.html">np.arccos</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Acos.html">Acos</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arcsin.html">np.arcsin</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Asin.html">Asin</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arctan.html">np.arctan</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Atan.html">Atan</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.bitwise_and.html">np.bitwise_and</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__And.html">And</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.bitwise_or.html">np.bitwise_or</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Or.html">Or</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.bitwise_xor.html">np.bitwise_xor</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Xor.html">Xor</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ceil.html">np.ceil</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Ceil.html">Ceil</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html">np.cos</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Cos.html">Cos</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cosh.html">np.cosh</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Cosh.html">Cosh</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.divide.html">np.divide</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Div.html">Div</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.equal.html">np.equal</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Equal.html">Equal</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html">np.exp</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Exp.html">Exp</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.expm1.html">np.expm1</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sub.html">Sub</a> ( <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Exp.html">Exp</a> (x), 1 )</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.floor.html">np.floor</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Floor.html">Floor</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.floor_divide.html">np.floor_divide</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Floor.html">Floor</a> ( <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Div.html">Div</a> (a, b) )</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.fmod.html">np.fmod</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Mod.html">Mod</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.greater.html">np.greater</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Greater.html">Greater</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.greater_equal.html">np.greater_equal</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__GreaterOrEqual.html">GreaterOrEqual</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.invert.html">np.invert</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Not.html">Not</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isnan.html">np.isnan</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__IsNaN.html">IsNaN</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.less.html">np.less</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Less.html">Less</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.less_equal.html">np.less_equal</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__LessOrEqual.html">LessOrEqual</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log.html">np.log</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Log.html">Log</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log1p.html">np.log1p</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Log.html">Log</a> ( <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Add.html">Add</a> (x, 1) )</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html">np.logical_and</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__And.html">And</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_not.html">np.logical_not</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Not.html">Not</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html">np.logical_or</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Or.html">Or</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_xor.html">np.logical_xor</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Xor.html">Xor</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html">np.matmul</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__MatMul.html">MatMul</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.maximum.html">np.maximum</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Max.html">Max</a> (a, b)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.minimum.html">np.minimum</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Min.html">Min</a> (a, b)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.multiply.html">np.multiply</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Mul.html">Mul</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.negative.html">np.negative</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Neg.html">Neg</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.not_equal.html">np.not_equal</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Not.html">Not</a> ( <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Equal.html">Equal</a> (a, b) )</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.power.html">np.power</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Pow.html">Pow</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reciprocal.html">np.reciprocal</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Reciprocal.html">Reciprocal</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.remainder.html">np.remainder</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Mod.html">Mod</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sign.html">np.sign</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sign.html">Sign</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html">np.sin</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sin.html">Sin</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sinh.html">np.sinh</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sinh.html">Sinh</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html">np.sqrt</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sqrt.html">Sqrt</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.subtract.html">np.subtract</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sub.html">Sub</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.tan.html">np.tan</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Tan.html">Tan</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.tanh.html">np.tanh</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Tanh.html">Tanh</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p><strong>Array functions</strong> (via <code class="docutils literal notranslate"><span class="pre">__array_function__</span></code>)</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">np.absolute</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.amax</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.amin</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.clip</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.concatenate</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.dot</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.exp</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.expand_dims</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.expm1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.log</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.log1p</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.matmul</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.max</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.mean</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.min</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.prod</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.reshape</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.sqrt</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.squeeze</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.stack</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.sum</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.transpose</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.where</span></code></p></li>
-</ul>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.xtracing.numpy_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">_HANDLED_FUNCTIONS</span>
+
+<span class="n">_NP_BASE</span> <span class="o">=</span> <span class="s2">&quot;https://numpy.org/doc/stable/reference/generated/numpy.</span><span class="si">{}</span><span class="s2">.html&quot;</span>
+<span class="n">_ONNX_BASE</span> <span class="o">=</span> <span class="s2">&quot;https://onnx.ai/onnx/operators/onnx__</span><span class="si">{}</span><span class="s2">.html&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_onnx_cell_from_doc</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract ONNX ops from the function docstring (``ONNX: Op1, Op2``).&quot;&quot;&quot;</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;ONNX:\s*([\w,\s]+)&quot;</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;*(see source)*&quot;</span>
+    <span class="n">ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2"> &lt;</span><span class="si">{</span><span class="n">_ONNX_BASE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;`_&quot;</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.. list-table::&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   :header-rows: 1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   :widths: 40 60&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   * - NumPy function&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     - ONNX op&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_HANDLED_FUNCTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
+    <span class="n">np_url</span> <span class="o">=</span> <span class="n">_NP_BASE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">np_cell</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;`np.</span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &lt;</span><span class="si">{</span><span class="n">np_url</span><span class="si">}</span><span class="s2">&gt;`_&quot;</span>
+    <span class="n">onnx</span> <span class="o">=</span> <span class="n">_onnx_cell_from_doc</span><span class="p">(</span><span class="n">_HANDLED_FUNCTIONS</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   * - </span><span class="si">{</span><span class="n">np_cell</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - </span><span class="si">{</span><span class="n">onnx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>NumPy function</p></th>
+<th class="head"><p>ONNX op</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html">np.absolute</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Abs.html">Abs</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.amax.html">np.amax</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceMax.html">ReduceMax</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.amin.html">np.amin</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceMin.html">ReduceMin</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.clip.html">np.clip</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Clip.html">Clip</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html">np.concatenate</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Concat.html">Concat</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html">np.dot</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__MatMul.html">MatMul</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html">np.exp</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Exp.html">Exp</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.expand_dims.html">np.expand_dims</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Unsqueeze.html">Unsqueeze</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.expm1.html">np.expm1</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Exp.html">Exp</a>, <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sub.html">Sub</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log.html">np.log</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Log.html">Log</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log1p.html">np.log1p</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Add.html">Add</a>, <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Log.html">Log</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html">np.matmul</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__MatMul.html">MatMul</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.max.html">np.max</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceMax.html">ReduceMax</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html">np.mean</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceMean.html">ReduceMean</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.min.html">np.min</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceMin.html">ReduceMin</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.prod.html">np.prod</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceProd.html">ReduceProd</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html">np.reshape</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Reshape.html">Reshape</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html">np.sqrt</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Sqrt.html">Sqrt</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html">np.squeeze</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Squeeze.html">Squeeze</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.stack.html">np.stack</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Unsqueeze.html">Unsqueeze</a>, <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Concat.html">Concat</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html">np.sum</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceSum.html">ReduceSum</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html">np.transpose</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Transpose.html">Transpose</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.where.html">np.where</a></p></td>
+<td><p><a class="reference external" href="https://onnx.ai/onnx/operators/onnx__Where.html">Where</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="standalone-usage">
 <h2>Standalone usage<a class="headerlink" href="#standalone-usage" title="Link to this heading">#</a></h2>

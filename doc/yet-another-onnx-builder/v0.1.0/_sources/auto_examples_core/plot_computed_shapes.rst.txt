@@ -46,7 +46,7 @@ See :ref:`l-design-shape` for a detailed description of how
 :class:`BasicShapeBuilder <yobx.xshape.shape_builder_impl.BasicShapeBuilder>`
 works and a comparison table with :func:`onnx.shape_inference.infer_shapes`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-44
+.. GENERATED FROM PYTHON SOURCE LINES 30-45
 
 .. code-block:: Python
 
@@ -62,6 +62,7 @@ works and a comparison table with :func:`onnx.shape_inference.infer_shapes`.
     from yobx.xshape import BasicShapeBuilder
 
     TFLOAT = onnx.TensorProto.FLOAT
+    TINT64 = onnx.TensorProto.INT64
 
 
 
@@ -71,7 +72,104 @@ works and a comparison table with :func:`onnx.shape_inference.infer_shapes`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-57
+.. GENERATED FROM PYTHON SOURCE LINES 46-51
+
+Helper functions for shape inference
+--------------------------------------
+
+The three shape-inference approaches used throughout this example are each
+wrapped in a small helper so the same logic can be reused without repetition.
+
+.. GENERATED FROM PYTHON SOURCE LINES 51-129
+
+.. code-block:: Python
+
+
+
+    def infer_shapes_onnx(model: onnx.ModelProto) -> dict:
+        """Run :func:`onnx.shape_inference.infer_shapes`; return ``{name: shape}``."""
+        inferred = onnx.shape_inference.infer_shapes(model)
+        shapes = {}
+        for vi in [*inferred.graph.input, *inferred.graph.value_info, *inferred.graph.output]:
+            t = vi.type.tensor_type
+            if t.HasField("shape"):
+                shapes[vi.name] = tuple(
+                    d.dim_param if d.dim_param else (d.dim_value if d.dim_value else None)
+                    for d in t.shape.dim
+                )
+            else:
+                shapes[vi.name] = "unknown"
+        return shapes
+
+
+    def infer_shapes_onnx_ir(model: onnx.ModelProto) -> dict:
+        """Run onnx-shape-inference :func:`infer_symbolic_shapes`; return ``{name: shape}``."""
+        ir_model = ir.serde.deserialize_model(model)
+        ir_model = infer_symbolic_shapes(ir_model)
+        shapes = {}
+        for v in ir_model.graph.inputs:
+            shapes[v.name] = str(v.shape)
+        for node in ir_model.graph:
+            for out in node.outputs:
+                shapes[out.name] = str(out.shape)
+        return shapes
+
+
+    def infer_shapes_basic(model: onnx.ModelProto) -> BasicShapeBuilder:
+        """Run :class:`BasicShapeBuilder` over *model*; return the populated builder."""
+        b = BasicShapeBuilder()
+        b.run_model(model)
+        return b
+
+
+    def print_shapes(shapes, names: list) -> None:
+        """Print shapes for *names* from *shapes*.
+
+        *shapes* may be either a ``{name: shape}`` dict (as returned by
+        :func:`infer_shapes_onnx` and :func:`infer_shapes_onnx_ir`) or a
+        :class:`BasicShapeBuilder` instance (as returned by
+        :func:`infer_shapes_basic`).
+        """
+        for name in names:
+            if isinstance(shapes, dict):
+                shape = shapes.get(name, "unknown")
+            else:
+                shape = shapes.get_shape(name)
+            print(f"  {name:15s}  shape={shape}")
+
+
+    def make_shape_comparison_table(model: onnx.ModelProto, names: list) -> pandas.DataFrame:
+        """Build a side-by-side shape comparison DataFrame for *model*.
+
+        Runs all three inference tools and returns a :class:`pandas.DataFrame`
+        with one row per tensor name and one column per tool.
+
+        Columns: ``onnx``, ``onnx_ir``, ``basic``.
+        """
+        onnx_shapes = infer_shapes_onnx(model)
+        ir_shapes = infer_shapes_onnx_ir(model)
+        basic = infer_shapes_basic(model)
+        rows = []
+        for name in names:
+            rows.append(
+                {
+                    "name": name,
+                    "onnx": str(onnx_shapes.get(name, "unknown")),
+                    "onnx_ir": str(ir_shapes.get(name, "unknown")),
+                    "basic": str(basic.get_shape(name)),
+                }
+            )
+        return pandas.DataFrame(rows).set_index("name")
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 130-142
 
 Build a small model
 --------------------
@@ -86,7 +184,7 @@ The graph performs the following steps:
    a fixed shape constant ``[0, 0, -1]``, which collapses
    ``(batch, seq, 2*d_model)`` back to ``(batch, seq, 2*d_model)``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-77
+.. GENERATED FROM PYTHON SOURCE LINES 142-162
 
 .. code-block:: Python
 
@@ -117,7 +215,7 @@ The graph performs the following steps:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-84
+.. GENERATED FROM PYTHON SOURCE LINES 163-169
 
 Shape inference with ONNX
 --------------------------
@@ -126,26 +224,14 @@ Shape inference with ONNX
 For dynamic dimensions the inferred shapes for intermediate results are
 often unknown (``None``).
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-101
+.. GENERATED FROM PYTHON SOURCE LINES 169-174
 
 .. code-block:: Python
 
 
-    inferred = onnx.shape_inference.infer_shapes(model)
-
     print("=== onnx.shape_inference.infer_shapes ===")
-    for vi in (
-        list(inferred.graph.input) + list(inferred.graph.value_info) + list(inferred.graph.output)
-    ):
-        t = vi.type.tensor_type
-        if t.HasField("shape"):
-            shape = tuple(
-                d.dim_param if d.dim_param else (d.dim_value if d.dim_value else None)
-                for d in t.shape.dim
-            )
-        else:
-            shape = "unknown"
-        print(f"  {vi.name:15s}  shape={shape}")
+    for name, shape in infer_shapes_onnx(model).items():
+        print(f"  {name:15s}  shape={shape}")
 
 
 
@@ -165,7 +251,7 @@ often unknown (``None``).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-115
+.. GENERATED FROM PYTHON SOURCE LINES 175-188
 
 Shape inference with onnx-shape-inference (PyPI)
 --------------------------------------------------
@@ -181,25 +267,15 @@ resolves the ``Concat`` output to ``(batch, seq, 2*d_model)``.  The
 the ``[0, 0, -1]`` constant shape tensor is not yet fully evaluated by this
 library.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-131
+.. GENERATED FROM PYTHON SOURCE LINES 188-194
 
 .. code-block:: Python
 
 
-    ir_model = ir.serde.deserialize_model(model)
-    ir_model = infer_symbolic_shapes(ir_model)
-
-    # Build a name → shape mapping for all values in the graph.
-    onnx_ir_shapes: dict[str, str] = {}
-    for v in ir_model.graph.inputs:
-        onnx_ir_shapes[v.name] = str(v.shape)
-    for node in ir_model.graph:
-        for out in node.outputs:
-            onnx_ir_shapes[out.name] = str(out.shape)
+    onnx_ir_shapes = infer_shapes_onnx_ir(model)
 
     print("=== onnx-shape-inference (infer_symbolic_shapes) ===")
-    for name in ["X", "Y", "added", "concat_out", "Z"]:
-        print(f"  {name:15s}  shape={onnx_ir_shapes.get(name, 'unknown')}")
+    print_shapes(onnx_ir_shapes, ["X", "Y", "added", "concat_out", "Z"])
 
 
 
@@ -219,7 +295,7 @@ library.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-139
+.. GENERATED FROM PYTHON SOURCE LINES 195-202
 
 Shape inference with BasicShapeBuilder
 ----------------------------------------
@@ -229,18 +305,16 @@ keeps the shapes as symbolic expressions.  Because ``reshape_shape`` is a
 constant ``[0, 0, -1]``, the builder can evaluate the ``Reshape`` and express
 the output shape as a function of the input dimensions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-148
+.. GENERATED FROM PYTHON SOURCE LINES 202-209
 
 .. code-block:: Python
 
 
 
-    builder = BasicShapeBuilder()
-    builder.run_model(model)
+    builder = infer_shapes_basic(model)
 
     print("\n=== BasicShapeBuilder ===")
-    for name in ["X", "Y", "added", "concat_out", "Z"]:
-        print(f"  {name:15s}  shape={builder.get_shape(name)}")
+    print_shapes(builder, ["X", "Y", "added", "concat_out", "Z"])
 
 
 
@@ -261,7 +335,7 @@ the output shape as a function of the input dimensions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-155
+.. GENERATED FROM PYTHON SOURCE LINES 210-216
 
 Evaluate symbolic shapes with concrete values
 -----------------------------------------------
@@ -270,7 +344,7 @@ Once the concrete values of the dynamic dimensions are known,
 :meth:`evaluate_shape <yobx.xshape.ShapeBuilder.evaluate_shape>` resolves
 each symbolic expression to its actual integer value.
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-161
+.. GENERATED FROM PYTHON SOURCE LINES 216-222
 
 .. code-block:: Python
 
@@ -297,7 +371,7 @@ each symbolic expression to its actual integer value.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-168
+.. GENERATED FROM PYTHON SOURCE LINES 223-229
 
 Verify with real data
 ----------------------
@@ -306,7 +380,7 @@ Finally, run the model with concrete numpy arrays and confirm that the
 shapes predicted by :class:`BasicShapeBuilder` match the actual output
 shapes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-188
+.. GENERATED FROM PYTHON SOURCE LINES 229-249
 
 .. code-block:: Python
 
@@ -349,79 +423,254 @@ shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 189-197
+.. GENERATED FROM PYTHON SOURCE LINES 250-272
 
-Plot: symbolic vs inferred shapes
------------------------------------
+Impact of named output shapes on constraints (NonZero)
+-------------------------------------------------------
 
-The table below compares the shapes reported by
-``onnx.shape_inference.infer_shapes`` (which may leave dimensions as
-``None`` for dynamic axes), the ``onnx-shape-inference`` package (which uses
-SymPy for symbolic propagation), and the symbolic expressions computed by
-:class:`BasicShapeBuilder`.
+Some operators—such as ``NonZero``—introduce a *fresh* symbolic dimension for
+their output because the number of results depends on the *values* of the
+input tensor, not merely its shape.  :class:`BasicShapeBuilder` assigns an
+internal name like ``NEWDIM_nonzero_0`` to that dimension.
 
-.. GENERATED FROM PYTHON SOURCE LINES 197-247
+When the graph output is declared **without** named dimensions (all ``None``),
+the internal name is kept as-is and no constraint is registered.
+
+When the graph output is declared **with** named dimensions (e.g.
+``["rank", "nnz"]``), :meth:`run_value_info
+<yobx.xshape.shape_builder_impl.BasicShapeBuilder.run_value_info>` detects
+the mismatch between the computed internal name ``NEWDIM_nonzero_0`` and the
+user-supplied name ``nnz``, and registers the constraint
+``NEWDIM_nonzero_0 = nnz``.  The dimension naming step then renames the
+internal token to the user-visible name across all shapes.
+
+The two models share the same 7-node graph topology:
+``Abs → Relu → Add → Mul → NonZero(nz) → Transpose → Cast(nz_float)``.
+They differ only in how the graph outputs are annotated.
+
+.. GENERATED FROM PYTHON SOURCE LINES 272-294
 
 .. code-block:: Python
 
 
-    import matplotlib.pyplot as plt  # noqa: E402
-
-    tensor_names = ["X", "Y", "added", "concat_out", "Z"]
-
-    # Collect onnx.shape_inference shapes as strings
-    onnx_shapes = {}
-    for vi in (
-        list(inferred.graph.input) + list(inferred.graph.value_info) + list(inferred.graph.output)
-    ):
-        t = vi.type.tensor_type
-        if t.HasField("shape"):
-            shape = tuple(
-                d.dim_param if d.dim_param else (d.dim_value if d.dim_value else "?")
-                for d in t.shape.dim
-            )
-        else:
-            shape = ("unknown",)
-        onnx_shapes[vi.name] = str(shape)
-
-    # Collect BasicShapeBuilder shapes as strings
-    builder_shapes = {name: str(builder.get_shape(name)) for name in tensor_names}
-
-    col_labels = ["tensor", "onnx.shape_inference", "onnx-shape-inference", "BasicShapeBuilder"]
-    table_data = [
-        [
-            name,
-            onnx_shapes.get(name, "—"),
-            onnx_ir_shapes.get(name, "—"),
-            builder_shapes.get(name, "—"),
-        ]
-        for name in tensor_names
+    _NZ_NODES = [
+        oh.make_node("Abs", ["X"], ["abs_out"]),
+        oh.make_node("Relu", ["abs_out"], ["relu_out"]),
+        oh.make_node("Add", ["relu_out", "relu_out"], ["double_out"]),
+        oh.make_node("Mul", ["double_out", "relu_out"], ["mul_out"]),
+        oh.make_node("NonZero", ["mul_out"], ["nz"]),
+        oh.make_node("Transpose", ["nz"], ["transposed_nz"]),
+        oh.make_node("Cast", ["transposed_nz"], ["nz_float"], to=TFLOAT),
+    ]
+    _NZ_INPUT = [oh.make_tensor_value_info("X", TFLOAT, ["batch", "seq"])]
+    _NZ_NAMES = [
+        "X",
+        "abs_out",
+        "relu_out",
+        "double_out",
+        "mul_out",
+        "nz",
+        "transposed_nz",
+        "nz_float",
     ]
 
-    fig, ax = plt.subplots(figsize=(11, 2.5))
 
-    ax.axis("off")
-    tbl = ax.table(cellText=table_data, colLabels=col_labels, loc="center", cellLoc="center")
-    tbl.auto_set_font_size(False)
-    tbl.set_fontsize(9)
-    tbl.auto_set_column_width(list(range(len(col_labels))))
-    # Highlight header
-    for col in range(len(col_labels)):
-        tbl[0, col].set_facecolor("#4c72b0")
-        tbl[0, col].set_text_props(color="white", fontweight="bold")
-    ax.set_title(
-        "Shape inference: onnx vs onnx-shape-inference vs BasicShapeBuilder", fontsize=10, pad=8
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 295-298
+
+**Anonymous output shapes** (``[None, None]``): the data-dependent dimension
+keeps the internal placeholder ``NEWDIM_nonzero_0`` and no constraint is
+registered.
+
+.. GENERATED FROM PYTHON SOURCE LINES 298-313
+
+.. code-block:: Python
+
+
+    nz_model_anon = oh.make_model(
+        oh.make_graph(
+            _NZ_NODES,
+            "nonzero_anon",
+            _NZ_INPUT,
+            [
+                oh.make_tensor_value_info("nz", TINT64, [None, None]),
+                oh.make_tensor_value_info("nz_float", TFLOAT, [None, None]),
+            ],
+        ),
+        opset_imports=[oh.make_opsetid("", 18)],
+        ir_version=10,
     )
-    plt.tight_layout()
-    plt.show()
 
 
 
-.. image-sg:: /auto_examples_core/images/sphx_glr_plot_computed_shapes_001.png
-   :alt: Shape inference: onnx vs onnx-shape-inference vs BasicShapeBuilder
-   :srcset: /auto_examples_core/images/sphx_glr_plot_computed_shapes_001.png
-   :class: sphx-glr-single-img
 
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 314-317
+
+**Named output shapes** (``["rank", "nnz"]``): the constraint
+``NEWDIM_nonzero_0 = nnz`` is registered and the placeholder is renamed
+throughout the graph.
+
+.. GENERATED FROM PYTHON SOURCE LINES 317-332
+
+.. code-block:: Python
+
+
+    nz_model_named = oh.make_model(
+        oh.make_graph(
+            _NZ_NODES,
+            "nonzero_named",
+            _NZ_INPUT,
+            [
+                oh.make_tensor_value_info("nz", TINT64, ["rank", "nnz"]),
+                oh.make_tensor_value_info("nz_float", TFLOAT, ["do1", "do2"]),
+            ],
+        ),
+        opset_imports=[oh.make_opsetid("", 18)],
+        ir_version=10,
+    )
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 333-339
+
+Comparison table — anonymous output shapes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With ``[None, None]`` output annotations the data-dependent dimension is
+kept as the internal placeholder ``NEWDIM_nonzero_0`` by
+:class:`BasicShapeBuilder`; no constraint is registered.
+
+.. GENERATED FROM PYTHON SOURCE LINES 339-343
+
+.. code-block:: Python
+
+
+    print("=== anonymous output shapes ===")
+    print(make_shape_comparison_table(nz_model_anon, _NZ_NAMES).to_string())
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    === anonymous output shapes ===
+                               onnx      onnx_ir                    basic
+    name                                                                 
+    X              ('batch', 'seq')  [batch,seq]         ('batch', 'seq')
+    abs_out        ('batch', 'seq')  [batch,seq]         ('batch', 'seq')
+    relu_out       ('batch', 'seq')  [batch,seq]         ('batch', 'seq')
+    double_out     ('batch', 'seq')  [batch,seq]         ('batch', 'seq')
+    mul_out        ('batch', 'seq')  [batch,seq]         ('batch', 'seq')
+    nz                (2, 'unk__0')      [2,_d0]  (2, 'NEWDIM_nonzero_0')
+    transposed_nz     ('unk__0', 2)      [_d0,2]  ('NEWDIM_nonzero_0', 2)
+    nz_float          ('unk__0', 2)      [_d0,2]  ('NEWDIM_nonzero_0', 2)
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 344-345
+
+Registered constraints (anonymous model):
+
+.. GENERATED FROM PYTHON SOURCE LINES 345-349
+
+.. code-block:: Python
+
+
+    anon_builder = infer_shapes_basic(nz_model_anon)
+    print("constraints:", anon_builder.get_registered_constraints())
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    constraints: {}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 350-357
+
+Comparison table — named output shapes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With ``["rank", "nnz"]`` output annotations :class:`BasicShapeBuilder`
+registers the constraint ``NEWDIM_nonzero_0 = nnz`` and renames the
+placeholder everywhere, so ``nz`` shape becomes ``(2, 'nnz')`` and the
+propagation continues through ``Transpose`` and ``Cast``.
+
+.. GENERATED FROM PYTHON SOURCE LINES 357-361
+
+.. code-block:: Python
+
+
+    print("=== named output shapes ===")
+    print(make_shape_comparison_table(nz_model_named, _NZ_NAMES).to_string())
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    === named output shapes ===
+                               onnx      onnx_ir             basic
+    name                                                          
+    X              ('batch', 'seq')  [batch,seq]  ('batch', 'seq')
+    abs_out        ('batch', 'seq')  [batch,seq]  ('batch', 'seq')
+    relu_out       ('batch', 'seq')  [batch,seq]  ('batch', 'seq')
+    double_out     ('batch', 'seq')  [batch,seq]  ('batch', 'seq')
+    mul_out        ('batch', 'seq')  [batch,seq]  ('batch', 'seq')
+    nz                   (2, 'nnz')      [2,nnz]        (2, 'do1')
+    transposed_nz        ('nnz', 2)      [nnz,2]        ('do1', 2)
+    nz_float             ('do1', 2)      [do1,2]        ('do1', 2)
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 362-363
+
+Registered constraints (named model):
+
+.. GENERATED FROM PYTHON SOURCE LINES 363-366
+
+.. code-block:: Python
+
+
+    named_builder = infer_shapes_basic(nz_model_named)
+    print("constraints:", named_builder.get_registered_constraints())
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    constraints: {'NEWDIM_nonzero_0': {'nnz', 'do1'}}
 
 
 
@@ -429,7 +678,7 @@ SymPy for symbolic propagation), and the symbolic expressions computed by
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.166 seconds)
+   **Total running time of the script:** (0 minutes 0.797 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_computed_shapes.py:
