@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -531,20 +531,10 @@ operations on a DataFrame and compiles them to ONNX directly.</p>
 </tbody>
 </table>
 </div>
-<p>It also provides:</p>
-<ul class="simple">
-<li><p>A <a class="reference internal" href="design/builder/graph_builder.html#l-design-graph-builder"><span class="std std-ref">graph builder API</span></a> for constructing and optimizing ONNX graphs,
-with built-in shape inference and a pattern-based
-<a class="reference internal" href="design/builder/optimizer_patterns.html#l-design-pattern-optimizer-patterns"><span class="std std-ref">graph optimizer</span></a>.</p></li>
-<li><p>Converters for <strong>scikit-learn</strong> estimators and pipelines (<code class="docutils literal notranslate"><span class="pre">yobx.sklearn</span></code>).</p></li>
-<li><p>Utilities for <strong>PyTorch</strong> export, including model patching and input flattening (<code class="docutils literal notranslate"><span class="pre">yobx.torch</span></code>).</p></li>
-<li><p>A symbolic <a class="reference internal" href="design/builder/shape.html#l-design-shape"><span class="std std-ref">shape expression system</span></a> for dynamic shape handling at export time.</p></li>
-<li><p>A <a class="reference internal" href="design/misc/translate.html#l-design-translate"><span class="std std-ref">translation tool</span></a> that converts ONNX graphs back to executable Python code.</p></li>
-<li><p><strong>Optimization functions</strong> to make the model more efficient.</p></li>
-<li><p>It supports multiple opsets and multiple domains.</p></li>
-<li><p>It allows the user to directly onnx model with <a class="reference external" href="https://spox.readthedocs.io/en/latest/">spox</a> or <a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a>/<a class="reference external" href="https://onnx.ai/ir-py/">ir-py</a>.</p></li>
-</ul>
-<p>Its unique API:</p>
+<p>The package is built upon a single <a class="reference internal" href="design/builder/graph_builder.html#l-design-graph-builder"><span class="std std-ref">graph builder API</span></a>
+for constructing and optimizing ONNX graphs with built-in shape inference
+with can also linked to <a class="reference external" href="https://spox.readthedocs.io/en/latest/">spox</a> or <a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a>/<a class="reference external" href="https://onnx.ai/ir-py/">ir-py</a>.
+Its unique API:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the model is called</span>
 <span class="n">expected</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="n">onnx_model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
