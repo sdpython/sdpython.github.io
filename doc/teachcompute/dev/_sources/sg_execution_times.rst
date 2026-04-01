@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:38.496** total execution time for 20 files **from all galleries**:
+**00:12.821** total execution time for 20 files **from all galleries**:
 
 .. container::
 
@@ -32,17 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_sum.py` (``examples/plot_bench_cuda_vector_sum.py``)
-     - 00:17.094
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add.py` (``examples/plot_bench_cuda_vector_add.py``)
-     - 00:10.001
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_gemm.py` (``examples/plot_bench_cuda_gemm.py``)
-     - 00:06.391
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add_stream.py` (``examples/plot_bench_cuda_vector_add_stream.py``)
-     - 00:05.009
+   * - :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py` (``examples/plot_export_model_onnx.py``)
+     - 00:12.821
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``examples/plot_bench_cpu_vector_sum.py``)
      - 00:00.000
@@ -51,6 +42,18 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py` (``examples/plot_bench_cpu_vector_sum_parallel.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_gemm.py` (``examples/plot_bench_cuda_gemm.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add.py` (``examples/plot_bench_cuda_vector_add.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add_stream.py` (``examples/plot_bench_cuda_vector_add_stream.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_sum.py` (``examples/plot_bench_cuda_vector_sum.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_benchmark_associative.py` (``examples/plot_benchmark_associative.py``)
@@ -81,9 +84,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_check_random_order.py` (``examples/plot_check_random_order.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py` (``examples/plot_export_model_onnx.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_piecewise_linear.py` (``examples/plot_piecewise_linear.py``)

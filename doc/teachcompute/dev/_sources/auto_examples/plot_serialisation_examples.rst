@@ -37,6 +37,7 @@ Ecriture (json)
 
 .. code-block:: Python
 
+
     from io import StringIO, BytesIO
     import timeit
     import json
@@ -46,7 +47,6 @@ Ecriture (json)
     import pickle
     import matplotlib.pyplot as plt
     import pandas
-
 
     data = {
         "records": [
@@ -259,7 +259,7 @@ Et la relecture avec la classe :class:`json.JSONDecoder`.
  .. code-block:: none
 
 
-    <__main__.A object at 0x73e4f3b6f5c0>
+    <__main__.A object at 0x7ff872c0a780>
 
 
 
@@ -317,7 +317,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.0024323050001839874
+    0.0015237890002026688
 
 
 
@@ -341,7 +341,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.00035267299972474575
+    0.00023033099932945333
 
 
 
@@ -374,7 +374,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0006002209993312135
+    0.00031745500018587336
 
 
 
@@ -397,7 +397,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0004999120010324987
+    0.0002282109999214299
 
 
 
@@ -425,7 +425,7 @@ On enlève le temps passé dans la creation du buffer.
  .. code-block:: none
 
 
-    3.8345999200828373e-05
+    3.537399970809929e-05
 
 
 
@@ -573,7 +573,7 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
  .. code-block:: none
 
 
-    <__main__.A object at 0x73e58a10eb70>
+    <__main__.A object at 0x7ff87423bbc0>
 
 
 
@@ -705,7 +705,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    <__main__.B object at 0x73e4e1b35ca0>
+    <__main__.B object at 0x7ff87423a180>
 
 
 
@@ -750,7 +750,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.0003365619995747693
+    0.00021151700002519647
 
 
 
@@ -773,7 +773,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.00023672300085308962
+    0.00018724099936662242
 
 
 
@@ -804,7 +804,7 @@ Il est possible d'accélérer un peu les choses.
  .. code-block:: none
 
 
-    0.0002797580000333255
+    0.00024281299920403399
 
 
 
@@ -870,7 +870,7 @@ Binaire
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x73e4e1d411c0>}
+    {'x': 5, 'f': <function myfunc at 0x7ff874609d00>}
 
 
 
@@ -961,7 +961,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    b'\x80\x05\x95\t\x02\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02K\x03C\x0c\x97\x00|\x00d\x01z\x00\x00\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cN/home/xadupre/github/teachcompute/_doc/examples/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94\x8c\x06myfunc\x94M\xa7\x01C\x0b\x80\x00\xd8\x0b\x0c\x88q\x895\x80L\x94C\x00\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94h\x03\x8c\x12_function_setstate\x94\x93\x94h\x1b}\x94}\x94(h\x18\x8c\x06myfunc\x94\x8c\x0c__qualname__\x94\x8c\x06myfunc\x94\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x19\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
+    b'\x80\x05\x95\xf4\x01\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02K\x03C\x0c\x97\x00|\x00d\x01z\x00\x00\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cN/home/xadupre/github/teachcompute/_doc/examples/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94h\x0fM\xa7\x01C\x0b\x80\x00\xd8\x0b\x0c\x88q\x895\x80L\x94C\x00\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94h\x03\x8c\x12_function_setstate\x94\x93\x94h\x1a}\x94}\x94(h\x17h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x18\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
 
 
 
@@ -986,7 +986,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x73e4f3323380>}
+    {'x': 5, 'f': <function myfunc at 0x7ff87460b240>}
 
 
 
@@ -1072,7 +1072,7 @@ même si elle ne produit pas toujours d'erreur.
 
  .. code-block:: none
 
-    <function myfunc at 0x73e4f3323d80> is not JSON serializable
+    <function myfunc at 0x7ff87460a520> is not JSON serializable
 
     ''
 
@@ -1135,7 +1135,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
  .. code-block:: none
 
 
-    {'x': 5, 'it': <list_iterator object at 0x73e4e1c012a0>}
+    {'x': 5, 'it': <list_iterator object at 0x7ff874239a80>}
 
 
 
@@ -1246,14 +1246,14 @@ Summary
  .. code-block:: none
 
                                               expression      time
-    0                        json.dump(data, StringIO())  0.002432
-    1                       ujson.dump(data, StringIO())  0.000353
-    2                           json.load(StringIO(res))  0.000600
-    3                          ujson.load(StringIO(res))  0.000500
-    4                                      StringIO(res)  0.000038
-    5                       pickle.dump(data, BytesIO())  0.000337
-    6                          pickle.load(BytesIO(seq))  0.000237
-    7  pickle.dump(data, BytesIO(), protocol=pickle.H...  0.000280
+    0                        json.dump(data, StringIO())  0.001524
+    1                       ujson.dump(data, StringIO())  0.000230
+    2                           json.load(StringIO(res))  0.000317
+    3                          ujson.load(StringIO(res))  0.000228
+    4                                      StringIO(res)  0.000035
+    5                       pickle.dump(data, BytesIO())  0.000212
+    6                          pickle.load(BytesIO(seq))  0.000187
+    7  pickle.dump(data, BytesIO(), protocol=pickle.H...  0.000243
 
 
 
@@ -1286,7 +1286,7 @@ Summary
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.408 seconds)
+   **Total running time of the script:** (0 minutes 0.478 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_serialisation_examples.py:

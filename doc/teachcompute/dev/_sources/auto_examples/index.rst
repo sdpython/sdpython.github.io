@@ -21,7 +21,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_long_parallel_process_joblib_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_long_parallel_process_joblib.py`
+  :doc:`/auto_examples/plot_benchmark_long_parallel_process_joblib`
 
 .. raw:: html
 
@@ -38,7 +38,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_dot_mul_timeit_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_dot_mul_timeit.py`
+  :doc:`/auto_examples/plot_benchmark_dot_mul_timeit`
 
 .. raw:: html
 
@@ -55,7 +55,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_associative_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_associative.py`
+  :doc:`/auto_examples/plot_benchmark_associative`
 
 .. raw:: html
 
@@ -72,7 +72,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_parallel_process_concurrent_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_parallel_process_concurrent.py`
+  :doc:`/auto_examples/plot_benchmark_parallel_process_concurrent`
 
 .. raw:: html
 
@@ -89,7 +89,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_dot_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_dot.py`
+  :doc:`/auto_examples/plot_benchmark_dot`
 
 .. raw:: html
 
@@ -106,7 +106,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cpu_vector_sum_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py`
+  :doc:`/auto_examples/plot_bench_cpu_vector_sum`
 
 .. raw:: html
 
@@ -123,7 +123,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_filter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_filter.py`
+  :doc:`/auto_examples/plot_benchmark_filter`
 
 .. raw:: html
 
@@ -140,7 +140,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_vector_add_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add.py`
+  :doc:`/auto_examples/plot_bench_cuda_vector_add`
 
 .. raw:: html
 
@@ -157,7 +157,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_check_random_order_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_check_random_order.py`
+  :doc:`/auto_examples/plot_check_random_order`
 
 .. raw:: html
 
@@ -174,7 +174,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_dot_cython_omp_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_dot_cython_omp.py`
+  :doc:`/auto_examples/plot_benchmark_dot_cython_omp`
 
 .. raw:: html
 
@@ -191,7 +191,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_vector_sum_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_sum.py`
+  :doc:`/auto_examples/plot_bench_cuda_vector_sum`
 
 .. raw:: html
 
@@ -208,7 +208,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cpu_vector_sum_parallel_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py`
+  :doc:`/auto_examples/plot_bench_cpu_vector_sum_parallel`
 
 .. raw:: html
 
@@ -225,7 +225,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_piecewise_linear_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_piecewise_linear.py`
+  :doc:`/auto_examples/plot_piecewise_linear`
 
 .. raw:: html
 
@@ -242,7 +242,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_vector_add_stream_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add_stream.py`
+  :doc:`/auto_examples/plot_bench_cuda_vector_add_stream`
 
 .. raw:: html
 
@@ -259,7 +259,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_dot_cython_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_dot_cython.py`
+  :doc:`/auto_examples/plot_benchmark_dot_cython`
 
 .. raw:: html
 
@@ -276,7 +276,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cpu_vector_sum_avx_parallel_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py`
+  :doc:`/auto_examples/plot_bench_cpu_vector_sum_avx_parallel`
 
 .. raw:: html
 
@@ -293,7 +293,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_model_onnx_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py`
+  :doc:`/auto_examples/plot_export_model_onnx`
 
 .. raw:: html
 
@@ -310,7 +310,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_gemm_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_cuda_gemm.py`
+  :doc:`/auto_examples/plot_bench_cuda_gemm`
 
 .. raw:: html
 
@@ -327,7 +327,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_benchmark_dot_mul_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_benchmark_dot_mul.py`
+  :doc:`/auto_examples/plot_benchmark_dot_mul`
 
 .. raw:: html
 
@@ -344,7 +344,7 @@ Gallerie d'exemples
   .. image:: /auto_examples/images/thumb/sphx_glr_plot_serialisation_examples_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_serialisation_examples.py`
+  :doc:`/auto_examples/plot_serialisation_examples`
 
 .. raw:: html
 

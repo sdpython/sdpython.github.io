@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:38.496** total execution time for 20 files **from auto_examples**:
+**00:12.821** total execution time for 20 files **from auto_examples**:
 
 .. container::
 
@@ -32,17 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_sum.py` (``plot_bench_cuda_vector_sum.py``)
-     - 00:17.094
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add.py` (``plot_bench_cuda_vector_add.py``)
-     - 00:10.001
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_gemm.py` (``plot_bench_cuda_gemm.py``)
-     - 00:06.391
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add_stream.py` (``plot_bench_cuda_vector_add_stream.py``)
-     - 00:05.009
+   * - :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py` (``plot_export_model_onnx.py``)
+     - 00:12.821
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``plot_bench_cpu_vector_sum.py``)
      - 00:00.000
@@ -51,6 +42,18 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py` (``plot_bench_cpu_vector_sum_parallel.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_gemm.py` (``plot_bench_cuda_gemm.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add.py` (``plot_bench_cuda_vector_add.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add_stream.py` (``plot_bench_cuda_vector_add_stream.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_sum.py` (``plot_bench_cuda_vector_sum.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_benchmark_associative.py` (``plot_benchmark_associative.py``)
@@ -81,9 +84,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_check_random_order.py` (``plot_check_random_order.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py` (``plot_export_model_onnx.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_piecewise_linear.py` (``plot_piecewise_linear.py``)
