@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -402,6 +402,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Converters</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../to_onnx.html">yobx.to_onnx</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../litert/index.html">LiteRT / TFLite Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../litert/supported_ops.html">Supported LiteRT Ops</a></li>
 </ul>
@@ -532,7 +533,8 @@ parsed_query_to_onnx() ─ GraphBuilder ──► ExportArtifact
 <h2>Key classes and functions<a class="headerlink" href="#key-classes-and-functions" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../api/xtracing/dataframe_trace.html#yobx.xtracing.dataframe_trace.TracedDataFrame" title="yobx.xtracing.dataframe_trace.TracedDataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedDataFrame</span></code></a> — proxy DataFrame with
-<code class="docutils literal notranslate"><span class="pre">.filter()</span></code>, <code class="docutils literal notranslate"><span class="pre">.select()</span></code>, <code class="docutils literal notranslate"><span class="pre">.assign()</span></code>, <code class="docutils literal notranslate"><span class="pre">.groupby()</span></code> operations.</p></li>
+<code class="docutils literal notranslate"><span class="pre">.filter()</span></code>, <code class="docutils literal notranslate"><span class="pre">.select()</span></code>, <code class="docutils literal notranslate"><span class="pre">.assign()</span></code>, <code class="docutils literal notranslate"><span class="pre">.groupby()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">.join()</span></code>, and <code class="docutils literal notranslate"><span class="pre">.pivot_table()</span></code> operations.</p></li>
 <li><p><a class="reference internal" href="../../api/xtracing/dataframe_trace.html#yobx.xtracing.dataframe_trace.TracedSeries" title="yobx.xtracing.dataframe_trace.TracedSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TracedSeries</span></code></a> — proxy for a column or
 expression; supports arithmetic (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>),
 comparisons (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>),
@@ -632,11 +634,19 @@ emission in a single call:</p>
 </tr>
 <tr class="row-even"><td><p>Group by</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby(cols)</span></code></p></td>
-<td><p>(aggregation expressions in <code class="docutils literal notranslate"><span class="pre">select</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Unique</span></code>, <code class="docutils literal notranslate"><span class="pre">ScatterElements</span></code> (per-group aggregations)</p></td>
 </tr>
 <tr class="row-odd"><td><p>Boolean AND / OR</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">cond1</span> <span class="pre">&amp;</span> <span class="pre">cond2</span></code>, <code class="docutils literal notranslate"><span class="pre">cond1</span> <span class="pre">|</span> <span class="pre">cond2</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">And</span></code>, <code class="docutils literal notranslate"><span class="pre">Or</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Equi-join</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.join(right,</span> <span class="pre">left_key,</span> <span class="pre">right_key,</span> <span class="pre">join_type)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Unsqueeze</span></code>, <code class="docutils literal notranslate"><span class="pre">Equal</span></code>, <code class="docutils literal notranslate"><span class="pre">ArgMax</span></code>, <code class="docutils literal notranslate"><span class="pre">Compress</span></code>, <code class="docutils literal notranslate"><span class="pre">Gather</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pivot table</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.pivot_table(values,</span> <span class="pre">index,</span> <span class="pre">columns,</span> <span class="pre">aggfunc,</span> <span class="pre">column_values=…)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Unique</span></code>, <code class="docutils literal notranslate"><span class="pre">ScatterElements</span></code>, <code class="docutils literal notranslate"><span class="pre">Gather</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -648,8 +658,10 @@ emission in a single call:</p>
 <li><p>Tracing captures only the operations performed during the single forward
 pass through the function.  Conditional branches (<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code>) are
 not supported.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> uses whole-dataset aggregation, not true per-group
-semantics (same limitation as the SQL converter).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> on multiple columns casts the key columns to <code class="docutils literal notranslate"><span class="pre">float64</span></code> before
+combining them, which causes precision loss for integer keys greater than 2**53.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pivot_table</span></code> requires an explicit <code class="docutils literal notranslate"><span class="pre">column_values</span></code> list: ONNX static
+graphs need the output column count known at conversion time.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">TracedDataFrame</span></code> API is a subset of the full pandas/polars API;
 operations outside this subset will raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotImplementedError</span></code></a>.</p></li>
 </ul>

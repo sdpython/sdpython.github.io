@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -402,6 +402,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Converters</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../to_onnx.html">yobx.to_onnx</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../litert/index.html">LiteRT / TFLite Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../litert/supported_ops.html">Supported LiteRT Ops</a></li>
 </ul>
@@ -641,9 +642,8 @@ plan.</p>
 <section id="limitations">
 <h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> uses whole-dataset aggregation (<code class="docutils literal notranslate"><span class="pre">ReduceSum</span></code> etc.) rather
-than true per-group semantics (one output row per unique key).  True
-per-group semantics would require an ONNX <code class="docutils literal notranslate"><span class="pre">Loop</span></code> or a custom kernel.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> on multiple columns casts the key columns to <code class="docutils literal notranslate"><span class="pre">float64</span></code> before
+combining them, which causes precision loss for integer keys greater than 2**53.</p></li>
 <li><p>Only a single <code class="docutils literal notranslate"><span class="pre">filter</span></code> step, a single <code class="docutils literal notranslate"><span class="pre">select</span></code> step, and a single
 <code class="docutils literal notranslate"><span class="pre">group_by</span></code>/<code class="docutils literal notranslate"><span class="pre">agg</span></code> step are handled.  Complex multi-step plans may
 not translate correctly.</p></li>

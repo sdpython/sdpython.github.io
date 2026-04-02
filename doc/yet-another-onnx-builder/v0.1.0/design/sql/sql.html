@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -402,6 +402,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Converters</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../to_onnx.html">yobx.to_onnx</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../litert/index.html">LiteRT / TFLite Export to ONNX</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../litert/supported_ops.html">Supported LiteRT Ops</a></li>
 </ul>
@@ -560,12 +561,17 @@ sql_to_onnx()       ─── GraphBuilder ──► ModelProto
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span> <span class="pre">col,</span> <span class="pre">…</span></code></p></td>
 <td><p><a class="reference internal" href="../../api/xtracing/parse.html#yobx.xtracing.parse.GroupByOp" title="yobx.xtracing.parse.GroupByOp"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupByOp</span></code></a></p></td>
-<td><p>(groups are processed together with <code class="docutils literal notranslate"><span class="pre">SelectOp</span></code> aggregations)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Unique</span></code>, <code class="docutils literal notranslate"><span class="pre">ScatterElements</span></code> (groups are processed together
+with <code class="docutils literal notranslate"><span class="pre">SelectOp</span></code> aggregations)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[INNER|LEFT|RIGHT|FULL]</span> <span class="pre">JOIN</span> <span class="pre">…</span> <span class="pre">ON</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">col</span></code></p></td>
 <td><p><a class="reference internal" href="../../api/xtracing/parse.html#yobx.xtracing.parse.JoinOp" title="yobx.xtracing.parse.JoinOp"><code class="xref py py-class docutils literal notranslate"><span class="pre">JoinOp</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Unsqueeze</span></code>, <code class="docutils literal notranslate"><span class="pre">Equal</span></code>, <code class="docutils literal notranslate"><span class="pre">ArgMax</span></code>, <code class="docutils literal notranslate"><span class="pre">ReduceMax</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Compress</span></code>, <code class="docutils literal notranslate"><span class="pre">Gather</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Subqueries (<code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">…</span> <span class="pre">FROM</span> <span class="pre">(SELECT</span> <span class="pre">…)</span></code>)</p></td>
+<td><p>inner <a class="reference internal" href="../../api/xtracing/parse.html#yobx.xtracing.parse.ParsedQuery" title="yobx.xtracing.parse.ParsedQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParsedQuery</span></code></a></p></td>
+<td><p>(inner query outputs become outer query column tensors)</p></td>
 </tr>
 </tbody>
 </table>
@@ -595,21 +601,25 @@ column name in the SQL query.  Column names are normalised to lower-case.</p>
 <h2>Execution order<a class="headerlink" href="#execution-order" title="Link to this heading">#</a></h2>
 <p>Operations are applied in the following logical order:</p>
 <ol class="arabic simple">
+<li><p><strong>Subquery</strong> — if present, the inner query is processed first; its SELECT
+outputs become the column tensors for the outer query.</p></li>
 <li><p><strong>JoinOp</strong> — merge left and right tables using an equi-join key.</p></li>
 <li><p><strong>FilterOp</strong> — apply the <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> predicate as a boolean mask
 (<code class="docutils literal notranslate"><span class="pre">Compress</span></code>) to all column tensors simultaneously.</p></li>
-<li><p><strong>GroupByOp</strong> — record the group keys; referenced by aggregation
-expressions in the <code class="docutils literal notranslate"><span class="pre">SelectOp</span></code>.</p></li>
+<li><p><strong>GroupByOp</strong> — use <code class="docutils literal notranslate"><span class="pre">Unique</span></code> + <code class="docutils literal notranslate"><span class="pre">ScatterElements</span></code> to compute per-group
+aggregations; referenced by aggregation expressions in the <code class="docutils literal notranslate"><span class="pre">SelectOp</span></code>.</p></li>
 <li><p><strong>SelectOp</strong> — compute output expressions (arithmetic, aggregations)
 over the filtered/joined columns.</p></li>
 </ol>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>inputs: col_a, col_b, col_key_left, col_key_right
     │
+    ├── Subquery:  inner ParsedQuery → intermediate column tensors
+    │
     ├── JoinOp:   Unsqueeze/Equal/ArgMax → Compress/Gather aligned columns
     │
     ├── FilterOp: Greater/And/… → Compress (row mask applied to all cols)
     │
-    ├── GroupByOp: (records group columns, used by aggregations)
+    ├── GroupByOp: Unique → ScatterElements (per-group aggregations)
     │
     └── SelectOp: Add/ReduceSum/… → Identity → outputs
 </pre></div>
@@ -656,12 +666,11 @@ condition  ::= and_pred ( &quot;OR&quot; and_pred )*
 <section id="limitations-and-future-work">
 <h2>Limitations and future work<a class="headerlink" href="#limitations-and-future-work" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> uses a whole-dataset aggregation (<code class="docutils literal notranslate"><span class="pre">ReduceSum</span></code> etc.) rather
-than true per-group aggregation.  True per-group semantics require an ONNX
-<code class="docutils literal notranslate"><span class="pre">Loop</span></code> or a custom kernel.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code> on multiple columns casts the key columns to <code class="docutils literal notranslate"><span class="pre">float64</span></code> before
+combining them, which causes precision loss for integer keys greater than 2**53.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">DISTINCT</span></code> is parsed but raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotImplementedError</span></code></a> during conversion.</p></li>
 <li><p>Only equi-joins on a single key column are supported for <code class="docutils literal notranslate"><span class="pre">JOIN</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HAVING</span></code>, <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code>, <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code>, and subqueries are not yet supported.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HAVING</span></code>, <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code>, and <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> are not yet supported.</p></li>
 <li><p>String equality (<code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">name</span> <span class="pre">=</span> <span class="pre">'alice'</span></code>) is not yet supported
 (string literals are parsed but ONNX <code class="docutils literal notranslate"><span class="pre">Equal</span></code> on strings may need a
 separate handling path).</p></li>
