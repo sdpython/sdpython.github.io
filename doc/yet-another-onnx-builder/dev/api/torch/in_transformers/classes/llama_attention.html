@@ -936,7 +936,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../../interpreter/onnx_export.html">yobx.torch.interpreter.onnx_export</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../new_tracing/index.html">yobx.torch.new_tracing</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../new_tracing/index.html">yobx.torch.new_tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../new_tracing/shape.html">yobx.torch.new_tracing.shape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../new_tracing/tensor.html">yobx.torch.new_tracing.tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../new_tracing/tracer.html">yobx.torch.new_tracing.tracer</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 </ul>
@@ -1024,15 +1029,23 @@ without going through <a class="reference external" href="https://docs.pytorch.o
 the opsets registered in the graph builder:</p>
 <ul class="simple">
 <li><p><strong>com.microsoft</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;com.microsoft&quot;</span></code> domain registered in the builder):
-Uses the <code class="docutils literal notranslate"><span class="pre">com.microsoft.MultiHeadAttention</span></code> contrib op from <em>onnxruntime</em>.
+Uses the <code class="docutils literal notranslate"><span class="pre">com.microsoft.RotaryEmbedding</span></code> contrib op for rotary embeddings
+and the <code class="docutils literal notranslate"><span class="pre">com.microsoft.MultiHeadAttention</span></code> contrib op for attention from
+<em>onnxruntime</em>.
 GQA key/value heads are expanded (via repeat-interleave) to match the query
-head count before being passed to the op.
+head count before the attention op.
 The model runs efficiently on CPU and CUDA with OnnxRuntime.</p></li>
 <li><p><strong>opset ≥ 24</strong> (main opset ≥ 24):
-Uses the standard ONNX <code class="docutils literal notranslate"><span class="pre">Attention</span></code> operator introduced in opset 23
-(revision 24 fixes a correctness bug; this converter therefore requires 24).</p></li>
+Uses the standard ONNX <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> operator (opset ≥ 23) for
+rotary embeddings and the standard ONNX <code class="docutils literal notranslate"><span class="pre">Attention</span></code> operator introduced
+in opset 23 (revision 24 fixes a correctness bug; this converter therefore
+requires 24) for attention.</p></li>
+<li><p><strong>opset 23</strong> (main opset == 23):
+Uses the standard ONNX <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> operator for rotary embeddings
+and basic ONNX ops (<code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">Softmax</span></code>, <code class="docutils literal notranslate"><span class="pre">Transpose</span></code>, …) for attention.</p></li>
 <li><p><strong>opset ≤ 22</strong> (default fallback):
-Uses basic ONNX ops (<code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">Softmax</span></code>, <code class="docutils literal notranslate"><span class="pre">Transpose</span></code>, …).</p></li>
+Uses basic ONNX ops (<code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">Softmax</span></code>, <code class="docutils literal notranslate"><span class="pre">Transpose</span></code>, …) for both
+rotary embeddings and attention.</p></li>
 </ul>
 <dl class="simple">
 <dt>Supported dtypes:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">float32</span></code>, <code class="docutils literal notranslate"><span class="pre">float16</span></code>, and <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code> are all supported.
@@ -1095,7 +1108,7 @@ a graph output via <code class="docutils literal notranslate"><span class="pre">
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.in_transformers.classes.llama_attention.llama_attention_to_onnx">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.classes.llama_attention.</span></span><span class="sig-name descname"><span class="pre">llama_attention_to_onnx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../typing.html#yobx.typing.GraphBuilderExtendedProtocol" title="yobx.typing.GraphBuilderExtendedProtocol"><span class="pre">GraphBuilderExtendedProtocol</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LlamaAttention</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'llama_attention'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/9db80cc/yobx/torch/in_transformers/classes/llama_attention.py#L309"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.classes.llama_attention.llama_attention_to_onnx" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.classes.llama_attention.</span></span><span class="sig-name descname"><span class="pre">llama_attention_to_onnx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../typing.html#yobx.typing.GraphBuilderExtendedProtocol" title="yobx.typing.GraphBuilderExtendedProtocol"><span class="pre">GraphBuilderExtendedProtocol</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LlamaAttention</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'llama_attention'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/e07e39c/yobx/torch/in_transformers/classes/llama_attention.py#L427"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.classes.llama_attention.llama_attention_to_onnx" title="Link to this definition">#</a></dt>
 <dd><p>Appends ONNX nodes implementing
 <code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.models.llama.modeling_llama.LlamaAttention</span></code> to <em>g</em>.</p>
 <p>The output dtype (<code class="docutils literal notranslate"><span class="pre">float32</span></code>, <code class="docutils literal notranslate"><span class="pre">float16</span></code>, or <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code>) is inferred
@@ -1103,13 +1116,30 @@ from the registered type of <em>hidden_states</em> in <em>g</em>.  Model weights
 to match.</p>
 <p>The backend is chosen from the opsets registered in <em>g</em>:</p>
 <ul class="simple">
-<li><p><strong>com.microsoft</strong> — <code class="docutils literal notranslate"><span class="pre">MultiHeadAttention</span></code> contrib op (OnnxRuntime).
-The <code class="docutils literal notranslate"><span class="pre">&quot;com.microsoft&quot;</span></code> domain must be registered in <em>g</em>.
-GQA KV heads are expanded to match the query head count before the op.</p></li>
-<li><p><strong>opset ≥ 24</strong> — standard ONNX <code class="docutils literal notranslate"><span class="pre">Attention</span></code> op.</p></li>
-<li><p><strong>opset ≤ 22</strong> — plain ONNX ops (<code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">Softmax</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Transpose</span></code>, …).  This is the default path.</p></li>
+<li><p><strong>com.microsoft</strong> — <code class="docutils literal notranslate"><span class="pre">com.microsoft.RotaryEmbedding</span></code> for rotary
+embeddings and <code class="docutils literal notranslate"><span class="pre">com.microsoft.MultiHeadAttention</span></code> for attention
+(OnnxRuntime).  The <code class="docutils literal notranslate"><span class="pre">&quot;com.microsoft&quot;</span></code> domain must be registered in
+<em>g</em>.  GQA KV heads are expanded to match the query head count before
+the attention op.</p></li>
+<li><p><strong>opset ≥ 24</strong> — standard ONNX <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> op (opset ≥ 23)
+for rotary embeddings and the standard ONNX <code class="docutils literal notranslate"><span class="pre">Attention</span></code> op for
+attention.</p></li>
+<li><p><strong>opset 23</strong> — standard ONNX <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> op for rotary
+embeddings and plain ONNX ops (<code class="docutils literal notranslate"><span class="pre">MatMul</span></code>, <code class="docutils literal notranslate"><span class="pre">Softmax</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Transpose</span></code>, …) for attention.</p></li>
+<li><p><strong>opset ≤ 22</strong> — plain ONNX ops for both rotary embeddings and
+attention.  This is the default fallback path.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cos</span></code> and <code class="docutils literal notranslate"><span class="pre">sin</span></code> inputs are expected to carry <em>symmetric</em>
+values, i.e. <code class="docutils literal notranslate"><span class="pre">cos[...,</span> <span class="pre">:head_dim//2]</span> <span class="pre">==</span> <span class="pre">cos[...,</span> <span class="pre">head_dim//2:]</span></code>
+(and likewise for <code class="docutils literal notranslate"><span class="pre">sin</span></code>).  This matches what
+<code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.models.llama.modeling_llama.LlamaRotaryEmbedding</span></code>
+produces.  The dedicated ONNX/ORT <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> ops use only
+the first half of the last dimension; the plain-op fallback uses
+the full tensor unchanged.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

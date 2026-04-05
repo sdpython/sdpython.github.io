@@ -542,11 +542,11 @@ polars <code class="docutils literal notranslate"><span class="pre">LazyFrame</s
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span> <span class="pre">cols</span></code></p></td>
 <td><p>⚠ partial</p></td>
-<td><p>whole-dataset aggregation only; no per-group rows</p></td>
+<td><p>per-group aggregation via <code class="docutils literal notranslate"><span class="pre">Unique</span></code> + <code class="docutils literal notranslate"><span class="pre">ScatterElements</span></code>; multi-column keys cast to <code class="docutils literal notranslate"><span class="pre">float64</span></code> (precision loss for integers &gt; 2**53)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[INNER|LEFT|RIGHT|FULL]</span> <span class="pre">JOIN</span> <span class="pre">…</span> <span class="pre">ON</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">col</span></code></p></td>
 <td><p>✔ supported</p></td>
-<td><p>equi-join on a single key column</p></td>
+<td><p>equi-join on a single key column; multiple JOINs supported</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">DISTINCT</span></code></p></td>
 <td><p>✘ not supported</p></td>
@@ -565,8 +565,8 @@ polars <code class="docutils literal notranslate"><span class="pre">LazyFrame</s
 <td><p>not yet implemented</p></td>
 </tr>
 <tr class="row-even"><td><p>Subqueries</p></td>
-<td><p>✘ not supported</p></td>
-<td><p>not yet implemented</p></td>
+<td><p>✔ supported</p></td>
+<td><p>inner query outputs become outer query columns</p></td>
 </tr>
 <tr class="row-odd"><td><p>String equality (<code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">'val'</span></code>)</p></td>
 <td><p>✘ not supported</p></td>
@@ -612,7 +612,7 @@ polars <code class="docutils literal notranslate"><span class="pre">LazyFrame</s
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df.groupby(cols)</span></code></p></td>
 <td><p>⚠ partial</p></td>
-<td><p>whole-dataset aggregation only</p></td>
+<td><p>per-group aggregation supported; multi-column keys cast to <code class="docutils literal notranslate"><span class="pre">float64</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>Series arithmetic (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>)</p></td>
 <td><p>✔ supported</p></td>
@@ -633,6 +633,14 @@ polars <code class="docutils literal notranslate"><span class="pre">LazyFrame</s
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">series.alias(&quot;name&quot;)</span></code></p></td>
 <td><p>✔ supported</p></td>
 <td><p>output rename</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df.join(right,</span> <span class="pre">left_key,</span> <span class="pre">right_key)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>equi-join; <code class="docutils literal notranslate"><span class="pre">inner</span></code> (default), <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">full</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">df.pivot_table(values,</span> <span class="pre">index,</span> <span class="pre">columns,</span> <span class="pre">aggfunc)</span></code></p></td>
+<td><p>✔ supported</p></td>
+<td><p>requires explicit <code class="docutils literal notranslate"><span class="pre">column_values</span></code>; <code class="docutils literal notranslate"><span class="pre">sum</span></code>, <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">count</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>Conditional branches (<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code>)</p></td>
 <td><p>✘ not supported</p></td>
