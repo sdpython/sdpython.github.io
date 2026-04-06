@@ -3,7 +3,6 @@
 import datetime
 import urllib.request
 import json
-import math
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -51,8 +50,10 @@ def _fetch_workflow_runs(workflow_id, since_iso):
 
 
 def _run_duration_minutes(run):
-    """Returns the wall-clock duration of a completed run in minutes, or None."""
+    """Returns the wall-clock duration of a successfully completed run in minutes, or None."""
     if run.get("status") != "completed":
+        return None
+    if run.get("conclusion") != "success":
         return None
     created = run.get("created_at")
     updated = run.get("updated_at")
@@ -117,19 +118,12 @@ if not data:
         ha="center", va="center", transform=ax.transAxes, fontsize=11,
     )
     ax.axis("off")
+    plt.tight_layout()
 else:
-    n = len(data)
-    ncols = min(2, n)
-    nrows = math.ceil(n / ncols)
-    fig, axes = plt.subplots(
-        nrows, ncols, figsize=(7 * ncols, 4 * nrows), squeeze=False
-    )
-
     colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 
     for idx, (wf_name, points) in enumerate(sorted(data.items())):
-        row, col = divmod(idx, ncols)
-        ax = axes[row][col]
+        fig, ax = plt.subplots(figsize=(10, 4))
         dates = [p[0] for p in points]
         durations = [p[1] for p in points]
 
@@ -148,18 +142,10 @@ else:
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
         ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
         ax.tick_params(axis="x", rotation=30, labelsize=8)
-        ax.set_title(wf_name, fontsize=10)
-        ax.set_ylabel("Duration (min)", fontsize=8)
+        ax.set_title(wf_name, fontsize=12)
+        ax.set_ylabel("Duration (min)", fontsize=10)
         ax.grid(True, linestyle="--", alpha=0.4)
         if len(durations) >= 5:
-            ax.legend(fontsize=7)
-
-    # Hide unused subplots
-    for idx in range(len(data), nrows * ncols):
-        row, col = divmod(idx, ncols)
-        axes[row][col].set_visible(False)
-
-    fig.suptitle("CI Workflow Run Durations — Past Two Months", fontsize=13, y=1.01)
-    fig.autofmt_xdate()
-
-plt.tight_layout()
+            ax.legend(fontsize=9)
+        fig.autofmt_xdate()
+        plt.tight_layout()
