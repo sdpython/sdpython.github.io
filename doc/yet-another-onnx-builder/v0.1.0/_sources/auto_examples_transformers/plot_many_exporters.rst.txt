@@ -31,7 +31,7 @@ and compares the model composition (the node distribution).
 Imports
 -------
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-34
+.. GENERATED FROM PYTHON SOURCE LINES 14-29
 
 .. code-block:: Python
 
@@ -48,12 +48,7 @@ Imports
     from yobx.helpers.rt_helper import make_feeds
     from yobx.torch.torch_helper import torch_deepcopy
     from yobx.torch.in_transformers.cache_helper import make_dynamic_cache
-    from yobx.torch import (
-        apply_patches_for_model,
-        register_flattening_functions,
-        to_onnx,
-        ExportOptions,
-    )
+    from yobx.torch import apply_patches_for_model, to_onnx, ExportOptions
 
 
 
@@ -62,7 +57,7 @@ Imports
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-50
+.. GENERATED FROM PYTHON SOURCE LINES 30-45
 
 Command-line arguments
 ----------------------
@@ -80,7 +75,7 @@ speed up export and reduce memory during development.
 ``arnir0/Tiny-LLM``).  Any :class:`transformers.AutoModelForCausalLM`-compatible model
 can be passed here.
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-91
+.. GENERATED FROM PYTHON SOURCE LINES 45-86
 
 .. code-block:: Python
 
@@ -119,7 +114,7 @@ can be passed here.
         ),
     )
     parser.add_argument(
-        "--exporter", type=str, default="dynamo,yobx,tracing", help=("Tells which exporter to run.")
+        "--exporter", type=str, default="yobx,dynamo,tracing", help=("Tells which exporter to run.")
     )
 
     # parse_known_args avoids failures when sphinx-gallery passes extra arguments.
@@ -132,7 +127,7 @@ can be passed here.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-101
+.. GENERATED FROM PYTHON SOURCE LINES 87-96
 
 Load model and tokenizer
 ------------------------
@@ -144,7 +139,7 @@ By default the model is loaded with pre-trained weights (``--trained``).
 Pass ``--no-trained`` to use random weights instead (much faster, no large
 download).
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-130
+.. GENERATED FROM PYTHON SOURCE LINES 96-125
 
 .. code-block:: Python
 
@@ -186,13 +181,14 @@ download).
  .. code-block:: none
 
     Loading pre-trained weights for 'arnir0/Tiny-LLM' ...
-    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 581.29it/s]
+    use_kernel_func_from_hub is not available in the installed kernels version. Please upgrade kernels to use this feature.
+    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 294.45it/s]
       trained=True  num_hidden_layers=1  #params=12,988,992
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-136
+.. GENERATED FROM PYTHON SOURCE LINES 126-131
 
 Device selection
 ----------------
@@ -200,7 +196,7 @@ Device selection
 Move the model to GPU if CUDA is available so that the observation,
 export, and inference steps all run on the same device.
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-142
+.. GENERATED FROM PYTHON SOURCE LINES 131-137
 
 .. code-block:: Python
 
@@ -223,27 +219,81 @@ export, and inference steps all run on the same device.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-145
+.. GENERATED FROM PYTHON SOURCE LINES 138-149
 
-Run the exporters
------------------
+Wrap the model
+--------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-223
+Rather than registering ``DynamicCache`` as a pytree node with
+:func:`register_flattening_functions <yobx.torch.flatten.register_flattening_functions>`,
+we wrap the model in a thin :class:`torch.nn.Module` subclass whose
+``forward`` signature takes only plain :class:`torch.Tensor` arguments.
+The wrapper reconstructs the ``DynamicCache`` internally before forwarding
+to the original model.  This keeps the exported ONNX model's input interface
+clean (all inputs are tensors) without requiring any pytree registration
+to flatten the caches.
+
+.. GENERATED FROM PYTHON SOURCE LINES 149-176
 
 .. code-block:: Python
 
 
+
+    class LLMWrapper(torch.nn.Module):
+        def __init__(self, inner_model: torch.nn.Module):
+            super().__init__()
+            self.inner_model = inner_model
+
+        def forward(
+            self,
+            input_ids: torch.Tensor,
+            attention_mask: torch.Tensor,
+            past_key_0: torch.Tensor,
+            past_value_0: torch.Tensor,
+        ):
+            past_key_values = make_dynamic_cache([(past_key_0, past_value_0)])
+            outputs = self.inner_model(
+                input_ids=input_ids, attention_mask=attention_mask, past_key_values=past_key_values
+            )
+            return (
+                outputs.logits,
+                outputs.past_key_values.layers[0].keys,
+                outputs.past_key_values.layers[0].values,
+            )
+
+
+    wrapped_model = LLMWrapper(model)
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 177-179
+
+Run the exporters
+-----------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 179-272
+
+.. code-block:: Python
+
+
+    past_key = torch.rand((2, 1, 30, 96)).to(device)
+    past_value = torch.rand((2, 1, 30, 96)).to(device)
     inputs = dict(
         input_ids=torch.randint(0, 1000, (2, 3), dtype=torch.int64).to(device),
         attention_mask=torch.randint(0, 1, (2, 33), dtype=torch.int64).to(device),
-        past_key_values=make_dynamic_cache(
-            [(torch.rand((2, 1, 30, 96)).to(device), torch.rand((2, 1, 30, 96)).to(device))]
-        ),
+        past_key_0=past_key,
+        past_value_0=past_value,
     )
     dynamic_shapes = {
         "input_ids": {0: "batch", 1: "seq_length"},
         "attention_mask": {0: "batch", 1: "past_length+seq_length"},
-        "past_key_values": [{0: "batch", 2: "past_length"}, {0: "batch", 2: "past_length"}],
+        "past_key_0": {0: "batch", 2: "past_length"},
+        "past_value_0": {0: "batch", 2: "past_length"},
     }
     providers = (
         ["CUDAExecutionProvider", "CPUExecutionProvider"]
@@ -254,21 +304,23 @@ Run the exporters
 
     exporters = args.exporter.split(",")
     copy_inputs = torch_deepcopy(inputs)
-    expected = model(**copy_inputs)
+    expected = wrapped_model(**copy_inputs)
 
     successful_exports: dict[str, str] = {}
 
     for exporter in exporters:
         filename = f"plot_many_exporter.{exporter}.onnx"
         print(f"-- run exporter {exporter!r}")
-        with (
-            register_flattening_functions(patch_transformers=True),
-            apply_patches_for_model(patch_transformers=True, model=model),
-        ):
+        with apply_patches_for_model(patch_transformers=True, model=model):
             if exporter == "dynamo":
                 try:
                     torch.onnx.export(
-                        model, (), filename, kwargs=inputs, dynamic_shapes=dynamic_shapes
+                        wrapped_model,
+                        (),
+                        filename,
+                        kwargs=inputs,
+                        dynamic_shapes=dynamic_shapes,
+                        opset_version=22,
                     )
                     print("-- export ok")
                 except Exception as e:
@@ -276,7 +328,13 @@ Run the exporters
                     continue
             elif exporter == "yobx":
                 try:
-                    to_onnx(model, kwargs=inputs, filename=filename, dynamic_shapes=dynamic_shapes)
+                    to_onnx(
+                        wrapped_model,
+                        kwargs=inputs,
+                        filename=filename,
+                        dynamic_shapes=dynamic_shapes,
+                        target_opset=22,
+                    )
                     print("-- export ok")
                 except Exception as e:
                     print(f"-- export failed due to {e}")
@@ -284,11 +342,12 @@ Run the exporters
             elif exporter == "tracing":
                 try:
                     to_onnx(
-                        model,
+                        wrapped_model,
                         kwargs=inputs,
                         filename=filename,
                         dynamic_shapes=dynamic_shapes,
                         export_options=ExportOptions(tracing=True),
+                        target_opset=22,
                     )
                     print("-- export ok")
                 except Exception as e:
@@ -302,7 +361,11 @@ Run the exporters
         print("-- running")
         sess = onnxruntime.InferenceSession(filename, providers=providers)
         feeds = make_feeds([i.name for i in sess.get_inputs()], inputs, use_numpy=True)
-        got = sess.run(None, feeds)
+        try:
+            got = sess.run(None, feeds)
+        except Exception as e:
+            print(f"-- not running due to {e}")
+            continue
         diff = max_diff(expected, got)
         if diff["abs"] < 1e-2:
             print(f"-- discrepancies ok - {diff['abs']}")
@@ -318,33 +381,36 @@ Run the exporters
 
  .. code-block:: none
 
+    -- run exporter 'yobx'
+    `loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+    -- export ok
+    -- running
+    -- discrepancies ok - 0.009767532348632812
     -- run exporter 'dynamo'
-    [torch.onnx] Obtain model graph for `LlamaForCausalLM([...]` with `torch.export.export(..., strict=False)`...
-    [torch.onnx] Obtain model graph for `LlamaForCausalLM([...]` with `torch.export.export(..., strict=False)`... ✅
+    /home/xadupre/github/yet-another-onnx-builder/docs/examples/transformers/plot_many_exporters.py:213: UserWarning: Exporting a model while it is in training mode. Please ensure that this is intended, as it may lead to different behavior during inference. Calling model.eval() before export is recommended.
+      torch.onnx.export(
+    [torch.onnx] Obtain model graph for `LLMWrapper([...]` with `torch.export.export(..., strict=False)`...
+    [torch.onnx] Obtain model graph for `LLMWrapper([...]` with `torch.export.export(..., strict=False)`... ✅
     [torch.onnx] Run decompositions...
     /usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
       return cls.__new__(cls, *args)
-    [torch.onnx] Run decompositions... ❌
-    -- export failed due to Failed to decompose the FX graph for ONNX compatibility. This is step 2/3 of exporting the model to ONNX. Next steps:
-    - Create an issue in the PyTorch GitHub repository against the *torch.export* component and attach the full error stack as well as reproduction scripts.
-    - Create an error report with `torch.onnx.export(..., report=True)`, and save the ExportedProgram as a pt2 file. Create an issue in the PyTorch GitHub repository against the *onnx* component. Attach the error report and the pt2 model.
-
-    ## Exception summary
-
-    <class 'IndexError'>: list index out of range
-
-    (Refer to the full stack trace above for more information.)
-    -- run exporter 'yobx'
+    [torch.onnx] Run decompositions... ✅
+    [torch.onnx] Translate the graph into ONNX...
+    [torch.onnx] Translate the graph into ONNX... ✅
+    [torch.onnx] Optimize the ONNX graph...
+    [torch.onnx] Optimize the ONNX graph... ✅
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_onnx_program.py:486: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
+      rename_mapping = _dynamic_shapes.create_rename_mapping(
     -- export ok
     -- running
-    -- discrepancies ok - 0.008434295654296875
+    -- discrepancies = {'abs': 21.475772380828857, 'rel': 2580.210314689524, 'sum': 948575.7076608248, 'n': 204672.0, 'dnan': 0, 'dev': 3}
     -- run exporter 'tracing'
     -- export failed due to symbolically traced variables cannot be used as inputs to control flow - this usually fails due to static control flows
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 224-231
+.. GENERATED FROM PYTHON SOURCE LINES 273-280
 
 Node frequencies
 ----------------
@@ -354,7 +420,7 @@ how many times each ``op_type`` appears.  The counts are displayed as
 grouped horizontal bar charts so that the exporters can be compared
 side-by-side.
 
-.. GENERATED FROM PYTHON SOURCE LINES 231-277
+.. GENERATED FROM PYTHON SOURCE LINES 280-327
 
 .. code-block:: Python
 
@@ -403,6 +469,7 @@ side-by-side.
         ax.set_title("ONNX node frequencies per exporter", fontsize=10)
         ax.legend(fontsize=9)
         fig.tight_layout()
+        fig.savefig("plot_many_exporters.png")
         plt.show()
 
 
@@ -419,7 +486,7 @@ side-by-side.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 26.485 seconds)
+   **Total running time of the script:** (0 minutes 51.355 seconds)
 
 
 .. _sphx_glr_download_auto_examples_transformers_plot_many_exporters.py:
