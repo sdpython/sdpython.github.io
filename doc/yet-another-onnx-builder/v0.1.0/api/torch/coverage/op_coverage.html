@@ -1028,39 +1028,40 @@
 <p>Op-db coverage data for PyTorch-to-ONNX operator export.</p>
 <p>Defines the sets of ops that have no converter, are known to fail, or are
 excluded for specific dtypes when tested via
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">unittests.torch.coverage.test_onnx_export_common_methods</span></code>.</p>
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">unittests.torch.coverage.test_onnx_export_common_methods</span></code> and
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">unittests.torch.coverage.test_onnx_export_common_methods_tracing</span></code>.</p>
 <p><code class="xref py py-data docutils literal notranslate"><span class="pre">NO_CONVERTER_OPS</span></code> - ops whose aten decomposition uses a function for
 which no ONNX converter has been implemented yet.</p>
-<p><code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS</span></code> - ops that can be exported but produce incorrect numerical
-results or raise errors unrelated to missing converters.</p>
-<p><code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_FLOAT16</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_BFLOAT16</span></code>,
-<code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_INT32</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_INT64</span></code> - dtype-specific extra
-exclusions on top of <code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS</span></code>.</p>
+<p><code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_FLOAT16</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_BFLOAT16</span></code>,
+<code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_INT32</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS_INT64</span></code> - dicts mapping export-path
+name (<code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;tracing&quot;</span></code>) to a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">frozenset</span></code></a> of op keys that
+are expected to fail on that path.  The <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code> entry covers the
+standard export path; the <code class="docutils literal notranslate"><span class="pre">&quot;tracing&quot;</span></code> entry lists additional ops that fail
+specifically under <code class="docutils literal notranslate"><span class="pre">ExportOptions(tracing=True)</span></code>.  The dtype-specific dicts
+contain only the <em>extra</em> exclusions beyond the dtype-agnostic <code class="xref py py-data docutils literal notranslate"><span class="pre">XFAIL_OPS</span></code>.</p>
 <p><code class="xref py py-data docutils literal notranslate"><span class="pre">ATOL_OPS_FLOAT32</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">ATOL_OPS_FLOAT16</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">ATOL_OPS_BFLOAT16</span></code> - per-op absolute
 tolerance overrides for float16 and bfloat16, for ops whose reduced-precision
 errors exceed the global dtype tolerance.</p>
-<p>These sets are consumed by the op-db test module
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">unittests.torch.coverage.test_onnx_export_common_methods</span></code> and by
+<p>These sets are consumed by the op-db test modules
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">unittests.torch.coverage.test_onnx_export_common_methods</span></code>,
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">unittests.torch.coverage.test_onnx_export_common_methods_tracing</span></code>, and by
 <a class="reference internal" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="yobx.torch.coverage.op_coverage.get_op_coverage_rst"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_op_coverage_rst()</span></code></a> which builds a documentation coverage table.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.coverage.op_coverage.get_op_coverage_rst">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.coverage.op_coverage.</span></span><span class="sig-name descname"><span class="pre">get_op_coverage_rst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/cc63d48/yobx/torch/coverage/op_coverage.py#L418"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="Link to this definition">#</a></dt>
-<dd><p>Returns an RST table showing op-db coverage per op and dtype.</p>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.coverage.op_coverage.</span></span><span class="sig-name descname"><span class="pre">get_op_coverage_rst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/5daad45/yobx/torch/coverage/op_coverage.py#L519"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="Link to this definition">#</a></dt>
+<dd><p>Returns RST tables showing op-db coverage per op and dtype.</p>
 <p>Queries <code class="docutils literal notranslate"><span class="pre">torch.testing._internal.common_methods_invocations.op_db</span></code> and
-builds a grid showing, for every op and dtype combination, whether the op
-is:</p>
+builds three grids (default export path, torch tracing path, and
+new-tracing path) showing, for every op and dtype combination, whether the</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">✔</span></code> - in the tested set (converter exists, no known failure for that dtype),</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">⚠</span> <span class="pre">xfail</span></code> - converter exists but the test is a known failure,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">✘</span> <span class="pre">no</span> <span class="pre">converter</span></code> - no ONNX converter has been implemented yet, or</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">—</span></code> - the op does not support that dtype.</p></li>
-</ul>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>RST source string (a <code class="docutils literal notranslate"><span class="pre">list-table</span></code> directive) ready to be printed
-inside a <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> block with <code class="docutils literal notranslate"><span class="pre">:rst:</span></code> enabled.</p>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">✔</span></code> - in the tested set (converter exists, no known failure for that dtype),</dt><dd><p>RST source string with three <code class="docutils literal notranslate"><span class="pre">list-table</span></code> directives (default path,
+tracing path, and new-tracing path) ready to be printed inside a
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> block with <code class="docutils literal notranslate"><span class="pre">:rst:</span></code> enabled.</p>
 </dd>
 </dl>
+</li>
+</ul>
 </dd></dl>
 
 </section>

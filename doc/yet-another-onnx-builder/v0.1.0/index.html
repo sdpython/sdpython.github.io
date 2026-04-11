@@ -549,10 +549,44 @@ for constructing and optimizing ONNX graphs with built-in shape inference
 with can also linked to <a class="reference external" href="https://spox.readthedocs.io/en/latest/">spox</a> or <a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a>/<a class="reference external" href="https://onnx.ai/ir-py/">ir-py</a>.
 Its unique API:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the model is called</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
 <span class="n">expected</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="n">onnx_model</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The function returns an <a class="reference internal" href="api/container/index.html#yobx.container.ExportArtifact" title="yobx.container.ExportArtifact"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportArtifact</span></code></a> that
+wraps the exported ONNX proto together with an
+<a class="reference internal" href="api/container/index.html#yobx.container.ExportReport" title="yobx.container.ExportReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportReport</span></code></a>. The ONNX model can be retrieved
+with <cite>artifact.model_proto</cite> and saved to disk via <cite>artifact.save(path)</cite>.</p>
+<p><cite>options</cite> are different across the libraries producing the model even they
+share some of them. The common parameters accepted by all backends are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">target_opset</span></code> — an integer or a dict mapping ONNX domain names to
+their opset version (e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;&quot;:</span> <span class="pre">18,</span> <span class="pre">&quot;com.microsoft&quot;:</span> <span class="pre">1}</span></code>).  Adding
+<code class="docutils literal notranslate"><span class="pre">&quot;com.microsoft&quot;</span></code> will trigger operator fusions specific to
+<a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> such as fused attention and layer normalization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">large_model</span></code> — when <code class="docutils literal notranslate"><span class="pre">True</span></code> the weights are stored in a separate
+<code class="docutils literal notranslate"><span class="pre">.onnx_data</span></code> file next to the model (ONNX external-data format).
+This is required for models whose size exceeds the 2 GB protobuf limit.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">external_threshold</span></code> — size in bytes above which individual initializers
+are stored externally when <code class="docutils literal notranslate"><span class="pre">large_model=True</span></code> (default: 1024).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">input_names</span></code> — an explicit list of names for the ONNX graph input
+tensors.  When omitted, names are derived automatically.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code> — declares which tensor dimensions are symbolic
+(variable-length).  The exact format depends on the backend: torch
+follows <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> conventions while the other backends,
+the default is different is different for every library but it is usually
+empty for <a class="reference external" href="https://pytorch.org/">pytorch</a> or <a class="reference external" href="https://www.tensorflow.org/">tensorflow</a> (so static shape),
+first dimension is batch dimension for <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>.
+use a tuple of <code class="docutils literal notranslate"><span class="pre">{axis:</span> <span class="pre">dim_name}</span></code> dicts.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> — verbosity level (integer, 0 = silent).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return_optimize_report</span></code> — when <code class="docutils literal notranslate"><span class="pre">True</span></code>, the returned artifact
+has its <code class="docutils literal notranslate"><span class="pre">report</span></code> attribute populated with per-pattern optimization
+statistics.</p></li>
+</ul>
+<p>Oother options are specific to every converter and control the way
+a model is captured or converted. It is possible to output
+the decision path for trees or ensembles in <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a></li>
