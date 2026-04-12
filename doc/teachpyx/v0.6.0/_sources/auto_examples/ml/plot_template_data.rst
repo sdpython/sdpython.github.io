@@ -21,38 +21,20 @@
 Données parcours-sup 2021-2025
 ==============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-125
+.. GENERATED FROM PYTHON SOURCE LINES 6-130
+
+
 
 
 .. rst-class:: sphx-glr-script-out
 
-.. code-block:: pytb
+ .. code-block:: none
 
-    Traceback (most recent call last):
-      File "/home/xadupre/github/teachpyx/_doc/examples/ml/plot_template_data.py", line 119, in <module>
-        oracle = compute_oracle(table, cible)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/github/teachpyx/_doc/examples/ml/plot_template_data.py", line 78, in compute_oracle
-        return mean_absolute_error(piv[2025], piv[2024])
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
-        return func(*args, **kwargs)
-               ^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/metrics/_regression.py", line 283, in mean_absolute_error
-        _check_reg_targets_with_floating_dtype(
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/metrics/_regression.py", line 208, in _check_reg_targets_with_floating_dtype
-        y_type, y_true, y_pred, sample_weight, multioutput = _check_reg_targets(
-                                                             ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/metrics/_regression.py", line 114, in _check_reg_targets
-        y_true = check_array(y_true, ensure_2d=False, dtype=dtype)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1074, in check_array
-        _assert_all_finite(
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/validation.py", line 133, in _assert_all_finite
-        _assert_all_finite_element_wise(
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/utils/validation.py", line 182, in _assert_all_finite_element_wise
-        raise ValueError(msg_err)
-    ValueError: Input contains NaN.
+    loading '2021'
+    loading '2022'
+    loading '2023'
+    loading '2024'
+    loading '2025'
 
 
 
@@ -113,11 +95,9 @@ Données parcours-sup 2021-2025
         assert set(keys) & set(columns) == set(
             keys
         ), f"Missing columns {set(keys) - set(keys) & set(columns)} in {sorted(df.columns)}"
-        groups = df[[*keys, cible]].groupby(keys).count()
-        filtered = groups[groups[cible] > 1].reset_index(drop=False)
-
-        mask = filtered.duplicated(subset=keys, keep=False)
-        return filtered[~mask][[*keys, cible]], cible
+        subset = df[[*keys, cible]]
+        mask = subset.duplicated(subset=keys, keep=False)
+        return subset[~mask].reset_index(drop=True), cible
 
 
     def compute_oracle(table, cible):
@@ -132,13 +112,19 @@ Données parcours-sup 2021-2025
                 columns="Session",
                 values=cible,
             )
-            # .dropna(axis=0)  # fails
+            .dropna(axis=0)
             .sort_index()
         )
+        # Keep only rows where both 2024 and 2025 have non-missing values
+        piv = piv.dropna(axis=0, how="any")
+        if piv.empty:
+            raise ValueError(
+                "Not enough overlapping data between 2024 and 2025 to compute oracle."
+            )
         return mean_absolute_error(piv[2025], piv[2024])
 
 
-    def split_train_test(table, cuble):
+    def split_train_test(table, cible):
         X, y = table.drop(cible, axis=1), table[cible]
 
         train_test = X["Session"] < 2025
@@ -147,26 +133,27 @@ Données parcours-sup 2021-2025
 
         train_X = X[train_test].drop(drop, axis=1)
         train_y = y[train_test]
-        test_X = X[train_test].drop(drop, axis=1)
-        test_y = y[train_test]
+        test_X = X[~train_test].drop(drop, axis=1)
+        test_y = y[~train_test]
         return train_X, test_X, train_y, test_y
 
 
     def make_pipeline(table, cible):
-        vars = [c for c in table.columns if c != "cible"]
+        vars = [c for c in table.columns if c != cible]
         num_cols = ["Capacité de l’établissement par formation"]
         cat_cols = [c for c in vars if c not in num_cols]
+
+        transformers = []
+        if num_cols:
+            transformers.append(("num", StandardScaler(), num_cols))
+        if cat_cols:
+            transformers.append(("cats", OneHotEncoder(handle_unknown="ignore"), cat_cols))
 
         model = Pipeline(
             [
                 (
                     "preprocessing",
-                    ColumnTransformer(
-                        [
-                            ("num", StandardScaler(), num_cols),
-                            ("cats", OneHotEncoder(handle_unknown="ignore"), cat_cols),
-                        ]
-                    ),
+                    ColumnTransformer(transformers),
                 ),
                 ("regressor", HistGradientBoostingRegressor()),
             ]
@@ -176,8 +163,8 @@ Données parcours-sup 2021-2025
 
     data = get_data()
     table, cible = select_variables_and_clean(data)
-    oracle = compute_oracle(table, cible)
-    print(f"oracle : {oracle}")
+    # oracle = compute_oracle(table, cible)
+    # print(f"oracle : {oracle}")
 
     # train_X, test_X, train_y, test_y = split_train_test(table, cible)
     # model = make_pipeline(table, cible)
@@ -186,7 +173,7 @@ Données parcours-sup 2021-2025
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.949 seconds)
+   **Total running time of the script:** (0 minutes 7.170 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ml_plot_template_data.py:
