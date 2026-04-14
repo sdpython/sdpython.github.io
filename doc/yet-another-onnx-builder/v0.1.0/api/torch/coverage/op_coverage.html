@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -1048,20 +1048,30 @@ errors exceed the global dtype tolerance.</p>
 <a class="reference internal" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="yobx.torch.coverage.op_coverage.get_op_coverage_rst"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_op_coverage_rst()</span></code></a> which builds a documentation coverage table.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.coverage.op_coverage.get_op_coverage_rst">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.coverage.op_coverage.</span></span><span class="sig-name descname"><span class="pre">get_op_coverage_rst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/5daad45/yobx/torch/coverage/op_coverage.py#L519"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="Link to this definition">#</a></dt>
-<dd><p>Returns RST tables showing op-db coverage per op and dtype.</p>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.coverage.op_coverage.</span></span><span class="sig-name descname"><span class="pre">get_op_coverage_rst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracing_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/6fd9b4b/yobx/torch/coverage/op_coverage.py#L519"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="Link to this definition">#</a></dt>
+<dd><p>Returns an RST table showing op-db coverage for one export path.</p>
 <p>Queries <code class="docutils literal notranslate"><span class="pre">torch.testing._internal.common_methods_invocations.op_db</span></code> and
-builds three grids (default export path, torch tracing path, and
-new-tracing path) showing, for every op and dtype combination, whether the</p>
+builds one grid (default export path, torch tracing path, or new-tracing
+path) showing, for every op and dtype combination, whether the</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">✔</span></code> - in the tested set (converter exists, no known failure for that dtype),</dt><dd><p>RST source string with three <code class="docutils literal notranslate"><span class="pre">list-table</span></code> directives (default path,
-tracing path, and new-tracing path) ready to be printed inside a
-<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> block with <code class="docutils literal notranslate"><span class="pre">:rst:</span></code> enabled.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">✔</span></code> - in the tested set (converter exists, no known failure for that dtype).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">⚠</span> <span class="pre">xfail</span></code> - converter exists, but this dtype is a known failing case.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">✘</span> <span class="pre">no</span> <span class="pre">converter</span></code> - no ONNX converter has been implemented for this op.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">—</span></code> - this op does not support this dtype.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tracing_method</strong> – Export path key. Supported values are <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;tracing&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;new-tracing&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RST source string with one <code class="docutils literal notranslate"><span class="pre">list-table</span></code> directive, ready to be
+printed inside a <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> block with <code class="docutils literal notranslate"><span class="pre">:rst:</span></code> enabled.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <em>tracing_method</em> is not one of the supported values.</p>
 </dd>
 </dl>
-</li>
-</ul>
 </dd></dl>
 
 </section>
