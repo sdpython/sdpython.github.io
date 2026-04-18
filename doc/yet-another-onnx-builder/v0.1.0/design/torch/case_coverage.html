@@ -666,6 +666,9 @@ The summary explicitly includes the <code class="docutils literal notranslate"><
 <li><p><a class="reference internal" href="#ledx-model-case-export-inplacesetitemsquareadd"><span class="std std-ref">InplaceSetItemSquareAdd</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-inplacesetitemsquareadd2"><span class="std std-ref">InplaceSetItemSquareAdd2</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-layernorm"><span class="std std-ref">LayerNorm</span></a></p></li>
+<li><p><a class="reference internal" href="#ledx-model-case-export-shapeandtypeanddevicebased"><span class="std std-ref">ShapeAndTypeAndDeviceBased</span></a></p></li>
+<li><p><a class="reference internal" href="#ledx-model-case-export-shapeandtypebased"><span class="std std-ref">ShapeAndTypeBased</span></a></p></li>
+<li><p><a class="reference internal" href="#ledx-model-case-export-shapebased"><span class="std std-ref">ShapeBased</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-signaturefloat1"><span class="std std-ref">SignatureFloat1</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-signatureint1"><span class="std std-ref">SignatureInt1</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-signatureint2"><span class="std std-ref">SignatureInt2</span></a></p></li>
@@ -673,6 +676,7 @@ The summary explicitly includes the <code class="docutils literal notranslate"><
 <li><p><a class="reference internal" href="#ledx-model-case-export-signaturelistfixedwithnone"><span class="std std-ref">SignatureListFixedWithNone</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-signaturelistvariablelength"><span class="std std-ref">SignatureListVariableLength</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-signatureshapeasindex"><span class="std std-ref">SignatureShapeAsIndex</span></a></p></li>
+<li><p><a class="reference internal" href="#ledx-model-case-export-tinyllm"><span class="std std-ref">TinyLLM</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-typebfloat16"><span class="std std-ref">TypeBFloat16</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-vmap"><span class="std std-ref">Vmap</span></a></p></li>
 <li><p><a class="reference internal" href="#ledx-model-case-export-vmappython"><span class="std std-ref">VmapPython</span></a></p></li>
@@ -1074,7 +1078,7 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 <section id="id18">
 <h3>dynamo-ir<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x796c8412e630&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x796c8412e3c0&gt;&#39;]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x7f8ebf686240&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x7f8ebf6860c0&gt;&#39;]
 </pre></div>
 </div>
 </section>
@@ -1232,8 +1236,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.297, -0.175,  0.127], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.095], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.422, -0.264, -0.264], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.096], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -1254,8 +1258,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.435,  0.514, -0.487], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.312], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.208, -0.416,  0.558], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.308], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -1279,9 +1283,9 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([-0.164], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.255], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.257,  0.499, -0.092], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.318, -0.326,  0.206], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
   Sigmoid(_sub_ime___traced_m2_linear_linear) -&gt; sigmoid
     Sub(sigmoid, _traced_m2_buff) -&gt; sub
@@ -1294,8 +1298,25 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </section>
 <section id="id30">
 <h3>new-tracing<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;Dim&#39; object has no attribute &#39;items&#39;
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#2[T1s8x1,T1s8x2])]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
+input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
+input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
+init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
+init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
+init: name=&#39;GemmTransposePattern--param_1&#39; type=float32 shape=(1, 3) -- array([-0.409,  0.185, -0.002], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,param_1)##param_1/DynamoInterpret.placeholder.0##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.463], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+Gemm(x, GemmTransposePattern--param_1, linear.bias, transB=1) -&gt; addmm_default
+  Sigmoid(addmm_default) -&gt; sigmoid_default
+    Sub(sigmoid_default, buff) -&gt; sub_tensor
+ReduceSum(lx_1, init7_s1_1, keepdims=1) -&gt; sum_dim_int_list
+  Mul(lx_0, sum_dim_int_list) -&gt; mul_tensor
+    Add(sub_tensor, mul_tensor) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 </pre></div>
 </div>
 </section>
@@ -1325,8 +1346,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.356, -0.461, -0.352], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.429], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.119, -0.351, -0.329], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.356], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -1351,8 +1372,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.164,  0.388,  0.513], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.01], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.097,  0.337, -0.21 ], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.159], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -1380,9 +1401,9 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.271], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.002], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.529,  0.196, -0.249], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.456, -0.37 ,  0.434], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
   Sigmoid(_sub_ime___traced_m2_linear_linear) -&gt; sigmoid
     Sub(sigmoid, _traced_m2_buff) -&gt; sub
@@ -1399,8 +1420,29 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </section>
 <section id="id35">
 <h3>new-tracing<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#3[T1s8x1,T1s8x2,T1s8x3])]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
+input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
+input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
+init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
+init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
+init: name=&#39;GemmTransposePattern--param_1&#39; type=float32 shape=(1, 3) -- array([0.045, 0.346, 0.134], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,param_1)##param_1/DynamoInterpret.placeholder.0##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.169], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+Gemm(x, GemmTransposePattern--param_1, linear.bias, transB=1) -&gt; addmm_default
+  Sigmoid(addmm_default) -&gt; sigmoid_default
+    Sub(sigmoid_default, buff) -&gt; sub_tensor
+ReduceSum(lx_1, init7_s1_1, keepdims=1) -&gt; sum_dim_int_list
+  Mul(lx_0, sum_dim_int_list) -&gt; mul_tensor
+    Add(sub_tensor, mul_tensor) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
+</pre></div>
+</div>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;Dim&#39; object has no attribute &#39;items&#39;
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>diff.1
 </pre></div>
 </div>
 </section>
@@ -1892,10 +1934,10 @@ output: name=&#39;cond#1&#39; type=&#39;NOTENSOR&#39; shape=None
 <h3>forward<a class="headerlink" href="#id56" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">true_fn</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">false_fn</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1024</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1024</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">true_fn</span><span class="p">,</span> <span class="n">false_fn</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">])</span>
 </pre></div>
@@ -1994,7 +2036,7 @@ output: name=&#39;condcc&#39; type=&#39;NOTENSOR&#39; shape=None
 <section id="id60">
 <h3>new-tracing<a class="headerlink" href="#id60" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ones() received an invalid combination of arguments - got (TracingShape, dtype=torch.dtype), but expected one of:
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ones() received an invalid combination of arguments - got (TracingShape, device=torch.device, dtype=torch.dtype), but expected one of:
  * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
  * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
 </pre></div>
@@ -2026,7 +2068,7 @@ output: name=&#39;condcc&#39; type=&#39;NOTENSOR&#39; shape=None
 
 Encountered aliasing during higher order op tracing
   Higher Order Operator: torch.cond
-  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x796f3fa8fd10&gt;&gt;
+  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x7f9173f97620&gt;&gt;
   Hint: Replace `return input` with `return input.clone()` to avoid aliasing.
   Hint: Consider using the debug context to change user code to avoid aliasing.
   Hint: Please open an issue.
@@ -2062,7 +2104,7 @@ Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especiall
 
 Encountered aliasing during higher order op tracing
   Higher Order Operator: torch.cond
-  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x796f3fa8fd10&gt;&gt;
+  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x7f9173f97620&gt;&gt;
   Hint: Replace `return input` with `return input.clone()` to avoid aliasing.
   Hint: Consider using the debug context to change user code to avoid aliasing.
   Hint: Please open an issue.
@@ -2094,7 +2136,7 @@ Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especiall
 
 Encountered aliasing during higher order op tracing
   Higher Order Operator: torch.cond
-  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x796f3fa8fd10&gt;&gt;
+  Explanation: Higher order ops do not support aliasing. Found in &lt;bound method HigherOrderOperator.name of &lt;torch._higher_order_ops.cond.CondOp object at 0x7f9173f97620&gt;&gt;
   Hint: Replace `return input` with `return input.clone()` to avoid aliasing.
   Hint: Consider using the debug context to change user code to avoid aliasing.
   Hint: Please open an issue.
@@ -2570,8 +2612,19 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </section>
 <section id="id85">
 <h3>new-tracing<a class="headerlink" href="#id85" title="Link to this heading">#</a></h3>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># no error found for the failure
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s3x4,T1s3x4),(T1s5x4,T1s5x2)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},y:{0:Dim(batch),1:Dim(seq)})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
+input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq&#39;]
+init: name=&#39;init1_s_::RSh1&#39; type=float32 shape=(1,) -- array([1.], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init1_s_,init7_s1_1)##init1_s_/shape_type_compute._cast_inputs.0##init7_s1_1/Opset.make_node.1/Shape##Opset.make_node.1/Shape
+init: name=&#39;init1_s_2::RSh1&#39; type=float32 shape=(1,) -- array([2.], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init1_s_2,init7_s1_1)##init1_s_2/shape_type_compute._cast_inputs.0##init7_s1_1/Opset.make_node.1/Shape##Opset.make_node.1/Shape
+Add(x, init1_s_::RSh1) -&gt; add_tensor
+Add(y, init1_s_2::RSh1) -&gt; add_tensor_1
+  Concat(add_tensor, add_tensor_1, axis=1) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq+4&#39;]
 </pre></div>
 </div>
 </section>
@@ -2816,8 +2869,19 @@ output: name=&#39;output&#39; type=dtype(&#39;int64&#39;) shape=[&#39;D0_1&#39;,
 </section>
 <section id="id95">
 <h3>new-tracing<a class="headerlink" href="#id95" title="Link to this heading">#</a></h3>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>full(): argument &#39;size&#39; (position 1) must be tuple of ints, but found element of type TracingInt at pos 0
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#3[(T1s3x2x2x5,),(T1s3x2x1x5,),(T1s3x2x0x5,)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:DYNAMIC,2:DYNAMIC})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;DYN0&#39;, 2, &#39;D0_1&#39;, 5]
+init: name=&#39;init7_s1_2&#39; type=int64 shape=(1,) -- array([2])           -- GraphBuilder.get_dimension_as_result.axis_name
+init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- GraphBuilder.make_shape_from_results.conc
+Shape(x) -&gt; _onx_shape_DYN1
+  Gather(_onx_shape_DYN1, init7_s1_2) -&gt; DYN1
+    Concat(DYN1, init7_s1_1, axis=0) -&gt; _onx_concat_DYN1
+      ConstantOfShape(_onx_concat_DYN1, value=[2]) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;int64&#39;) shape=[&#39;D0_1&#39;, 1]
 </pre></div>
 </div>
 </section>
@@ -3099,7 +3163,7 @@ Use tlparse to see full graph. (https://github.com/pytorch/tlparse?tab=readme-ov
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-XWI] Message starts, there are 2 initializers, 5 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-OFO] Message starts, there are 2 initializers, 5 nodes, 1 inputs, 1 outputs.
 input_names=[&#39;x&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -3159,7 +3223,7 @@ _parameter_renaming=
     getitem_1 -&gt; set()
     new_zeros -&gt; {scancc}
     size -&gt; {getitem_1, getitem}
-    x -&gt; {size, scancc, new_zeros}
+    x -&gt; {new_zeros, size, scancc}
 --TORCH-SHAPES--
     x: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([3, 3])), (&#39;val&#39;, torch.float32, torch.Size([s26, 3])))) --- 1:2:(&#39;batch&#39;, 3):
     size: (&#39;run_node&#39;, (&#39;&#39;, &#39;&#39;)) --- 7:1:(2,):
@@ -3205,17 +3269,17 @@ set()
 -- process.progress --
 node 4/10 target=new_zeros
 -- 1 INPUTS
-[GraphBuilder-XWI.1.make_tensor_input] x[1:batchx3]
+[GraphBuilder-OFO.1.make_tensor_input] x[1:batchx3]
 -- 2 INITIALIZERS
-[GraphBuilder-XWI.1.make_initializer] init7_s1_0[int64:int64:[0]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
-[GraphBuilder-XWI.1.make_initializer] init7_s1_1[int64:int64:[1]] - SOURCE: Opset.make_node.1/Shape
-[GraphBuilder-XWI.4.make_node] .sizeA          [@:@   ] Shape:[&#39;x&#39;]-&gt;[&#39;size&#39;]
-[GraphBuilder-XWI.4.make_node] getitemB_index  [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;_onx_gather_size&#39;]
-[GraphBuilder-XWI.4.make_node] getitemB_index2 [@#:@  ] Squeeze:[&#39;_onx_gather_size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem&#39;]
-[GraphBuilder-XWI.4.make_node] getitemB_index3 [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;_onx_gather_size2&#39;]
-[GraphBuilder-XWI.4.make_node] getitemB_index4 [@#:@  ] Squeeze:[&#39;_onx_gather_size2&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_1&#39;]
+[GraphBuilder-OFO.1.make_initializer] init7_s1_0[int64:int64:[0]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
+[GraphBuilder-OFO.1.make_initializer] init7_s1_1[int64:int64:[1]] - SOURCE: Opset.make_node.1/Shape
+[GraphBuilder-OFO.4.make_node] .sizeA          [@:@   ] Shape:[&#39;x&#39;]-&gt;[&#39;size&#39;]
+[GraphBuilder-OFO.4.make_node] getitemB_index  [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;_onx_gather_size&#39;]
+[GraphBuilder-OFO.4.make_node] getitemB_index2 [@#:@  ] Squeeze:[&#39;_onx_gather_size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem&#39;]
+[GraphBuilder-OFO.4.make_node] getitemB_index3 [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;_onx_gather_size2&#39;]
+[GraphBuilder-OFO.4.make_node] getitemB_index4 [@#:@  ] Squeeze:[&#39;_onx_gather_size2&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_1&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-XWI] Message completed, there are 2 initializers, 5 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-OFO] Message completed, there are 2 initializers, 5 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -3950,11 +4014,11 @@ output: name=&#39;slice_scatter_scan_combine_graph_0&#39; type=dtype(&#39;float3
 <section id="id144">
 <h3>tracing<a class="headerlink" href="#id144" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to interpret function &lt;class &#39;builtin_function_or_method&#39;&gt;: &lt;built-in method empty of type object at 0x796f02f42ae0&gt;, searched for [&#39;transformers_empty&#39;, &#39;_VariableFunctionsClass_empty&#39;, &#39;empty&#39;] and attributes [&#39;__qualname__&#39;, &#39;__name__&#39;], args=((getitem, getitem_2),), kwargs={}, dispatcher=None
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to interpret function &lt;class &#39;builtin_function_or_method&#39;&gt;: &lt;built-in method empty of type object at 0x7f9137142ae0&gt;, searched for [&#39;transformers_empty&#39;, &#39;_VariableFunctionsClass_empty&#39;, &#39;empty&#39;] and attributes [&#39;__qualname__&#39;, &#39;__name__&#39;], args=((getitem, getitem_2),), kwargs={}, dispatcher=None
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-TFC] Message starts, there are 2 initializers, 10 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-MNW] Message starts, there are 2 initializers, 10 nodes, 2 inputs, 2 outputs.
 input_names=[&#39;x&#39;, &#39;y&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -4068,8 +4132,8 @@ _parameter_renaming=
     getitem_3 -&gt; set()
     size -&gt; {getitem, getitem_1}
     size_1 -&gt; {getitem_3, getitem_2}
-    x -&gt; {size_2, scancc, size}
-    y -&gt; {scancc, size_1}
+    x -&gt; {size_2, size, scancc}
+    y -&gt; {size_1, scancc}
 --TORCH-SHAPES--
     x: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([3, 4])), (&#39;val&#39;, torch.float32, torch.Size([s26, s49])))) --- 1:2:(&#39;DYN0&#39;, &#39;DYN1&#39;):
     y: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([5, 4])), (&#39;val&#39;, torch.float32, torch.Size([s93, s70])))) --- 1:2:(&#39;DYN2&#39;, &#39;DYN3&#39;):
@@ -4130,25 +4194,25 @@ graph():
 -- process.inputs_to_remove --
 set()
 -- process.progress --
-node 8/17 target=&lt;built-in method empty of type object at 0x796f02f42ae0&gt;
+node 8/17 target=&lt;built-in method empty of type object at 0x7f9137142ae0&gt;
 -- 2 INPUTS
-[GraphBuilder-TFC.1.make_tensor_input] x[1:DYN0xDYN1]
-[GraphBuilder-TFC.1.make_tensor_input] y[1:DYN2xDYN3]
+[GraphBuilder-MNW.1.make_tensor_input] x[1:DYN0xDYN1]
+[GraphBuilder-MNW.1.make_tensor_input] y[1:DYN2xDYN3]
 -- 2 INITIALIZERS
-[GraphBuilder-TFC.1.make_initializer] init7_s1_0[int64:int64:[0]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
-[GraphBuilder-TFC.1.make_initializer] init7_s1_1[int64:int64:[1]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape
-[GraphBuilder-TFC.4.make_node] .sizeA          [@:@   ] Shape:[&#39;x&#39;]-&gt;[&#39;size&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index  [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;_onx_gather_size&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index2 [@#:@  ] Squeeze:[&#39;_onx_gather_size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index3 [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;_onx_gather_size2&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index4 [@#:@  ] Squeeze:[&#39;_onx_gather_size2&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_1&#39;]
-[GraphBuilder-TFC.4.make_node] .sizeA2         [@:@   ] Shape:[&#39;y&#39;]-&gt;[&#39;size_1&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index5 [@#:@  ] Gather:[&#39;size_1&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;_onx_gather_size_1&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index6 [@#:@  ] Squeeze:[&#39;_onx_gather_size_1&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_2&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index7 [@#:@  ] Gather:[&#39;size_1&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;_onx_gather_size_12&#39;]
-[GraphBuilder-TFC.4.make_node] getitemB_index8 [@#:@  ] Squeeze:[&#39;_onx_gather_size_12&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_3&#39;]
+[GraphBuilder-MNW.1.make_initializer] init7_s1_0[int64:int64:[0]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
+[GraphBuilder-MNW.1.make_initializer] init7_s1_1[int64:int64:[1]] - SOURCE: Opset.make_node.1/Shape##Opset.make_node.1/Shape
+[GraphBuilder-MNW.4.make_node] .sizeA          [@:@   ] Shape:[&#39;x&#39;]-&gt;[&#39;size&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index  [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;_onx_gather_size&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index2 [@#:@  ] Squeeze:[&#39;_onx_gather_size&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index3 [@#:@  ] Gather:[&#39;size&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;_onx_gather_size2&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index4 [@#:@  ] Squeeze:[&#39;_onx_gather_size2&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_1&#39;]
+[GraphBuilder-MNW.4.make_node] .sizeA2         [@:@   ] Shape:[&#39;y&#39;]-&gt;[&#39;size_1&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index5 [@#:@  ] Gather:[&#39;size_1&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;_onx_gather_size_1&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index6 [@#:@  ] Squeeze:[&#39;_onx_gather_size_1&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_2&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index7 [@#:@  ] Gather:[&#39;size_1&#39;, &#39;init7_s1_1&#39;]-&gt;[&#39;_onx_gather_size_12&#39;]
+[GraphBuilder-MNW.4.make_node] getitemB_index8 [@#:@  ] Squeeze:[&#39;_onx_gather_size_12&#39;, &#39;init7_s1_0&#39;]-&gt;[&#39;getitem_3&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-TFC] Message completed, there are 2 initializers, 10 nodes, 2 inputs, 2 outputs., 
+[GraphBuilder-MNW] Message completed, there are 2 initializers, 10 nodes, 2 inputs, 2 outputs., 
 </pre></div>
 </div>
 </section>
@@ -4169,7 +4233,7 @@ node 8/17 target=&lt;built-in method empty of type object at 0x796f02f42ae0&gt;
     <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">y1</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">2</span>
     <span class="n">cat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;batch size must be positive&quot;</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">cat</span> <span class="o">/</span> <span class="n">cat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">cat</span> <span class="o">/</span> <span class="n">cat</span><span class="o">.</span><span class="n">ndim</span>
@@ -4219,8 +4283,25 @@ output: name=&#39;div&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 </section>
 <section id="id150">
 <h3>new-tracing<a class="headerlink" href="#id150" title="Link to this heading">#</a></h3>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># no error found for the failure
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s3x4,T1s3x4),(T1s5x4,T1s5x2)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},y:{0:Dim(batch),1:Dim(seq)})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
+input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq&#39;]
+init: name=&#39;init1_s_::RSh1&#39; type=float32 shape=(1,) -- array([1.], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init1_s_,init7_s1_1)##init1_s_/shape_type_compute._cast_inputs.0##init7_s1_1/Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
+init: name=&#39;init1_s_2::RSh1&#39; type=float32 shape=(1,) -- array([2.], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init1_s_2,init7_s1_1)##init1_s_2/shape_type_compute._cast_inputs.0##init7_s1_1/Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
+init: name=&#39;init7_s1_0&#39; type=int64 shape=(1,) -- array([0])           -- ReshapeIsSqueezePattern.m1
+Add(x, init1_s_::RSh1) -&gt; add_tensor
+Add(y, init1_s_2::RSh1) -&gt; add_tensor_1
+  Concat(add_tensor, add_tensor_1, axis=1) -&gt; cat_default
+    Shape(cat_default, end=1, start=0) -&gt; cat_default::Shape:1
+      Squeeze(cat_default::Shape:1) -&gt; sym_size_int
+        Cast(sym_size_int, to=1) -&gt; sym_size_int::C1
+          Unsqueeze(sym_size_int::C1, init7_s1_0) -&gt; sym_size_int::C1::RSh1
+    Div(cat_default, sym_size_int::C1::RSh1) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq+4&#39;]
 </pre></div>
 </div>
 </section>
@@ -4638,7 +4719,7 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 <section id="id180">
 <h3>new-tracing<a class="headerlink" href="#id180" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if it is a constant argument SymInt
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if type &lt;class &#39;torch.SymInt&#39;&gt; is a constant argument SymInt
 </pre></div>
 </div>
 </section>
@@ -5100,12 +5181,9 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-Identity(x) -&gt; output
+init: name=&#39;param_1&#39; type=float32 shape=(1, 4) -- array([1., 1., 1., 1.], dtype=float32)-- DynamoInterpret.placeholder.0
+Add(x, param_1) -&gt; output
 output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-</pre></div>
-</div>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>diff.1
 </pre></div>
 </div>
 </section>
@@ -5171,12 +5249,9 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-Identity(x) -&gt; output
+init: name=&#39;param_1&#39; type=float32 shape=(1, 4) -- array([1., 1., 1., 1.], dtype=float32)-- DynamoInterpret.placeholder.0
+Add(x, param_1) -&gt; output
 output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-</pre></div>
-</div>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>diff.1
 </pre></div>
 </div>
 </section>
@@ -5248,13 +5323,11 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
+init: name=&#39;param_1&#39; type=float32 shape=(1, 4) -- array([1., 1., 1., 1.], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init1_s_::RSh1&#39; type=float32 shape=(1,) -- array([2.], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init1_s_,init7_s1_1)##init1_s_/shape_type_compute._cast_inputs.1(mul_Tensor)##init7_s1_1/Opset.make_node.1/Shape
-Mul(x, init1_s_::RSh1) -&gt; output
+Add(x, param_1) -&gt; add__tensor
+  Mul(add__tensor, init1_s_::RSh1) -&gt; output
 output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-</pre></div>
-</div>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>diff.1
 </pre></div>
 </div>
 </section>
@@ -5321,12 +5394,9 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-Identity(x) -&gt; output
+init: name=&#39;param_1&#39; type=float32 shape=(1, 4) -- array([1., 1., 1., 1.], dtype=float32)-- DynamoInterpret.placeholder.0
+Add(x, param_1) -&gt; output
 output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
-</pre></div>
-</div>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>diff.1
 </pre></div>
 </div>
 </section>
@@ -5404,7 +5474,7 @@ output: name=&#39;setitem&#39; type=? shape=?
 <section id="id230">
 <h3>new-tracing<a class="headerlink" href="#id230" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if it is a constant argument None
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if type &lt;class &#39;NoneType&#39;&gt; is a constant argument None
 </pre></div>
 </div>
 </section>
@@ -5482,7 +5552,7 @@ output: name=&#39;setitem&#39; type=? shape=?
 <section id="id235">
 <h3>new-tracing<a class="headerlink" href="#id235" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if it is a constant argument None
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if type &lt;class &#39;NoneType&#39;&gt; is a constant argument None
 </pre></div>
 </div>
 </section>
@@ -5676,8 +5746,16 @@ output: name=&#39;setitem&#39; type=? shape=?
 </section>
 <section id="id245">
 <h3>new-tracing<a class="headerlink" href="#id245" title="Link to this heading">#</a></h3>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if it is a constant argument dtype(torch.bool)
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s2x3x3,),(T1s3x3x3,)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3, 3]
+init: name=&#39;param_1&#39; type=float32 shape=() -- array([2.], dtype=float32)-- DynamoInterpret.placeholder.0
+Cast(x, to=9) -&gt; _to_copy_default
+  Where(_to_copy_default, param_1, x) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3, 3]
 </pre></div>
 </div>
 </section>
@@ -6222,18 +6300,194 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </div>
 </section>
 </section>
-<section id="signaturefloat1">
-<span id="ledx-model-case-export-signaturefloat1"></span><h2>SignatureFloat1<a class="headerlink" href="#signaturefloat1" title="Link to this heading">#</a></h2>
-<p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureFloat1" title="yobx.torch.testing._model_eval_cases.SignatureFloat1"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureFloat1</span></code></a></p>
+<section id="shapeandtypeanddevicebased">
+<span id="ledx-model-case-export-shapeandtypeanddevicebased"></span><h2>ShapeAndTypeAndDeviceBased<a class="headerlink" href="#shapeandtypeanddevicebased" title="Link to this heading">#</a></h2>
+<p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.ShapeAndTypeAndDeviceBased" title="yobx.torch.testing._model_eval_cases.ShapeAndTypeAndDeviceBased"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.ShapeAndTypeAndDeviceBased</span></code></a></p>
 <section id="id266">
 <h3>forward<a class="headerlink" href="#id266" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buff</span> <span class="o">*</span> <span class="n">alpha</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float64</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="id267">
 <h3>yobx<a class="headerlink" href="#id267" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Unexpected input data type. Actual: (tensor(float16)) , expected: (tensor(float))
+</pre></div>
+</div>
+</section>
+<section id="id268">
+<h3>dynamo-ir<a class="headerlink" href="#id268" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Unexpected input data type. Actual: (tensor(float16)) , expected: (tensor(float))
+</pre></div>
+</div>
+</section>
+<section id="id269">
+<h3>tracing<a class="headerlink" href="#id269" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Unexpected input data type. Actual: (tensor(float16)) , expected: (tensor(float))
+</pre></div>
+</div>
+</section>
+<section id="id270">
+<h3>new-tracing<a class="headerlink" href="#id270" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>zeros() received an invalid combination of arguments - got (tuple, device=torch.device, dtype=torch.dtype), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="shapeandtypebased">
+<span id="ledx-model-case-export-shapeandtypebased"></span><h2>ShapeAndTypeBased<a class="headerlink" href="#shapeandtypebased" title="Link to this heading">#</a></h2>
+<p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.ShapeAndTypeBased" title="yobx.torch.testing._model_eval_cases.ShapeAndTypeBased"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.ShapeAndTypeBased</span></code></a></p>
+<section id="id271">
+<h3>forward<a class="headerlink" href="#id271" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float64</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id272">
+<h3>yobx<a class="headerlink" href="#id272" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Unexpected input data type. Actual: (tensor(float16)) , expected: (tensor(float))
+</pre></div>
+</div>
+</section>
+<section id="id273">
+<h3>dynamo-ir<a class="headerlink" href="#id273" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Unexpected input data type. Actual: (tensor(float16)) , expected: (tensor(float))
+</pre></div>
+</div>
+</section>
+<section id="id274">
+<h3>tracing<a class="headerlink" href="#id274" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Unexpected input data type. Actual: (tensor(float16)) , expected: (tensor(float))
+</pre></div>
+</div>
+</section>
+<section id="id275">
+<h3>new-tracing<a class="headerlink" href="#id275" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>zeros() received an invalid combination of arguments - got (tuple, dtype=torch.dtype), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="shapebased">
+<span id="ledx-model-case-export-shapebased"></span><h2>ShapeBased<a class="headerlink" href="#shapebased" title="Link to this heading">#</a></h2>
+<p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.ShapeBased" title="yobx.torch.testing._model_eval_cases.ShapeBased"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.ShapeBased</span></code></a></p>
+<section id="id276">
+<h3>forward<a class="headerlink" href="#id276" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id277">
+<h3>yobx<a class="headerlink" href="#id277" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s3x4,),(T1s5x4,)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch),1:Dim(seq)})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq&#39;]
+init: name=&#39;SqueezeBinaryUnsqueezePattern_init7_s_1&#39; type=int64 shape=(1,) -- array([1])-- GraphBuilder.constant_folding.from/fold(init7_s1_0,init7_s_1)##init7_s_1/shape_type_compute._cast_inputs.1(add)##init7_s1_0/Opset.make_node.1/Shape##Opset.make_node.1/Shape
+Shape(x, end=1, start=0) -&gt; x::Shape:1
+Shape(x, end=2, start=1) -&gt; x::Shape1:2
+  Add(x::Shape1:2, SqueezeBinaryUnsqueezePattern_init7_s_1) -&gt; add::UnSq0
+  Concat(x::Shape:1, add::UnSq0, axis=0) -&gt; _onx_concat_sym_size_int_2::UnSq0
+    ConstantOfShape(_onx_concat_sym_size_int_2::UnSq0, value=[0.0]) -&gt; output_0
+output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq&#39;]
+</pre></div>
+</div>
+</section>
+<section id="id278">
+<h3>dynamo-ir<a class="headerlink" href="#id278" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s3x4,),(T1s5x4,)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch),1:Dim(seq)})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq&#39;]
+init: name=&#39;val_2&#39; type=int64 shape=() -- array([1])
+init: name=&#39;val_3&#39; type=float32 shape=() -- array([0.], dtype=float32)
+init: name=&#39;val_4&#39; type=int64 shape=(1,) -- array([-1])
+Shape(x, end=1, start=0) -&gt; val_0
+Shape(x, end=2, start=1) -&gt; val_1
+  Squeeze(val_1) -&gt; sym_size_int_3
+    Add(sym_size_int_3, val_2) -&gt; add
+      Reshape(add, val_4, allowzero=0) -&gt; val_6
+  Concat(val_0, val_6, axis=0) -&gt; val_7
+    Expand(val_3, val_7) -&gt; zeros
+output: name=&#39;zeros&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq + 1&#39;]
+</pre></div>
+</div>
+</section>
+<section id="id279">
+<h3>tracing<a class="headerlink" href="#id279" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s3x4,),(T1s5x4,)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch),1:Dim(seq)})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq&#39;]
+init: name=&#39;init7_s1_0&#39; type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
+init: name=&#39;init7_s_1&#39; type=int64 shape=() -- array([1])              -- shape_type_compute._cast_inputs.1(add)
+Shape(x) -&gt; size
+  Split(size, axis=0, num_outputs=2) -&gt; _onx_gather_size, _onx_gather_size2
+    Squeeze(_onx_gather_size2, init7_s1_0) -&gt; getitem_1
+      Add(getitem_1, init7_s_1) -&gt; _onx_add_getitem_1
+        Unsqueeze(_onx_add_getitem_1, init7_s1_0) -&gt; add::UnSq0
+    Concat(_onx_gather_size, add::UnSq0, axis=0) -&gt; _onx_concat_getitem::UnSq0
+      ConstantOfShape(_onx_concat_getitem::UnSq0, value=[0.0]) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;add&#39;]
+</pre></div>
+</div>
+</section>
+<section id="id280">
+<h3>new-tracing<a class="headerlink" href="#id280" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>zeros() received an invalid combination of arguments - got (tuple, dtype=torch.dtype), but expected one of:
+ * (tuple of ints size, *, tuple of names names, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+ * (tuple of ints size, *, Tensor out = None, torch.dtype dtype = None, torch.layout layout = None, torch.device device = None, bool pin_memory = False, bool requires_grad = False)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="signaturefloat1">
+<span id="ledx-model-case-export-signaturefloat1"></span><h2>SignatureFloat1<a class="headerlink" href="#signaturefloat1" title="Link to this heading">#</a></h2>
+<p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureFloat1" title="yobx.torch.testing._model_eval_cases.SignatureFloat1"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureFloat1</span></code></a></p>
+<section id="id281">
+<h3>forward<a class="headerlink" href="#id281" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buff</span> <span class="o">*</span> <span class="n">alpha</span>
+</pre></div>
+</div>
+</section>
+<section id="id282">
+<h3>yobx<a class="headerlink" href="#id282" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,float),(T1s8x3,float)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">({0:Dim(batch)},None)</span></code></p></li>
@@ -6241,8 +6495,8 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 init: name=&#39;mul&#39; type=float32 shape=(1,) -- array([0.75], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_onx_mul_b_buff)##_onx_mul_b_buff/GraphBuilder.constant_folding.from/fold(b_buff,init1_s_::RSh1)##b_buff/DynamoInterpret.placeholder.0##init1_s_::RSh1/GraphBuilder.constant_folding.from/fold(init1_s_,init7_s1_1)##init1_s_/shape_type_compute._cast_inputs.1(mul_Tensor)##init7_s1_1/Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.225, -0.03 , -0.468], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.498], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.309,  0.505, -0.26 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.374], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, mul) -&gt; output_0
@@ -6254,16 +6508,16 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </pre></div>
 </div>
 </section>
-<section id="id268">
-<h3>dynamo-ir<a class="headerlink" href="#id268" title="Link to this heading">#</a></h3>
+<section id="id283">
+<h3>dynamo-ir<a class="headerlink" href="#id283" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,float),(T1s8x3,float)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">({0:Dim(batch)},None)</span></code></p></li>
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;, 3]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.05 ,  0.528, -0.4  ], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.41], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.292, -0.565, -0.286], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.483], dtype=float32)
 init: name=&#39;mul_2&#39; type=float32 shape=(1,) -- array([0.75], dtype=float32)
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
@@ -6276,14 +6530,14 @@ output: name=&#39;sub_2&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;,
 </pre></div>
 </div>
 </section>
-<section id="id269">
-<h3>tracing<a class="headerlink" href="#id269" title="Link to this heading">#</a></h3>
+<section id="id284">
+<h3>tracing<a class="headerlink" href="#id284" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to interpret method &#39;aten_meth_mul&#39;, args=(buff, alpha), kwargs={}, dispatcher=None
 --DEBUG--
 -- to print the exported program: PRINT_EXPORTED_PROGRAM=1
 
-[GraphBuilder-AUI] Message starts, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-JGQ] Message starts, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
 input_names=[&#39;x&#39;, &#39;alpha&#39;]
 output_names=[]
 --CONSTRAINTS--
@@ -6384,26 +6638,26 @@ set()
 -- process.progress --
 node 5/8 target=mul
 -- 2 INPUTS
-[GraphBuilder-AUI.1.make_tensor_input] x[1:batchx3]
-[GraphBuilder-AUI.1.make_tensor_input] alpha[1:]
+[GraphBuilder-JGQ.1.make_tensor_input] x[1:batchx3]
+[GraphBuilder-JGQ.1.make_tensor_input] alpha[1:]
 -- 3 INITIALIZERS
-[GraphBuilder-AUI.1.make_initializer] linear.weight[torch.float32:torch.float32:[0.4440905749797821, 0.1008514016866684, -0.36773520708084106]] - SOURCE: GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)
-[GraphBuilder-AUI.1.make_initializer] linear.bias[torch.float32:torch.float32:[0.44920817017555237]] - SOURCE: GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
-[GraphBuilder-AUI.1.make_initializer] buff[torch.float32:torch.float32:[0.5]] - SOURCE: DynamoInterpret.get_attr.0
-[GraphBuilder-AUI.4.make_node] .make_nodes     [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;_sub_ime__linear_input_1&#39;]
-[GraphBuilder-AUI.4.make_node] linear          [#:#   ] Transpose:[&#39;linear.weight&#39;]-&gt;[&#39;_sub_ime__linear_weight::T10&#39;]
-[GraphBuilder-AUI.4.make_node] Opset           [@#:#  ] MatMul:[&#39;_sub_ime__linear_input_1&#39;, &#39;_sub_ime__linear_weight::T10&#39;]-&gt;[&#39;_sub_ime__linear__onx_matmul_input_1&#39;]
-[GraphBuilder-AUI.4.make_node] Opset2          [##:#  ] Add:[&#39;_sub_ime__linear__onx_matmul_input_1&#39;, &#39;linear.bias&#39;]-&gt;[&#39;_sub_ime__linear_linear&#39;]
-[GraphBuilder-AUI.4.make_node] .output         [#:#   ] Identity:[&#39;_sub_ime__linear_linear&#39;]-&gt;[&#39;_sub_ime__linear_output&#39;]
-[GraphBuilder-AUI.4.make_node] .make_nodes2    [#:#   ] Identity:[&#39;_sub_ime__linear_output&#39;]-&gt;[&#39;linear&#39;]
-[GraphBuilder-AUI.4.make_node] sigmoid         [#:#   ] Sigmoid:[&#39;linear&#39;]-&gt;[&#39;sigmoid&#39;]
+[GraphBuilder-JGQ.1.make_initializer] linear.weight[torch.float32:torch.float32:[-0.012703744694590569, 0.3125953674316406, -0.308416485786438]] - SOURCE: GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)
+[GraphBuilder-JGQ.1.make_initializer] linear.bias[torch.float32:torch.float32:[-0.2419307678937912]] - SOURCE: GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
+[GraphBuilder-JGQ.1.make_initializer] buff[torch.float32:torch.float32:[0.5]] - SOURCE: DynamoInterpret.get_attr.0
+[GraphBuilder-JGQ.4.make_node] .make_nodes     [@:@   ] Identity:[&#39;x&#39;]-&gt;[&#39;_sub_ime__linear_input_1&#39;]
+[GraphBuilder-JGQ.4.make_node] linear          [#:#   ] Transpose:[&#39;linear.weight&#39;]-&gt;[&#39;_sub_ime__linear_weight::T10&#39;]
+[GraphBuilder-JGQ.4.make_node] Opset           [@#:#  ] MatMul:[&#39;_sub_ime__linear_input_1&#39;, &#39;_sub_ime__linear_weight::T10&#39;]-&gt;[&#39;_sub_ime__linear__onx_matmul_input_1&#39;]
+[GraphBuilder-JGQ.4.make_node] Opset2          [##:#  ] Add:[&#39;_sub_ime__linear__onx_matmul_input_1&#39;, &#39;linear.bias&#39;]-&gt;[&#39;_sub_ime__linear_linear&#39;]
+[GraphBuilder-JGQ.4.make_node] .output         [#:#   ] Identity:[&#39;_sub_ime__linear_linear&#39;]-&gt;[&#39;_sub_ime__linear_output&#39;]
+[GraphBuilder-JGQ.4.make_node] .make_nodes2    [#:#   ] Identity:[&#39;_sub_ime__linear_output&#39;]-&gt;[&#39;linear&#39;]
+[GraphBuilder-JGQ.4.make_node] sigmoid         [#:#   ] Sigmoid:[&#39;linear&#39;]-&gt;[&#39;sigmoid&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-AUI] Message completed, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-JGQ] Message completed, there are 3 initializers, 7 nodes, 2 inputs, 2 outputs.
 </pre></div>
 </div>
 </section>
-<section id="id270">
-<h3>new-tracing<a class="headerlink" href="#id270" title="Link to this heading">#</a></h3>
+<section id="id285">
+<h3>new-tracing<a class="headerlink" href="#id285" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to convert TracingInt(&#39;batch&#39;) into string
 </pre></div>
@@ -6413,15 +6667,15 @@ node 5/8 target=mul
 <section id="signatureint1">
 <span id="ledx-model-case-export-signatureint1"></span><h2>SignatureInt1<a class="headerlink" href="#signatureint1" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureInt1" title="yobx.torch.testing._model_eval_cases.SignatureInt1"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureInt1</span></code></a></p>
-<section id="id271">
-<h3>forward<a class="headerlink" href="#id271" title="Link to this heading">#</a></h3>
+<section id="id286">
+<h3>forward<a class="headerlink" href="#id286" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buff</span> <span class="o">+</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
-<section id="id272">
-<h3>yobx<a class="headerlink" href="#id272" title="Link to this heading">#</a></h3>
+<section id="id287">
+<h3>yobx<a class="headerlink" href="#id287" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,int),(T1s8x3,int)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">({0:Dim(batch)},None)</span></code></p></li>
@@ -6431,8 +6685,8 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
 init: name=&#39;init7_s1_2&#39; type=int64 shape=(1,) -- array([2])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.166, -0.318, -0.164], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.467], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.459,  0.348, -0.365], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.355], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -6446,16 +6700,16 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </pre></div>
 </div>
 </section>
-<section id="id273">
-<h3>dynamo-ir<a class="headerlink" href="#id273" title="Link to this heading">#</a></h3>
+<section id="id288">
+<h3>dynamo-ir<a class="headerlink" href="#id288" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,int),(T1s8x3,int)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">({0:Dim(batch)},None)</span></code></p></li>
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;, 3]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.349, -0.396,  0.075], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.288], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.307,  0.199, -0.236], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.384], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 init: name=&#39;val_7&#39; type=int64 shape=(1,) -- array([2])
@@ -6472,15 +6726,15 @@ output: name=&#39;add_12&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;
 </pre></div>
 </div>
 </section>
-<section id="id274">
-<h3>tracing<a class="headerlink" href="#id274" title="Link to this heading">#</a></h3>
+<section id="id289">
+<h3>tracing<a class="headerlink" href="#id289" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ONNXRuntimeError] : 6 : RUNTIME_EXCEPTION : Non-zero status code returned while running Concat node. Name:&#39;_getitem_slicenSD&#39; Status Message: /onnxruntime_src/onnxruntime/core/providers/cpu/tensor/concat.cc:139 onnxruntime::common::Status onnxruntime::ConcatBase::PrepareForCompute(onnxruntime::OpKernelContext*, const InlinedTensorsVector&amp;, onnxruntime::Prepare&amp;) const input_rank == reference_rank was false. Ranks of input data are different, cannot concatenate them. expected rank: 1 got: 2
 </pre></div>
 </div>
 </section>
-<section id="id275">
-<h3>new-tracing<a class="headerlink" href="#id275" title="Link to this heading">#</a></h3>
+<section id="id290">
+<h3>new-tracing<a class="headerlink" href="#id290" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to convert TracingInt(&#39;batch&#39;) into string
 </pre></div>
@@ -6490,15 +6744,15 @@ output: name=&#39;add_12&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;
 <section id="signatureint2">
 <span id="ledx-model-case-export-signatureint2"></span><h2>SignatureInt2<a class="headerlink" href="#signatureint2" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureInt2" title="yobx.torch.testing._model_eval_cases.SignatureInt2"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureInt2</span></code></a></p>
-<section id="id276">
-<h3>forward<a class="headerlink" href="#id276" title="Link to this heading">#</a></h3>
+<section id="id291">
+<h3>forward<a class="headerlink" href="#id291" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buff</span> <span class="o">+</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
-<section id="id277">
-<h3>yobx<a class="headerlink" href="#id277" title="Link to this heading">#</a></h3>
+<section id="id292">
+<h3>yobx<a class="headerlink" href="#id292" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x3,int)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},i:None)</span></code></p></li>
@@ -6507,8 +6761,8 @@ output: name=&#39;add_12&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s_1&#39; type=int64 shape=() -- array([1])              -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.264,  0.256,  0.282], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.172], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.223, -0.173,  0.337], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.081], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gather(x, init7_s_1, axis=1) -&gt; select
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
@@ -6522,16 +6776,16 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </pre></div>
 </div>
 </section>
-<section id="id278">
-<h3>dynamo-ir<a class="headerlink" href="#id278" title="Link to this heading">#</a></h3>
+<section id="id293">
+<h3>dynamo-ir<a class="headerlink" href="#id293" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x3,int)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},i:None)</span></code></p></li>
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;, 3]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.114, -0.295,  0.273], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.281], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([0.406, 0.273, 0.462], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.319], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_12&#39; type=int64 shape=() -- array([1])
 Gather(x, val_12, axis=1) -&gt; select
@@ -6547,8 +6801,8 @@ output: name=&#39;add_14&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;
 </pre></div>
 </div>
 </section>
-<section id="id279">
-<h3>tracing<a class="headerlink" href="#id279" title="Link to this heading">#</a></h3>
+<section id="id294">
+<h3>tracing<a class="headerlink" href="#id294" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x3,int)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},i:None)</span></code></p></li>
@@ -6556,14 +6810,14 @@ output: name=&#39;add_14&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s77&#39;
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;i&#39; type=dtype(&#39;int64&#39;) shape=None
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.549], dtype=float32)-- GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.524], dtype=float32)-- GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
 init: name=&#39;getitem_axis&#39; type=int64 shape=(2,) -- array([0, 1])      -- DynamoInterpreter._getitem_slice.axis.1
 init: name=&#39;getitem_axis_0&#39; type=int64 shape=(1,) -- array([0])       -- DynamoInterpreter._getitem_slice.axis.2##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
 init: name=&#39;init7_s_1&#39; type=int64 shape=() -- array([1])              -- DynamoInterpreter._getitem_slice.int_end
 init: name=&#39;getitem_step&#39; type=int64 shape=(2,) -- array([1, 1])      -- DynamoInterpreter._getitem_slice.3
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--_sub_ime__linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.333, -0.094,  0.384], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime__linear_weight::T10,init7_s2_1_3)##_sub_ime__linear_weight::T10/GraphBuilder.constant_folding.from/fold(linear.weight)##linear.weight/GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime__linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.202,  0.567,  0.015], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime__linear_weight::T10,init7_s2_1_3)##_sub_ime__linear_weight::T10/GraphBuilder.constant_folding.from/fold(linear.weight)##linear.weight/GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Add(i, init7_s_1) -&gt; getitem_slice_end_1
   Unsqueeze(getitem_slice_end_1, getitem_axis_0) -&gt; getitem_slice_end_1::UnSq0
 Shape(x) -&gt; getitem_shape
@@ -6585,8 +6839,8 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </pre></div>
 </div>
 </section>
-<section id="id280">
-<h3>new-tracing<a class="headerlink" href="#id280" title="Link to this heading">#</a></h3>
+<section id="id295">
+<h3>new-tracing<a class="headerlink" href="#id295" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x3,int)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},i:None)</span></code></p></li>
@@ -6595,8 +6849,8 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s_1&#39; type=int64 shape=() -- array([1])              -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--param_1&#39; type=float32 shape=(1, 3) -- array([-0.436,  0.571, -0.219], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,param_1)##param_1/DynamoInterpret.placeholder.0##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.47], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--param_1&#39; type=float32 shape=(1, 3) -- array([ 0.464,  0.34 , -0.175], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,param_1)##param_1/DynamoInterpret.placeholder.0##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.378], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gather(x, init7_s_1, axis=1) -&gt; select_int
 Gemm(x, GemmTransposePattern--param_1, linear.bias, transB=1) -&gt; addmm_default
   Sigmoid(addmm_default) -&gt; sigmoid_default
@@ -6614,15 +6868,15 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 <section id="signaturelistfixedlength">
 <span id="ledx-model-case-export-signaturelistfixedlength"></span><h2>SignatureListFixedLength<a class="headerlink" href="#signaturelistfixedlength" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureListFixedLength" title="yobx.torch.testing._model_eval_cases.SignatureListFixedLength"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureListFixedLength</span></code></a></p>
-<section id="id281">
-<h3>forward<a class="headerlink" href="#id281" title="Link to this heading">#</a></h3>
+<section id="id296">
+<h3>forward<a class="headerlink" href="#id296" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lx</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buff</span> <span class="o">+</span> <span class="n">lx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">lx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="id282">
-<h3>yobx<a class="headerlink" href="#id282" title="Link to this heading">#</a></h3>
+<section id="id297">
+<h3>yobx<a class="headerlink" href="#id297" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#2[T1s8x1,T1s8x2])]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
@@ -6633,8 +6887,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.245, -0.364,  0.486], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.14], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.516, -0.507,  0.055], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.419], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Sub(sigmoid, b_buff) -&gt; sub
@@ -6645,8 +6899,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </pre></div>
 </div>
 </section>
-<section id="id283">
-<h3>dynamo-ir<a class="headerlink" href="#id283" title="Link to this heading">#</a></h3>
+<section id="id298">
+<h3>dynamo-ir<a class="headerlink" href="#id298" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#2[T1s8x1,T1s8x2])]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
@@ -6655,8 +6909,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.534,  0.176, -0.076], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.536], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.259,  0.247, -0.536], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.365], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -6669,8 +6923,8 @@ output: name=&#39;add_15&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </pre></div>
 </div>
 </section>
-<section id="id284">
-<h3>tracing<a class="headerlink" href="#id284" title="Link to this heading">#</a></h3>
+<section id="id299">
+<h3>tracing<a class="headerlink" href="#id299" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#2[T1s8x1,T1s8x2])]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
@@ -6679,10 +6933,10 @@ output: name=&#39;add_15&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.102], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.368], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.028, -0.339,  0.249], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([0.041, 0.185, 0.395], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
   Sigmoid(_sub_ime___traced_m2_linear_linear) -&gt; sigmoid
     Sub(sigmoid, _traced_m2_buff) -&gt; sub
@@ -6693,10 +6947,27 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </pre></div>
 </div>
 </section>
-<section id="id285">
-<h3>new-tracing<a class="headerlink" href="#id285" title="Link to this heading">#</a></h3>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;Dim&#39; object has no attribute &#39;items&#39;
+<section id="id300">
+<h3>new-tracing<a class="headerlink" href="#id300" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#2[T1s8x1,T1s8x2])]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
+input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
+input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
+init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
+init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
+init: name=&#39;GemmTransposePattern--param_1&#39; type=float32 shape=(1, 3) -- array([-0.186, -0.157, -0.14 ], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,param_1)##param_1/DynamoInterpret.placeholder.0##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.537], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+Gemm(x, GemmTransposePattern--param_1, linear.bias, transB=1) -&gt; addmm_default
+  Sigmoid(addmm_default) -&gt; sigmoid_default
+    Sub(sigmoid_default, buff) -&gt; sub_tensor
+ReduceSum(lx_1, init7_s1_1, keepdims=1) -&gt; sum_dim_int_list
+  Mul(lx_0, sum_dim_int_list) -&gt; mul_tensor
+    Add(sub_tensor, mul_tensor) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 </pre></div>
 </div>
 </section>
@@ -6704,8 +6975,8 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 <section id="signaturelistfixedwithnone">
 <span id="ledx-model-case-export-signaturelistfixedwithnone"></span><h2>SignatureListFixedWithNone<a class="headerlink" href="#signaturelistfixedwithnone" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureListFixedWithNone" title="yobx.torch.testing._model_eval_cases.SignatureListFixedWithNone"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureListFixedWithNone</span></code></a></p>
-<section id="id286">
-<h3>forward<a class="headerlink" href="#id286" title="Link to this heading">#</a></h3>
+<section id="id301">
+<h3>forward<a class="headerlink" href="#id301" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lx</span><span class="p">):</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">lx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">lx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -6716,8 +6987,8 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </pre></div>
 </div>
 </section>
-<section id="id287">
-<h3>yobx<a class="headerlink" href="#id287" title="Link to this heading">#</a></h3>
+<section id="id302">
+<h3>yobx<a class="headerlink" href="#id302" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Detected mismatch between the structure of `inputs` and `dynamic_shapes`: `inputs[&#39;lx&#39;]` has 3 elements, but `dynamic_shapes[&#39;lx&#39;]` has 2 elements
 For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#dynamic-shapes-validation
@@ -6726,8 +6997,8 @@ The error above occurred when calling torch.export.export. If you would like to 
 </pre></div>
 </div>
 </section>
-<section id="id288">
-<h3>dynamo-ir<a class="headerlink" href="#id288" title="Link to this heading">#</a></h3>
+<section id="id303">
+<h3>dynamo-ir<a class="headerlink" href="#id303" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Failed to export the model with torch.export. [96mThis is step 1/3[0m of exporting the model to ONNX. Next steps:
 - Modify the model code for `torch.export.export` to succeed. Refer to https://pytorch.org/docs/stable/generated/exportdb/index.html for more information.
@@ -6745,15 +7016,15 @@ The error above occurred when calling torch.export.export. If you would like to 
 </pre></div>
 </div>
 </section>
-<section id="id289">
-<h3>tracing<a class="headerlink" href="#id289" title="Link to this heading">#</a></h3>
+<section id="id304">
+<h3>tracing<a class="headerlink" href="#id304" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Length mismatch between x (len=3) and dynamic_shapes (len=2); dynamic_shapes must have one entry per element of x, or be None to use no dynamic dimensions, dynamic_shapes=[{0: Dim(&#39;batch&#39;, min=0)}, {0: Dim(&#39;batch&#39;, min=0)}]
 </pre></div>
 </div>
 </section>
-<section id="id290">
-<h3>new-tracing<a class="headerlink" href="#id290" title="Link to this heading">#</a></h3>
+<section id="id305">
+<h3>new-tracing<a class="headerlink" href="#id305" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Length mismatch between arg (3) and the dynamic_shapes (2), name=&#39;lx&#39;
 </pre></div>
@@ -6763,16 +7034,16 @@ The error above occurred when calling torch.export.export. If you would like to 
 <section id="signaturelistvariablelength">
 <span id="ledx-model-case-export-signaturelistvariablelength"></span><h2>SignatureListVariableLength<a class="headerlink" href="#signaturelistvariablelength" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureListVariableLength" title="yobx.torch.testing._model_eval_cases.SignatureListVariableLength"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureListVariableLength</span></code></a></p>
-<section id="id291">
-<h3>forward<a class="headerlink" href="#id291" title="Link to this heading">#</a></h3>
+<section id="id306">
+<h3>forward<a class="headerlink" href="#id306" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lx</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">lx</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buff</span> <span class="o">+</span> <span class="n">t</span>
 </pre></div>
 </div>
 </section>
-<section id="id292">
-<h3>yobx<a class="headerlink" href="#id292" title="Link to this heading">#</a></h3>
+<section id="id307">
+<h3>yobx<a class="headerlink" href="#id307" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#3[T1s8x1,T1s8x2,T1s8x3])]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
@@ -6783,8 +7054,8 @@ input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;,
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;b_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.561,  0.402,  0.439], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.103], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.269, -0.021, -0.424], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.228], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Concat(lx_0, lx_1, axis=1) -&gt; cat
   ReduceSum(cat, init7_s1_1, keepdims=1) -&gt; sum_1
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
@@ -6799,8 +7070,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </pre></div>
 </div>
 </section>
-<section id="id293">
-<h3>dynamo-ir<a class="headerlink" href="#id293" title="Link to this heading">#</a></h3>
+<section id="id308">
+<h3>dynamo-ir<a class="headerlink" href="#id308" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#3[T1s8x1,T1s8x2,T1s8x3])]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
@@ -6809,8 +7080,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.537, -0.272, -0.23 ], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.299], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.555, -0.032,  0.5  ], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.329], dtype=float32)
 init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)
 init: name=&#39;val_3&#39; type=int64 shape=(1,) -- array([1])
 Concat(lx_0, lx_1, axis=1) -&gt; cat
@@ -6827,8 +7098,8 @@ output: name=&#39;add_15&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </pre></div>
 </div>
 </section>
-<section id="id294">
-<h3>tracing<a class="headerlink" href="#id294" title="Link to this heading">#</a></h3>
+<section id="id309">
+<h3>tracing<a class="headerlink" href="#id309" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#3[T1s8x1,T1s8x2,T1s8x3])]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
@@ -6838,9 +7109,9 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
 input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([0.507], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
+init: name=&#39;_traced_m2.linear.bias&#39; type=float32 shape=(1,) -- array([-0.251], dtype=float32)-- GraphBuilder.make_nodes/from_traced_m2.linear.bias##DynamoInterpret.get_attr.1/P(_traced_m2.linear.bias)
 init: name=&#39;_traced_m2_buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.get_attr.0
-init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.282, -0.393, -0.424], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([-0.464,  0.127,  0.454], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime___traced_m2_linear_weight::T10,init7_s2_1_3)##_sub_ime___traced_m2_linear_weight::T10/GraphBuilder.constant_folding.from/fold(_traced_m2.linear.weight)##_traced_m2.linear.weight/GraphBuilder.make_nodes/from_traced_m2.linear.weight##DynamoInterpret.get_attr.1/P(_traced_m2.linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Concat(lx_0, lx_1, axis=1) -&gt; cat
   ReduceSum(cat, init7_s1_1, keepdims=1) -&gt; sum_1
 Gemm(x, GemmTransposePattern--_sub_ime___traced_m2_linear_weight::T10, _traced_m2.linear.bias, transB=1) -&gt; _sub_ime___traced_m2_linear_linear
@@ -6855,10 +7126,31 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </pre></div>
 </div>
 </section>
-<section id="id295">
-<h3>new-tracing<a class="headerlink" href="#id295" title="Link to this heading">#</a></h3>
+<section id="id310">
+<h3>new-tracing<a class="headerlink" href="#id310" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#2[(T1s4x3,#2[T1s4x1,T1s4x2]),(T1s8x3,#3[T1s8x1,T1s8x2,T1s8x3])]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},lx:#2[{0:Dim(batch)},{0:Dim(batch)}])</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
+input: name=&#39;lx_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
+input: name=&#39;lx_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 2]
+init: name=&#39;buff&#39; type=float32 shape=(1,) -- array([0.5], dtype=float32)-- DynamoInterpret.placeholder.0
+init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
+init: name=&#39;GemmTransposePattern--param_1&#39; type=float32 shape=(1, 3) -- array([ 0.257,  0.402, -0.164], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,param_1)##param_1/DynamoInterpret.placeholder.0##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.347], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+Concat(lx_0, lx_1, axis=1) -&gt; cat_default
+  ReduceSum(cat_default, init7_s1_1, keepdims=1) -&gt; sum_dim_int_list
+Gemm(x, GemmTransposePattern--param_1, linear.bias, transB=1) -&gt; addmm_default
+  Sigmoid(addmm_default) -&gt; sigmoid_default
+    Sub(sigmoid_default, buff) -&gt; sub_tensor
+    Add(sub_tensor, sum_dim_int_list) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 1]
+</pre></div>
+</div>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;Dim&#39; object has no attribute &#39;items&#39;
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>diff.1
 </pre></div>
 </div>
 </section>
@@ -6866,16 +7158,16 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 <section id="signatureshapeasindex">
 <span id="ledx-model-case-export-signatureshapeasindex"></span><h2>SignatureShapeAsIndex<a class="headerlink" href="#signatureshapeasindex" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.SignatureShapeAsIndex" title="yobx.torch.testing._model_eval_cases.SignatureShapeAsIndex"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.SignatureShapeAsIndex</span></code></a></p>
-<section id="id296">
-<h3>forward<a class="headerlink" href="#id296" title="Link to this heading">#</a></h3>
+<section id="id311">
+<h3>forward<a class="headerlink" href="#id311" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">t</span><span class="p">[:,</span> <span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
 </pre></div>
 </div>
 </section>
-<section id="id297">
-<h3>yobx<a class="headerlink" href="#id297" title="Link to this heading">#</a></h3>
+<section id="id312">
+<h3>yobx<a class="headerlink" href="#id312" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x3,T1s4x2)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},y:{0:Dim(batch),1:Dim(length)})</span></code></p></li>
@@ -6885,8 +7177,8 @@ input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;length&#39;]
 init: name=&#39;init7_s1_0&#39; type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
-init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([0.436, 0.266, 0.078], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.493], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+init: name=&#39;GemmTransposePattern--p_linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.19 ,  0.355, -0.129], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_3,p_linear_weight::T10)##p_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_linear_weight)##p_linear_weight/DynamoInterpret.placeholder.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.509], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
 Gemm(x, GemmTransposePattern--p_linear_weight::T10, linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Add(sigmoid, x) -&gt; add
@@ -6896,8 +7188,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </pre></div>
 </div>
 </section>
-<section id="id298">
-<h3>dynamo-ir<a class="headerlink" href="#id298" title="Link to this heading">#</a></h3>
+<section id="id313">
+<h3>dynamo-ir<a class="headerlink" href="#id313" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x3,T1s4x2)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},y:{0:Dim(batch),1:Dim(length)})</span></code></p></li>
@@ -6905,8 +7197,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;length&#39;]
-init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([-0.429, -0.037,  0.247], dtype=float32)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.073], dtype=float32)
+init: name=&#39;linear.weight&#39; type=float32 shape=(1, 3) -- array([ 0.049,  0.183, -0.476], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.129], dtype=float32)
 init: name=&#39;val_8&#39; type=int64 shape=(1,) -- array([1])
 init: name=&#39;val_1&#39; type=int64 shape=(1,) -- array([0])
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
@@ -6918,8 +7210,8 @@ output: name=&#39;slice_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#
 </pre></div>
 </div>
 </section>
-<section id="id299">
-<h3>tracing<a class="headerlink" href="#id299" title="Link to this heading">#</a></h3>
+<section id="id314">
+<h3>tracing<a class="headerlink" href="#id314" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x3,T1s4x2)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)},y:{0:Dim(batch),1:Dim(length)})</span></code></p></li>
@@ -6927,13 +7219,13 @@ output: name=&#39;slice_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 3]
 input: name=&#39;y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;length&#39;]
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.101], dtype=float32)-- GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.398], dtype=float32)-- GraphBuilder.make_nodes/fromlinear.bias##DynamoInterpret.get_attr.1/P(linear.bias)
 init: name=&#39;init7_s1_0&#39; type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
 init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape
 init: name=&#39;getitem_2_axis&#39; type=int64 shape=(2,) -- array([0, 1])    -- DynamoInterpreter._getitem_slice.axis.1
 init: name=&#39;getitem_2_start&#39; type=int64 shape=(2,) -- array([0, 0])   -- DynamoInterpreter._getitem_slice.2
 init: name=&#39;getitem_2_step&#39; type=int64 shape=(2,) -- array([1, 1])    -- DynamoInterpreter._getitem_slice.3
-init: name=&#39;GemmTransposePattern--_sub_ime__linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.29 , -0.035, -0.014], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime__linear_weight::T10,init7_s2_1_3)##_sub_ime__linear_weight::T10/GraphBuilder.constant_folding.from/fold(linear.weight)##linear.weight/GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;GemmTransposePattern--_sub_ime__linear_weight::T10&#39; type=float32 shape=(1, 3) -- array([ 0.566, -0.484,  0.419], dtype=float32)-- GraphBuilder.constant_folding.from/fold(_sub_ime__linear_weight::T10,init7_s2_1_3)##_sub_ime__linear_weight::T10/GraphBuilder.constant_folding.from/fold(linear.weight)##linear.weight/GraphBuilder.make_nodes/fromlinear.weight##DynamoInterpret.get_attr.1/P(linear.weight)##init7_s2_1_3/TransposeEqualReshapePattern.apply.new_shape
 Gemm(x, GemmTransposePattern--_sub_ime__linear_weight::T10, linear.bias, transB=1) -&gt; _sub_ime__linear_linear
   Sigmoid(_sub_ime__linear_linear) -&gt; sigmoid
     Add(sigmoid, x) -&gt; add
@@ -6947,10 +7239,420 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;NEWDIM_s
 </pre></div>
 </div>
 </section>
-<section id="id300">
-<h3>new-tracing<a class="headerlink" href="#id300" title="Link to this heading">#</a></h3>
+<section id="id315">
+<h3>new-tracing<a class="headerlink" href="#id315" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>TracingInt(&#39;length&#39;) has no concrete integer value; pass a concrete int or check .value
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tinyllm">
+<span id="ledx-model-case-export-tinyllm"></span><h2>TinyLLM<a class="headerlink" href="#tinyllm" title="Link to this heading">#</a></h2>
+<p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.TinyLLM" title="yobx.torch.testing._model_eval_cases.TinyLLM"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.TinyLLM</span></code></a></p>
+<section id="id316">
+<h3>forward<a class="headerlink" href="#id316" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">position_ids</span><span class="p">,</span> <span class="n">past_key_0</span><span class="p">,</span> <span class="n">past_value_0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs the forward pass and returns the logits tensor.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..in_transformers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_dynamic_cache</span>
+
+    <span class="n">past_key_values</span> <span class="o">=</span> <span class="n">make_dynamic_cache</span><span class="p">([(</span><span class="n">past_key_0</span><span class="p">,</span> <span class="n">past_value_0</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">(</span>
+        <span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+        <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">,</span>
+        <span class="n">past_key_values</span><span class="o">=</span><span class="n">past_key_values</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">logits</span>
+</pre></div>
+</div>
+</section>
+<section id="id317">
+<h3>yobx<a class="headerlink" href="#id317" title="Link to this heading">#</a></h3>
+<p>[transformers] <cite>loss_type=None</cite> was set in the config but it is unrecognized. Using the default loss: <cite>ForCausalLMLoss</cite>.
+* <strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T7s2x3,T7s2x33,T7s2x3,T1s2x1x30x96,T1s2x1x30x96)]</span></code>
+* <strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(input_ids:{0:DYNAMIC,1:DYNAMIC},attention_mask:{0:DYNAMIC,1:DYNAMIC},position_ids:{0:DYNAMIC,1:DYNAMIC},past_key_0:{0:DYNAMIC,2:DYNAMIC},past_value_0:{0:DYNAMIC,2:DYNAMIC})</span></code></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+opset: domain=&#39;intermediate&#39; version=1
+opset: domain=&#39;local_functions&#39; version=1
+input: name=&#39;input_ids&#39; type=dtype(&#39;int64&#39;) shape=[&#39;batch_5&#39;, &#39;channel_3&#39;]
+input: name=&#39;attention_mask&#39; type=dtype(&#39;int64&#39;) shape=[&#39;batch_6&#39;, &#39;channel_4&#39;]
+input: name=&#39;position_ids&#39; type=dtype(&#39;int64&#39;) shape=[&#39;batch_7&#39;, &#39;channel_5&#39;]
+input: name=&#39;past_key_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_8&#39;, 1, &#39;D0_2&#39;, 96]
+input: name=&#39;past_value_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_9&#39;, 1, &#39;D0_3&#39;, 96]
+init: name=&#39;init7_s1_1&#39; type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##Opset.make_node.1/Shape##ReshapeIsSqueezePattern.m1
+init: name=&#39;init7_s1_2&#39; type=int64 shape=(1,) -- array([2])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##GraphBuilder.make_shape_from_results.conc
+init: name=&#39;init7_s1_-1&#39; type=int64 shape=(1,) -- array([-1])         -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##Opset.make_node.1/Shape##ConcatReshapePattern.m1
+init: name=&#39;init1_s_&#39; type=float32 shape=() -- array([2.], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small##Opset.make_node.1/Small
+init: name=&#39;init7_s1_96&#39; type=int64 shape=(1,) -- array([96])         -- GraphBuilder.make_shape_from_results.conc##GraphBuilder.make_shape_from_results.conc##GraphBuilder.make_shape_from_results.conc##GraphBuilder.make_shape_from_results.conc##GraphBuilder.make_shape_from_results.conc
+init: name=&#39;init1_s1_&#39; type=float32 shape=(1,) -- array([0.319], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small
+init: name=&#39;init1_s1_2&#39; type=float32 shape=(1,) -- array([0.], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small
+init: name=&#39;init1_s1_3&#39; type=float32 shape=(1,) -- array([-inf], dtype=float32)-- Opset.make_node.1/Small
+init: name=&#39;init1_s_2::RSh1&#39; type=float32 shape=(1,) -- array([1.e-05], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init1_s_2,init7_s1_1)##init1_s_2/shape_type_compute._cast_inputs.0##shape_type_compute._cast_inputs.0##shape_type_compute._cast_inputs.0##init7_s1_1/Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##Opset.make_node.1/Shape##GraphBuilder.make_shape_from_results.conc##Opset.make_node.1/Shape##Opset.make_node.1/Shape
+init: name=&#39;p__model_model_layers_0_self_attn_q_proj_weight::T10&#39; type=float32 shape=(192, 192)-- GraphBuilder.constant_folding.from/fold(p__model_model_layers_0_self_attn_q_proj_weight)##p__model_model_layers_0_self_attn_q_proj_weight/DynamoInterpret.placeholder.1/P(_model.model.layers.0.self_attn.q_proj.weight)
+init: name=&#39;p__model_model_layers_0_self_attn_k_proj_weight::T10&#39; type=float32 shape=(192, 96)-- GraphBuilder.constant_folding.from/fold(p__model_model_layers_0_self_attn_k_proj_weight)##p__model_model_layers_0_self_attn_k_proj_weight/DynamoInterpret.placeholder.1/P(_model.model.layers.0.self_attn.k_proj.weight)
+init: name=&#39;p__model_model_layers_0_self_attn_v_proj_weight::T10&#39; type=float32 shape=(192, 96)-- GraphBuilder.constant_folding.from/fold(p__model_model_layers_0_self_attn_v_proj_weight)##p__model_model_layers_0_self_attn_v_proj_weight/DynamoInterpret.placeholder.1/P(_model.model.layers.0.self_attn.v_proj.weight)
+init: name=&#39;p__model_model_layers_0_self_attn_o_proj_weight::T10&#39; type=float32 shape=(192, 192)-- GraphBuilder.constant_folding.from/fold(p__model_model_layers_0_self_attn_o_proj_weight)##p__model_model_layers_0_self_attn_o_proj_weight/DynamoInterpret.placeholder.1/P(_model.model.layers.0.self_attn.o_proj.weight)
+init: name=&#39;p__model_model_layers_0_mlp_gate_proj_weight::T10&#39; type=float32 shape=(192, 1024)-- GraphBuilder.constant_folding.from/fold(p__model_model_layers_0_mlp_gate_proj_weight)##p__model_model_layers_0_mlp_gate_proj_weight/DynamoInterpret.placeholder.1/P(_model.model.layers.0.mlp.gate_proj.weight)
+init: name=&#39;p__model_model_layers_0_mlp_up_proj_weight::T10&#39; type=float32 shape=(192, 1024)-- GraphBuilder.constant_folding.from/fold(p__model_model_layers_0_mlp_up_proj_weight)##p__model_model_layers_0_mlp_up_proj_weight/DynamoInterpret.placeholder.1/P(_model.model.layers.0.mlp.up_proj.weight)
+init: name=&#39;p__model_model_layers_0_mlp_down_proj_weight::T10&#39; type=float32 shape=(1024, 192)-- GraphBuilder.constant_folding.from/fold(p__model_model_layers_0_mlp_down_proj_weight)##p__model_model_layers_0_mlp_down_proj_weight/DynamoInterpret.placeholder.1/P(_model.model.layers.0.mlp.down_proj.weight)
+init: name=&#39;p__model_lm_head_weight::T10&#39; type=float32 shape=(192, 32000)-- GraphBuilder.constant_folding.from/fold(p__model_lm_head_weight)##p__model_lm_head_weight/DynamoInterpret.placeholder.1/P(_model.lm_head.weight)
+init: name=&#39;expand_122&#39; type=float32 shape=(1, 1, 48)                 -- GraphBuilder.constant_folding.from/fold(expand_1-ZEROS2,unsqueeze_13)##unsqueeze_13/GraphBuilder.constant_folding.from/fold(b__model_model_rotary_emb_inv_freq,init7_s2_0_2)##b__model_model_rotary_emb_inv_freq/DynamoInterpret.placeholder.0##init7_s2_0_2/##expand_1-ZEROS2/
+init: name=&#39;_model.model.embed_tokens.weight&#39; type=float32 shape=(32000, 192)-- DynamoInterpret.placeholder.1/P(_model.model.embed_tokens.weight)
+init: name=&#39;_model.model.layers.0.input_layernorm.weight&#39; type=float32 shape=(192,)-- DynamoInterpret.placeholder.1/P(_model.model.layers.0.input_layernorm.weight)
+init: name=&#39;_model.model.layers.0.post_attention_layernorm.weight&#39; type=float32 shape=(192,)-- DynamoInterpret.placeholder.1/P(_model.model.layers.0.post_attention_layernorm.weight)
+init: name=&#39;_model.model.norm.weight&#39; type=float32 shape=(192,)       -- DynamoInterpret.placeholder.1/P(_model.model.norm.weight)
+Cast(attention_mask, to=9) -&gt; to
+  Shape(to, start=-1) -&gt; to::Shape-1:
+Shape(input_ids, end=2, start=1) -&gt; input_ids::Shape1:2
+Shape(past_key_0, end=1, start=0) -&gt; past_key_0::Shape:1
+  Concat(past_key_0::Shape:1, init7_s1_1, init7_s1_1, axis=0) -&gt; _onx_concat_sym_size_int_20::UnSq08
+    Expand(expand_122, _onx_concat_sym_size_int_20::UnSq08) -&gt; expand_12
+      CosSinCache_p1[intermediate](position_ids, expand_12) -&gt; uoutput_0, uoutput_1
+        Unsqueeze(uoutput_0, init7_s1_1) -&gt; uunsqueeze_15
+          Concat(uunsqueeze_15, uunsqueeze_15, axis=-1) -&gt; unsqueeze_15
+Shape(past_key_0, end=3, start=2) -&gt; past_key_0::Shape2:3
+  Add(input_ids::Shape1:2, past_key_0::Shape2:3) -&gt; SqueezeAddPattern_SwapRangeAddScalarPattern--sym_size_int_15
+  CausalMask[intermediate](past_key_0::Shape2:3, SqueezeAddPattern_SwapRangeAddScalarPattern--sym_size_int_15) -&gt; le_3
+Shape(past_value_0, end=3, start=2) -&gt; past_value_0::Shape2:3
+  Add(input_ids::Shape1:2, past_value_0::Shape2:3) -&gt; SqueezeAddPattern_add_12
+  Concat(past_key_0::Shape:1, init7_s1_1, init7_s1_2, SqueezeAddPattern_add_12, init7_s1_96, axis=0) -&gt; _onx_concat_sym_size_int_20::UnSq05
+Gather(_model.model.embed_tokens.weight, input_ids) -&gt; embedding
+  Pow(embedding, init1_s_) -&gt; pow_1
+    ReduceMean(pow_1, init7_s1_-1, keepdims=1) -&gt; mean
+      Add(mean, init1_s_2::RSh1) -&gt; add_4
+        Sqrt(add_4) -&gt; _onx_sqrt_add_4
+          Reciprocal(_onx_sqrt_add_4) -&gt; rsqrt
+  Mul(embedding, rsqrt) -&gt; mul_2
+    Mul(_model.model.layers.0.input_layernorm.weight, mul_2) -&gt; mul_3
+      MatMul(mul_3, p__model_model_layers_0_self_attn_q_proj_weight::T10) -&gt; linear
+  CausalMaskMulAdd[intermediate](SqueezeAddPattern_SwapRangeAddScalarPattern--sym_size_int_15, past_key_0::Shape:1, to::Shape-1:) -&gt; _onx_add_unsqueeze_11
+    Shape(_onx_add_unsqueeze_11) -&gt; _onx_add_unsqueeze_11::Shape:
+  Reshape(to, init7_s1_-1) -&gt; to::RSh-1
+Reshape(_onx_add_unsqueeze_11, init7_s1_-1) -&gt; _onx_add_unsqueeze_11::RSh-1
+  Gather(to::RSh-1, _onx_add_unsqueeze_11::RSh-1) -&gt; _onx_gather_to::RSh-1
+    Reshape(_onx_gather_to::RSh-1, _onx_add_unsqueeze_11::Shape:) -&gt; index
+    And(le_3, index) -&gt; and_2
+Unsqueeze(uoutput_1, init7_s1_1) -&gt; uunsqueeze_16
+  Concat(uunsqueeze_16, uunsqueeze_16, axis=-1) -&gt; unsqueeze_16
+Concat(past_key_0::Shape:1, input_ids::Shape1:2, init7_s1_-1, init7_s1_96, axis=0) -&gt; _onx_concat_sym_size_int_20::UnSq02
+  Reshape(linear, _onx_concat_sym_size_int_20::UnSq02) -&gt; view
+    Transpose(view, perm=[0,2,1,3]) -&gt; transpose_1
+    HalfRotaryEmbedding[intermediate](transpose_1, unsqueeze_15, unsqueeze_16) -&gt; add_5
+      Mul(add_5, init1_s1_) -&gt; _onx_mul_add_5
+MatMul(mul_3, p__model_model_layers_0_self_attn_k_proj_weight::T10) -&gt; linear_1
+  Reshape(linear_1, _onx_concat_sym_size_int_20::UnSq02) -&gt; view_1
+    Transpose(view_1, perm=[0,2,1,3]) -&gt; transpose_2
+    HalfRotaryEmbedding[intermediate](transpose_2, unsqueeze_15, unsqueeze_16) -&gt; add_6
+      Concat(past_key_0, add_6, axis=-2) -&gt; cat_3
+        Unsqueeze(cat_3, init7_s1_2) -&gt; unsqueeze_17
+      MatMul(mul_3, p__model_model_layers_0_self_attn_v_proj_weight::T10) -&gt; linear_2
+  Reshape(linear_2, _onx_concat_sym_size_int_20::UnSq02) -&gt; view_2
+    Transpose(view_2, perm=[0,2,1,3]) -&gt; transpose_3
+      Concat(past_value_0, transpose_3, axis=-2) -&gt; cat_4
+        Unsqueeze(cat_4, init7_s1_2) -&gt; unsqueeze_18
+    Expand(unsqueeze_18, _onx_concat_sym_size_int_20::UnSq05) -&gt; expand_3
+      Squeeze(expand_3, init7_s1_1) -&gt; reshape_1
+  Concat(past_key_0::Shape:1, init7_s1_1, init7_s1_2, SqueezeAddPattern_SwapRangeAddScalarPattern--sym_size_int_15, init7_s1_96, axis=0) -&gt; _onx_concat_sym_size_int_20::UnSq03
+    Expand(unsqueeze_17, _onx_concat_sym_size_int_20::UnSq03) -&gt; expand_2
+      Mul(expand_2, init1_s1_) -&gt; SwapUnaryPattern--reshape
+  Concat(past_key_0::Shape:1, init7_s1_2, init7_s1_-1, init7_s1_96, axis=0) -&gt; _onx_concat_sym_size_int_20::UnSq04--concat
+    Reshape(SwapUnaryPattern--reshape, _onx_concat_sym_size_int_20::UnSq04--concat) -&gt; _onx_mul_reshape
+      Transpose(_onx_mul_reshape, perm=[0,1,3,2]) -&gt; _onx_mul_reshape::T0132
+        MatMul(_onx_mul_add_5, _onx_mul_reshape::T0132) -&gt; _onx_matmul_mul_add_5
+      Where(and_2, _onx_matmul_mul_add_5, init1_s1_3) -&gt; _onx_add_matmul_mul_add_5
+        Softmax(_onx_add_matmul_mul_add_5, axis=-1) -&gt; _onx_softmax_add_matmul_mul_add_5
+          IsNaN(_onx_softmax_add_matmul_mul_add_5) -&gt; _onx_isnan_softmax_add_matmul_mul_add_5
+          Where(_onx_isnan_softmax_add_matmul_mul_add_5, init1_s1_2, _onx_softmax_add_matmul_mul_add_5) -&gt; _onx_where_isnan_softmax_add_matmul_mul_add_5
+        MatMul(_onx_where_isnan_softmax_add_matmul_mul_add_5, reshape_1) -&gt; scaled_dot_product_attention
+          Transpose(scaled_dot_product_attention, perm=[0,2,1,3]) -&gt; transpose_4
+  Concat(past_key_0::Shape:1, input_ids::Shape1:2, init7_s1_-1, axis=0) -&gt; _onx_concat_sym_size_int_20::UnSq07
+    Reshape(transpose_4, _onx_concat_sym_size_int_20::UnSq07) -&gt; reshape_2
+      MatMul(reshape_2, p__model_model_layers_0_self_attn_o_proj_weight::T10) -&gt; linear_3
+  Add(embedding, linear_3) -&gt; add_7
+    Pow(add_7, init1_s_) -&gt; pow_2
+      ReduceMean(pow_2, init7_s1_-1, keepdims=1) -&gt; mean_1
+        Add(mean_1, init1_s_2::RSh1) -&gt; add_8
+          Sqrt(add_8) -&gt; _onx_sqrt_add_8
+            Reciprocal(_onx_sqrt_add_8) -&gt; rsqrt_1
+    Mul(add_7, rsqrt_1) -&gt; mul_16
+      Mul(_model.model.layers.0.post_attention_layernorm.weight, mul_16) -&gt; mul_17
+        MatMul(mul_17, p__model_model_layers_0_mlp_gate_proj_weight::T10) -&gt; linear_4
+          Sigmoid(linear_4) -&gt; _onx_sigmoid_linear_4
+          Mul(linear_4, _onx_sigmoid_linear_4) -&gt; silu
+        MatMul(mul_17, p__model_model_layers_0_mlp_up_proj_weight::T10) -&gt; linear_5
+          Mul(silu, linear_5) -&gt; mul_18
+            MatMul(mul_18, p__model_model_layers_0_mlp_down_proj_weight::T10) -&gt; linear_6
+    Add(add_7, linear_6) -&gt; add_9
+      Pow(add_9, init1_s_) -&gt; pow_3
+        ReduceMean(pow_3, init7_s1_-1, keepdims=1) -&gt; mean_2
+          Add(mean_2, init1_s_2::RSh1) -&gt; add_10
+            Sqrt(add_10) -&gt; _onx_sqrt_add_10
+              Reciprocal(_onx_sqrt_add_10) -&gt; rsqrt_2
+      Mul(add_9, rsqrt_2) -&gt; mul_19
+        Mul(_model.model.norm.weight, mul_19) -&gt; mul_20
+          MatMul(mul_20, p__model_lm_head_weight::T10) -&gt; output_0
+output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_5&#39;, &#39;channel_3&#39;, 32000]
+----- function name=CosSinCache_p1 domain=intermediate
+----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+opset: domain=&#39;&#39; version=21
+input: &#39;position_ids&#39;
+input: &#39;weights&#39;
+Constant(value=[1]) -&gt; init7_s1_1
+  Unsqueeze(position_ids, init7_s1_1) -&gt; position_ids::UnSq1
+    Cast(position_ids::UnSq1, to=1) -&gt; position_ids::UnSq1::C1
+Constant(value=[0, -1, 1]) -&gt; init7_s3_0_-1_1
+  Reshape(position_ids::UnSq1::C1, init7_s3_0_-1_1) -&gt; position_ids::UnSq1::C1::RSh0x-1x1
+    Mul(weights, position_ids::UnSq1::C1::RSh0x-1x1) -&gt; _onx_mul_weights
+      Cos(_onx_mul_weights) -&gt; cos
+      Sin(_onx_mul_weights) -&gt; sin
+output: name=&#39;cos&#39; type=? shape=?
+output: name=&#39;sin&#39; type=? shape=?
+----- function name=HalfRotaryEmbedding domain=intermediate
+----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+opset: domain=&#39;&#39; version=21
+input: &#39;X&#39;
+input: &#39;cos_cache&#39;
+input: &#39;sin_cache&#39;
+Mul(X, cos_cache) -&gt; _onx_mul_X
+Split(X, axis=-1, num_outputs=2) -&gt; _onx_split_X_0, _onx_split_X_1
+  Neg(_onx_split_X_1) -&gt; _onx_neg_split_X_1
+  Concat(_onx_neg_split_X_1, _onx_split_X_0, axis=-1) -&gt; _onx_concat_neg_split_X_1
+    Mul(_onx_concat_neg_split_X_1, sin_cache) -&gt; _onx_mul_concat_neg_split_X_1
+  Add(_onx_mul_X, _onx_mul_concat_neg_split_X_1) -&gt; Y
+output: name=&#39;Y&#39; type=? shape=?
+----- function name=CausalMask domain=intermediate
+----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+opset: domain=&#39;&#39; version=21
+input: &#39;A&#39;
+input: &#39;B&#39;
+Constant(value=0) -&gt; init7_s_0
+Constant(value=1) -&gt; init7_s_1
+Constant(value=[0, 1, 2]) -&gt; init7_s3_0_1_2
+Constant(value=[0, 1, 3]) -&gt; init7_s3_0_1_3
+Squeeze(A) -&gt; A::Sq
+Squeeze(B) -&gt; B::Sq
+  Range(init7_s_0, B::Sq, init7_s_1) -&gt; _onx_range_init7_s_0
+  Unsqueeze(_onx_range_init7_s_0, init7_s3_0_1_2) -&gt; _onx_range_init7_s_0::UnSq0x1x2
+Range(A::Sq, B::Sq, init7_s_1) -&gt; _onx_range_A::Sq
+  Unsqueeze(_onx_range_A::Sq, init7_s3_0_1_3) -&gt; _onx_range_A::Sq::UnSq0x1x3
+    LessOrEqual(_onx_range_init7_s_0::UnSq0x1x2, _onx_range_A::Sq::UnSq0x1x3) -&gt; mask
+output: name=&#39;mask&#39; type=? shape=?
+----- function name=CausalMaskMulAdd domain=intermediate
+----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+opset: domain=&#39;&#39; version=21
+input: &#39;A&#39;
+input: &#39;B&#39;
+input: &#39;C&#39;
+Constant(value=0) -&gt; init7_s_0
+Constant(value=1) -&gt; init7_s_1
+Constant(value=[0, 1, 2]) -&gt; init7_s3_0_1_2
+Constant(value=[1, 2, 3]) -&gt; init7_s3_1_2_3
+Squeeze(A) -&gt; A::Sq
+  Range(init7_s_0, A::Sq, init7_s_1) -&gt; _onx_range_init7_s_0
+  Unsqueeze(_onx_range_init7_s_0, init7_s3_0_1_2) -&gt; _onx_range_init7_s_0::UnSq0x1x2
+Squeeze(B) -&gt; B::Sq
+  Range(init7_s_0, B::Sq, init7_s_1) -&gt; _onx_range_init7_s_02
+  Unsqueeze(_onx_range_init7_s_02, init7_s3_1_2_3) -&gt; _onx_range_init7_s_02::UnSq1x2x3
+    Mul(_onx_range_init7_s_02::UnSq1x2x3, C) -&gt; _onx_mul_range_init7_s_02::UnSq1x2x3
+    Add(_onx_mul_range_init7_s_02::UnSq1x2x3, _onx_range_init7_s_0::UnSq0x1x2) -&gt; mask
+output: name=&#39;mask&#39; type=? shape=?
+</pre></div>
+</div>
+</section>
+<section id="id318">
+<h3>dynamo-ir<a class="headerlink" href="#id318" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T7s2x3,T7s2x33,T7s2x3,T1s2x1x30x96,T1s2x1x30x96)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(input_ids:{0:DYNAMIC,1:DYNAMIC},attention_mask:{0:DYNAMIC,1:DYNAMIC},position_ids:{0:DYNAMIC,1:DYNAMIC},past_key_0:{0:DYNAMIC,2:DYNAMIC},past_value_0:{0:DYNAMIC,2:DYNAMIC})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=20
+input: name=&#39;input_ids&#39; type=dtype(&#39;int64&#39;) shape=[&#39;s2&#39;, &#39;s70&#39;]
+input: name=&#39;attention_mask&#39; type=dtype(&#39;int64&#39;) shape=[&#39;s43&#39;, &#39;s53&#39;]
+input: name=&#39;position_ids&#39; type=dtype(&#39;int64&#39;) shape=[&#39;s2&#39;, &#39;s70&#39;]
+input: name=&#39;past_key_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s2&#39;, 1, &#39;s15&#39;, 96]
+input: name=&#39;past_value_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s2&#39;, 1, &#39;s95&#39;, 96]
+init: name=&#39;_model.model.embed_tokens.weight&#39; type=float32 shape=(32000, 192)
+init: name=&#39;_model.model.layers.0.input_layernorm.weight&#39; type=float32 shape=(192,)
+init: name=&#39;val_11&#39; type=int64 shape=() -- array([0])
+init: name=&#39;val_13&#39; type=int64 shape=() -- array([1])
+init: name=&#39;new_ones&#39; type=bool shape=() -- array([ True])
+init: name=&#39;unsqueeze_13&#39; type=float32 shape=(1, 48, 1)
+init: name=&#39;val_102&#39; type=int64 shape=(1,) -- array([-1])
+init: name=&#39;val_105&#39; type=float32 shape=(192, 192)
+init: name=&#39;val_112&#39; type=float32 shape=(192, 96)
+init: name=&#39;val_119&#39; type=float32 shape=(192, 96)
+init: name=&#39;val_128&#39; type=int64 shape=(1,) -- array([0])
+init: name=&#39;val_132&#39; type=int64 shape=(1,) -- array([48])
+init: name=&#39;val_135&#39; type=int64 shape=(1,) -- array([3])
+init: name=&#39;val_142&#39; type=int64 shape=(1,) -- array([9223372036854775807])
+init: name=&#39;val_248&#39; type=float32 shape=() -- array([0.319], dtype=float32)
+init: name=&#39;val_265&#39; type=float32 shape=(192, 192)
+init: name=&#39;val_270&#39; type=float32 shape=(192, 1024)
+init: name=&#39;val_272&#39; type=float32 shape=(192, 1024)
+init: name=&#39;val_273&#39; type=float32 shape=(1024, 192)
+init: name=&#39;val_298&#39; type=float32 shape=(192, 32000)
+init: name=&#39;val_30&#39; type=int64 shape=(1,) -- array([1])
+init: name=&#39;val_31&#39; type=int64 shape=(1,) -- array([2])
+init: name=&#39;val_299&#39; type=int64 shape=(2,) -- array([1, 2])
+init: name=&#39;val_300&#39; type=int64 shape=(2,) -- array([0, 1])
+init: name=&#39;val_100&#39; type=float32 shape=() -- array([2.], dtype=float32)
+init: name=&#39;val_103&#39; type=float32 shape=() -- array([1.e-05], dtype=float32)
+init: name=&#39;val_110&#39; type=int64 shape=(1,) -- array([96])
+init: name=&#39;val_238&#39; type=int64 shape=(1,) -- array([-2])
+init: name=&#39;val_240&#39; type=int64 shape=(1,) -- array([-9223372036854775808])
+init: name=&#39;val_252&#39; type=float32 shape=() -- array([0.], dtype=float32)
+init: name=&#39;val_253&#39; type=float32 shape=() -- array([-3.403e+38], dtype=float32)
+Cast(attention_mask, to=9) -&gt; _to_copy
+Shape(input_ids, end=2, start=1) -&gt; val_1
+  Squeeze(val_1) -&gt; sym_size_int_27
+    Range(val_11, sym_size_int_27, val_13) -&gt; arange_2
+Shape(past_key_0, end=1, start=0) -&gt; val_5
+  Squeeze(val_5) -&gt; sym_size_int_32
+    Range(val_11, sym_size_int_32, val_13) -&gt; arange
+      Unsqueeze(arange, val_299) -&gt; unsqueeze_1
+        Unsqueeze(unsqueeze_1, val_135) -&gt; unsqueeze_2
+Shape(past_key_0, end=3, start=2) -&gt; val_6
+  Squeeze(val_6) -&gt; sym_size_int_33
+    Add(sym_size_int_33, sym_size_int_27) -&gt; add_441
+      Range(val_11, add_441, val_13) -&gt; arange_3
+        Unsqueeze(arange_3, val_300) -&gt; unsqueeze_10
+          Unsqueeze(unsqueeze_10, val_31) -&gt; unsqueeze_11
+          Max(unsqueeze_2, unsqueeze_11) -&gt; val_60
+            Shape(val_60, start=0) -&gt; val_61
+          Expand(unsqueeze_2, val_61) -&gt; val_62
+            Unsqueeze(val_62, val_102) -&gt; val_64
+Shape(past_value_0, end=3, start=2) -&gt; val_8
+  Squeeze(val_8) -&gt; sym_size_int_35
+    Add(sym_size_int_27, sym_size_int_35) -&gt; add_442
+      Reshape(add_442, val_102, allowzero=0) -&gt; val_224
+  Concat(val_5, val_30, val_31, val_224, val_110, axis=0) -&gt; val_226
+Gather(_model.model.embed_tokens.weight, input_ids, axis=0) -&gt; embedding
+  Pow(embedding, val_100) -&gt; pow_1
+    ReduceMean(pow_1, val_102, noop_with_empty_axes=0, keepdims=1) -&gt; mean
+      Add(mean, val_103) -&gt; add_124
+        Sqrt(add_124) -&gt; val_104
+          Reciprocal(val_104) -&gt; rsqrt
+  Mul(embedding, rsqrt) -&gt; mul_96
+    Mul(_model.model.layers.0.input_layernorm.weight, mul_96) -&gt; mul_100
+      MatMul(mul_100, val_105) -&gt; linear
+    Add(arange_2, sym_size_int_33) -&gt; add_13
+      Unsqueeze(add_13, val_300) -&gt; unsqueeze_7
+        Unsqueeze(unsqueeze_7, val_135) -&gt; unsqueeze_8
+          LessOrEqual(unsqueeze_11, unsqueeze_8) -&gt; le_2
+            And(new_ones, le_2) -&gt; bitwise_and
+Expand(unsqueeze_11, val_61) -&gt; val_65
+  Unsqueeze(val_65, val_102) -&gt; val_66
+    Concat(val_64, val_66, axis=-1) -&gt; val_67
+  GatherND(_to_copy, val_67, batch_dims=0) -&gt; val_68
+    And(bitwise_and, val_68) -&gt; bitwise_and_1
+Reshape(add_441, val_102, allowzero=0) -&gt; val_73
+  Concat(val_5, val_30, val_1, val_73, axis=0) -&gt; val_74
+    Expand(bitwise_and_1, val_74) -&gt; expand
+      Where(expand, val_252, val_253) -&gt; val_254
+  Concat(val_5, val_30, val_30, axis=0) -&gt; val_79
+    Expand(unsqueeze_13, val_79) -&gt; expand_1
+Unsqueeze(position_ids, val_30) -&gt; unsqueeze_14
+  Cast(unsqueeze_14, to=1) -&gt; _to_copy_1
+    MatMul(expand_1, _to_copy_1) -&gt; matmul
+      Transpose(matmul, perm=[0,2,1]) -&gt; transpose
+        Concat(transpose, transpose, axis=-1) -&gt; cat
+          Cos(cat) -&gt; cos
+            Unsqueeze(cos, val_30) -&gt; unsqueeze_15
+          Sin(cat) -&gt; sin
+            Unsqueeze(sin, val_30) -&gt; unsqueeze_16
+  Concat(val_5, val_1, val_102, val_110, axis=0) -&gt; val_111
+    Reshape(linear, val_111, allowzero=1) -&gt; view
+      Transpose(view, perm=[0,2,1,3]) -&gt; transpose_1
+        Mul(transpose_1, unsqueeze_15) -&gt; mul_139
+      MatMul(mul_100, val_112) -&gt; linear_1
+    Reshape(linear_1, val_111, allowzero=1) -&gt; view_1
+      Transpose(view_1, perm=[0,2,1,3]) -&gt; transpose_2
+        Mul(transpose_2, unsqueeze_15) -&gt; mul_162
+      MatMul(mul_100, val_119) -&gt; linear_2
+    Reshape(linear_2, val_111, allowzero=1) -&gt; view_2
+      Transpose(view_2, perm=[0,2,1,3]) -&gt; transpose_3
+        Concat(past_value_0, transpose_3, axis=-2) -&gt; cat_4
+          Unsqueeze(cat_4, val_31) -&gt; unsqueeze_18
+    Expand(unsqueeze_18, val_226) -&gt; expand_3
+Slice(transpose_1, val_128, val_132, val_135, val_30) -&gt; slice_6
+Slice(transpose_1, val_132, val_142, val_135, val_30) -&gt; slice_7
+  Neg(slice_7) -&gt; neg
+  Concat(neg, slice_6, axis=-1) -&gt; cat_1
+    Mul(cat_1, unsqueeze_16) -&gt; mul_155
+      Add(mul_139, mul_155) -&gt; add_223
+        Mul(add_223, val_248) -&gt; val_249
+Slice(transpose_2, val_128, val_132, val_135, val_30) -&gt; slice_8
+Slice(transpose_2, val_132, val_142, val_135, val_30) -&gt; slice_9
+  Neg(slice_9) -&gt; neg_1
+  Concat(neg_1, slice_8, axis=-1) -&gt; cat_2
+    Mul(cat_2, unsqueeze_16) -&gt; mul_180
+      Add(mul_162, mul_180) -&gt; add_259
+        Concat(past_key_0, add_259, axis=-2) -&gt; cat_3
+          Unsqueeze(cat_3, val_31) -&gt; unsqueeze_17
+  Concat(val_5, val_30, val_31, val_73, val_110, axis=0) -&gt; val_193
+    Expand(unsqueeze_17, val_193) -&gt; expand_2
+  Concat(val_5, val_31, val_73, val_110, axis=0) -&gt; val_199
+    Reshape(expand_2, val_199, allowzero=1) -&gt; view_3
+      Shape(view_3, start=0) -&gt; val_235
+        Slice(val_235, val_102, val_142) -&gt; val_237
+  Concat(val_5, val_31, val_224, val_110, axis=0) -&gt; val_232
+    Reshape(expand_3, val_232, allowzero=1) -&gt; view_4
+Slice(val_235, val_238, val_102) -&gt; val_239
+  Concat(val_102, val_239, val_237, axis=0) -&gt; val_243
+    Reshape(view_3, val_243, allowzero=0) -&gt; val_244
+      Transpose(val_244, perm=[0,2,1]) -&gt; val_245
+Slice(val_235, val_240, val_238) -&gt; val_241
+  Concat(val_241, val_237, val_239, axis=0) -&gt; val_246
+    Reshape(val_245, val_246, allowzero=0) -&gt; val_247
+      Mul(val_247, val_248) -&gt; val_251
+        MatMul(val_249, val_251) -&gt; val_255
+        Add(val_255, val_254) -&gt; val_256
+          Softmax(val_256, axis=-1) -&gt; val_257
+            IsNaN(val_257) -&gt; val_258
+            Where(val_258, val_252, val_257) -&gt; val_259
+      MatMul(val_259, view_4) -&gt; scaled_dot_product_attention
+        Transpose(scaled_dot_product_attention, perm=[0,2,1,3]) -&gt; transpose_4
+  Concat(val_5, val_1, val_102, axis=0) -&gt; val_264
+    Reshape(transpose_4, val_264, allowzero=1) -&gt; view_5
+      MatMul(view_5, val_265) -&gt; linear_3
+  Add(embedding, linear_3) -&gt; add_349
+    Pow(add_349, val_100) -&gt; pow_2
+      ReduceMean(pow_2, val_102, noop_with_empty_axes=0, keepdims=1) -&gt; mean_1
+        Add(mean_1, val_103) -&gt; add_362
+          Sqrt(add_362) -&gt; val_269
+            Reciprocal(val_269) -&gt; rsqrt_1
+    Mul(add_349, rsqrt_1) -&gt; mul_304
+      Mul(_model.model.layers.0.input_layernorm.weight, mul_304) -&gt; mul_308
+        MatMul(mul_308, val_270) -&gt; linear_4
+          Sigmoid(linear_4) -&gt; val_271
+          Mul(linear_4, val_271) -&gt; silu
+        MatMul(mul_308, val_272) -&gt; linear_5
+          Mul(silu, linear_5) -&gt; mul_321
+            MatMul(mul_321, val_273) -&gt; linear_6
+    Add(add_349, linear_6) -&gt; add_399
+      Pow(add_399, val_100) -&gt; pow_3
+        ReduceMean(pow_3, val_102, noop_with_empty_axes=0, keepdims=1) -&gt; mean_2
+          Add(mean_2, val_103) -&gt; add_412
+            Sqrt(add_412) -&gt; val_277
+              Reciprocal(val_277) -&gt; rsqrt_2
+      Mul(add_399, rsqrt_2) -&gt; mul_340
+        Mul(_model.model.layers.0.input_layernorm.weight, mul_340) -&gt; mul_344
+          MatMul(mul_344, val_298) -&gt; linear_7
+output: name=&#39;linear_7&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s2&#39;, &#39;s70&#39;, 32000]
+</pre></div>
+</div>
+</section>
+<section id="id319">
+<h3>tracing<a class="headerlink" href="#id319" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>symbolically traced variables cannot be used as inputs to control flow
+</pre></div>
+</div>
+</section>
+<section id="id320">
+<h3>new-tracing<a class="headerlink" href="#id320" title="Link to this heading">#</a></h3>
+<p><strong>FAILED</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if type &lt;class &#39;torch.device&#39;&gt; is a constant argument device(cpu)
 </pre></div>
 </div>
 </section>
@@ -6958,16 +7660,16 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;NEWDIM_s
 <section id="typebfloat16">
 <span id="ledx-model-case-export-typebfloat16"></span><h2>TypeBFloat16<a class="headerlink" href="#typebfloat16" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.TypeBFloat16" title="yobx.torch.testing._model_eval_cases.TypeBFloat16"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.TypeBFloat16</span></code></a></p>
-<section id="id301">
-<h3>forward<a class="headerlink" href="#id301" title="Link to this heading">#</a></h3>
+<section id="id321">
+<h3>forward<a class="headerlink" href="#id321" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="n">xb</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">xb</span> <span class="o">+</span> <span class="n">xb</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="id302">
-<h3>yobx<a class="headerlink" href="#id302" title="Link to this heading">#</a></h3>
+<section id="id322">
+<h3>yobx<a class="headerlink" href="#id322" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x4,)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)})</span></code></p></li>
@@ -6981,8 +7683,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 </pre></div>
 </div>
 </section>
-<section id="id303">
-<h3>dynamo-ir<a class="headerlink" href="#id303" title="Link to this heading">#</a></h3>
+<section id="id323">
+<h3>dynamo-ir<a class="headerlink" href="#id323" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x4,)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)})</span></code></p></li>
@@ -7000,8 +7702,8 @@ output: name=&#39;_to_copy_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batc
 </pre></div>
 </div>
 </section>
-<section id="id304">
-<h3>tracing<a class="headerlink" href="#id304" title="Link to this heading">#</a></h3>
+<section id="id324">
+<h3>tracing<a class="headerlink" href="#id324" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x4,)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)})</span></code></p></li>
@@ -7015,10 +7717,18 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 </pre></div>
 </div>
 </section>
-<section id="id305">
-<h3>new-tracing<a class="headerlink" href="#id305" title="Link to this heading">#</a></h3>
-<p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cannot determine if it is a constant argument dtype(torch.bfloat16)
+<section id="id325">
+<h3>new-tracing<a class="headerlink" href="#id325" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s4x4,)]</span></code></p></li>
+<li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:Dim(batch)})</span></code></p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
+input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
+Add(x, x) -&gt; add-x
+  Cast(add-x, to=16) -&gt; add_tensor
+    Cast(add_tensor, to=1) -&gt; output
+output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, 4]
 </pre></div>
 </div>
 </section>
@@ -7026,16 +7736,16 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#3
 <section id="vmap">
 <span id="ledx-model-case-export-vmap"></span><h2>Vmap<a class="headerlink" href="#vmap" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.Vmap" title="yobx.torch.testing._model_eval_cases.Vmap"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.Vmap</span></code></a></p>
-<section id="id306">
-<h3>forward<a class="headerlink" href="#id306" title="Link to this heading">#</a></h3>
+<section id="id326">
+<h3>forward<a class="headerlink" href="#id326" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># noqa: E731</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="id307">
-<h3>yobx<a class="headerlink" href="#id307" title="Link to this heading">#</a></h3>
+<section id="id327">
+<h3>yobx<a class="headerlink" href="#id327" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s3,T1s3)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:DYNAMIC},y:{0:DYNAMIC})</span></code></p></li>
@@ -7054,8 +7764,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_
 </pre></div>
 </div>
 </section>
-<section id="id308">
-<h3>dynamo-ir<a class="headerlink" href="#id308" title="Link to this heading">#</a></h3>
+<section id="id328">
+<h3>dynamo-ir<a class="headerlink" href="#id328" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s3,T1s3)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:DYNAMIC},y:{0:DYNAMIC})</span></code></p></li>
@@ -7070,8 +7780,8 @@ output: name=&#39;add_2&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s17&#39;]
 </pre></div>
 </div>
 </section>
-<section id="id309">
-<h3>tracing<a class="headerlink" href="#id309" title="Link to this heading">#</a></h3>
+<section id="id329">
+<h3>tracing<a class="headerlink" href="#id329" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s3,T1s3)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:DYNAMIC},y:{0:DYNAMIC})</span></code></p></li>
@@ -7086,8 +7796,8 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;DYN0^DYN
 </pre></div>
 </div>
 </section>
-<section id="id310">
-<h3>new-tracing<a class="headerlink" href="#id310" title="Link to this heading">#</a></h3>
+<section id="id330">
+<h3>new-tracing<a class="headerlink" href="#id330" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s3,T1s3)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:DYNAMIC},y:{0:DYNAMIC})</span></code></p></li>
@@ -7106,16 +7816,16 @@ output: name=&#39;output&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_2&
 <section id="vmappython">
 <span id="ledx-model-case-export-vmappython"></span><h2>VmapPython<a class="headerlink" href="#vmappython" title="Link to this heading">#</a></h2>
 <p>code: <a class="reference internal" href="../../api/torch/testing/_model_eval_cases.html#yobx.torch.testing._model_eval_cases.VmapPython" title="yobx.torch.testing._model_eval_cases.VmapPython"><code class="xref py py-class docutils literal notranslate"><span class="pre">yobx.torch.testing._model_eval_cases.VmapPython</span></code></a></p>
-<section id="id311">
-<h3>forward<a class="headerlink" href="#id311" title="Link to this heading">#</a></h3>
+<section id="id331">
+<h3>forward<a class="headerlink" href="#id331" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># noqa: E731</span>
     <span class="k">return</span> <span class="n">patched_vmap</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="id312">
-<h3>yobx<a class="headerlink" href="#id312" title="Link to this heading">#</a></h3>
+<section id="id332">
+<h3>yobx<a class="headerlink" href="#id332" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s3,T1s3)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:DYNAMIC},y:{0:DYNAMIC})</span></code></p></li>
@@ -7136,8 +7846,8 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=None
 </pre></div>
 </div>
 </section>
-<section id="id313">
-<h3>dynamo-ir<a class="headerlink" href="#id313" title="Link to this heading">#</a></h3>
+<section id="id333">
+<h3>dynamo-ir<a class="headerlink" href="#id333" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>inputs:</strong> <code class="docutils literal notranslate"><span class="pre">#1[(T1s3,T1s3)]</span></code></p></li>
 <li><p><strong>shapes:</strong> <code class="docutils literal notranslate"><span class="pre">dict(x:{0:DYNAMIC},y:{0:DYNAMIC})</span></code></p></li>
@@ -7157,15 +7867,15 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 </pre></div>
 </div>
 </section>
-<section id="id314">
-<h3>tracing<a class="headerlink" href="#id314" title="Link to this heading">#</a></h3>
+<section id="id334">
+<h3>tracing<a class="headerlink" href="#id334" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>symbolically traced variables cannot be used as inputs to control flow
 </pre></div>
 </div>
 </section>
-<section id="id315">
-<h3>new-tracing<a class="headerlink" href="#id315" title="Link to this heading">#</a></h3>
+<section id="id335">
+<h3>new-tracing<a class="headerlink" href="#id335" title="Link to this heading">#</a></h3>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>list index out of range
 </pre></div>
@@ -7221,7 +7931,7 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-buildinisinstance"><span class="std std-ref">BuildInIsInstance</span></a></p></td>
 <td><p>6</p></td>
-<td><p>FAIL</p></td>
+<td><p>6</p></td>
 <td><p>6</p></td>
 <td><p>6</p></td>
 </tr>
@@ -7287,7 +7997,7 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-controlflowindirectrankscat"><span class="std std-ref">ControlFlowIndirectRanksCat</span></a></p></td>
 <td><p>3</p></td>
-<td><p>FAIL</p></td>
+<td><p>3</p></td>
 <td><p>3</p></td>
 <td><p>3</p></td>
 </tr>
@@ -7299,7 +8009,7 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-controlflownumelzero1"><span class="std std-ref">ControlFlowNumelZero1</span></a></p></td>
 <td><p>3</p></td>
-<td><p>FAIL</p></td>
+<td><p>4</p></td>
 <td><p>4</p></td>
 <td><p>3</p></td>
 </tr>
@@ -7365,7 +8075,7 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-controlflowshapecheck"><span class="std std-ref">ControlFlowShapeCheck</span></a></p></td>
 <td><p>7</p></td>
-<td><p>FAIL</p></td>
+<td><p>8</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 </tr>
@@ -7437,25 +8147,25 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-inplaceadd"><span class="std std-ref">InplaceAdd</span></a></p></td>
 <td><p>1</p></td>
-<td><p>FAIL</p></td>
+<td><p>1</p></td>
 <td><p>1</p></td>
 <td><p>1</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-inplaceadd2"><span class="std std-ref">InplaceAdd2</span></a></p></td>
 <td><p>1</p></td>
-<td><p>FAIL</p></td>
+<td><p>1</p></td>
 <td><p>1</p></td>
 <td><p>1</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-inplaceadd-mul"><span class="std std-ref">InplaceAdd_Mul</span></a></p></td>
 <td><p>2</p></td>
-<td><p>FAIL</p></td>
+<td><p>2</p></td>
 <td><p>2</p></td>
 <td><p>2</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-inplacecloneadd"><span class="std std-ref">InplaceCloneAdd_</span></a></p></td>
 <td><p>1</p></td>
-<td><p>FAIL</p></td>
+<td><p>1</p></td>
 <td><p>1</p></td>
 <td><p>1</p></td>
 </tr>
@@ -7479,7 +8189,7 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-inplacesetitemmask"><span class="std std-ref">InplaceSetItemMask</span></a></p></td>
 <td><p>2</p></td>
-<td><p>FAIL</p></td>
+<td><p>2</p></td>
 <td><p>2</p></td>
 <td><p>2</p></td>
 </tr>
@@ -7507,51 +8217,75 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
 <td><p>1</p></td>
 <td><p>1</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturefloat1"><span class="std std-ref">SignatureFloat1</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-shapeandtypeanddevicebased"><span class="std std-ref">ShapeAndTypeAndDeviceBased</span></a></p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-signatureint1"><span class="std std-ref">SignatureInt1</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-shapeandtypebased"><span class="std std-ref">ShapeAndTypeBased</span></a></p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-signatureint2"><span class="std std-ref">SignatureInt2</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-shapebased"><span class="std std-ref">ShapeBased</span></a></p></td>
+<td><p>7</p></td>
+<td><p>FAIL</p></td>
+<td><p>7</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturefloat1"><span class="std std-ref">SignatureFloat1</span></a></p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturelistfixedlength"><span class="std std-ref">SignatureListFixedLength</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-signatureint1"><span class="std std-ref">SignatureInt1</span></a></p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-signatureint2"><span class="std std-ref">SignatureInt2</span></a></p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturelistfixedlength"><span class="std std-ref">SignatureListFixedLength</span></a></p></td>
 <td><p>6</p></td>
-<td><p>FAIL</p></td>
 <td><p>6</p></td>
 <td><p>6</p></td>
+<td><p>6</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturelistfixedwithnone"><span class="std std-ref">SignatureListFixedWithNone</span></a></p></td>
-<td><p>FAIL</p></td>
-<td><p>FAIL</p></td>
-<td><p>FAIL</p></td>
-<td><p>FAIL</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturelistvariablelength"><span class="std std-ref">SignatureListVariableLength</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturelistfixedwithnone"><span class="std std-ref">SignatureListFixedWithNone</span></a></p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 <td><p>FAIL</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-signatureshapeasindex"><span class="std std-ref">SignatureShapeAsIndex</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-signaturelistvariablelength"><span class="std std-ref">SignatureListVariableLength</span></a></p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-signatureshapeasindex"><span class="std std-ref">SignatureShapeAsIndex</span></a></p></td>
 <td><p>5</p></td>
 <td><p>FAIL</p></td>
 <td><p>9</p></td>
 <td><p>5</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ledx-model-case-export-tinyllm"><span class="std std-ref">TinyLLM</span></a></p></td>
+<td><p>136</p></td>
+<td><p>FAIL</p></td>
+<td><p>FAIL</p></td>
+<td><p>90</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ledx-model-case-export-typebfloat16"><span class="std std-ref">TypeBFloat16</span></a></p></td>
 <td><p>FAIL</p></td>
-<td><p>FAIL</p></td>
+<td><p>3</p></td>
 <td><p>3</p></td>
 <td><p>3</p></td>
 </tr>
