@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -922,6 +922,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../interpreter/index.html">yobx.torch.interpreter</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_functions.html">yobx.torch.interpreter._aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_functions_attention.html">yobx.torch.interpreter._aten_functions_attention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_getitem.html">yobx.torch.interpreter._aten_getitem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_functions_transformers.html">yobx.torch.interpreter._aten_functions_transformers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../interpreter/_aten_methods.html">yobx.torch.interpreter._aten_methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../interpreter/_doc_.html">yobx.torch.interpreter._doc_</a></li>
@@ -1047,8 +1048,28 @@ errors exceed the global dtype tolerance.</p>
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">unittests.torch.coverage.test_onnx_export_common_methods_tracing</span></code>, and by
 <a class="reference internal" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="yobx.torch.coverage.op_coverage.get_op_coverage_rst"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_op_coverage_rst()</span></code></a> which builds a documentation coverage table.</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="yobx.torch.coverage.op_coverage.get_op_coverage_float32_comparison_rst">
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.coverage.op_coverage.</span></span><span class="sig-name descname"><span class="pre">get_op_coverage_float32_comparison_rst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/8450f2e/yobx/torch/coverage/op_coverage.py#L497"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.coverage.op_coverage.get_op_coverage_float32_comparison_rst" title="Link to this definition">#</a></dt>
+<dd><p>Returns an RST table comparing float32 op support across all export paths.</p>
+<p>Queries <code class="docutils literal notranslate"><span class="pre">torch.testing._internal.common_methods_invocations.op_db</span></code> and
+builds a single grid showing, for every op that supports <code class="docutils literal notranslate"><span class="pre">float32</span></code>, the
+export status for three paths side by side:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">✔</span></code> - converter exists and the test passes for <code class="docutils literal notranslate"><span class="pre">float32</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">⚠</span> <span class="pre">xfail</span></code> - converter exists but the test is a known failure.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">✘</span> <span class="pre">no</span> <span class="pre">converter</span></code> - no ONNX converter has been implemented for this op.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RST source string with one <code class="docutils literal notranslate"><span class="pre">list-table</span></code> directive, ready to be
+printed inside a <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> block with <code class="docutils literal notranslate"><span class="pre">:rst:</span></code> enabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="yobx.torch.coverage.op_coverage.get_op_coverage_rst">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.coverage.op_coverage.</span></span><span class="sig-name descname"><span class="pre">get_op_coverage_rst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracing_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/71e68c7/yobx/torch/coverage/op_coverage.py#L518"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.torch.coverage.op_coverage.</span></span><span class="sig-name descname"><span class="pre">get_op_coverage_rst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracing_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/8450f2e/yobx/torch/coverage/op_coverage.py#L574"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst" title="Link to this definition">#</a></dt>
 <dd><p>Returns an RST table showing op-db coverage for one export path.</p>
 <p>Queries <code class="docutils literal notranslate"><span class="pre">torch.testing._internal.common_methods_invocations.op_db</span></code> and
 builds one grid (default export path, torch tracing path, or new-tracing
@@ -1123,6 +1144,7 @@ printed inside a <code class="docutils literal notranslate"><span class="pre">..
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.coverage.op_coverage.get_op_coverage_float32_comparison_rst"><code class="docutils literal notranslate"><span class="pre">get_op_coverage_float32_comparison_rst()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.coverage.op_coverage.get_op_coverage_rst"><code class="docutils literal notranslate"><span class="pre">get_op_coverage_rst()</span></code></a></li>
 </ul>
   </nav></div>

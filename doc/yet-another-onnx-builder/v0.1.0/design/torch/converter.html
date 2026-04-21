@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -534,7 +534,7 @@ different design priorities.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>ATen → ONNX translation</strong></p></td>
-<td><p>Custom <a class="reference internal" href="../../api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.DynamoInterpreter" title="yobx.torch.interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a>
+<td><p>Custom <a class="reference internal" href="../../api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.FxGraphInterpreter" title="yobx.torch.interpreter.interpreter.FxGraphInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FxGraphInterpreter</span></code></a>
 that walks the FX graph node-by-node and emits ONNX ops directly into a
 <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a></p></td>
 <td><p>Uses <a class="reference external" href="https://microsoft.github.io/onnxscript/">onnxscript</a> as the
@@ -608,7 +608,7 @@ multi-stage pipeline:</p>
 <li><p><strong>Export</strong> — trace the module into a portable graph representation using
 <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> (or one of its alternatives).</p></li>
 <li><p><strong>Interpret</strong> — walk every node of the FX graph and translate it into a
-sequence of ONNX operations via <a class="reference internal" href="../../api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.DynamoInterpreter" title="yobx.torch.interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a>.</p></li>
+sequence of ONNX operations via <a class="reference internal" href="../../api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.FxGraphInterpreter" title="yobx.torch.interpreter.interpreter.FxGraphInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FxGraphInterpreter</span></code></a>.</p></li>
 <li><p><strong>Optimise</strong> — run the ONNX graph through the optimiser shipped in
 <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a> to fold constants, remove redundant
 casts, and simplify shapes.</p></li>
@@ -624,9 +624,9 @@ torch.export.ExportedProgram   ←─── torch.fx.GraphModule (optional)
       │
       │  _make_builder_interpreter()
       ▼
-GraphBuilder  +  DynamoInterpreter
+GraphBuilder  +  FxGraphInterpreter
       │
-      │  DynamoInterpreter.run()  ── node-by-node dispatch
+      │  FxGraphInterpreter.run()  ── node-by-node dispatch
       │        ├── placeholder   →  graph input
       │        ├── get_attr      →  initializer
       │        ├── call_function →  aten_* converter
@@ -706,7 +706,7 @@ that can override the default ATen-to-ONNX mapping for specific operators.</p></
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[0]&quot;</span>
-      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_140249617459072.&lt;locals&gt;.Neuron&quot;</span>
+      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_132649030754112.&lt;locals&gt;.Neuron&quot;</span>
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[1]&quot;</span>
@@ -740,7 +740,7 @@ that can override the default ATen-to-ONNX mapping for specific operators.</p></
     <span class="n">domain</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;module[0]&quot;</span>
-      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_140249617459072.&lt;locals&gt;.Neuron&quot;</span>
+      <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;sphinx_runpython.runpython.sphinx_runpython_extension.run_python_script_132649030754112.&lt;locals&gt;.Neuron&quot;</span>
     <span class="p">}</span>
     <span class="n">metadata_props</span> <span class="p">{</span>
       <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;intypes&quot;</span>
@@ -829,9 +829,9 @@ underlying <code class="xref py py-class docutils literal notranslate"><span cla
 mapping between concrete dimension values and their symbolic counterparts.</p>
 </section>
 </section>
-<section id="dynamointerpreter">
-<h3>DynamoInterpreter<a class="headerlink" href="#dynamointerpreter" title="Link to this heading">#</a></h3>
-<p><a class="reference internal" href="../../api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.DynamoInterpreter" title="yobx.torch.interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a> is the heart
+<section id="fxgraphinterpreter">
+<h3>FxGraphInterpreter<a class="headerlink" href="#fxgraphinterpreter" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="../../api/torch/interpreter/interpreter.html#yobx.torch.interpreter.interpreter.FxGraphInterpreter" title="yobx.torch.interpreter.interpreter.FxGraphInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FxGraphInterpreter</span></code></a> is the heart
 of the converter.  It walks the <a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> node by node and
 translates each node into one or more ONNX operators appended to the
 <a class="reference internal" href="../../api/xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>.</p>
@@ -865,7 +865,7 @@ registers it as an ONNX initializer.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">call_module</span></code></p></td>
 <td><p>Recursively converts a submodule using a nested
-<code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code> instance.</p></td>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FxGraphInterpreter</span></code> instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">output</span></code></p></td>
 <td><p>Registers graph outputs, applying any output masks produced by the
@@ -1098,7 +1098,7 @@ variables.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fake-tensors">Fake tensors</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamointerpreter">DynamoInterpreter</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fxgraphinterpreter">FxGraphInterpreter</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#node-kinds-and-their-handlers">Node kinds and their handlers</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aten-to-onnx-converters">ATen-to-ONNX converters</a></li>
 </ul>
