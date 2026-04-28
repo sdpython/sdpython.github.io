@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -511,12 +511,12 @@
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_patches_for_model</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_torch.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">PATCHES</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_torch.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_patches</span>
 
 <span class="k">with</span> <span class="n">apply_patches_for_model</span><span class="p">(</span><span class="n">patch_torch</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">link</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">patch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">PATCHES</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">patch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">get_patches</span><span class="p">()):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;patch-torch-</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">link</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* :ref:`</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
@@ -537,344 +537,30 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#patch-torch-1"><span class="std std-ref">patched_DynamicDimConstraintPrinter._print_Symbol</span></a></p></li>
-<li><p><a class="reference internal" href="#patch-torch-2"><span class="std std-ref">patched_infer_size</span></a></p></li>
-<li><p><a class="reference internal" href="#patch-torch-3"><span class="std std-ref">patched__broadcast_shapes</span></a></p></li>
-<li><p><a class="reference internal" href="#patch-torch-4"><span class="std std-ref">patched__get_range_constraints</span></a></p></li>
-<li><p><a class="reference internal" href="#patch-torch-5"><span class="std std-ref">patched__maybe_broadcast</span></a></p></li>
-</ul>
-<section id="patched-dynamicdimconstraintprinter-print-symbol">
-<span id="patch-torch-1"></span><h3>patched_DynamicDimConstraintPrinter._print_Symbol<a class="headerlink" href="#patched-dynamicdimconstraintprinter-print-symbol" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">DynamicDimConstraintPrinter</span><span class="o">.</span><span class="n">_print_Symbol</span> <span class="o">-&gt;</span> <span class="n">patched_DynamicDimConstraintPrinter</span><span class="o">.</span><span class="n">_print_Symbol</span>
-<span class="o">---</span> <span class="n">original</span>
-<span class="o">+++</span> <span class="n">rewritten</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span> <span class="o">@@</span>
- <span class="k">def</span><span class="w"> </span><span class="nf">_print_Symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="o">-</span>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">):</span>
-<span class="o">-</span>        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected sympy.Symbol, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="o">-</span>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>
-<span class="o">-</span>        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown symbol </span><span class="si">{</span><span class="n">expr</span><span class="si">}</span><span class="s2"> created by constraints solver&quot;</span><span class="p">)</span>
-<span class="o">-</span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="p">[</span><span class="n">expr</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-<span class="o">+</span>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">expr</span><span class="p">))</span>
-<span class="o">+</span>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
-<span class="o">+</span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_to_source</span><span class="p">[</span><span class="n">expr</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># type: ignore</span>
-<span class="o">+</span>    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="patched-infer-size">
-<span id="patch-torch-2"></span><h3>patched_infer_size<a class="headerlink" href="#patched-infer-size" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">infer_size</span> <span class="o">-&gt;</span> <span class="n">patched_infer_size</span>
-<span class="o">---</span> <span class="n">original</span>
-<span class="o">+++</span> <span class="n">rewritten</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span> <span class="o">@@</span>
-<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">infer_size</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">],</span> <span class="n">b</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="o">-</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="n">guard_or_false</span>
-<span class="o">-</span>
-<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched_infer_size</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">+    Patches ``torch._subclasses.fake_impls.infer_size``.</span>
-<span class="s2">+    This patch is needed to export</span>
-<span class="s2">+    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.</span>
-<span class="s2">+    &quot;&quot;&quot;</span>
-     <span class="n">dimsA</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-     <span class="n">dimsB</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-     <span class="n">ndim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dimsA</span><span class="p">,</span> <span class="n">dimsB</span><span class="p">)</span>
-<span class="o">-</span>    <span class="n">expandedSizes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">IntLikeType</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
-<span class="o">+</span>    <span class="n">expandedSizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
-     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-         <span class="n">offset</span> <span class="o">=</span> <span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
-         <span class="n">dimA</span> <span class="o">=</span> <span class="n">dimsA</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">offset</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">23</span><span class="p">,</span><span class="mi">11</span> <span class="o">+</span><span class="mi">26</span><span class="p">,</span><span class="mi">21</span> <span class="o">@@</span>
-         <span class="c1"># expression of an or statement as-is, without bool()&#39;ing it; if this</span>
-         <span class="c1"># were not the case, we&#39;d need to write this using torch.sym_or() or</span>
-         <span class="c1"># something like that).</span>
-<span class="o">-</span>        <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
-<span class="o">-</span>            <span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeB</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">sizeA</span> <span class="o">==</span> <span class="n">sizeB</span><span class="p">,</span>
-<span class="o">-</span>            <span class="k">lambda</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;The size of tensor a (</span><span class="si">{</span><span class="n">sizeA</span><span class="si">}</span><span class="s2">) &quot;</span>
-<span class="o">-</span>            <span class="sa">f</span><span class="s2">&quot;must match the size of tensor b (</span><span class="si">{</span><span class="n">sizeB</span><span class="si">}</span><span class="s2">) &quot;</span>
-<span class="o">-</span>            <span class="sa">f</span><span class="s2">&quot;at non-singleton dimension </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-<span class="o">-</span>        <span class="p">)</span>
-<span class="o">-</span>        <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizeB</span> <span class="k">if</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">sizeA</span>
-<span class="o">+</span>        <span class="k">try</span><span class="p">:</span>
-<span class="o">+</span>            <span class="n">b1</span> <span class="o">=</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="o">+</span>        <span class="k">except</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
-<span class="o">+</span>            <span class="n">b1</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="o">+</span>        <span class="k">try</span><span class="p">:</span>
-<span class="o">+</span>            <span class="n">b2</span> <span class="o">=</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeB</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="o">+</span>        <span class="k">except</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
-<span class="o">+</span>            <span class="n">b2</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="o">+</span>        <span class="k">try</span><span class="p">:</span>
-<span class="o">+</span>            <span class="n">b3</span> <span class="o">=</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="n">sizeB</span><span class="p">)</span>
-<span class="o">+</span>        <span class="k">except</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
-<span class="o">+</span>            <span class="n">b3</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="o">+</span>        <span class="k">if</span> <span class="n">b1</span> <span class="ow">or</span> <span class="n">b2</span> <span class="ow">or</span> <span class="n">b3</span><span class="p">:</span>
-<span class="o">+</span>            <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizeB</span> <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">sizeA</span>
-<span class="o">+</span>        <span class="k">else</span><span class="p">:</span>
-<span class="o">+</span>            <span class="c1"># PATCHED: generic case, the dimension is known, no need to assert</span>
-<span class="o">+</span>            <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sym_max</span><span class="p">(</span><span class="n">sizeA</span><span class="p">,</span> <span class="n">sizeB</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">expandedSizes</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="patched-broadcast-shapes">
-<span id="patch-torch-3"></span><h3>patched__broadcast_shapes<a class="headerlink" href="#patched-broadcast-shapes" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">_broadcast_shapes</span> <span class="o">-&gt;</span> <span class="n">patched__broadcast_shapes</span>
-<span class="o">---</span> <span class="n">original</span>
-<span class="o">+++</span> <span class="n">rewritten</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span> <span class="o">@@</span>
-<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
-<span class="o">-</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="o">-</span>        <span class="n">guard_or_false</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">guarding_hint_or_throw</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">has_guarding_hint</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">is_nested_int</span><span class="p">,</span>
-<span class="o">-</span>    <span class="p">)</span>
-<span class="o">-</span>
-<span class="o">-</span>    <span class="n">backed_so</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">backed_size_oblivious</span>
-<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched__broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
-<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">+    Patches ``torch._refs._broadcast_shapes``.</span>
-<span class="s2">+    This patch is needed to export</span>
-<span class="s2">+    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.</span>
-<span class="s2">+    &quot;&quot;&quot;</span>
-<span class="o">+</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
-<span class="o">+</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch._prims_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntLike</span>
-
-     <span class="n">shapes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-         <span class="p">(</span><span class="n">x</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">IntLike</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_shapes</span><span class="p">)</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">19</span><span class="p">,</span><span class="mi">62</span> <span class="o">+</span><span class="mi">18</span><span class="p">,</span><span class="mi">36</span> <span class="o">@@</span>
-     <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
-         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-<span class="o">-</span>                <span class="sa">f</span><span class="s2">&quot;Input shapes should be of type ints, a tuple of ints, or a list of ints, got </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="o">+</span>                <span class="s2">&quot;Input shapes should be of type ints, a tuple of ints, &quot;</span>
-<span class="o">+</span>                <span class="s2">&quot;or a list of ints, got &quot;</span><span class="p">,</span>
-<span class="o">+</span>                <span class="n">shape</span><span class="p">,</span>
-             <span class="p">)</span>
-
-     <span class="c1"># Computes common shape</span>
-<span class="o">-</span>    <span class="n">common_shape</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-<span class="o">-</span>        <span class="mi">1</span><span class="p">,</span>
-<span class="o">-</span>    <span class="p">]</span> <span class="o">*</span> <span class="n">reduce</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">))</span>
-<span class="o">-</span>    <span class="k">for</span> <span class="n">arg_idx</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shapes</span><span class="p">):</span>
-<span class="o">+</span>    <span class="n">common_shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">reduce</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">))</span>
-<span class="o">+</span>    <span class="k">for</span> <span class="n">_arg_idx</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shapes</span><span class="p">):</span>
-         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-<span class="o">-</span>            <span class="c1"># NB: handle nested ints specially to avoid invalid guarding on Ne(j0, 1).</span>
-<span class="o">-</span>            <span class="k">if</span> <span class="n">is_nested_int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
-<span class="o">+</span>            <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">is_nested_int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
-                 <span class="c1"># Broadcasting is allowed for (j0, 1) or (j0, j0);</span>
-                 <span class="c1"># not (j0, j1), (j0, 5), etc.</span>
-<span class="o">-</span>                <span class="k">if</span> <span class="n">is_nested_int</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="ow">and</span> <span class="n">guard_or_false</span><span class="p">(</span>
-<span class="o">-</span>                    <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-<span class="o">-</span>                <span class="p">):</span>
-<span class="o">+</span>                <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">is_nested_int</span><span class="p">(</span>
-<span class="o">+</span>                    <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-<span class="o">+</span>                <span class="p">)</span> <span class="ow">and</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
-                     <span class="k">continue</span>
-             <span class="k">else</span><span class="p">:</span>
-<span class="o">-</span>                <span class="c1"># When backed size oblivious is used, we specialize for broadcasting</span>
-<span class="o">-</span>                <span class="c1"># if its the only way to compile the example input.</span>
-<span class="o">-</span>                <span class="c1"># i.e: s0:1, s1:1 ==&gt;</span>
-<span class="o">-</span>                <span class="c1">#           assert s0==s1, no specialization on ==1 or !=1.</span>
-<span class="o">-</span>                <span class="c1">#            The non-broadcast path is picked</span>
-<span class="o">-</span>                <span class="c1">#      s0:1, s1:4 ==&gt;</span>
-<span class="o">-</span>                <span class="c1">#           specialize(s0) to be 1.</span>
-<span class="o">-</span>                <span class="c1">#      s0:4, s1:1 ==&gt;</span>
-<span class="o">-</span>                <span class="c1">#           specialize(s1) to be 1.</span>
-<span class="o">-</span>                <span class="k">if</span> <span class="p">(</span>
-<span class="o">-</span>                    <span class="n">backed_so</span>
-<span class="o">-</span>                    <span class="ow">and</span> <span class="n">has_guarding_hint</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-<span class="o">-</span>                    <span class="ow">and</span> <span class="n">has_guarding_hint</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-<span class="o">-</span>                <span class="p">):</span>
-<span class="o">-</span>                    <span class="n">a</span> <span class="o">=</span> <span class="n">guarding_hint_or_throw</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-<span class="o">-</span>                    <span class="n">b</span> <span class="o">=</span> <span class="n">guarding_hint_or_throw</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-<span class="o">-</span>                    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-<span class="o">-</span>                        <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="o">-</span>                    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-<span class="o">-</span>                        <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="o">-</span>                <span class="k">if</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
-<span class="o">+</span>                <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]):</span>
-                     <span class="k">continue</span>
-<span class="o">-</span>
-<span class="o">-</span>            <span class="k">if</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-<span class="o">+</span>            <span class="c1"># PATCHED: two cases, if == for sure, no broadcast,</span>
-<span class="o">+</span>            <span class="c1"># otherwise maybe broadcast with max(dimensions)</span>
-<span class="o">+</span>            <span class="k">if</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
-<span class="o">+</span>                <span class="k">pass</span>
-<span class="o">+</span>            <span class="k">elif</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span>
-<span class="o">+</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
-<span class="o">+</span>            <span class="p">)</span> <span class="ow">or</span> <span class="n">fx_symbolic_shapes</span><span class="o">.</span><span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
-                 <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Attempting to broadcast a dimension with negative length!&quot;</span><span class="p">)</span>
-<span class="o">-</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-<span class="o">-</span>
-<span class="o">-</span>            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_nested_int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="ow">and</span> <span class="n">guard_or_false</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-<span class="o">-</span>                <span class="c1"># broadcast case .</span>
-<span class="o">-</span>                <span class="k">continue</span>
-<span class="o">+</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
-             <span class="k">else</span><span class="p">:</span>
-<span class="o">-</span>                <span class="c1"># If broadcasting is undecided we pick non-broadcast path and add runtime assertion.</span>
-<span class="o">-</span>                <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
-<span class="o">-</span>                    <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-<span class="o">-</span>                    <span class="k">lambda</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Attempting to broadcast a dimension of length </span><span class="si">{</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">! &quot;</span>
-<span class="o">-</span>                    <span class="sa">f</span><span class="s2">&quot;Mismatching argument at index </span><span class="si">{</span><span class="n">arg_idx</span><span class="si">}</span><span class="s2"> had </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">; but expected shape &quot;</span>
-<span class="o">-</span>                    <span class="sa">f</span><span class="s2">&quot;should be broadcastable to </span><span class="si">{</span><span class="n">common_shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-<span class="o">-</span>                <span class="p">)</span>
-<span class="o">+</span>                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sym_max</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
-
-     <span class="k">return</span> <span class="n">common_shape</span>
-</pre></div>
-</div>
-</section>
-<section id="patched-get-range-constraints">
-<span id="patch-torch-4"></span><h3>patched__get_range_constraints<a class="headerlink" href="#patched-get-range-constraints" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">_get_range_constraints</span> <span class="o">-&gt;</span> <span class="n">patched__get_range_constraints</span>
-<span class="o">---</span> <span class="n">original</span>
-<span class="o">+++</span> <span class="n">rewritten</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">42</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">36</span> <span class="o">@@</span>
-<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_get_range_constraints</span><span class="p">(</span>
-<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched__get_range_constraints</span><span class="p">(</span>
-     <span class="n">mod</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
-<span class="o">-</span>    <span class="n">export_artifact</span><span class="p">:</span> <span class="n">ExportArtifact</span><span class="p">,</span>
-<span class="o">+</span>    <span class="n">export_artifact</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">_trace</span><span class="o">.</span><span class="n">ExportArtifact</span><span class="p">,</span>
-     <span class="n">args</span><span class="p">,</span>
-     <span class="n">kwargs</span><span class="p">,</span>
-     <span class="n">dynamic_shapes</span><span class="p">,</span>
- <span class="p">):</span>
-<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">+    Patches ``torch.export._trace._get_range_constraints``.</span>
-<span class="s2">+    See PR `#174593 &lt;https://github.com/pytorch/pytorch/pull/174593&gt;`_.</span>
-<span class="s2">+    &quot;&quot;&quot;</span>
-     <span class="n">gm</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span> <span class="o">=</span> <span class="n">export_artifact</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">gm</span>
-<span class="o">-</span>    <span class="n">export_graph_signature</span><span class="p">:</span> <span class="n">ExportGraphSignature</span> <span class="o">=</span> <span class="n">export_artifact</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">sig</span>
-<span class="o">+</span>    <span class="n">export_graph_signature</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">graph_signature</span><span class="o">.</span><span class="n">ExportGraphSignature</span> <span class="o">=</span> <span class="p">(</span>
-<span class="o">+</span>        <span class="n">export_artifact</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">sig</span>
-<span class="o">+</span>    <span class="p">)</span>
-     <span class="n">fake_mode</span><span class="p">:</span> <span class="n">FakeTensorMode</span> <span class="o">=</span> <span class="n">export_artifact</span><span class="o">.</span><span class="n">fake_mode</span>
-     <span class="n">num_lifted</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-         <span class="p">(</span>
-             <span class="n">i</span>
-             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">export_graph_signature</span><span class="o">.</span><span class="n">input_specs</span><span class="p">)</span>
-<span class="o">-</span>            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">InputKind</span><span class="o">.</span><span class="n">USER_INPUT</span>
-<span class="o">+</span>            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">graph_signature</span><span class="o">.</span><span class="n">InputKind</span><span class="o">.</span><span class="n">USER_INPUT</span>
-         <span class="p">),</span>
-         <span class="nb">len</span><span class="p">(</span><span class="n">export_graph_signature</span><span class="o">.</span><span class="n">input_specs</span><span class="p">),</span>
-     <span class="p">)</span>
-<span class="o">-</span>    <span class="n">combined_args</span> <span class="o">=</span> <span class="n">_combine_args</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-
-<span class="o">-</span>    <span class="c1"># This is because we trace based on the kwargs passed in from user</span>
-<span class="o">+</span>    <span class="c1"># preserve_order=True:</span>
-<span class="o">+</span>    <span class="c1"># this is because we trace based on the kwargs passed in from user</span>
-     <span class="c1"># not based on the signature. I feel it would be better to just enforce</span>
-     <span class="c1"># one ordering at the start of tracing to avoid confusions, but that is</span>
-     <span class="c1"># bigger refactor, so do this to unblock for now.</span>
-<span class="o">-</span>    <span class="n">combined_args_traced_order</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="o">-</span>    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">combined_args</span><span class="p">:</span>
-<span class="o">-</span>        <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-<span class="o">-</span>            <span class="n">combined_args_traced_order</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_args</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
-<span class="o">+</span>    <span class="n">combined_args</span> <span class="o">=</span> <span class="n">_combine_args</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">preserve_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="o">-</span>    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-<span class="o">-</span>        <span class="n">combined_args_traced_order</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-<span class="o">-</span>
-<span class="o">-</span>    <span class="n">combined_args</span> <span class="o">=</span> <span class="n">combined_args_traced_order</span>
-<span class="o">-</span>
-<span class="o">-</span>    <span class="n">range_constraints</span> <span class="o">=</span> <span class="n">make_constraints</span><span class="p">(</span>
-<span class="o">-</span>        <span class="n">fake_mode</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">gm</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">combined_args</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">dynamic_shapes</span><span class="p">,</span>
-<span class="o">-</span>        <span class="n">num_lifted</span><span class="p">,</span>
-<span class="o">+</span>    <span class="n">range_constraints</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">make_constraints</span><span class="p">(</span>
-<span class="o">+</span>        <span class="n">fake_mode</span><span class="p">,</span> <span class="n">gm</span><span class="p">,</span> <span class="n">combined_args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">num_lifted</span>
-     <span class="p">)</span>
-     <span class="k">return</span> <span class="n">range_constraints</span>
-</pre></div>
-</div>
-</section>
-<section id="patched-maybe-broadcast">
-<span id="patch-torch-5"></span><h3>patched__maybe_broadcast<a class="headerlink" href="#patched-maybe-broadcast" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="p">:</span> <span class="n">_maybe_broadcast</span> <span class="o">-&gt;</span> <span class="n">patched__maybe_broadcast</span>
-<span class="o">---</span> <span class="n">original</span>
-<span class="o">+++</span> <span class="n">rewritten</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">18</span> <span class="o">@@</span>
-<span class="o">-</span><span class="k">def</span><span class="w"> </span><span class="nf">_maybe_broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">preserve_cpu_scalar_tensors</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="o">+</span><span class="k">def</span><span class="w"> </span><span class="nf">patched__maybe_broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">preserve_cpu_scalar_tensors</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="o">+</span>    <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">+    Patches ``torch._refs._maybe_broadcast``.</span>
-<span class="s2">+    This patch is needed to export</span>
-<span class="s2">+    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.</span>
-<span class="s2">+    &quot;&quot;&quot;</span>
-<span class="o">+</span>    <span class="kn">from</span><span class="w"> </span><span class="nn">torch._prims_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeType</span><span class="p">,</span> <span class="n">TensorLike</span><span class="p">,</span> <span class="n">Number</span>
-<span class="o">+</span>
-     <span class="c1"># Computes common shape</span>
-<span class="o">-</span>    <span class="n">common_shape</span> <span class="o">=</span> <span class="n">_broadcast_shapes</span><span class="p">(</span>
-<span class="o">+</span>    <span class="n">common_shape</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span><span class="p">(</span>
-         <span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">TensorLike</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span>
-     <span class="p">)</span>
-
-     <span class="k">def</span><span class="w"> </span><span class="nf">should_expand</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ShapeType</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ShapeType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="o">-</span>        <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="o">-</span>            <span class="n">guard_or_false</span><span class="p">,</span>
-<span class="o">-</span>            <span class="n">sym_and</span><span class="p">,</span>
-<span class="o">-</span>            <span class="n">sym_or</span><span class="p">,</span>
-<span class="o">-</span>        <span class="p">)</span>
-<span class="o">+</span>        <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="n">guard_or_false</span><span class="p">,</span> <span class="n">sym_and</span><span class="p">,</span> <span class="n">sym_or</span>
-
-         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
-             <span class="k">return</span> <span class="kc">True</span>
-<span class="o">@@</span> <span class="o">-</span><span class="mi">29</span><span class="p">,</span><span class="mi">10</span> <span class="o">+</span><span class="mi">32</span><span class="p">,</span><span class="mi">15</span> <span class="o">@@</span>
-                 <span class="k">return</span> <span class="kc">True</span>
-
-             <span class="c1"># u0==u1 assume the same, no broadcasting!</span>
-<span class="o">-</span>            <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
-<span class="o">-</span>                <span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">,</span>
-<span class="o">-</span>                <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;sizes assumed to be the same due to unbacked broadcasting semantics&quot;</span><span class="p">,</span>
-<span class="o">-</span>            <span class="p">)</span>
-<span class="o">+</span>            <span class="c1"># PATCHED: avoid errors</span>
-<span class="o">+</span>            <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># guard_or_true(x != y)</span>
-<span class="o">+</span>            <span class="c1"># torch._check(</span>
-<span class="o">+</span>            <span class="c1">#    x == y,</span>
-<span class="o">+</span>            <span class="c1">#    lambda x=x, y=y: (</span>
-<span class="o">+</span>            <span class="c1">#        f&quot;sizes assumed to be the same due to unbacked &quot;</span>
-<span class="o">+</span>            <span class="c1">#        f&quot;broadcasting semantics x={x!r}, y={y!r}&quot;</span>
-<span class="o">+</span>            <span class="c1">#    ),</span>
-<span class="o">+</span>            <span class="c1"># )</span>
-
-         <span class="k">return</span> <span class="kc">False</span>
-
-<span class="o">@@</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span><span class="mi">14</span> <span class="o">+</span><span class="mi">50</span><span class="p">,</span><span class="mi">14</span> <span class="o">@@</span>
-         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
-             <span class="k">return</span> <span class="n">x</span>
-         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">TensorLike</span><span class="p">):</span>
-<span class="o">-</span>            <span class="k">if</span> <span class="n">preserve_cpu_scalar_tensors</span> <span class="ow">and</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_cpu_scalar_tensor</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="o">+</span>            <span class="k">if</span> <span class="n">preserve_cpu_scalar_tensors</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">_prims_common</span><span class="o">.</span><span class="n">is_cpu_scalar_tensor</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
-                 <span class="k">return</span> <span class="n">x</span>
-
-<span class="o">-</span>            <span class="k">if</span> <span class="n">should_expand</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">common_shape</span><span class="p">):</span>
-<span class="o">-</span>                <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">common_shape</span><span class="p">)</span>
-<span class="o">+</span>            <span class="k">if</span> <span class="n">should_expand</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">common_shape</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
-<span class="o">+</span>                <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">common_shape</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-
-             <span class="k">return</span> <span class="n">x</span>
-         <span class="k">else</span><span class="p">:</span>
-<span class="o">-</span>            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unexpected type when broadcasting: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;!&quot;</span><span class="p">)</span>
-<span class="o">+</span>            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type when broadcasting: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-
-     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">__maybe_broadcast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">common_shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
+<p>[runpythonerror]
+Traceback (most recent call last):</p>
+<blockquote>
+<div><p>File “&lt;stdin&gt;”, line 27, in &lt;module&gt;
+File “~/github/yet-another-onnx-builder/yobx/helpers/patch_helper.py”, line 225, in format_diff</p>
+<blockquote>
+<div><dl class="simple">
+<dt>diff = self.make_diff()</dt><dd></dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>File “~/github/yet-another-onnx-builder/yobx/helpers/patch_helper.py”, line 187, in make_diff</dt><dd><dl class="simple">
+<dt>assert f is not None, (</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>AssertionError: The patch ‘_print_Symbol’ was never applied self.function_to_patch=None, self._last_patched_function=None.</p>
 </section>
 <section id="transformers">
 <h2>transformers<a class="headerlink" href="#transformers" title="Link to this heading">#</a></h2>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_patches_for_model</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_torch.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">PATCHES</span>
 
 <span class="k">with</span> <span class="n">apply_patches_for_model</span><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">details</span><span class="p">:</span>
     <span class="n">link</span> <span class="o">=</span> <span class="p">[]</span>

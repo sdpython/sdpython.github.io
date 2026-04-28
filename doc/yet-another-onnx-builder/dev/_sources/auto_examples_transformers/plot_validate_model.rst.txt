@@ -170,12 +170,12 @@ relative differences).  Use *verbose=3* to additionally print tensor shapes.
     [validate_model] loading config for 'arnir0/Tiny-LLM'
     [validate_model] loading tokenizer for 'arnir0/Tiny-LLM'
     [validate_model] loading model for 'arnir0/Tiny-LLM'
-    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 1101.35it/s]
+    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 975.08it/s]
     [validate_model] capturing inputs with InputObserver (prompt='Continue: it rains, what should I do?')
     [validate_model] captured 3 input set(s)
     [validate_model] kwargs: dict(input_ids:T7s1x13,attention_mask:T7s1x13,position_ids:T7s1x13,past_key_values:DynamicCache(key_cache=#1[T1s1x1x0x96], value_cache=#1[T1s1x1x0x96]),logits_to_keep:int)
     [validate_model] dynamic_shapes: {'input_ids': {0: DimHint(DYNAMIC), 1: DimHint(DYNAMIC)}, 'attention_mask': {0: DimHint(DYNAMIC), 1: DimHint(DYNAMIC)}, 'position_ids': {0: DimHint(DYNAMIC), 1: DimHint(DYNAMIC)}, 'past_key_values': [{0: DimHint(DYNAMIC), 2: DimHint(DYNAMIC)}, {0: DimHint(DYNAMIC), 2: DimHint(DYNAMIC)}], 'logits_to_keep': None}
-    [validate_model] exporting to ONNX (exporter='yobx', opset=22) -> '/tmp/tmp6hwiaxf2/arnir0-Tiny-LLM.yobx.22.default.patch.onnx'
+    [validate_model] exporting to ONNX (exporter='yobx', opset=22) -> '/tmp/tmpcl8x_im0/arnir0-Tiny-LLM.yobx.22.default.patch.onnx'
     [to_onnx] build the graph module from <class 'transformers.models.llama.modeling_llama.LlamaForCausalLM'>, type(args)=<class 'tuple'>
     [to_onnx] dynamic_shapes={'input_ids': {0: DimHint(DYNAMIC), 1: DimHint(DYNAMIC)}, 'attention_mask': {0: DimHint(DYNAMIC), 1: DimHint(DYNAMIC)}, 'position_ids': {0: DimHint(DYNAMIC), 1: DimHint(DYNAMIC)}, 'past_key_values': [{0: DimHint(DYNAMIC), 2: DimHint(DYNAMIC)}, {0: DimHint(DYNAMIC), 2: DimHint(DYNAMIC)}], 'logits_to_keep': None}
     [_make_builder_interpreter] export_options=ExportOptions(aten_as_function=('aten.histc.default', 'aten.index_copy.default', 'aten.index_put.default', 'aten._grouped_mm.default', 'aten.setitem', <built-in function setitem>))
@@ -189,73 +189,73 @@ relative differences).  Use *verbose=3* to additionally print tensor shapes.
     [ExportOptions.export] args=()
     [ExportOptions.export] kwargs=dict(input_ids:T7r2,attention_mask:T7r2,position_ids:T7r2,past_key_values:DynamicCache(key_cache=#1[T1r4], value_cache=#1[T1r4]),logits_to_keep:int)
     [ExportOptions.export] export start with strict=False backed_size_oblivious=auto
-    [ExportOptions.export] export done in 1.7002231330006907
+    [ExportOptions.export] export done in 1.183510953997029
     [ExportOptions.export] post_process_exported_program with decomposition_table=None
-    [ExportOptions.export] remove inplace nodes
+    [ExportOptions.export] remove inplace nodes (2)
     [ExportOptions.export] slices: 9 slices nodes were removed
     [CustomTracer.remove_inplace] starts with 175 nodes (n_inplace_submobules=0)
     [CustomTracer.remove_inplace] S1: 15 inplace nodes
     [CustomTracer.remove_inplace] S2: 7 inplace nodes and 100 iterations
     [CustomTracer.remove_inplace] end with 100 iterations and 144 nodes (n_inplace=7)
     [ExportOptions.export] inplaces: 15 inplaced nodes were removed
-    [ExportOptions.export] done remove inplace in 0.006744058002368547, modified=15
-    [ExportOptions.export] done with no decomposition in 0.006955484997888561
-    [to_onnx] graph module done in 1.7117128009995213 s
+    [ExportOptions.export] done remove inplace in 0.004164726997260004, modified=15
+    [ExportOptions.export] done with no decomposition in 0.004293255013180897
+    [to_onnx] graph module done in 1.1900657049991423 s
     [to_onnx] start creating the onnx nodes
     [to_onnx] interpreter.function_options=FunctionOptions(export_as_function=True, name='*', domain='*', external_threshold=256, move_initializer_to_constant=True, return_initializer=True, merge_allowed=True, rename_allowed=True)
-      0%|          | 0/144 [00:00<?, ?it/s]     47%|████▋     | 68/144 [00:00<00:00, 641.32it/s]     92%|█████████▏| 133/144 [00:00<00:00, 572.86it/s]    100%|██████████| 144/144 [00:00<00:00, 587.45it/s]
-    [to_onnx] 208 onnx nodes done in 0.3180709600019327 s
+      0%|          | 0/144 [00:00<?, ?it/s]     72%|███████▏  | 104/144 [00:00<00:00, 1035.02it/s]    100%|██████████| 144/144 [00:00<00:00, 899.93it/s] 
+    [to_onnx] 208 onnx nodes done in 0.20126744799199514 s
     [to_onnx] start conversion to onnx (before optimization) mask_outputs=[True, True, True]
-    [GraphBuilder-IGU.inline_functions] begin inlining graph
-    [GraphBuilder-IGU.inline_functions] skip_functions=set()
-    [GraphBuilder-IGU._inline_functions_iterations] inline function 'submod_3' domain 'local_functions' [n_replacements=1]
-    [GraphBuilder-IGU._inline_functions_iterations] done with 9 new nodes for 'submod_3', 'local_functions'
-    [GraphBuilder-IGU.inline_functions] done inlining graph 130760013239824 in 0.00909932799913804
-    [GraphBuilder-IGU._add_shape_information] dynamic shapes replacements={'batch_4': 'batch_4', 'channel_2': 'channel_2', 'batch': 'batch', 'D0': 'D0', 'channel': 'channel', 'batch_3': 'batch_3', 'channel_1': 'channel_1', 'D0_1': 'D0_1', 'batch_2': 'batch_2', 'batch_1': 'batch_1', 'DYN0': 'batch', 's61': 'batch', 'DYN0^s61': 'batch', 's67': 'batch', 's72': 'batch', 'DYN8': 'batch_4', 'DYN1': 'channel', 's70': 'channel', 'DYN2': 'batch_1', 's43': 'batch_1', 'DYN3': 'channel_1', 's53': 'channel_1', 'DYN4': 'batch_2', 's44': 'batch_2', 'DYN5': 'channel_2', 's9': 'channel_2', 'DYN6': 'batch_3', 'DYN7': 'D0', 's45': 'D0', 'DYN9': 'D0_1', 's21': 'D0_1'}
-    [GraphBuilder-IGU.optimize] start with 216 nodes
-    [GraphBuilder-IGU.optimize] #patterns=98
-    [GraphBuilder-IGU.optimize] start with subgraphs
-    [GraphBuilder-IGU.optimize] done with subgraphs
-    [GraphBuilderPatternOptimization-IGU.optimize] start with 170 nodes, 32 initializers, 98 patterns, priorities=[0, 1, 2, 3], max_iter=680
-    [GraphBuilderPatternOptimization-IGU.optimize] same children={'SameChildrenFromInputPattern', 'SameChildrenPattern'}
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 0: 170 nodes, priority=0
-    [GraphBuilderPatternOptimization-IGU.optimize] applies 32 matches, 12*CastPattern, 2*IdentityPattern, 4*ShapeBasedReshapeIsSqueezePattern, 2*ShapeBasedStaticExpandPattern, 1*ShapeBasedEditDistanceReshapePattern, 4*SameChildrenPattern, 1*SqueezeAddPattern, 2*SqueezeUnsqueezePattern, 1*SwapUnaryPattern, 3*UnsqueezeUnsqueezePattern - time=0.018 | max_time=SoftmaxCrossEntropyLossCastPattern:0.003
-    [GraphBuilderPatternOptimization-IGU.optimize] reapply {'SameChildrenPattern'}
-    [GraphBuilderPatternOptimization-IGU.optimize] n_added=3, n_removed=4, n_applied=33 applied patterns, 133 nodes left with 2 iterations
-    [GraphBuilderPatternOptimization-IGU.optimize] increase priority to 1
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 1: 133 nodes, priority=1
-    [GraphBuilderPatternOptimization-IGU.optimize] applies 19 matches, 2*ConcatTwiceUnaryPattern, 2*ConstantToInitializerPattern, 1*IdentityPattern, 2*SlicesSplitPattern, 3*SqueezeUnsqueezePattern, 1*SwapExpandReshapePattern, 1*SwapRangeAddScalarPattern, 2*SwapUnsqueezeTransposePattern, 3*UnsqueezeUnsqueezePattern, 1*WhereAddPattern, 1*FunctionCosSinCachePattern - time=0.014 | max_time=GeluPattern:0.001
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 2: 117 nodes, priority=1
-    [GraphBuilderPatternOptimization-IGU.optimize] applies 6 matches, 1*ConcatReshapePattern, 2*IdentityPattern, 1*SameChildrenPattern, 2*FunctionHalfRotaryEmbeddingPattern - time=0.020 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
-    [GraphBuilderPatternOptimization-IGU.optimize] reapply {'SameChildrenPattern'}
-    [GraphBuilderPatternOptimization-IGU.optimize] n_added=0, n_removed=0, n_applied=58 applied patterns, 104 nodes left with 1 iterations
-    [GraphBuilderPatternOptimization-IGU.optimize] increase priority to 2
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 3: 104 nodes, priority=2
-    [GraphBuilderPatternOptimization-IGU.optimize] applies 1 matches, [0]=MatchResult: SqueezeAddPattern replaces ['Squeeze', 'Squeeze', 'Add'] - time=0.016 | max_time=GeluPattern:0.001
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 4: 105 nodes, priority=2
-    [GraphBuilderPatternOptimization-IGU.optimize] applies 1 matches, [0]=MatchResult: SameChildrenPattern replaces ['Add', 'Add', 'Squeeze', 'Squeeze'] - time=0.013 | max_time=GeluPattern:0.001
-    [GraphBuilderPatternOptimization-IGU.optimize] reapply {'SameChildrenPattern'}
-    [GraphBuilderPatternOptimization-IGU.optimize] n_added=0, n_removed=0, n_applied=60 applied patterns, 103 nodes left with 1 iterations
-    [GraphBuilderPatternOptimization-IGU.optimize] increase priority to 3
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 5: 103 nodes, priority=3
-    [GraphBuilderPatternOptimization-IGU.optimize] applies 1 matches, [0]=MatchResult: FunctionCausalMaskPattern replaces ['Squeeze', 'Squeeze', 'Range', 'Range', 'Unsqueeze', 'Unsqueeze', 'LessOrEqual'] - time=0.012 | max_time=GeluPattern:0.001
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 6: 101 nodes, priority=3
-    [GraphBuilderPatternOptimization-IGU.optimize] applies 2 matches, 1*SqueezeBinaryUnsqueezePattern, 1*FunctionCausalMaskMulAddPattern - time=0.016 | max_time=GeluPattern:0.001
-    [GraphBuilderPatternOptimization-IGU.optimize] iteration 7: 93 nodes, priority=3
-    [GraphBuilderPatternOptimization-IGU.optimize] stops current_priority_index=4, priorities=[0, 1, 2, 3]
-    [GraphBuilderPatternOptimization-IGU.optimize] done after 8 iterations with 93 nodes in 0.271
+    [GraphBuilder-RVS.inline_functions] begin inlining graph
+    [GraphBuilder-RVS.inline_functions] skip_functions=set()
+    [GraphBuilder-RVS._inline_functions_iterations] inline function 'submod_3' domain 'local_functions' [n_replacements=1]
+    [GraphBuilder-RVS._inline_functions_iterations] done with 9 new nodes for 'submod_3', 'local_functions'
+    [GraphBuilder-RVS.inline_functions] done inlining graph 140668504495680 in 0.004574887003400363
+    [GraphBuilder-RVS._add_shape_information] dynamic shapes replacements={'channel_1': 'channel_1', 'batch': 'batch', 'D0': 'D0', 'batch_1': 'batch_1', 'channel': 'channel', 'batch_3': 'batch_3', 'batch_4': 'batch_4', 'batch_2': 'batch_2', 'D0_1': 'D0_1', 'channel_2': 'channel_2', 'DYN0': 'batch', 's72': 'batch', 'DYN0^s61': 'batch', 's67': 'batch', 'DYN8': 'batch_4', 's61': 'batch', 'DYN1': 'channel', 's70': 'channel', 'DYN2': 'batch_1', 's43': 'batch_1', 'DYN3': 'channel_1', 's53': 'channel_1', 'DYN4': 'batch_2', 's44': 'batch_2', 'DYN5': 'channel_2', 's9': 'channel_2', 'DYN6': 'batch_3', 'DYN7': 'D0', 's45': 'D0', 'DYN9': 'D0_1', 's21': 'D0_1'}
+    [GraphBuilder-RVS.optimize] start with 216 nodes
+    [GraphBuilder-RVS.optimize] #patterns=98
+    [GraphBuilder-RVS.optimize] start with subgraphs
+    [GraphBuilder-RVS.optimize] done with subgraphs
+    [GraphBuilderPatternOptimization-RVS.optimize] start with 170 nodes, 32 initializers, 98 patterns, priorities=[0, 1, 2, 3], max_iter=680
+    [GraphBuilderPatternOptimization-RVS.optimize] same children={'SameChildrenPattern', 'SameChildrenFromInputPattern'}
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 0: 170 nodes, priority=0
+    [GraphBuilderPatternOptimization-RVS.optimize] applies 32 matches, 12*CastPattern, 2*IdentityPattern, 4*ShapeBasedReshapeIsSqueezePattern, 2*ShapeBasedStaticExpandPattern, 1*ShapeBasedEditDistanceReshapePattern, 4*SameChildrenPattern, 1*SqueezeAddPattern, 2*SqueezeUnsqueezePattern, 1*SwapUnaryPattern, 3*UnsqueezeUnsqueezePattern - time=0.011 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
+    [GraphBuilderPatternOptimization-RVS.optimize] reapply {'SameChildrenPattern'}
+    [GraphBuilderPatternOptimization-RVS.optimize] n_added=3, n_removed=4, n_applied=33 applied patterns, 133 nodes left with 2 iterations
+    [GraphBuilderPatternOptimization-RVS.optimize] increase priority to 1
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 1: 133 nodes, priority=1
+    [GraphBuilderPatternOptimization-RVS.optimize] applies 19 matches, 2*ConcatTwiceUnaryPattern, 2*ConstantToInitializerPattern, 1*IdentityPattern, 2*SlicesSplitPattern, 3*SqueezeUnsqueezePattern, 1*SwapExpandReshapePattern, 1*SwapRangeAddScalarPattern, 2*SwapUnsqueezeTransposePattern, 3*UnsqueezeUnsqueezePattern, 1*WhereAddPattern, 1*FunctionCosSinCachePattern - time=0.012 | max_time=GeluPattern:0.000
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 2: 117 nodes, priority=1
+    [GraphBuilderPatternOptimization-RVS.optimize] applies 6 matches, 1*ConcatReshapePattern, 2*IdentityPattern, 1*SameChildrenPattern, 2*FunctionHalfRotaryEmbeddingPattern - time=0.015 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
+    [GraphBuilderPatternOptimization-RVS.optimize] reapply {'SameChildrenPattern'}
+    [GraphBuilderPatternOptimization-RVS.optimize] n_added=0, n_removed=0, n_applied=58 applied patterns, 104 nodes left with 1 iterations
+    [GraphBuilderPatternOptimization-RVS.optimize] increase priority to 2
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 3: 104 nodes, priority=2
+    [GraphBuilderPatternOptimization-RVS.optimize] applies 1 matches, [0]=MatchResult: SqueezeAddPattern replaces ['Squeeze', 'Squeeze', 'Add'] - time=0.009 | max_time=SoftmaxCrossEntropyLossCastPattern:0.001
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 4: 105 nodes, priority=2
+    [GraphBuilderPatternOptimization-RVS.optimize] applies 1 matches, [0]=MatchResult: SameChildrenPattern replaces ['Add', 'Add', 'Squeeze', 'Squeeze'] - time=0.010 | max_time=IdentityPattern:0.001
+    [GraphBuilderPatternOptimization-RVS.optimize] reapply {'SameChildrenPattern'}
+    [GraphBuilderPatternOptimization-RVS.optimize] n_added=0, n_removed=0, n_applied=60 applied patterns, 103 nodes left with 1 iterations
+    [GraphBuilderPatternOptimization-RVS.optimize] increase priority to 3
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 5: 103 nodes, priority=3
+    [GraphBuilderPatternOptimization-RVS.optimize] applies 1 matches, [0]=MatchResult: FunctionCausalMaskPattern replaces ['Squeeze', 'Squeeze', 'Range', 'Range', 'Unsqueeze', 'Unsqueeze', 'LessOrEqual'] - time=0.011 | max_time=GeluPattern:0.001
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 6: 101 nodes, priority=3
+    [GraphBuilderPatternOptimization-RVS.optimize] applies 2 matches, 1*SqueezeBinaryUnsqueezePattern, 1*FunctionCausalMaskMulAddPattern - time=0.008 | max_time=GeluPattern:0.000
+    [GraphBuilderPatternOptimization-RVS.optimize] iteration 7: 93 nodes, priority=3
+    [GraphBuilderPatternOptimization-RVS.optimize] stops current_priority_index=4, priorities=[0, 1, 2, 3]
+    [GraphBuilderPatternOptimization-RVS.optimize] done after 8 iterations with 93 nodes in 0.167
     [OrderOptimization.optimize] ALGO-2
     [OrderOptimization.shape_order] -- starts with 92 nodes, 26 initializers
-    [OrderOptimization.shape_order] done after in 0.0010562509996816516s with changed=6 scale=31
-    [GraphBuilder-IGU.optimize] done with 92 nodes in 0.435
-    [GraphBuilder-IGU.to_onnx] make_model 30 inits 12 params
-    [GraphBuilder-IGU.time_evaluation_constants_] 0.0008234499946411233
-    [GraphBuilder-IGU._build_initializers] start with 30 initializers, large_model=False, external_threshold=1024
-    [GraphBuilder-IGU._build_initializers] switch low/high order
-    [GraphBuilder-IGU._build_initializers] done in 8.94100230652839e-06s with 26 initializers, 0 large initializers
-    [GraphBuilder-IGU._add_shape_information] dynamic shapes replacements={'batch_7': 'batch_7', 'D0_3': 'D0_3', 'batch_4': 'batch_4', 'batch_6': 'batch_6', 'batch_5': 'batch_5', 'batch_3': 'batch_3', 'channel_4': 'channel_4', 'channel_3': 'channel_3', 'D0_2': 'D0_2', 'channel_5': 'channel_5', 'DYN0': 'batch_3', 's61': 'batch_3', 'batch': 'batch_3', 'DYN8': 'batch_7', 'DYN0^s61': 'batch_3', 's67': 'batch_3', 's72': 'batch_3', 'DYN6': 'batch_6', 'DYN1': 'channel_3', 's70': 'channel_3', 'channel': 'channel_3', 'DYN2': 'batch_4', 'batch_1': 'batch_4', 's43': 'batch_4', 'DYN3': 'channel_4', 'channel_1': 'channel_4', 's53': 'channel_4', 'DYN4': 'batch_5', 'batch_2': 'batch_5', 's44': 'batch_5', 'DYN5': 'channel_5', 'channel_2': 'channel_5', 's9': 'channel_5', 'DYN7': 'D0_2', 'D0': 'D0_2', 's45': 'D0_2', 'DYN9': 'D0_3', 's21': 'D0_3', 'D0_1': 'D0_3'}
-    [to_onnx] to_onnx done in 0.6038433329995314s and 92 nodes, 26 initializers, 5 inputs, 3 outputs
-    [validate_model] export succeeded -> '/tmp/tmp6hwiaxf2/arnir0-Tiny-LLM.yobx.22.default.patch.onnx'
+    [OrderOptimization.shape_order] done after in 0.0004576189967337996s with changed=6 scale=31
+    [GraphBuilder-RVS.optimize] done with 92 nodes in 0.272
+    [GraphBuilder-RVS.to_onnx] make_model 30 inits 12 params
+    [GraphBuilder-RVS.time_evaluation_constants_] 0.0005756979953730479
+    [GraphBuilder-RVS._build_initializers] start with 30 initializers, large_model=False, external_threshold=1024
+    [GraphBuilder-RVS._build_initializers] switch low/high order
+    [GraphBuilder-RVS._build_initializers] done in 6.071000825613737e-06s with 26 initializers, 0 large initializers
+    [GraphBuilder-RVS._add_shape_information] dynamic shapes replacements={'channel_5': 'channel_5', 'channel_4': 'channel_4', 'channel_3': 'channel_3', 'batch_3': 'batch_3', 'batch_6': 'batch_6', 'batch_4': 'batch_4', 'batch_5': 'batch_5', 'D0_3': 'D0_3', 'batch_7': 'batch_7', 'D0_2': 'D0_2', 'DYN0': 'batch_3', 's72': 'batch_3', 'DYN0^s61': 'batch_3', 'batch': 'batch_3', 's67': 'batch_3', 'DYN6': 'batch_6', 'DYN8': 'batch_7', 's61': 'batch_3', 'DYN1': 'channel_3', 'channel': 'channel_3', 's70': 'channel_3', 'DYN2': 'batch_4', 'batch_1': 'batch_4', 's43': 'batch_4', 'DYN3': 'channel_4', 'channel_1': 'channel_4', 's53': 'channel_4', 'DYN4': 'batch_5', 'batch_2': 'batch_5', 's44': 'batch_5', 'DYN5': 'channel_5', 'channel_2': 'channel_5', 's9': 'channel_5', 'DYN7': 'D0_2', 'D0': 'D0_2', 's45': 'D0_2', 'DYN9': 'D0_3', 's21': 'D0_3', 'D0_1': 'D0_3'}
+    [to_onnx] to_onnx done in 0.42052999199950136s and 92 nodes, 26 initializers, 5 inputs, 3 outputs
+    [validate_model] export succeeded -> '/tmp/tmpcl8x_im0/arnir0-Tiny-LLM.yobx.22.default.patch.onnx'
     [validate_model] checking discrepancies ...
     [validate_model] discrepancies: 3/3 OK
       [0] OK  abs=1.24e-05  rel=0.000433
@@ -378,7 +378,7 @@ failing row.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.912 seconds)
+   **Total running time of the script:** (0 minutes 3.038 seconds)
 
 
 .. _sphx_glr_download_auto_examples_transformers_plot_validate_model.py:

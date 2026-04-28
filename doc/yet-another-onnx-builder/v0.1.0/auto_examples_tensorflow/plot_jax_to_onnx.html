@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -400,11 +400,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_evaluator_comparison.html">Comparing the three evaluators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_cost_formulas.html">Computation Cost: How It Works and Supported Operator Formulas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_computed_shapes.html">Computed Shapes: Add + Concat + Reshape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_einsum.html">Decompose Einsum into Regular ONNX Operators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_shape_expressions.html">Expressions in Shape Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_extended_reference_evaluator.html">ExtendedReferenceEvaluator: running models with contrib operators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_mini_onnx_builder.html">MiniOnnxBuilder: serialize tensors to an ONNX model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_dot_graph.html">ONNX Graph Visualization with to_dot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_symbolic_cost.html">Symbolic Cost of a Model: Attention Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_core/plot_tree_statistics.html">Tree-Ensemble Statistics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_litert/index.html">LiteRT Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -429,6 +431,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_sql/index.html">SQL Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_lazyframe_to_onnx.html">Polars LazyFrame to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_sql_to_onnx.html">SQL queries to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples_sql/plot_polars_three_joins_to_onnx.html">Three Consecutive Joins to ONNX (pandas and polars-style)</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples_torch/index.html">PyTorch Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -551,6 +554,10 @@ routes it through <a class="reference internal" href="../api/tensorflow/tensorfl
 <span class="kn">from</span><span class="w"> </span><span class="nn">yobx.tensorflow.tensorflow_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">jax_to_concrete_function</span>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda13_plugin version 0.9.1 is installed, but it is not compatible with the installed jaxlib version 0.10.0, so it will not be used.
+  warnings.warn(
+</pre></div>
+</div>
 <section id="simple-element-wise-function">
 <h2>1. Simple element-wise function<a class="headerlink" href="#simple-element-wise-function" title="Link to this heading">#</a></h2>
 <p>We start with the simplest possible JAX function: an element-wise
@@ -628,8 +635,8 @@ whose weights are stored as JAX arrays captured in a closure.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>WARNING:tensorflow:AutoGraph could not transform &lt;bound method StackSummary.extract of &lt;class &#39;traceback.StackSummary&#39;&gt;&gt; and will run it as-is.
 Cause: generators are not supported
 To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
-WARNING:tensorflow:AutoGraph could not transform &lt;function samefile at 0x76f14b220900&gt; and will run it as-is.
-Cause: Unable to locate the source code of &lt;function samefile at 0x76f14b220900&gt;. Note that functions defined in certain environments, like the interactive Python shell, do not expose their source code. If that is the case, you should define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.experimental.do_not_convert. Original error: could not get source code
+WARNING:tensorflow:AutoGraph could not transform &lt;function samefile at 0x7ff5f64209a0&gt; and will run it as-is.
+Cause: Unable to locate the source code of &lt;function samefile at 0x7ff5f64209a0&gt;. Note that functions defined in certain environments, like the interactive Python shell, do not expose their source code. If that is the case, you should define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.experimental.do_not_convert. Original error: could not get source code
 To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
 
 Op-types in the MLP graph: [&#39;MatMul&#39;, &#39;Relu&#39;, &#39;MatMul&#39;]
@@ -641,11 +648,11 @@ Op-types in the MLP graph: [&#39;MatMul&#39;, &#39;Relu&#39;, &#39;MatMul&#39;]
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=21
 input: name=&#39;X:0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;dim&#39;, 8]
-init: name=&#39;%cst&#39; type=float32 shape=(8, 16)
-init: name=&#39;%cst_2&#39; type=float32 shape=(16, 4)
-MatMul(X:0, %cst) -&gt; _onx_matmul_jax2tf_arg_0:0
+init: name=&#39;%6&#39; type=float32 shape=(8, 16)
+init: name=&#39;%8&#39; type=float32 shape=(16, 4)
+MatMul(X:0, %6) -&gt; _onx_matmul_jax2tf_arg_0:0
   Relu(_onx_matmul_jax2tf_arg_0:0) -&gt; _onx_max_add_matmul_jax2tf_arg_0:0
-    MatMul(_onx_max_add_matmul_jax2tf_arg_0:0, %cst_2) -&gt; Identity:0
+    MatMul(_onx_max_add_matmul_jax2tf_arg_0:0, %8) -&gt; Identity:0
 output: name=&#39;Identity:0&#39; type=&#39;NOTENSOR&#39; shape=None
 </pre></div>
 </div>
@@ -689,7 +696,7 @@ dimension.  The converted model runs correctly for any batch size.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Batch dimension param  : dim
-Dynamic-batch model verified for batch sizes 1 ✓ -  {&#39;abs&#39;: 7.152557373046875e-07, &#39;rel&#39;: 1.137647515021789e-06, &#39;sum&#39;: 2.0563602447509766e-06, &#39;n&#39;: 4.0, &#39;dnan&#39;: 0.0, &#39;argm&#39;: (0, 1)}
+Dynamic-batch model verified for batch sizes 1 ✓ -  {&#39;abs&#39;: 4.76837158203125e-07, &#39;rel&#39;: 1.137647515021789e-06, &#39;sum&#39;: 1.5795230865478516e-06, &#39;n&#39;: 4.0, &#39;dnan&#39;: 0.0, &#39;argm&#39;: (0, 0)}
 Dynamic-batch model verified for batch sizes 7 ✓ -  {&#39;abs&#39;: 0.006735265254974365, &#39;rel&#39;: 0.07791697009657664, &#39;sum&#39;: 0.042095357552170753, &#39;n&#39;: 28.0, &#39;dnan&#39;: 0.0, &#39;argm&#39;: (1, 3)}
 Dynamic-batch model verified for batch sizes 20 ✓ -  {&#39;abs&#39;: 0.005284786224365234, &#39;rel&#39;: 0.15446957497655453, &#39;sum&#39;: 0.11850462667644024, &#39;n&#39;: 80.0, &#39;dnan&#39;: 0.0, &#39;argm&#39;: (9, 3)}
 </pre></div>
@@ -720,7 +727,7 @@ called directly when you want to inspect or reuse the intermediate
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Explicit jax_to_concrete_function verified ✓ - &quot;</span><span class="p">,</span> <span class="n">max_diff</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected_cls</span></a></a></a></a></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">result_cls</span></a></a></a></a></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Explicit jax_to_concrete_function verified ✓ -  {&#39;abs&#39;: 2.9802322387695312e-08, &#39;rel&#39;: 2.183310187086828e-07, &#39;sum&#39;: 4.926696419715881e-07, &#39;n&#39;: 60.0, &#39;dnan&#39;: 0.0, &#39;argm&#39;: (2, 7)}
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Explicit jax_to_concrete_function verified ✓ -  {&#39;abs&#39;: 4.470348358154297e-08, &#39;rel&#39;: 2.2931874917945164e-07, &#39;sum&#39;: 6.062909960746765e-07, &#39;n&#39;: 60.0, &#39;dnan&#39;: 0.0, &#39;argm&#39;: (0, 0)}
 </pre></div>
 </div>
 </section>
@@ -729,7 +736,7 @@ called directly when you want to inspect or reuse the intermediate
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_dot</span><span class="p">(</span><span class="n">onx_mlp</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_jax_to_onnx_001.png" srcset="../_images/sphx_glr_plot_jax_to_onnx_001.png" alt="plot jax to onnx" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 23.618 seconds)</p>
+<img src="../_images/sphx_glr_plot_jax_to_onnx_001.png" srcset="../_images/sphx_glr_plot_jax_to_onnx_001.png" alt="plot jax to onnx" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 13.326 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-tensorflow-plot-jax-to-onnx-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/f90de4aeffb2e46a7941049c8ad98f97/plot_jax_to_onnx.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_jax_to_onnx.ipynb</span></code></a></p>
