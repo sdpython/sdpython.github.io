@@ -104,7 +104,7 @@ a symbolic key (``"#weight"`` here) — the same key that the
     # Assemble the container
     container = ExtendedModelContainer()
     container.model_proto = model_proto
-    container.large_initializers = {"#weight": weight_data}
+    container.set_large_initializers({"#weight": weight_data})
 
     print("model_proto graph inputs :", [i.name for i in model_proto.graph.input])
     print("model_proto initializers :", [t.name for t in model_proto.graph.initializer])
@@ -305,7 +305,7 @@ The helper below builds a minimal ``Y = X + weight`` model whose
 
     container_np = ExtendedModelContainer()
     container_np.model_proto = make_add_model(shape)
-    container_np.large_initializers = {"#weight": np_weight}
+    container_np.set_large_initializers({"#weight": np_weight})
 
     proto_np = container_np.get_model_with_data()
     sess_np = onnxruntime.InferenceSession(
@@ -383,7 +383,7 @@ self-contained ONNX file (topology + weights merged).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.217 seconds)
+   **Total running time of the script:** (0 minutes 0.512 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_extended_model_container.py:
