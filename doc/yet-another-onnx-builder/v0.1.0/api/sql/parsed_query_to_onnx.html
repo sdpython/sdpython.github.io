@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -51,6 +51,9 @@
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/sql/parsed_query_to_onnx';</script>
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -432,6 +435,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../helpers/einsum_onnx_utils.html">yobx.helpers._einsum._onnx_utils</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/mermaid_helper.html">yobx.helpers.mermaid_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
@@ -494,6 +498,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns/onnx_equal.html">yobx.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns/onnx_expand.html">yobx.xoptim.patterns.onnx_expand</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns/onnx_functions.html">yobx.xoptim.patterns.onnx_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns/onnx_gather.html">yobx.xoptim.patterns.onnx_gather</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns/onnx_layer_normalization.html">yobx.xoptim.patterns.onnx_layer_normalization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns/onnx_matmul.html">yobx.xoptim.patterns.onnx_matmul</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns/onnx_mul.html">yobx.xoptim.patterns.onnx_mul</a></li>
@@ -537,10 +542,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/activation.html">yobx.xoptim.patterns_ort.activation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/causal_conv.html">yobx.xoptim.patterns_ort.causal_conv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/complex_mul.html">yobx.xoptim.patterns_ort.complex_mul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/decoder_attention.html">yobx.xoptim.patterns_ort.decoder_attention</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/embed_layer_normalization.html">yobx.xoptim.patterns_ort.embed_layer_normalization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/fused_conv.html">yobx.xoptim.patterns_ort.fused_conv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/fused_matmul.html">yobx.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/greedy_search.html">yobx.xoptim.patterns_ort.greedy_search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/linear_attention.html">yobx.xoptim.patterns_ort.linear_attention</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/llm_optim.html">yobx.xoptim.patterns_ort.llm_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/missing_kernels.html">yobx.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_ort/moe.html">yobx.xoptim.patterns_ort.moe</a></li>
@@ -1043,7 +1050,7 @@
 <h1>yobx.sql.parsed_query_to_onnx<a class="headerlink" href="#yobx-sql-parsed-query-to-onnx" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="yobx.sql.parsed_query_to_onnx">
-<span class="sig-prename descclassname"><span class="pre">yobx.sql.</span></span><span class="sig-name descname"><span class="pre">parsed_query_to_onnx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pq:</span> <span class="pre">~yobx.xtracing.parse.ParsedQuery</span> <span class="pre">|</span> <span class="pre">~typing.List[~yobx.xtracing.parse.ParsedQuery],</span> <span class="pre">target_opset:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">21,</span> <span class="pre">custom_functions:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Callable]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">builder_cls:</span> <span class="pre">type</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'yobx.xbuilder.graph_builder.GraphBuilder'&gt;,</span> <span class="pre">filename:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">verbose:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0,</span> <span class="pre">large_model:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">external_threshold:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1024,</span> <span class="pre">return_optimize_report:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../container/index.html#yobx.container.ExportArtifact" title="yobx.container.export_artifact.ExportArtifact"><span class="pre">ExportArtifact</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/e8bcb01/yobx/sql/sql_convert.py#L345"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.sql.parsed_query_to_onnx" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">yobx.sql.</span></span><span class="sig-name descname"><span class="pre">parsed_query_to_onnx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pq:</span> <span class="pre">~yobx.xtracing.parse.ParsedQuery</span> <span class="pre">|</span> <span class="pre">~typing.List[~yobx.xtracing.parse.ParsedQuery],</span> <span class="pre">target_opset:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">21,</span> <span class="pre">custom_functions:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Callable]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">builder_cls:</span> <span class="pre">type</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'yobx.xbuilder.graph_builder.GraphBuilder'&gt;,</span> <span class="pre">filename:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">verbose:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0,</span> <span class="pre">large_model:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">external_threshold:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1024,</span> <span class="pre">return_optimize_report:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../container/index.html#yobx.container.ExportArtifact" title="yobx.container.export_artifact.ExportArtifact"><span class="pre">ExportArtifact</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/fc0d4fe/yobx/sql/sql_convert.py#L345"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.sql.parsed_query_to_onnx" title="Link to this definition">#</a></dt>
 <dd><p>Convert an already-parsed <code class="xref py py-class docutils literal notranslate"><span class="pre">ParsedQuery</span></code> to ONNX.</p>
 <p>The query must have been produced by
 <code class="xref py py-func docutils literal notranslate"><span class="pre">trace_dataframe()</span></code> so that all

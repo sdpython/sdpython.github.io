@@ -33,13 +33,14 @@ that every compliant ONNX runtime understands.
 The decomposition is implemented in :mod:`yobx.helpers._einsum`, a
 self-contained sub-package — no external dependency is required.
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-22
+.. GENERATED FROM PYTHON SOURCE LINES 17-23
 
 .. code-block:: Python
 
 
     import numpy as np
     import onnxruntime
+    from yobx.doc import plot_dot
     from yobx.helpers.einsum_helper import decompose_einsum
 
 
@@ -49,22 +50,19 @@ self-contained sub-package — no external dependency is required.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-27
+.. GENERATED FROM PYTHON SOURCE LINES 24-28
 
 1. Matrix multiplication — ``ij,jk->ik``
 -----------------------------------------
 
 The simplest useful einsum: multiply two 2-D matrices.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-44
+.. GENERATED FROM PYTHON SOURCE LINES 28-42
 
 .. code-block:: Python
 
 
     model_mm = decompose_einsum("ij,jk->ik", (3, 4), (4, 5))
-
-    # Inspect the generated node types.
-    print("Node types:", [n.op_type for n in model_mm.graph.node])
 
     # Validate the result numerically.
     sess = onnxruntime.InferenceSession(
@@ -85,27 +83,51 @@ The simplest useful einsum: multiply two 2-D matrices.
 
  .. code-block:: none
 
-    Node types: ['Identity', 'Unsqueeze', 'Identity', 'Unsqueeze', 'Transpose', 'Transpose', 'Shape', 'Shape', 'Gather', 'Gather', 'Concat', 'Concat', 'Reshape', 'Reshape', 'Gemm', 'Gather', 'Gather', 'Concat', 'Reshape', 'Transpose', 'Squeeze', 'Identity', 'Identity']
-    max |error|: 5.9604645e-08
+    max |error|: 2.3841858e-07
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-49
+.. GENERATED FROM PYTHON SOURCE LINES 43-48
+
+Graph of ``ij,jk->ik``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+:func:`~yobx.doc.plot_dot` renders the decomposed ONNX graph so you can
+see every node and edge at a glance.
+
+.. GENERATED FROM PYTHON SOURCE LINES 48-51
+
+.. code-block:: Python
+
+
+    plot_dot(model_mm)
+
+
+
+
+.. image-sg:: /auto_examples_core/images/sphx_glr_plot_einsum_001.png
+   :alt: plot einsum
+   :srcset: /auto_examples_core/images/sphx_glr_plot_einsum_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-56
 
 2. Batched matrix multiplication — ``bij,bjk->bik``
 ----------------------------------------------------
 
 A 3-D batched version of the matrix product.
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-64
+.. GENERATED FROM PYTHON SOURCE LINES 56-69
 
 .. code-block:: Python
 
 
     model_bmm = decompose_einsum("bij,bjk->bik", (2, 3, 4), (2, 4, 5))
-
-    print("Node types:", [n.op_type for n in model_bmm.graph.node])
 
     sess2 = onnxruntime.InferenceSession(
         model_bmm.SerializeToString(), providers=["CPUExecutionProvider"]
@@ -125,27 +147,48 @@ A 3-D batched version of the matrix product.
 
  .. code-block:: none
 
-    Node types: ['Identity', 'Unsqueeze', 'Identity', 'Unsqueeze', 'Transpose', 'Transpose', 'Shape', 'Shape', 'Gather', 'Gather', 'Gather', 'Gather', 'Concat', 'Concat', 'Reshape', 'Reshape', 'Transpose', 'MatMul', 'Max', 'Gather', 'Gather', 'Concat', 'Reshape', 'Transpose', 'Squeeze', 'Identity', 'Identity']
     max |error|: 1.1920929e-07
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-69
+.. GENERATED FROM PYTHON SOURCE LINES 70-72
+
+Graph of ``bij,bjk->bik``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 72-75
+
+.. code-block:: Python
+
+
+    plot_dot(model_bmm)
+
+
+
+
+.. image-sg:: /auto_examples_core/images/sphx_glr_plot_einsum_002.png
+   :alt: plot einsum
+   :srcset: /auto_examples_core/images/sphx_glr_plot_einsum_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-80
 
 3. Three-operand contraction — ``bac,cd,def->ebc``
 ---------------------------------------------------
 
 A more complex equation involving three input tensors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-85
+.. GENERATED FROM PYTHON SOURCE LINES 80-94
 
 .. code-block:: Python
 
 
     model_3op = decompose_einsum("bac,cd,def->ebc", (2, 2, 2), (2, 2), (2, 2, 2))
-
-    print("Node types:", [n.op_type for n in model_3op.graph.node])
 
     sess3 = onnxruntime.InferenceSession(
         model_3op.SerializeToString(), providers=["CPUExecutionProvider"]
@@ -166,63 +209,28 @@ A more complex equation involving three input tensors.
 
  .. code-block:: none
 
-    Node types: ['Identity', 'Unsqueeze', 'Transpose', 'ReduceSum', 'Identity', 'Unsqueeze', 'Transpose', 'Transpose', 'Shape', 'Shape', 'Gather', 'Gather', 'ReduceProd', 'ReduceProd', 'Concat', 'Concat', 'Reshape', 'Reshape', 'Transpose', 'MatMul', 'Max', 'Gather', 'Gather', 'Concat', 'Reshape', 'Transpose', 'Identity', 'Unsqueeze', 'ReduceSum', 'Transpose', 'Shape', 'Shape', 'Gather', 'Gather', 'Gather', 'Gather', 'Concat', 'Concat', 'Reshape', 'Reshape', 'Gemm', 'Max', 'Gather', 'Gather', 'Concat', 'Reshape', 'Transpose', 'Squeeze', 'Identity', 'Identity']
-    max |error|: 1.1920929e-07
+    max |error|: 2.3841858e-07
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-91
+.. GENERATED FROM PYTHON SOURCE LINES 95-97
 
-4. Operator counts comparison
-------------------------------
+Graph of ``bac,cd,def->ebc``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The bar chart below shows how many ONNX nodes each decomposed graph
-contains compared to the single ``Einsum`` node it replaces.
-
-.. GENERATED FROM PYTHON SOURCE LINES 91-124
+.. GENERATED FROM PYTHON SOURCE LINES 97-99
 
 .. code-block:: Python
 
 
-    import matplotlib.pyplot as plt  # noqa: E402
-
-    equations = {
-        "ij,jk->ik": [(3, 4), (4, 5)],
-        "bij,bjk->bik": [(2, 3, 4), (2, 4, 5)],
-        "bac,cd,def->ebc": [(2, 2, 2), (2, 2), (2, 2, 2)],
-    }
-
-    node_counts = {}
-    for eq, shapes in equations.items():
-        model = decompose_einsum(eq, *shapes)
-        node_counts[eq] = len(model.graph.node)
-
-    labels = list(node_counts.keys())
-    counts = list(node_counts.values())
-
-    fig, ax = plt.subplots(figsize=(8, 4))
-    bars = ax.barh(labels, counts, color="#4c72b0")
-    ax.axvline(1, color="#dd8452", linestyle="--", label="1 Einsum node")
-    ax.set_xlabel("Number of ONNX nodes after decomposition")
-    ax.set_title("Einsum decomposition: node count")
-    ax.legend()
-    for bar, count in zip(bars, counts):
-        ax.text(
-            bar.get_width() + 0.3,
-            bar.get_y() + bar.get_height() / 2,
-            str(count),
-            va="center",
-            fontsize=9,
-        )
-    plt.tight_layout()
-    plt.show()
+    plot_dot(model_3op)
 
 
 
-.. image-sg:: /auto_examples_core/images/sphx_glr_plot_einsum_001.png
-   :alt: Einsum decomposition: node count
-   :srcset: /auto_examples_core/images/sphx_glr_plot_einsum_001.png
+.. image-sg:: /auto_examples_core/images/sphx_glr_plot_einsum_003.png
+   :alt: plot einsum
+   :srcset: /auto_examples_core/images/sphx_glr_plot_einsum_003.png
    :class: sphx-glr-single-img
 
 
@@ -232,7 +240,7 @@ contains compared to the single ``Einsum`` node it replaces.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.535 seconds)
+   **Total running time of the script:** (0 minutes 0.589 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_einsum.py:

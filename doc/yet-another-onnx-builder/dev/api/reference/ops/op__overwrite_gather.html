@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -51,6 +51,9 @@
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/reference/ops/op__overwrite_gather';</script>
     <link rel="icon" href="../../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -432,6 +435,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../helpers/einsum_onnx_utils.html">yobx.helpers._einsum._onnx_utils</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/mermaid_helper.html">yobx.helpers.mermaid_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
@@ -494,6 +498,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_equal.html">yobx.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_expand.html">yobx.xoptim.patterns.onnx_expand</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_functions.html">yobx.xoptim.patterns.onnx_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_gather.html">yobx.xoptim.patterns.onnx_gather</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_layer_normalization.html">yobx.xoptim.patterns.onnx_layer_normalization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_matmul.html">yobx.xoptim.patterns.onnx_matmul</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns/onnx_mul.html">yobx.xoptim.patterns.onnx_mul</a></li>
@@ -537,10 +542,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/activation.html">yobx.xoptim.patterns_ort.activation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/causal_conv.html">yobx.xoptim.patterns_ort.causal_conv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/complex_mul.html">yobx.xoptim.patterns_ort.complex_mul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/decoder_attention.html">yobx.xoptim.patterns_ort.decoder_attention</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/embed_layer_normalization.html">yobx.xoptim.patterns_ort.embed_layer_normalization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/fused_conv.html">yobx.xoptim.patterns_ort.fused_conv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/fused_matmul.html">yobx.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/greedy_search.html">yobx.xoptim.patterns_ort.greedy_search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/linear_attention.html">yobx.xoptim.patterns_ort.linear_attention</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/llm_optim.html">yobx.xoptim.patterns_ort.llm_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/missing_kernels.html">yobx.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_ort/moe.html">yobx.xoptim.patterns_ort.moe</a></li>
@@ -1046,7 +1053,7 @@
 <span id="yobx-reference-ops-op-overwrite-gather"></span><h1>yobx.reference.ops.op__overwrite_gather<a class="headerlink" href="#module-yobx.reference.ops.op__overwrite_gather" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="yobx.reference.ops.op__overwrite_gather.Gather">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.reference.ops.op__overwrite_gather.</span></span><span class="sig-name descname"><span class="pre">Gather</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onnx_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/e8bcb01/yobx/reference/ops/op__overwrite_gather.py#L6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.reference.ops.op__overwrite_gather.Gather" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.reference.ops.op__overwrite_gather.</span></span><span class="sig-name descname"><span class="pre">Gather</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onnx_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/fc0d4fe/yobx/reference/ops/op__overwrite_gather.py#L6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.reference.ops.op__overwrite_gather.Gather" title="Link to this definition">#</a></dt>
 <dd><p>Overrides the ONNX reference <code class="docutils literal notranslate"><span class="pre">Gather</span></code> op to ensure contiguous arrays.</p>
 <p>ONNX 1.20.x has a bug where <code class="docutils literal notranslate"><span class="pre">indices.ascontiguousarray()</span></code> is called instead
 of <code class="docutils literal notranslate"><span class="pre">np.ascontiguousarray(indices)</span></code>.  Non-contiguous index arrays (e.g. produced

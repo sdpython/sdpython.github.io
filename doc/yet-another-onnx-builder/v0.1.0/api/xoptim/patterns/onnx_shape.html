@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -51,6 +51,445 @@
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/xoptim/patterns/onnx_shape';</script>
     <link rel="icon" href="../../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -432,6 +871,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../helpers/einsum_onnx_utils.html">yobx.helpers._einsum._onnx_utils</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers/mermaid_helper.html">yobx.helpers.mermaid_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../helpers/helper.html">yobx.helpers.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../helpers/mini_onnx_builder.html">yobx.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../helpers/onnx_helper.html">yobx.helpers.onnx_helper</a></li>
@@ -494,6 +934,7 @@
 <li class="toctree-l3"><a class="reference internal" href="onnx_equal.html">yobx.xoptim.patterns.onnx_equal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_expand.html">yobx.xoptim.patterns.onnx_expand</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_functions.html">yobx.xoptim.patterns.onnx_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="onnx_gather.html">yobx.xoptim.patterns.onnx_gather</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_layer_normalization.html">yobx.xoptim.patterns.onnx_layer_normalization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_matmul.html">yobx.xoptim.patterns.onnx_matmul</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_mul.html">yobx.xoptim.patterns.onnx_mul</a></li>
@@ -537,10 +978,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/activation.html">yobx.xoptim.patterns_ort.activation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/causal_conv.html">yobx.xoptim.patterns_ort.causal_conv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/complex_mul.html">yobx.xoptim.patterns_ort.complex_mul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_ort/decoder_attention.html">yobx.xoptim.patterns_ort.decoder_attention</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/embed_layer_normalization.html">yobx.xoptim.patterns_ort.embed_layer_normalization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/fused_conv.html">yobx.xoptim.patterns_ort.fused_conv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/fused_matmul.html">yobx.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/greedy_search.html">yobx.xoptim.patterns_ort.greedy_search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../patterns_ort/linear_attention.html">yobx.xoptim.patterns_ort.linear_attention</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/llm_optim.html">yobx.xoptim.patterns_ort.llm_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/missing_kernels.html">yobx.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_ort/moe.html">yobx.xoptim.patterns_ort.moe</a></li>
@@ -1045,12 +1488,121 @@
   <section id="module-yobx.xoptim.patterns.onnx_shape">
 <span id="yobx-xoptim-patterns-onnx-shape"></span><h1>yobx.xoptim.patterns.onnx_shape<a class="headerlink" href="#module-yobx.xoptim.patterns.onnx_shape" title="Link to this heading">#</a></h1>
 <dl class="py class">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.GatherShapePattern">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.xoptim.patterns.onnx_shape.</span></span><span class="sig-name descname"><span class="pre">GatherShapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.GatherShapePattern" title="Link to this definition">#</a></dt>
+<dd><p>Simplifies <code class="docutils literal notranslate"><span class="pre">Gather(Shape(X),</span> <span class="pre">indices)</span></code> into <code class="docutils literal notranslate"><span class="pre">Shape(X,</span> <span class="pre">start=s,</span> <span class="pre">end=e)</span></code>
+when <em>indices</em> is a constant 1-D <code class="docutils literal notranslate"><span class="pre">int64</span></code> array that forms a contiguous
+ascending range <code class="docutils literal notranslate"><span class="pre">[s,</span> <span class="pre">s+1,</span> <span class="pre">...,</span> <span class="pre">e-1]</span></code>.</p>
+<p>This avoids materialising the full shape vector only to slice it immediately
+afterwards.  The Shape node may already carry <code class="docutils literal notranslate"><span class="pre">start</span></code> / <code class="docutils literal notranslate"><span class="pre">end</span></code> attributes
+(ONNX opset ≥ 15); those are taken into account when computing the absolute
+indices in <code class="docutils literal notranslate"><span class="pre">X</span></code>’s dimension space.</p>
+<p>Model with nodes to be fused:</p>
+<pre  class="mermaid">
+        graph TD
+
+    classDef ioNode fill:#dfd,stroke:#333,color:#333
+    classDef initNode fill:#cccc00,stroke:#333,color:#333
+    classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+
+    I_X([&quot;X FLOAT(a, b, c, d)&quot;])
+    C_idx([&quot;idx INT64[3]&quot;])
+
+    Shape_0[[&quot;Shape(.)&quot;]]
+    Gather_1[[&quot;Gather(., [0, 1, 2])&quot;]]
+
+    I_X --&gt;|&quot;FLOAT(a, b, c, d)&quot;| Shape_0
+    C_idx --&gt;|&quot;INT64(3)&quot;| Gather_1
+    Shape_0 --&gt;|&quot;INT64(4)&quot;| Gather_1
+
+    O_Y([&quot;Y INT64(3)&quot;])
+    Gather_1 --&gt; O_Y
+
+    class I_X,O_Y ioNode
+    class C_idx constNode
+    class Shape_0,Gather_1 opNode
+    </pre><p>Outcome of the fusion:</p>
+<pre  class="mermaid">
+        graph TD
+
+    classDef ioNode fill:#dfd,stroke:#333,color:#333
+    classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+
+    I_X([&quot;X FLOAT(a, b, c, d)&quot;])
+
+    Shape_0[[&quot;Shape(., start=0, end=3)&quot;]]
+
+    I_X --&gt;|&quot;FLOAT(a, b, c, d)&quot;| Shape_0
+
+    O_Y([&quot;Y INT64(3)&quot;])
+    Shape_0 --&gt; O_Y
+
+    class I_X,O_Y ioNode
+    class Shape_0 opNode
+    </pre><dl class="py method">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.GatherShapePattern.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gather_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L140"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.GatherShapePattern.apply" title="Link to this definition">#</a></dt>
+<dd><p>The method does the rewriting. It assumes it can happen.
+It takes a list of nodes impacted by the rewriting assumes no other
+pattern optimizer will be modify them. It receives the list of nodes
+returned by method <em>apply</em>. Since it is a list of argument, method
+<em>match</em> can include None values. The method returns the new nodes.
+The optimizer considers that any node given to this function is removed
+from the graph, and any node returned by it are added.
+If a received node must be kept, it must be added to the list of returned node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> – nodes returned by method <em>match</em>, there are then removed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nodes to add to graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.GatherShapePattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.GatherShapePattern.match" title="Link to this definition">#</a></dt>
+<dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – is a <a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>,
+it holds all the existing nodes, is able to return any information
+about type, shape, the node before, the node after another one.</p></li>
+<li><p><strong>node</strong> – the matching must determine if some nodes around this one
+are part of set of nodes this pattern optimizer can rewrite.
+From there, the function explores wherever it needs,
+checking any condition it needs.</p></li>
+<li><p><strong>matched</strong> – usually unused, it returns of nodes already matching
+a pattern</p></li>
+</ul>
+</dd>
+</dl>
+<p>The method must not modify the graph.
+The method returns None if no match is found or an instance
+of class <a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.MatchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResult</span></code></a>. It must contain:</p>
+<ul class="simple">
+<li><p>a list of nodes involved in the rewriting. It does not mean all
+of them will be removed but all of them are needed to do the rewriting
+and must not be impacted by other pattern optimizer.</p></li>
+<li><p>A function doing the rewriting (usually method <em>apply</em> of the pattern class).</p></li>
+<li><p>An existing node where the rewritten nodes can be inserted.
+Knowing it makes it faster to rewriter. If not specified, the optimizer
+will automatically determine the position of the new nodes.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.xoptim.patterns.onnx_shape.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedShapeShapeAddPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/e8bcb01/yobx/xoptim/patterns/onnx_shape.py#L7"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.xoptim.patterns.onnx_shape.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedShapeShapeAddPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L226"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern" title="Link to this definition">#</a></dt>
 <dd><p>Tries to find another way to get a dimension obtained with the addition of two.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.apply">
-<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape1_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape2_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/e8bcb01/yobx/xoptim/patterns/onnx_shape.py#L40"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.apply" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#yobx.xbuilder.GraphBuilder" title="yobx.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape1_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape2_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L259"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.apply" title="Link to this definition">#</a></dt>
 <dd><p>The method does the rewriting. It assumes it can happen.
 It takes a list of nodes impacted by the rewriting assumes no other
 pattern optimizer will be modify them. It receives the list of nodes
@@ -1071,7 +1623,266 @@ If a received node must be kept, it must be added to the list of returned node.<
 
 <dl class="py method">
 <dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.match">
-<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/e8bcb01/yobx/xoptim/patterns/onnx_shape.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.match" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L234"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.match" title="Link to this definition">#</a></dt>
+<dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – is a <a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>,
+it holds all the existing nodes, is able to return any information
+about type, shape, the node before, the node after another one.</p></li>
+<li><p><strong>node</strong> – the matching must determine if some nodes around this one
+are part of set of nodes this pattern optimizer can rewrite.
+From there, the function explores wherever it needs,
+checking any condition it needs.</p></li>
+<li><p><strong>matched</strong> – usually unused, it returns of nodes already matching
+a pattern</p></li>
+</ul>
+</dd>
+</dl>
+<p>The method must not modify the graph.
+The method returns None if no match is found or an instance
+of class <a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.MatchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResult</span></code></a>. It must contain:</p>
+<ul class="simple">
+<li><p>a list of nodes involved in the rewriting. It does not mean all
+of them will be removed but all of them are needed to do the rewriting
+and must not be impacted by other pattern optimizer.</p></li>
+<li><p>A function doing the rewriting (usually method <em>apply</em> of the pattern class).</p></li>
+<li><p>An existing node where the rewritten nodes can be inserted.
+Knowing it makes it faster to rewriter. If not specified, the optimizer
+will automatically determine the position of the new nodes.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.xoptim.patterns.onnx_shape.</span></span><span class="sig-name descname"><span class="pre">ShapeTransposePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L534"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern" title="Link to this definition">#</a></dt>
+<dd><p>Replaces <code class="docutils literal notranslate"><span class="pre">Shape(Transpose(X,</span> <span class="pre">perm))</span></code> by <code class="docutils literal notranslate"><span class="pre">Gather(Shape(X),</span> <span class="pre">perm_indices)</span></code>
+so that the expensive Transpose on the full data tensor is avoided.</p>
+<p>The key observation is that the shape of <code class="docutils literal notranslate"><span class="pre">Transpose(X,</span> <span class="pre">perm)</span></code> is simply
+a permuted view of the shape of <code class="docutils literal notranslate"><span class="pre">X</span></code>.  The permutation indices are known
+at optimisation time (they are an attribute of the Transpose node), so we
+can extract the desired dimensions directly from <code class="docutils literal notranslate"><span class="pre">Shape(X)</span></code> using a
+<code class="docutils literal notranslate"><span class="pre">Gather</span></code> with the (sub-)permutation as the index tensor.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">X</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(a,</span> <span class="pre">b,</span> <span class="pre">c)</span></code> and <code class="docutils literal notranslate"><span class="pre">perm=[2,</span> <span class="pre">0,</span> <span class="pre">1]</span></code> the transformation
+is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before</span>
+<span class="n">xt</span> <span class="o">=</span> <span class="n">Transpose</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>   <span class="c1"># (c, a, b)</span>
+<span class="n">Y</span>  <span class="o">=</span> <span class="n">Shape</span><span class="p">(</span><span class="n">xt</span><span class="p">)</span>                       <span class="c1"># [c, a, b]</span>
+
+<span class="c1"># After</span>
+<span class="n">sx</span>   <span class="o">=</span> <span class="n">Shape</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>                      <span class="c1"># [a, b, c]</span>
+<span class="n">perm</span> <span class="o">=</span> <span class="n">Initializer</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">Y</span>    <span class="o">=</span> <span class="n">Gather</span><span class="p">(</span><span class="n">sx</span><span class="p">,</span> <span class="n">perm</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>      <span class="c1"># [c, a, b]</span>
+</pre></div>
+</div>
+<p>Shape’s optional <code class="docutils literal notranslate"><span class="pre">start</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> attributes are respected: the
+permutation slice <code class="docutils literal notranslate"><span class="pre">perm[start:end]</span></code> is used as the Gather indices.</p>
+<p>Model with nodes to be fused:</p>
+<pre  class="mermaid">
+        graph TD
+
+    classDef ioNode fill:#dfd,stroke:#333,color:#333
+    classDef initNode fill:#cccc00,stroke:#333,color:#333
+    classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+
+    I_X([&quot;X FLOAT(a, b, c)&quot;])
+
+    Transpose_0[[&quot;Transpose(., perm=[2, 0, 1])&quot;]]
+    Shape_1[[&quot;Shape(.)&quot;]]
+
+    I_X --&gt;|&quot;FLOAT(a, b, c)&quot;| Transpose_0
+    Transpose_0 --&gt;|&quot;FLOAT(c, a, b)&quot;| Shape_1
+
+    O_Y([&quot;Y INT64(3)&quot;])
+    Shape_1 --&gt; O_Y
+
+    class I_X,O_Y ioNode
+    class Transpose_0,Shape_1 opNode
+    </pre><p>Outcome of the fusion:</p>
+<pre  class="mermaid">
+        graph TD
+
+    classDef ioNode fill:#dfd,stroke:#333,color:#333
+    classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+
+    I_X([&quot;X FLOAT(a, b, c)&quot;])
+    C_perm([&quot;perm INT64[2, 0, 1]&quot;])
+
+    Shape_s[[&quot;Shape(.)&quot;]]
+    Gather_0[[&quot;Gather(., ., axis=0)&quot;]]
+
+    I_X --&gt;|&quot;FLOAT(a, b, c)&quot;| Shape_s
+    Shape_s --&gt;|&quot;INT64(3)&quot;| Gather_0
+    C_perm --&gt;|&quot;INT64(3)&quot;| Gather_0
+
+    O_Y([&quot;Y INT64(3)&quot;])
+    Gather_0 --&gt; O_Y
+
+    class I_X,O_Y ioNode
+    class C_perm constNode
+    class Shape_s,Gather_0 opNode
+    </pre><dl class="py method">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L668"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern.apply" title="Link to this definition">#</a></dt>
+<dd><p>The method does the rewriting. It assumes it can happen.
+It takes a list of nodes impacted by the rewriting assumes no other
+pattern optimizer will be modify them. It receives the list of nodes
+returned by method <em>apply</em>. Since it is a list of argument, method
+<em>match</em> can include None values. The method returns the new nodes.
+The optimizer considers that any node given to this function is removed
+from the graph, and any node returned by it are added.
+If a received node must be kept, it must be added to the list of returned node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> – nodes returned by method <em>match</em>, there are then removed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nodes to add to graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L638"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern.match" title="Link to this definition">#</a></dt>
+<dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – is a <a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>,
+it holds all the existing nodes, is able to return any information
+about type, shape, the node before, the node after another one.</p></li>
+<li><p><strong>node</strong> – the matching must determine if some nodes around this one
+are part of set of nodes this pattern optimizer can rewrite.
+From there, the function explores wherever it needs,
+checking any condition it needs.</p></li>
+<li><p><strong>matched</strong> – usually unused, it returns of nodes already matching
+a pattern</p></li>
+</ul>
+</dd>
+</dl>
+<p>The method must not modify the graph.
+The method returns None if no match is found or an instance
+of class <a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.MatchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResult</span></code></a>. It must contain:</p>
+<ul class="simple">
+<li><p>a list of nodes involved in the rewriting. It does not mean all
+of them will be removed but all of them are needed to do the rewriting
+and must not be impacted by other pattern optimizer.</p></li>
+<li><p>A function doing the rewriting (usually method <em>apply</em> of the pattern class).</p></li>
+<li><p>An existing node where the rewritten nodes can be inserted.
+Knowing it makes it faster to rewriter. If not specified, the optimizer
+will automatically determine the position of the new nodes.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">yobx.xoptim.patterns.onnx_shape.</span></span><span class="sig-name descname"><span class="pre">UnsqueezeShapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L269"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern" title="Link to this definition">#</a></dt>
+<dd><p>Replaces <code class="docutils literal notranslate"><span class="pre">Shape(Unsqueeze(X,</span> <span class="pre">axes))</span></code> by a <code class="docutils literal notranslate"><span class="pre">Concat</span></code> of
+<code class="docutils literal notranslate"><span class="pre">Shape(X,</span> <span class="pre">start=s,</span> <span class="pre">end=e)</span></code> slices interleaved with constant <code class="docutils literal notranslate"><span class="pre">[1]</span></code>
+tensors at the inserted axis positions.</p>
+<p>The key observation is that <code class="docutils literal notranslate"><span class="pre">Shape(Unsqueeze(X,</span> <span class="pre">axes))</span></code> produces a
+shape vector that is identical to <code class="docutils literal notranslate"><span class="pre">Shape(X)</span></code> with <code class="docutils literal notranslate"><span class="pre">1</span></code> entries
+inserted at the <code class="docutils literal notranslate"><span class="pre">axes</span></code> positions.  By splitting <code class="docutils literal notranslate"><span class="pre">Shape(X)</span></code> into
+segments and concatenating them with the constant <code class="docutils literal notranslate"><span class="pre">1</span></code> values, the
+Unsqueeze on the (potentially large) data tensor is avoided entirely
+while the output shape vector remains bit-for-bit identical.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">X</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(a,</span> <span class="pre">b,</span> <span class="pre">c)</span></code> and <code class="docutils literal notranslate"><span class="pre">axes=[1]</span></code> the transformation
+is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before</span>
+<span class="n">xu</span> <span class="o">=</span> <span class="n">Unsqueeze</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>        <span class="c1"># (a, 1, b, c)</span>
+<span class="n">Y</span>  <span class="o">=</span> <span class="n">Shape</span><span class="p">(</span><span class="n">xu</span><span class="p">)</span>                <span class="c1"># [a, 1, b, c]</span>
+
+<span class="c1"># After</span>
+<span class="n">s0</span> <span class="o">=</span> <span class="n">Shape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># [a]</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">Shape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># [b, c]</span>
+<span class="n">Y</span>  <span class="o">=</span> <span class="n">Concat</span><span class="p">([</span><span class="n">s0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s1</span><span class="p">])</span>    <span class="c1"># [a, 1, b, c]</span>
+</pre></div>
+</div>
+<p>Model with nodes to be fused:</p>
+<pre  class="mermaid">
+        graph TD
+
+    classDef ioNode fill:#dfd,stroke:#333,color:#333
+    classDef initNode fill:#cccc00,stroke:#333,color:#333
+    classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+
+    I_X([&quot;X FLOAT(a, b, c)&quot;])
+    I_axes([&quot;axes INT64(1)&quot;])
+
+    Constant_0[[&quot;Constant() -#gt; axes&quot;]]
+    Unsqueeze_1[[&quot;Unsqueeze(., .)&quot;]]
+    Shape_2[[&quot;Shape(.)&quot;]]
+
+    I_X --&gt;|&quot;FLOAT(a, b, c)&quot;| Unsqueeze_1
+    Constant_0 --&gt;|&quot;INT64(1)&quot;| Unsqueeze_1
+    Unsqueeze_1 --&gt;|&quot;FLOAT(a, 1, b, c)&quot;| Shape_2
+
+    O_Y([&quot;Y INT64(4)&quot;])
+    Shape_2 --&gt; O_Y
+
+    class I_X,I_axes,O_Y ioNode
+    class Constant_0 constNode
+    class Unsqueeze_1,Shape_2 opNode
+    </pre><p>Outcome of the fusion:</p>
+<pre  class="mermaid">
+        graph TD
+
+    classDef ioNode fill:#dfd,stroke:#333,color:#333
+    classDef constNode fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    classDef opNode fill:#bbf,stroke:#333,stroke-width:2px,color:#333
+
+    I_X([&quot;X FLOAT(a, b, c)&quot;])
+    C1([&quot;const INT64[1]&quot;])
+
+    Shape_s0[[&quot;Shape(., start=0, end=1)&quot;]]
+    Shape_s1[[&quot;Shape(., start=1, end=3)&quot;]]
+    Concat_2[[&quot;Concat(axis=0)&quot;]]
+
+    I_X --&gt;|&quot;FLOAT(a, b, c)&quot;| Shape_s0
+    I_X --&gt;|&quot;FLOAT(a, b, c)&quot;| Shape_s1
+    Shape_s0 --&gt;|&quot;INT64(1)&quot;| Concat_2
+    C1 --&gt;|&quot;INT64(1)&quot;| Concat_2
+    Shape_s1 --&gt;|&quot;INT64(2)&quot;| Concat_2
+
+    O_Y([&quot;Y INT64(4)&quot;])
+    Concat_2 --&gt; O_Y
+
+    class I_X,O_Y ioNode
+    class C1 constNode
+    class Shape_s0,Shape_s1,Concat_2 opNode
+    </pre><dl class="py method">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsq_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L422"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern.apply" title="Link to this definition">#</a></dt>
+<dd><p>The method does the rewriting. It assumes it can happen.
+It takes a list of nodes impacted by the rewriting assumes no other
+pattern optimizer will be modify them. It receives the list of nodes
+returned by method <em>apply</em>. Since it is a list of argument, method
+<em>match</em> can include None values. The method returns the new nodes.
+The optimizer considers that any node given to this function is removed
+from the graph, and any node returned by it are added.
+If a received node must be kept, it must be added to the list of returned node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> – nodes returned by method <em>match</em>, there are then removed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nodes to add to graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#yobx.xoptim.GraphBuilderPatternOptimization" title="yobx.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.22.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#yobx.xoptim.MatchResult" title="yobx.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/dda0c68/yobx/xoptim/patterns/onnx_shape.py#L379"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern.match" title="Link to this definition">#</a></dt>
 <dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1153,9 +1964,24 @@ will automatically determine the position of the new nodes.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.GatherShapePattern"><code class="docutils literal notranslate"><span class="pre">GatherShapePattern</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.GatherShapePattern.apply"><code class="docutils literal notranslate"><span class="pre">GatherShapePattern.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.GatherShapePattern.match"><code class="docutils literal notranslate"><span class="pre">GatherShapePattern.match()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern"><code class="docutils literal notranslate"><span class="pre">ShapeBasedShapeShapeAddPattern</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.apply"><code class="docutils literal notranslate"><span class="pre">ShapeBasedShapeShapeAddPattern.apply()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.match"><code class="docutils literal notranslate"><span class="pre">ShapeBasedShapeShapeAddPattern.match()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern"><code class="docutils literal notranslate"><span class="pre">ShapeTransposePattern</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern.apply"><code class="docutils literal notranslate"><span class="pre">ShapeTransposePattern.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.ShapeTransposePattern.match"><code class="docutils literal notranslate"><span class="pre">ShapeTransposePattern.match()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern"><code class="docutils literal notranslate"><span class="pre">UnsqueezeShapePattern</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern.apply"><code class="docutils literal notranslate"><span class="pre">UnsqueezeShapePattern.apply()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.xoptim.patterns.onnx_shape.UnsqueezeShapePattern.match"><code class="docutils literal notranslate"><span class="pre">UnsqueezeShapePattern.match()</span></code></a></li>
 </ul>
 </li>
 </ul>
