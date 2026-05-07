@@ -31,16 +31,22 @@ in both cases.
 The ``onnx_light.onnx`` implementation does not depend on protobuf and
 therefore avoids the overhead of the protobuf serialization layer.
 It also supports parallel loading of tensor weights through the
-``parallel`` keyword.
+``parallel`` keyword and loading models stored with external data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-30
+* ``onnx``, ``onnxlight``: use ``onnx`` or ``onnx-light``
+* ``1filex1``: saves in a single file with 1 thread
+* ``1filex4``: saves in a single file with 4 threads
+* ``2filex1``: saves in a file and another for external data with 1 thread
+* ``2filex4``: saves in a file and another for external data with 4 threads
+
+.. GENERATED FROM PYTHON SOURCE LINES 23-36
 
 .. code-block:: Python
 
 
     import os
+    import shutil
     import time
-    import tempfile
 
     import numpy as np
     import pandas
@@ -57,7 +63,7 @@ It also supports parallel loading of tensor weights through the
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-36
+.. GENERATED FROM PYTHON SOURCE LINES 37-42
 
 Build a small synthetic ONNX model
 ------------------------------------
@@ -65,13 +71,13 @@ Build a small synthetic ONNX model
 We create a model with several ``Gemm`` nodes and large initializers so
 that the load/save times are measurable.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-66
+.. GENERATED FROM PYTHON SOURCE LINES 42-72
 
 .. code-block:: Python
 
 
-    N_INIT = 20
-    DIM = 256
+    N_INIT = 40
+    DIM = 256 if os.environ.get("UNITTEST_GOING") == "1" else 2048
 
 
     def make_model(n_init: int = N_INIT, dim: int = DIM) -> onnx.ModelProto:
@@ -107,22 +113,24 @@ that the load/save times are measurable.
 
  .. code-block:: none
 
-    Model size: 5.001 MB
+    Model size: 640.002 MB
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-69
+.. GENERATED FROM PYTHON SOURCE LINES 73-75
 
 Write the model to a temporary file
 -------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-77
+.. GENERATED FROM PYTHON SOURCE LINES 75-85
 
 .. code-block:: Python
 
 
-    tmp_dir = tempfile.mkdtemp()
+    tmp_dir = "temp_plot_onnx_time"
+    if not os.path.exists(tmp_dir):
+        os.mkdir(tmp_dir)
     onnx_path = os.path.join(tmp_dir, "bench.onnx")
     onnx.save(model, onnx_path)
     file_size = os.path.getsize(onnx_path)
@@ -137,17 +145,17 @@ Write the model to a temporary file
 
  .. code-block:: none
 
-    File size : 5.001 MB
+    File size : 640.002 MB
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-80
+.. GENERATED FROM PYTHON SOURCE LINES 86-88
 
 Benchmark helper
 -----------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-94
+.. GENERATED FROM PYTHON SOURCE LINES 88-112
 
 .. code-block:: Python
 
@@ -160,7 +168,17 @@ Benchmark helper
             t0 = time.perf_counter()
             fn()
             times.append(time.perf_counter() - t0)
-        return {"name": name, "avg": float(np.mean(times)), "min": float(np.min(times))}
+        return {
+            "name": name,
+            "median": float(np.median(times)),
+            "avg": float(np.mean(times)),
+            "min": float(np.min(times)),
+        }
+
+
+    def print_stats(name: str, stats: dict) -> None:
+        """Formats and prints the average and median timing values in milliseconds."""
+        print(f"{name:<35} avg={stats['avg'] * 1e3:.1f} ms median={stats['median'] * 1e3:.1f} ms")
 
 
     data = []
@@ -172,18 +190,18 @@ Benchmark helper
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-97
+.. GENERATED FROM PYTHON SOURCE LINES 113-115
 
 Load with ``onnx``
 -------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-101
+.. GENERATED FROM PYTHON SOURCE LINES 115-119
 
 .. code-block:: Python
 
 
-    data.append(measure("load/onnx", lambda: onnx.load(onnx_path)))
-    print(f"load/onnx          avg={data[-1]['avg'] * 1e3:.1f} ms")
+    data.append(measure("load/1filex1/onnx", lambda: onnx.load(onnx_path)))
+    print_stats("load/1filex1/onnx", data[-1])
 
 
 
@@ -193,23 +211,23 @@ Load with ``onnx``
 
  .. code-block:: none
 
-    load/onnx          avg=1.6 ms
+    load/1filex1/onnx                   avg=189.9 ms median=184.3 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-104
+.. GENERATED FROM PYTHON SOURCE LINES 120-122
 
 Load with ``onnx_light.onnx``
 ------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-108
+.. GENERATED FROM PYTHON SOURCE LINES 122-126
 
 .. code-block:: Python
 
 
-    data.append(measure("load/onnxlight", lambda: onnxl.load(onnx_path)))
-    print(f"load/onnxlight     avg={data[-1]['avg'] * 1e3:.1f} ms")
+    data.append(measure("load/1filex1/onnxlight", lambda: onnxl.load(onnx_path)))
+    print_stats("load/1filex1/onnxlight", data[-1])
 
 
 
@@ -219,81 +237,28 @@ Load with ``onnx_light.onnx``
 
  .. code-block:: none
 
-    load/onnxlight     avg=0.9 ms
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 109-111
-
-Load with ``onnx_light.onnx`` using parallel tensor loading
-------------------------------------------------------------
-
-.. GENERATED FROM PYTHON SOURCE LINES 111-117
-
-.. code-block:: Python
-
-
-    data.append(
-        measure("load/onnxlight/x4", lambda: onnxl.load(onnx_path, parallel=True, num_threads=4))
-    )
-    print(f"load/onnxlight/x4  avg={data[-1]['avg'] * 1e3:.1f} ms")
-
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    load/onnxlight/x4  avg=5.8 ms
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 118-120
-
-Save with ``onnx``
--------------------
-
-.. GENERATED FROM PYTHON SOURCE LINES 120-126
-
-.. code-block:: Python
-
-
-    onx = onnx.load(onnx_path)
-    out_onnx = os.path.join(tmp_dir, "out_onnx.onnx")
-    data.append(measure("save/onnx", lambda: onnx.save(onx, out_onnx)))
-    print(f"save/onnx          avg={data[-1]['avg'] * 1e3:.1f} ms")
-
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    save/onnx          avg=17.9 ms
+    load/1filex1/onnxlight              avg=185.9 ms median=182.3 ms
 
 
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 127-129
 
-Save with ``onnx_light.onnx``
-------------------------------
+Load with ``onnx_light.onnx`` using parallel tensor loading
+------------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-135
+.. GENERATED FROM PYTHON SOURCE LINES 129-138
 
 .. code-block:: Python
 
 
+    data.append(
+        measure("load/1filex4/onnxlight", lambda: onnxl.load(onnx_path, parallel=True, num_threads=4))
+    )
+    print_stats("load/1filex4/onnxlight", data[-1])
+    onxl_x4 = onnxl.load(onnx_path, parallel=True, num_threads=4)
     onxl = onnxl.load(onnx_path)
-    out_onnxl = os.path.join(tmp_dir, "out_onnxlight.onnx")
-    data.append(measure("save/onnxlight", lambda: onnxl.save(onxl, out_onnxl)))
-    print(f"save/onnxlight     avg={data[-1]['avg'] * 1e3:.1f} ms")
+    onx = onnx.load(onnx_path)
 
 
 
@@ -303,17 +268,274 @@ Save with ``onnx_light.onnx``
 
  .. code-block:: none
 
-    save/onnxlight     avg=15.2 ms
+    load/1filex4/onnxlight              avg=76.7 ms median=63.6 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-138
+.. GENERATED FROM PYTHON SOURCE LINES 139-141
+
+SerializeToString comparison
+----------------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 141-173
+
+.. code-block:: Python
+
+
+    opts_serial_x4 = onnxl.SerializeOptions()
+    opts_serial_x4.parallel = True
+    opts_serial_x4.num_threads = 4
+
+
+    def _serialize_onnx() -> bytes:
+        """Serializes the ONNX model to bytes."""
+        return onx.SerializeToString()
+
+
+    def _serialize_onnxlight() -> bytes:
+        """Serializes the onnx_light model to bytes."""
+        return onxl.SerializeToString()
+
+
+    def _serialize_onnxlight_x4() -> bytes:
+        """Serializes the onnx_light model in parallel to bytes."""
+        return onxl.SerializeToString(opts_serial_x4)
+
+
+    assert len(_serialize_onnx()) > 0
+    assert len(_serialize_onnxlight()) > 0
+    assert len(_serialize_onnxlight_x4()) > 0
+
+    data.append(measure("serialize/x1/onnx", _serialize_onnx))
+    print_stats("serialize/x1/onnx", data[-1])
+    data.append(measure("serialize/x1/onnxlight", _serialize_onnxlight))
+    print_stats("serialize/x1/onnxlight", data[-1])
+    data.append(measure("serialize/x4/onnxlight", _serialize_onnxlight_x4))
+    print_stats("serialize/x4/onnxlight", data[-1])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    serialize/x1/onnx                   avg=2383.8 ms median=2305.6 ms
+    serialize/x1/onnxlight              avg=2287.5 ms median=2252.0 ms
+    serialize/x4/onnxlight              avg=2457.5 ms median=2416.7 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 174-176
+
+ParseFromString comparison
+--------------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 176-222
+
+.. code-block:: Python
+
+
+    serialized_onnx = onx.SerializeToString()
+    serialized_onnxlight = onxl.SerializeToString()
+    opts_parse_x4 = onnxl.ParseOptions()
+    opts_parse_x4.parallel = True
+    opts_parse_x4.num_threads = 4
+
+
+    def _parse_onnx() -> onnx.ModelProto:
+        """Parses ONNX bytes into a ModelProto."""
+        parsed = onnx.ModelProto()
+        parsed.ParseFromString(serialized_onnx)
+        return parsed
+
+
+    def _parse_onnxlight() -> onnxl.ModelProto:
+        """Parses onnx_light bytes into a ModelProto."""
+        parsed = onnxl.ModelProto()
+        parsed.ParseFromString(serialized_onnxlight)
+        return parsed
+
+
+    def _parse_onnxlight_x4() -> onnxl.ModelProto:
+        """Parses onnx_light bytes in parallel into a ModelProto."""
+        parsed = onnxl.ModelProto()
+        parsed.ParseFromString(serialized_onnxlight, opts_parse_x4)
+        return parsed
+
+
+    parsed_onnx = _parse_onnx()
+    assert parsed_onnx.ir_version == onx.ir_version
+    assert len(parsed_onnx.graph.node) == len(onx.graph.node)
+    parsed_onnxlight = _parse_onnxlight()
+    assert parsed_onnxlight.ir_version == onxl.ir_version
+    assert len(parsed_onnxlight.graph.node) == len(onxl.graph.node)
+    parsed_onnxlight_x4 = _parse_onnxlight_x4()
+    assert parsed_onnxlight_x4.ir_version == onxl.ir_version
+    assert len(parsed_onnxlight_x4.graph.node) == len(onxl.graph.node)
+
+    data.append(measure("parse/x1/onnx", _parse_onnx))
+    print_stats("parse/x1/onnx", data[-1])
+    data.append(measure("parse/x1/onnxlight", _parse_onnxlight))
+    print_stats("parse/x1/onnxlight", data[-1])
+    data.append(measure("parse/x4/onnxlight", _parse_onnxlight_x4))
+    print_stats("parse/x4/onnxlight", data[-1])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    parse/x1/onnx                       avg=432.3 ms median=391.9 ms
+    parse/x1/onnxlight                  avg=817.3 ms median=838.1 ms
+    parse/x4/onnxlight                  avg=794.2 ms median=754.2 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 223-225
+
+Save with ``onnx``
+-------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 225-230
+
+.. code-block:: Python
+
+
+    out_onnx = os.path.join(tmp_dir, "out_onnx.onnx")
+    data.append(measure("save/1filex1/onnx", lambda: onnx.save(onx, out_onnx)))
+    print_stats("save/1filex1/onnx", data[-1])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    save/1filex1/onnx                   avg=3426.5 ms median=3594.0 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 231-235
+
+Save with ``onnx`` using external data
+---------------------------------------
+This is the slow path: Python iterates every tensor, creates a numpy
+intermediate, and calls Python I/O for each weight blob.
+
+.. GENERATED FROM PYTHON SOURCE LINES 235-252
+
+.. code-block:: Python
+
+
+    out_onnx_ext = os.path.join(tmp_dir, "out_onnx_ext.onnx")
+    out_onnx_ext_location = "out_onnx_ext.data"
+    data.append(
+        measure(
+            "save/2filex1/onnx",
+            lambda: onnx.save_model(
+                onx,
+                out_onnx_ext,
+                save_as_external_data=True,
+                all_tensors_to_one_file=True,
+                location=out_onnx_ext_location,
+            ),
+        )
+    )
+    print_stats("save/2filex1/onnx", data[-1])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    save/2filex1/onnx                   avg=188.3 ms median=0.4 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 253-255
+
+Save with ``onnx_light.onnx``
+------------------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 255-260
+
+.. code-block:: Python
+
+
+    out_onnxl = os.path.join(tmp_dir, "out_onnxlight.onnx")
+    data.append(measure("save/1filex1/onnxlight", lambda: onnxl.save(onxl, out_onnxl)))
+    print_stats("save/1filex1/onnxlight", data[-1])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    save/1filex1/onnxlight              avg=659.9 ms median=766.2 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 261-263
+
+Save with onnx_light.onnx parallelized
+--------------------------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 263-273
+
+.. code-block:: Python
+
+
+    out_onnxl_x4 = os.path.join(tmp_dir, "out_onnxlight_x4.onnx")
+    data.append(
+        measure(
+            "save/1filex4/onnxlight",
+            lambda: onnxl.save(onxl_x4, out_onnxl_x4, parallel=True, num_threads=4),
+        )
+    )
+    print_stats("save/1filex4/onnxlight", data[-1])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    save/1filex4/onnxlight              avg=530.3 ms median=507.8 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 274-280
 
 Save with ``onnx_light.onnx`` using external data
 ---------------------------------------------------
+All work is done in C++: ``PopulateExternalData`` attaches metadata once,
+``SerializeToStream`` routes large ``raw_data`` blobs directly to the
+weights file via ``TwoFilesWriteStream``, and ``ClearExternalData``
+restores the in-memory model.  No numpy arrays are created.
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-146
+.. GENERATED FROM PYTHON SOURCE LINES 280-288
 
 .. code-block:: Python
 
@@ -321,9 +543,9 @@ Save with ``onnx_light.onnx`` using external data
     out_ext = os.path.join(tmp_dir, "out_ext.onnx")
     out_ext_data = out_ext + ".data"
     data.append(
-        measure("save/onnxlight/ext", lambda: onnxl.save(onxl, out_ext, location=out_ext_data))
+        measure("save/2filex1/onnxlight", lambda: onnxl.save(onxl, out_ext, location=out_ext_data))
     )
-    print(f"save/onnxlight/ext avg={data[-1]['avg'] * 1e3:.1f} ms")
+    print_stats("save/2filex1/onnxlight", data[-1])
 
 
 
@@ -333,23 +555,154 @@ Save with ``onnx_light.onnx`` using external data
 
  .. code-block:: none
 
-    save/onnxlight/ext avg=13.9 ms
+    save/2filex1/onnxlight              avg=933.3 ms median=869.5 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-149
+.. GENERATED FROM PYTHON SOURCE LINES 289-291
+
+Save with ``onnx_light.onnx`` using external data parallelized
+--------------------------------------------------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 291-304
+
+.. code-block:: Python
+
+
+    out_ext_x4 = os.path.join(tmp_dir, "out_ext_x4.onnx")
+    out_ext_x4_data = out_ext + ".data"
+    data.append(
+        measure(
+            "save/2filex4/onnxlight",
+            lambda: onnxl.save(
+                onxl, out_ext_x4, location=out_ext_x4_data, parallel=True, num_threads=4
+            ),
+        )
+    )
+    print_stats("save/2filex4/onnxlight", data[-1])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    save/2filex4/onnxlight              avg=709.0 ms median=604.9 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 305-308
+
+Load with ``onnx`` using external data
+----------------------------------------
+Reload the model previously saved with external data using ``onnx.load``.
+
+.. GENERATED FROM PYTHON SOURCE LINES 308-315
+
+.. code-block:: Python
+
+
+    out_onnx_ext_data = os.path.join(tmp_dir, out_onnx_ext_location)
+    data.append(
+        measure("load/2filex1/onnx", lambda: onnx.load(out_onnx_ext, load_external_data=True))
+    )
+    print(f"load/2filex1/onnx      avg={data[-1]['avg'] * 1e3:.1f} ms")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    load/2filex1/onnx      avg=614.1 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 316-319
+
+Load with ``onnx_light.onnx`` using external data
+--------------------------------------------------
+Reload the same external-data model using ``onnxl.load``.
+
+.. GENERATED FROM PYTHON SOURCE LINES 319-327
+
+.. code-block:: Python
+
+
+    data.append(
+        measure(
+            "load/2filex1/onnxlight", lambda: onnxl.load(out_onnx_ext, location=out_onnx_ext_data)
+        )
+    )
+    print(f"load/2filex1/onnxlight avg={data[-1]['avg'] * 1e3:.1f} ms")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    load/2filex1/onnxlight avg=436.9 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 328-331
+
+Load with ``onnx_light.onnx`` using external data and parallel tensor loading
+-------------------------------------------------------------------------------
+Combine external-data loading with ``parallel=True`` for maximum throughput.
+
+.. GENERATED FROM PYTHON SOURCE LINES 331-342
+
+.. code-block:: Python
+
+
+    data.append(
+        measure(
+            "load/2filex4/onnxlight",
+            lambda: onnxl.load(
+                out_onnx_ext, location=out_onnx_ext_data, parallel=True, num_threads=4
+            ),
+        )
+    )
+    print(f"load/2filex4/onnxlight avg={data[-1]['avg'] * 1e3:.1f} ms")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    load/2filex4/onnxlight avg=360.7 ms
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 343-345
 
 Results
 --------
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-153
+.. GENERATED FROM PYTHON SOURCE LINES 345-350
 
 .. code-block:: Python
 
 
-    df = pandas.DataFrame(data).set_index("name")
+    df = pandas.DataFrame(data).set_index("name").sort_index()
     print(df)
+    df = df.sort_index(ascending=False)
 
 
 
@@ -359,40 +712,104 @@ Results
 
  .. code-block:: none
 
-                             avg       min
-    name                                  
-    load/onnx           0.001604  0.001377
-    load/onnxlight      0.000916  0.000699
-    load/onnxlight/x4   0.005784  0.001183
-    save/onnx           0.017938  0.010339
-    save/onnxlight      0.015176  0.002952
-    save/onnxlight/ext  0.013878  0.002989
+                              median       avg       min
+    name                                                
+    load/1filex1/onnx       0.184281  0.189936  0.159536
+    load/1filex1/onnxlight  0.182288  0.185897  0.168153
+    load/1filex4/onnxlight  0.063641  0.076702  0.051331
+    load/2filex1/onnx       0.608243  0.614063  0.496980
+    load/2filex1/onnxlight  0.416729  0.436897  0.402668
+    load/2filex4/onnxlight  0.351475  0.360678  0.323006
+    parse/x1/onnx           0.391917  0.432329  0.350165
+    parse/x1/onnxlight      0.838133  0.817337  0.712054
+    parse/x4/onnxlight      0.754202  0.794156  0.706678
+    save/1filex1/onnx       3.594013  3.426526  2.969855
+    save/1filex1/onnxlight  0.766226  0.659946  0.348268
+    save/1filex4/onnxlight  0.507830  0.530306  0.452359
+    save/2filex1/onnx       0.000449  0.188291  0.000346
+    save/2filex1/onnxlight  0.869463  0.933332  0.730822
+    save/2filex4/onnxlight  0.604858  0.709046  0.416015
+    serialize/x1/onnx       2.305554  2.383812  2.158288
+    serialize/x1/onnxlight  2.251970  2.287495  1.856651
+    serialize/x4/onnxlight  2.416742  2.457526  1.705073
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 154-155
+.. GENERATED FROM PYTHON SOURCE LINES 351-355
 
 Plot the results.
+Both the average and median are shown for each operation.
+Bars are colored by library: blue family for ``onnx``, orange family for
+``onnx_light``.  Solid shades represent the average; lighter shades the median.
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-162
+.. GENERATED FROM PYTHON SOURCE LINES 355-392
 
 .. code-block:: Python
 
+    import matplotlib.patches as mpatches
 
-    ax = df[["avg"]].plot.barh(
+    _onnx_avg = "steelblue"
+    _onnx_med = "lightsteelblue"
+    _onnx_light_avg = "darkorange"
+    _onnx_light_med = "moccasin"
+
+    ax = df[["avg", "median"]].plot.barh(
         title=f"size={file_size / 2 ** 20:.2f} MB\nonnx vs onnx_light load/save (s)\nlower is better",
         xlabel="seconds",
+        legend=False,
     )
+
+    # Row names use "onnxlight" (no underscore) as recorded during benchmarking.
+    row_names = df.index.tolist()
+    for container, col in zip(ax.containers, ["avg", "median"]):
+        for bar, name in zip(container, row_names):
+            if "onnxlight" in name:
+                bar.set_facecolor(_onnx_light_avg if col == "avg" else _onnx_light_med)
+            else:
+                bar.set_facecolor(_onnx_avg if col == "avg" else _onnx_med)
+
+    ax.legend(
+        handles=[
+            mpatches.Patch(color=_onnx_avg, label="onnx avg"),
+            mpatches.Patch(color=_onnx_med, label="onnx median"),
+            mpatches.Patch(color=_onnx_light_avg, label="onnx_light avg"),
+            mpatches.Patch(color=_onnx_light_med, label="onnx_light median"),
+        ]
+    )
+    ax.grid(axis="x")
+    for label in ax.get_yticklabels():
+        label.set_horizontalalignment("left")
+    ax.tick_params(axis="y", pad=120)
     ax.figure.tight_layout()
     ax.figure.savefig("plot_onnx_time.png")
 
 
 
+
 .. image-sg:: /auto_examples/core/images/sphx_glr_plot_onnx_time_001.png
-   :alt: size=5.00 MB onnx vs onnx_light load/save (s) lower is better
+   :alt: size=640.00 MB onnx vs onnx_light load/save (s) lower is better
    :srcset: /auto_examples/core/images/sphx_glr_plot_onnx_time_001.png
    :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 393-396
+
+Cleanup
+--------
+Remove all temporary files created during the benchmark.
+
+.. GENERATED FROM PYTHON SOURCE LINES 396-398
+
+.. code-block:: Python
+
+
+    shutil.rmtree(tmp_dir, ignore_errors=True)
+
+
 
 
 
@@ -401,7 +818,7 @@ Plot the results.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.551 seconds)
+   **Total running time of the script:** (1 minutes 41.926 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_onnx_time.py:

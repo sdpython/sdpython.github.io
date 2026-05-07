@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -146,6 +146,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="custom_ops/index.html">
+    Available Custom Ops
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="api/index.html">
     API Reference
   </a>
@@ -155,6 +162,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="auto_examples/index.html">
     Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ci_durations.html">
+    CI Job Durations (Past Two Months)
   </a>
 </li>
 
@@ -257,6 +271,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="custom_ops/index.html">
+    Available Custom Ops
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="api/index.html">
     API Reference
   </a>
@@ -266,6 +287,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="auto_examples/index.html">
     Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ci_durations.html">
+    CI Job Durations (Past Two Months)
   </a>
 </li>
 
@@ -357,16 +385,93 @@
 </a>
 <a class="reference external image-reference" href="https://github.com/xadupre/yet-another-onnxruntime-extensions"><img alt="https://img.shields.io/github/repo-size/xadupre/yet-another-onnxruntime-extensions" src="https://img.shields.io/github/repo-size/xadupre/yet-another-onnxruntime-extensions" />
 </a>
-<p>Experimental onnxruntime extensions.</p>
+<p><strong>yet-another-onnxruntime-extensions</strong> (<code class="docutils literal notranslate"><span class="pre">yaourt</span></code>) is an experimental library
+of <a class="reference external" href="https://onnxruntime.ai/">ONNX Runtime</a> extensions: custom C++ operators,
+profiling utilities, and plotting helpers.
+The source code is available on
+<a class="reference external" href="https://github.com/xadupre/yet-another-onnxruntime-extensions">GitHub</a>.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>yet-another-onnxruntime-extensions
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pre-built wheel includes sparse CPU operators only.
+Fused-kernel CUDA operators must be compiled from source with a
+CUDA-enabled CMake build — see <a class="reference internal" href="getting_started.html"><span class="doc">Getting Started</span></a> for instructions.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaourt</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">yaourt</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt><code class="xref py py-mod docutils literal notranslate"><span class="pre">yaourt.ortops</span></code> — Custom C++ Operators</dt><dd><p>Sparse CPU operators are shipped as pre-built binaries inside the wheel
+and registered with ONNX Runtime via
+<code class="xref py py-data docutils literal notranslate"><span class="pre">SPARSE_CPU_LIB_PATH</span></code>.
+Fused-kernel CUDA operators (<code class="xref py py-data docutils literal notranslate"><span class="pre">FUSED_KERNEL_CUDA_LIB_PATH</span></code>)
+require a CUDA-enabled build — see <a class="reference internal" href="getting_started.html"><span class="doc">Getting Started</span></a> for CMake
+build instructions.</p>
+</dd>
+<dt><code class="xref py py-mod docutils literal notranslate"><span class="pre">yaourt.tools</span></code> — Profiling Tools</dt><dd><p>Parse ONNX Runtime JSON profiling output into <code class="docutils literal notranslate"><span class="pre">pandas</span></code> DataFrames
+(<a class="reference internal" href="api/tools/js_profile.html#yaourt.tools.js_profile.js_profile_to_dataframe" title="yaourt.tools.js_profile.js_profile_to_dataframe"><code class="xref py py-func docutils literal notranslate"><span class="pre">js_profile_to_dataframe()</span></code></a>) and visualize
+per-operator timings and execution timelines with matplotlib
+(<a class="reference internal" href="api/tools/js_profile.html#yaourt.tools.js_profile.plot_ort_profile" title="yaourt.tools.js_profile.plot_ort_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_ort_profile()</span></code></a>,
+<a class="reference internal" href="api/tools/js_profile.html#yaourt.tools.js_profile.plot_ort_profile_timeline" title="yaourt.tools.js_profile.plot_ort_profile_timeline"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_ort_profile_timeline()</span></code></a>).</p>
+</dd>
+<dt><a class="reference internal" href="api/plot/yaourt.plot.html#module-yaourt.plot" title="yaourt.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yaourt.plot</span></code></a> — Benchmark and Plot Helpers</dt><dd><p>Horizontal benchmark comparison histograms with error bars
+(<a class="reference internal" href="api/plot/yaourt.plot.benchmark.html#yaourt.plot.benchmark.hhistograms" title="yaourt.plot.benchmark.hhistograms"><code class="xref py py-func docutils literal notranslate"><span class="pre">hhistograms()</span></code></a>) and tensor histogram
+utilities for model analysis (<a class="reference internal" href="api/yaourt.doc.html#yaourt.doc.plot_histogram" title="yaourt.doc.plot_histogram"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_histogram()</span></code></a>).</p>
+</dd>
+<dt><code class="xref py py-mod docutils literal notranslate"><span class="pre">yaourt.reference</span></code> — Reference Evaluator</dt><dd><p>A pure-Python ONNX evaluator useful for testing and debugging custom
+operators without a full ONNX Runtime build.</p>
+</dd>
+</dl>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<p>Run inference with ONNX Runtime:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yaourt.doc</span><span class="w"> </span><span class="kn">import</span> <span class="n">demo_mlp_model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">demo_mlp_model</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># filename argument is unused</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="p">(</span><span class="n">output</span><span class="p">,)</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output shape:&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Load the custom C++ operators:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ort</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yaourt.ortops</span><span class="w"> </span><span class="kn">import</span> <span class="n">SPARSE_CPU_LIB_PATH</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="n">ort</span><span class="o">.</span><span class="n">SessionOptions</span><span class="p">()</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">register_custom_ops_library</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">SPARSE_CPU_LIB_PATH</span><span class="p">))</span>
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_ops/index.html">Available Custom Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html#core-examples">Core examples</a></li>
 </ul>
 </div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ci_durations.html">CI Job Durations (Past Two Months)</a></li>
+</ul>
+</div>
+</section>
 </section>
 
 
@@ -398,6 +503,22 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">

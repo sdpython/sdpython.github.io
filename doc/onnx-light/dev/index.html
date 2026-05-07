@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -153,6 +153,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="misc.html">
+    Miscellaneous
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -257,6 +264,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="misc.html">
+    Miscellaneous
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -344,12 +358,43 @@
 <a class="reference external image-reference" href="https://github.com/xadupre/onnx-light"><img alt="https://img.shields.io/github/repo-size/xadupre/onnx-light" src="https://img.shields.io/github/repo-size/xadupre/onnx-light" />
 </a>
 <p>onnx without protobuf.</p>
+</section>
+<section id="key-advantages-over-onnx">
+<h1>Key advantages over onnx<a class="headerlink" href="#key-advantages-over-onnx" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p><strong>Files larger than 2 GB</strong> – The standard <code class="docutils literal notranslate"><span class="pre">onnx</span></code> package relies on
+protobuf, which enforces a 2 GB message-size limit and cannot load or save
+models that exceed that threshold. <code class="docutils literal notranslate"><span class="pre">onnx-light</span></code> bypasses protobuf entirely
+and supports arbitrarily large ONNX files.</p></li>
+<li><p><strong>Parallel loading</strong> – Tensor weights can be read in parallel using multiple
+threads, which significantly reduces wall-clock load time for large models.</p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h1>
+<p>Install the package in editable mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+</pre></div>
+</div>
+<p>Run a quick check:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import onnx_light; print(onnx_light.__version__)&quot;</span>
+</pre></div>
+</div>
+<p>Load a model with parallel tensor parsing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">onnx_light</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;model.onnx&quot;</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">ir_version</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Source code: <a class="github reference external" href="https://github.com/xadupre/onnx-light">xadupre/onnx-light</a></p>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html#core-examples">Core examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </div>
 </section>
@@ -383,6 +428,21 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">onnx-light</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-advantages-over-onnx">Key advantages over onnx</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting started</a></li>
+</ul>
+
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">

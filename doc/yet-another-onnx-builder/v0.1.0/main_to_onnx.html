@@ -33,12 +33,12 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1c8377ea" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=6be761b0" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -505,8 +505,340 @@
                 <article class="bd-article">
                   
   <section id="main-to-onnx-function">
-<h1>Main to_onnx function<a class="headerlink" href="#main-to-onnx-function" title="Link to this heading">#</a></h1>
-<p>… in progress …</p>
+<span id="l-main-to-onnx"></span><h1>Main to_onnx function<a class="headerlink" href="#main-to-onnx-function" title="Link to this heading">#</a></h1>
+<p><a class="reference internal" href="design/to_onnx.html#yobx.to_onnx" title="yobx.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.to_onnx()</span></code></a> is the <strong>single entry point</strong> for converting any
+supported model to <a class="reference external" href="https://onnx.ai">ONNX</a> format.  It inspects the
+type of the <em>model</em> argument at runtime and automatically delegates to
+the appropriate backend-specific converter, forwarding all extra keyword
+arguments verbatim.</p>
+<p>The function always returns an <a class="reference internal" href="api/container/index.html#yobx.container.ExportArtifact" title="yobx.container.ExportArtifact"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportArtifact</span></code></a>
+regardless of which backend was selected — see
+<a class="reference internal" href="design/export_artifact.html#l-design-export-artifact"><span class="std std-ref">to_onnx and ExportArtifact</span></a> for a full description of that container.</p>
+<section id="dispatch-rules">
+<h2>Dispatch rules<a class="headerlink" href="#dispatch-rules" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="design/to_onnx.html#yobx.to_onnx" title="yobx.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.to_onnx()</span></code></a> inspects <em>model</em> in this order and calls the
+first matching backend:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Model type</p></th>
+<th class="head"><p>Backend function</p></th>
+<th class="head"><p>Reference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> or <a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.GraphModule" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.GraphModule</span></code></a></p></td>
+<td><p><a class="reference internal" href="api/torch/to_onnx.html#yobx.torch.to_onnx" title="yobx.torch.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.torch.to_onnx()</span></code></a></p></td>
+<td><p><a class="reference internal" href="design/torch/index.html#l-torch-converter"><span class="std std-ref">Torch Export to ONNX</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code></a></p></td>
+<td><p><a class="reference internal" href="api/sklearn/to_onnx.html#yobx.sklearn.to_onnx" title="yobx.sklearn.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sklearn.to_onnx()</span></code></a></p></td>
+<td><p><a class="reference internal" href="design/sklearn/index.html#l-sklearn-converter"><span class="std std-ref">scikit-learn Export to ONNX</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/Module" title="(in TensorFlow v2.8)"><code class="docutils literal notranslate"><span class="pre">tf.Module</span></code></a> (inc. Keras)</p></td>
+<td><p><a class="reference internal" href="api/tensorflow/to_onnx.html#yobx.tensorflow.to_onnx" title="yobx.tensorflow.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.tensorflow.to_onnx()</span></code></a></p></td>
+<td><p><a class="reference internal" href="design/tensorflow/index.html#l-design-tensorflow-converter"><span class="std std-ref">TensorFlow / JAX Export to ONNX</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> or <code class="docutils literal notranslate"><span class="pre">*.tflite</span></code> path</p></td>
+<td><p><a class="reference internal" href="api/litert/to_onnx.html#yobx.litert.to_onnx" title="yobx.litert.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.litert.to_onnx()</span></code></a></p></td>
+<td><p><a class="reference internal" href="design/litert/index.html#l-design-litert-converter"><span class="std std-ref">LiteRT / TFLite Export to ONNX</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>SQL <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>, or <code class="xref py py-class docutils literal notranslate"><span class="pre">polars.LazyFrame</span></code></p></td>
+<td><p><a class="reference internal" href="api/sql/to_onnx.html#yobx.sql.to_onnx" title="yobx.sql.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.sql.to_onnx()</span></code></a></p></td>
+<td><p><a class="reference internal" href="design/sql/sql.html#l-design-sql-converter"><span class="std std-ref">SQL-to-ONNX Converter</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>to_onnx(model, args, ...)
+     │
+     ├── torch.nn.Module / torch.fx.GraphModule ──► yobx.torch.to_onnx
+     │
+     ├── sklearn.base.BaseEstimator ──────────────► yobx.sklearn.to_onnx
+     │
+     ├── tensorflow.Module ───────────────────────► yobx.tensorflow.to_onnx
+     │
+     ├── bytes / *.tflite path ───────────────────► yobx.litert.to_onnx
+     │
+     └── str / callable / polars.LazyFrame ──────► yobx.sql.to_onnx
+</pre></div>
+</div>
+<p>If the model type matches none of the above, a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeError</span></code></a> is raised
+listing all supported types.</p>
+</section>
+<section id="common-parameters">
+<h2>Common parameters<a class="headerlink" href="#common-parameters" title="Link to this heading">#</a></h2>
+<p>All backends accept the following keyword arguments.
+Backend-specific parameters can be passed as extra <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> and are
+forwarded verbatim to the selected converter.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 12.0%" />
+<col style="width: 66.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">args</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Input arguments forwarded to the selected converter.
+For <strong>torch</strong>: a tuple of <a class="reference external" href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> objects.
+For <strong>sklearn / tensorflow / litert</strong>: a tuple of
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> objects.
+For <strong>sql</strong>: a <code class="docutils literal notranslate"><span class="pre">{column:</span> <span class="pre">dtype}</span></code> mapping or a
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> for numpy-function tracing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input_names</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Optional list of names for the ONNX graph input tensors.
+When omitted, names are derived automatically by each backend.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Declares which tensor dimensions are symbolic (variable-length).
+See <a class="reference internal" href="#l-main-to-onnx-dynamic-shapes"><span class="std std-ref">Dynamic shapes</span></a> below for the
+backend-specific formats.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">target_opset</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">21</span></code></p></td>
+<td><p>ONNX opset version to target.  Either an integer for the default
+domain, or a <code class="docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">int]</span></code> mapping domain names to opset
+versions (e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;&quot;:</span> <span class="pre">21,</span> <span class="pre">&quot;com.microsoft&quot;:</span> <span class="pre">1}</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Verbosity level (0 = silent).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">large_model</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">True</span></code>, initializers are stored as external data rather than
+embedded in the proto.  Required for models exceeding the 2 GB
+protobuf limit.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">external_threshold</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1024</span></code></p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">large_model=True</span></code>, tensors whose element count exceeds this
+threshold are stored externally.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">filename</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>If set, saves the exported model to this path.
+Not supported by the LiteRT backend (silently ignored).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">return_optimize_report</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">True</span></code>, the returned artifact’s
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">report</span></code> attribute is
+populated with per-pattern optimization statistics.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="dynamic-shapes">
+<span id="l-main-to-onnx-dynamic-shapes"></span><h2>Dynamic shapes<a class="headerlink" href="#dynamic-shapes" title="Link to this heading">#</a></h2>
+<p>The meaning of <code class="docutils literal notranslate"><span class="pre">None</span></code> and the accepted format for <code class="docutils literal notranslate"><span class="pre">dynamic_shapes</span></code>
+differs by backend:</p>
+<p><strong>PyTorch</strong> follows <a class="reference external" href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="(in PyTorch v2.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> conventions.  Pass a
+dict mapping input names to per-axis <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.export.Dim</span></code> objects,
+or a tuple with one entry per positional input.  <code class="docutils literal notranslate"><span class="pre">None</span></code> means <em>no</em>
+dynamic dimensions (all shapes are fixed):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,),</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}})</span>
+</pre></div>
+</div>
+<p><strong>scikit-learn / tensorflow / LiteRT</strong> use a tuple of <code class="docutils literal notranslate"><span class="pre">{axis:</span> <span class="pre">dim_name}</span></code>
+dicts, one per input.  <code class="docutils literal notranslate"><span class="pre">None</span></code> treats <strong>axis 0 as dynamic</strong> (batch
+dimension) for every input; all other axes remain static:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="c1"># None → axis 0 is automatically dynamic</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+
+<span class="c1"># explicit dynamic batch for input 0, static for input 1</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,),</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch&quot;</span><span class="p">},))</span>
+</pre></div>
+</div>
+<p><strong>SQL / numpy callable</strong> uses the same <code class="docutils literal notranslate"><span class="pre">{axis:</span> <span class="pre">dim_name}</span></code> tuple format
+as scikit-learn.  <code class="docutils literal notranslate"><span class="pre">None</span></code> lets the backend apply its own default
+(typically axis 0 dynamic).  Ignored for SQL strings and DataFrame-tracing
+callables.</p>
+</section>
+<section id="return-value">
+<h2>Return value<a class="headerlink" href="#return-value" title="Link to this heading">#</a></h2>
+<p>Every call to <a class="reference internal" href="design/to_onnx.html#yobx.to_onnx" title="yobx.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.to_onnx()</span></code></a> returns an
+<a class="reference internal" href="api/container/index.html#yobx.container.ExportArtifact" title="yobx.container.ExportArtifact"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportArtifact</span></code></a> instance.
+See <a class="reference internal" href="design/export_artifact.html#l-design-export-artifact"><span class="std std-ref">to_onnx and ExportArtifact</span></a> for the complete API, including how to:</p>
+<ul class="simple">
+<li><p>access the ONNX proto via <code class="docutils literal notranslate"><span class="pre">artifact.proto</span></code> or <code class="docutils literal notranslate"><span class="pre">artifact.get_proto()</span></code></p></li>
+<li><p>save the model to disk with <code class="docutils literal notranslate"><span class="pre">artifact.save(&quot;model.onnx&quot;)</span></code></p></li>
+<li><p>reload from disk with <code class="docutils literal notranslate"><span class="pre">ExportArtifact.load(&quot;model.onnx&quot;)</span></code></p></li>
+<li><p>inspect per-pattern optimization statistics via <code class="docutils literal notranslate"><span class="pre">artifact.report</span></code></p></li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<section id="scikit-learn-linear-regression">
+<h3>scikit-learn — linear regression<a class="headerlink" href="#scikit-learn-linear-regression" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># axis 0 is treated as dynamic (batch) by default</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scikit-learn-explicit-dynamic-batch-dimension">
+<h3>scikit-learn — explicit dynamic batch dimension<a class="headerlink" href="#scikit-learn-explicit-dynamic-batch-dimension" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Mark axis 0 of the first input as dynamic:</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,),</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;batch&quot;</span><span class="p">},))</span>
+</pre></div>
+</div>
+</section>
+<section id="pytorch-dynamic-batch-dimension">
+<h3>PyTorch — dynamic batch dimension<a class="headerlink" href="#pytorch-dynamic-batch-dimension" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Neuron</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Neuron</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,),</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}})</span>
+<span class="n">artifact</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;neuron.onnx&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="tensorflow-keras-simple-model">
+<h3>TensorFlow / Keras — simple model<a class="headerlink" href="#tensorflow-keras-simple-model" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>   <span class="c1"># build the model</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+</pre></div>
+</div>
+</section>
+<section id="sql-query">
+<h3>SQL query<a class="headerlink" href="#sql-query" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
+    <span class="s2">&quot;SELECT a + b AS total FROM t WHERE a &gt; 0&quot;</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="litert-tflite-from-file">
+<h3>LiteRT / TFLite — from file<a class="headerlink" href="#litert-tflite-from-file" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="s2">&quot;model.tflite&quot;</span><span class="p">,</span> <span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="litert-tflite-from-raw-bytes">
+<h3>LiteRT / TFLite — from raw bytes<a class="headerlink" href="#litert-tflite-from-raw-bytes" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;model.tflite&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">flatbuffer</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">flatbuffer</span><span class="p">,</span> <span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="saving-and-running-the-exported-model">
+<h2>Saving and running the exported model<a class="headerlink" href="#saving-and-running-the-exported-model" title="Link to this heading">#</a></h2>
+<p>Once you have an <a class="reference internal" href="api/container/index.html#yobx.container.ExportArtifact" title="yobx.container.ExportArtifact"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportArtifact</span></code></a>, you can
+serialize it and run it with any ONNX-compatible runtime:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,))</span>
+<span class="n">artifact</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;reg.onnx&quot;</span><span class="p">)</span>
+
+<span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><span class="s2">&quot;reg.onnx&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">predictions</span><span class="p">,)</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:</span><span class="mi">5</span><span class="p">]})</span>
+</pre></div>
+</div>
+</section>
+<section id="onnxruntime-operator-fusions">
+<h2>OnnxRuntime operator fusions<a class="headerlink" href="#onnxruntime-operator-fusions" title="Link to this heading">#</a></h2>
+<p>Passing <code class="docutils literal notranslate"><span class="pre">&quot;com.microsoft&quot;:</span> <span class="pre">1</span></code> in <em>target_opset</em> enables operator fusions
+(fused attention, layer normalization, …) that are specific to
+<a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yobx</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">x</span><span class="p">,),</span>
+    <span class="n">target_opset</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;com.microsoft&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="design/export_artifact.html#l-design-export-artifact"><span class="std std-ref">to_onnx and ExportArtifact</span></a> — the <a class="reference internal" href="api/container/index.html#yobx.container.ExportArtifact" title="yobx.container.ExportArtifact"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportArtifact</span></code></a> container</p></li>
+<li><p><a class="reference internal" href="design/torch/index.html#l-torch-converter"><span class="std std-ref">Torch Export to ONNX</span></a> — PyTorch backend details</p></li>
+<li><p><a class="reference internal" href="design/sklearn/index.html#l-sklearn-converter"><span class="std std-ref">scikit-learn Export to ONNX</span></a> — scikit-learn backend details</p></li>
+<li><p><a class="reference internal" href="design/tensorflow/index.html#l-design-tensorflow-converter"><span class="std std-ref">TensorFlow / JAX Export to ONNX</span></a> — TensorFlow / Keras backend details</p></li>
+<li><p><a class="reference internal" href="design/litert/index.html#l-design-litert-converter"><span class="std std-ref">LiteRT / TFLite Export to ONNX</span></a> — LiteRT / TFLite backend details</p></li>
+<li><p><a class="reference internal" href="design/sql/sql.html#l-design-sql-converter"><span class="std std-ref">SQL-to-ONNX Converter</span></a> — SQL / DataFrame backend details</p></li>
+<li><p><a class="reference internal" href="design/to_onnx.html#l-design-main-to-onnx"><span class="std std-ref">yobx.to_onnx</span></a> — design notes for <a class="reference internal" href="design/to_onnx.html#yobx.to_onnx" title="yobx.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.to_onnx()</span></code></a></p></li>
+</ul>
+</section>
 </section>
 
 
@@ -547,6 +879,34 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dispatch-rules">Dispatch rules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-parameters">Common parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-shapes">Dynamic shapes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-value">Return value</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scikit-learn-linear-regression">scikit-learn — linear regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scikit-learn-explicit-dynamic-batch-dimension">scikit-learn — explicit dynamic batch dimension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-dynamic-batch-dimension">PyTorch — dynamic batch dimension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorflow-keras-simple-model">TensorFlow / Keras — simple model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-query">SQL query</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#litert-tflite-from-file">LiteRT / TFLite — from file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#litert-tflite-from-raw-bytes">LiteRT / TFLite — from raw bytes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-and-running-the-exported-model">Saving and running the exported model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onnxruntime-operator-fusions">OnnxRuntime operator fusions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">

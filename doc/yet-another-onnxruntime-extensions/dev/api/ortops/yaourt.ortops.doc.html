@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -146,6 +146,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../custom_ops/index.html">
+    Available Custom Ops
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     API Reference
@@ -156,6 +163,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../auto_examples/index.html">
     Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../ci_durations.html">
+    CI Job Durations (Past Two Months)
   </a>
 </li>
 
@@ -255,6 +269,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../custom_ops/index.html">
+    Available Custom Ops
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     API Reference
@@ -265,6 +286,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../auto_examples/index.html">
     Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../ci_durations.html">
+    CI Job Durations (Past Two Months)
   </a>
 </li>
 
@@ -331,6 +359,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../reference/evaluator.html">yaourt.reference.evaluator</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp/index.html">C++ API Reference</a></li>
 </ul>
 </div>
 </nav></div>
@@ -396,16 +425,16 @@
                   
   <section id="module-yaourt.ortops.doc">
 <span id="yaourt-ortops-doc"></span><h1>yaourt.ortops.doc<a class="headerlink" href="#module-yaourt.ortops.doc" title="Link to this heading">#</a></h1>
-<p>Documentation catalogue of CPU custom ORT ops, derived from C++ source files.</p>
+<p>Documentation catalogue of custom ORT ops, derived from C++ source files.</p>
 <p>Structural metadata (op name, domain, execution provider, input/output names
-and element types) is parsed directly from the C++ lite-API source files at
-import time so that the Python catalogue always stays in sync with the C++
-implementation without any manual maintenance.</p>
-<p>Human-readable documentation strings are parsed from <code class="docutils literal notranslate"><span class="pre">///</span></code> Doxygen-style
-doc comments in the C++ header file, so prose descriptions live alongside
-the kernel declarations and are never duplicated in Python.</p>
-<section id="supported-c-sources">
-<h2>Supported C++ sources<a class="headerlink" href="#supported-c-sources" title="Link to this heading">#</a></h2>
+and element types) is parsed directly from the C++ source files at import time
+so that the Python catalogue always stays in sync with the C++ implementation
+without any manual maintenance.</p>
+<p>Human-readable documentation strings are parsed from Doxygen-style doc
+comments in the C++ header files, so prose descriptions live alongside the
+kernel declarations and are never duplicated in Python.</p>
+<section id="supported-c-sources-sparse-cpu-lite-api">
+<h2>Supported C++ sources — sparse CPU (lite API)<a class="headerlink" href="#supported-c-sources-sparse-cpu-lite-api" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">yaourt/ortops/sparse/cpu/ort_sparse_cpu2_lib.cc</span></code> — provides the op domain and the
 <code class="docutils literal notranslate"><span class="pre">CreateLiteCustomOp</span></code> registrations (op name → kernel class + exec provider).</p></li>
@@ -413,15 +442,44 @@ the kernel declarations and are never duplicated in Python.</p>
 signatures and <code class="docutils literal notranslate"><span class="pre">///</span></code> doc comments used to extract input/output argument
 names, element types, and prose descriptions.</p></li>
 </ul>
-<p>The <a class="reference internal" href="#yaourt.ortops.doc.print_cpu_ops" title="yaourt.ortops.doc.print_cpu_ops"><code class="xref py py-func docutils literal notranslate"><span class="pre">print_cpu_ops()</span></code></a> function renders the catalogue as plain text and is
-intended to be called from a <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> block in the Sphinx docs so
-that the rendered output is always in sync with the C++ source.</p>
+</section>
+<section id="supported-c-sources-fused-kernel-cuda-custom-op-base-api">
+<h2>Supported C++ sources — fused kernel CUDA (custom-op-base API)<a class="headerlink" href="#supported-c-sources-fused-kernel-cuda-custom-op-base-api" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">yaourt/ortops/fused_kernel/cuda/ort_fused_kernel_cuda_lib.cu</span></code> — provides the op
+domain name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yaourt/ortops/fused_kernel/cuda/*.cu</span></code> (individual kernel files) — provide
+<code class="docutils literal notranslate"><span class="pre">GetName()</span></code>, <code class="docutils literal notranslate"><span class="pre">GetInputTypeCount()</span></code>, <code class="docutils literal notranslate"><span class="pre">GetOutputTypeCount()</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">GetExecutionProviderType()</span></code> implementations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yaourt/ortops/fused_kernel/cuda/*.h</span></code> (individual header files) — provide
+<code class="docutils literal notranslate"><span class="pre">/**</span> <span class="pre">&#64;file</span> <span class="pre">…</span> <span class="pre">&#64;brief</span> <span class="pre">…</span> <span class="pre">*/</span></code> Doxygen doc blocks used as op descriptions.</p></li>
+</ul>
+<p>The <a class="reference internal" href="#yaourt.ortops.doc.print_cpu_ops" title="yaourt.ortops.doc.print_cpu_ops"><code class="xref py py-func docutils literal notranslate"><span class="pre">print_cpu_ops()</span></code></a> / <a class="reference internal" href="#yaourt.ortops.doc.print_cpu_ops_rst" title="yaourt.ortops.doc.print_cpu_ops_rst"><code class="xref py py-func docutils literal notranslate"><span class="pre">print_cpu_ops_rst()</span></code></a> and
+<a class="reference internal" href="#yaourt.ortops.doc.print_cuda_ops" title="yaourt.ortops.doc.print_cuda_ops"><code class="xref py py-func docutils literal notranslate"><span class="pre">print_cuda_ops()</span></code></a> / <a class="reference internal" href="#yaourt.ortops.doc.print_cuda_ops_rst" title="yaourt.ortops.doc.print_cuda_ops_rst"><code class="xref py py-func docutils literal notranslate"><span class="pre">print_cuda_ops_rst()</span></code></a> functions render the
+catalogues as plain text or RST and are intended to be called from
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> blocks in the Sphinx docs.</p>
 </section>
 <dl class="py data">
 <dt class="sig sig-object py" id="yaourt.ortops.doc.CPU_OPS">
 <span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">CPU_OPS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#yaourt.ortops.doc.OrtOpDesc" title="yaourt.ortops.doc.OrtOpDesc"><span class="pre">OrtOpDesc</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'DenseToSparse':</span> <span class="pre">OrtOpDesc(name='DenseToSparse',</span> <span class="pre">domain='yaourt.ortops.sparse.cpu',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CPUExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='X',</span> <span class="pre">dtype='float32',</span> <span class="pre">description='2-D</span> <span class="pre">dense</span> <span class="pre">float32</span> <span class="pre">input</span> <span class="pre">tensor</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">[n_rows,</span> <span class="pre">n_cols].</span> <span class="pre">Zero</span> <span class="pre">elements</span> <span class="pre">are</span> <span class="pre">not</span> <span class="pre">stored</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">sparse</span> <span class="pre">encoding.')],</span> <span class="pre">outputs=[OrtOpOutput(name='Y',</span> <span class="pre">dtype='float32',</span> <span class="pre">description='1-D</span> <span class="pre">float32</span> <span class="pre">tensor</span> <span class="pre">containing</span> <span class="pre">the</span> <span class="pre">sparse</span> <span class="pre">encoding</span> <span class="pre">of</span> <span class="pre">X.</span> <span class="pre">Layout:</span> <span class="pre">header</span> <span class="pre">|</span> <span class="pre">flat</span> <span class="pre">indices</span> <span class="pre">(uint32)</span> <span class="pre">|</span> <span class="pre">non-zero</span> <span class="pre">values</span> <span class="pre">(float32).')],</span> <span class="pre">doc='Converts</span> <span class="pre">a</span> <span class="pre">2-D</span> <span class="pre">dense</span> <span class="pre">float32</span> <span class="pre">tensor</span> <span class="pre">into</span> <span class="pre">a</span> <span class="pre">compact</span> <span class="pre">flat</span> <span class="pre">sparse</span> <span class="pre">encoding.\nOnly</span> <span class="pre">non-zero</span> <span class="pre">elements</span> <span class="pre">are</span> <span class="pre">stored.</span> <span class="pre">The</span> <span class="pre">1-D</span> <span class="pre">output</span> <span class="pre">tensor</span> <span class="pre">encodes</span> <span class="pre">the\noriginal</span> <span class="pre">shape,</span> <span class="pre">the</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">non-zero</span> <span class="pre">elements,</span> <span class="pre">their</span> <span class="pre">flat</span> <span class="pre">indices\n(stored</span> <span class="pre">as</span> <span class="pre">uint32),</span> <span class="pre">and</span> <span class="pre">their</span> <span class="pre">values</span> <span class="pre">(float32).</span> <span class="pre">The</span> <span class="pre">encoding</span> <span class="pre">is</span> <span class="pre">suitable\nas</span> <span class="pre">input</span> <span class="pre">to</span> <span class="pre">SparseToDense</span> <span class="pre">for</span> <span class="pre">a</span> <span class="pre">lossless</span> <span class="pre">round-trip.\n\nConstraints:</span> <span class="pre">input</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">exactly</span> <span class="pre">2-D;</span> <span class="pre">only</span> <span class="pre">float32</span> <span class="pre">is</span> <span class="pre">supported.'),</span> <span class="pre">'SparseToDense':</span> <span class="pre">OrtOpDesc(name='SparseToDense',</span> <span class="pre">domain='yaourt.ortops.sparse.cpu',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CPUExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='X',</span> <span class="pre">dtype='float32',</span> <span class="pre">description='1-D</span> <span class="pre">float32</span> <span class="pre">sparse</span> <span class="pre">encoding</span> <span class="pre">produced</span> <span class="pre">by</span> <span class="pre">DenseToSparse.')],</span> <span class="pre">outputs=[OrtOpOutput(name='Y',</span> <span class="pre">dtype='float32',</span> <span class="pre">description='Reconstructed</span> <span class="pre">2-D</span> <span class="pre">dense</span> <span class="pre">float32</span> <span class="pre">tensor.</span> <span class="pre">The</span> <span class="pre">shape</span> <span class="pre">is</span> <span class="pre">recovered</span> <span class="pre">from</span> <span class="pre">the</span> <span class="pre">sparse</span> <span class="pre">header</span> <span class="pre">embedded</span> <span class="pre">in</span> <span class="pre">X.')],</span> <span class="pre">doc='Converts</span> <span class="pre">the</span> <span class="pre">compact</span> <span class="pre">sparse</span> <span class="pre">encoding</span> <span class="pre">produced</span> <span class="pre">by</span> <span class="pre">DenseToSparse</span> <span class="pre">back</span> <span class="pre">into\na</span> <span class="pre">2-D</span> <span class="pre">dense</span> <span class="pre">float32</span> <span class="pre">tensor.</span> <span class="pre">Positions</span> <span class="pre">that</span> <span class="pre">were</span> <span class="pre">zero</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">original\ntensor</span> <span class="pre">are</span> <span class="pre">filled</span> <span class="pre">with</span> <span class="pre">0.0.</span> <span class="pre">The</span> <span class="pre">output</span> <span class="pre">shape</span> <span class="pre">is</span> <span class="pre">recovered</span> <span class="pre">from</span> <span class="pre">the\nsparse</span> <span class="pre">header</span> <span class="pre">embedded</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">input.\n\nConstraints:</span> <span class="pre">input</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">1-D</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">valid</span> <span class="pre">sparse</span> <span class="pre">header;</span> <span class="pre">the</span> <span class="pre">encoded\nshape</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">2-D;</span> <span class="pre">only</span> <span class="pre">float32</span> <span class="pre">is</span> <span class="pre">supported.')}</span></span><a class="headerlink" href="#yaourt.ortops.doc.CPU_OPS" title="Link to this definition">#</a></dt>
 <dd><p>All CPU custom ops provided by <em>yet-another-onnxruntime-extensions</em>, keyed
 by op name.  Populated at import time by parsing the C++ source files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yaourt.ortops.doc.CUDA_OPS">
+<span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">CUDA_OPS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#yaourt.ortops.doc.OrtOpDesc" title="yaourt.ortops.doc.OrtOpDesc"><span class="pre">OrtOpDesc</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'AddAdd':</span> <span class="pre">OrtOpDesc(name='AddAdd',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddAdd</span> <span class="pre">/</span> <span class="pre">MulMul</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">for</span> <span class="pre">three</span> <span class="pre">inputs.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">two</span> <span class="pre">element-wise</span> <span class="pre">ternary\noperations</span> <span class="pre">on</span> <span class="pre">three</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C:\n\n-</span> <span class="pre">**AddAdd**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):</span> <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``</span> <span class="pre">&lt;math&gt;\n\nWhen</span> <span class="pre">all</span> <span class="pre">inputs</span> <span class="pre">share</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">shape</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">uses</span> <span class="pre">a</span> <span class="pre">no-broadcast</span> <span class="pre">path</span> <span class="pre">for\nbetter</span> <span class="pre">performance.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'AddAddAdd':</span> <span class="pre">OrtOpDesc(name='AddAddAdd',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_3',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddAddAdd</span> <span class="pre">/</span> <span class="pre">MulMulMul</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">for</span> <span class="pre">four</span> <span class="pre">inputs.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">two</span> <span class="pre">element-wise</span> <span class="pre">quaternary\noperations</span> <span class="pre">on</span> <span class="pre">four</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C,</span> <span class="pre">D:\n\n-</span> <span class="pre">**AddAddAdd**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulMulMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'AddMul':</span> <span class="pre">OrtOpDesc(name='AddMul',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddMul</span> <span class="pre">/</span> <span class="pre">MulAdd</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">two</span> <span class="pre">element-wise</span> <span class="pre">ternary\noperations</span> <span class="pre">on</span> <span class="pre">three</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C:\n\n-</span> <span class="pre">**AddMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):</span> <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulAdd**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``</span> <span class="pre">&lt;math&gt;\n\nBoth</span> <span class="pre">variants</span> <span class="pre">support</span> <span class="pre">an</span> <span class="pre">optional</span> <span class="pre">kernel</span> <span class="pre">attribute</span> <span class="pre">``transposeMiddle.``</span>&#160; <span class="pre">When\nset</span> <span class="pre">to</span> <span class="pre">``true``</span> <span class="pre">on</span> <span class="pre">a</span> <span class="pre">4-D</span> <span class="pre">input</span> <span class="pre">the</span> <span class="pre">two</span> <span class="pre">middle</span> <span class="pre">axes</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">output</span> <span class="pre">are\ntransposed,</span> <span class="pre">which</span> <span class="pre">avoids</span> <span class="pre">a</span> <span class="pre">separate</span> <span class="pre">Transpose</span> <span class="pre">node</span> <span class="pre">in</span> <span class="pre">common</span> <span class="pre">attention-kernel\npatterns.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'AddSharedInput':</span> <span class="pre">OrtOpDesc(name='AddSharedInput',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpOutput(name='output_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddSharedInput</span> <span class="pre">/</span> <span class="pre">MulSharedInput</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">an</span> <span class="pre">operation</span> <span class="pre">that</span> <span class="pre">applies</span> <span class="pre">the\nsame</span> <span class="pre">first</span> <span class="pre">input</span> <span class="pre">A</span> <span class="pre">to</span> <span class="pre">two</span> <span class="pre">different</span> <span class="pre">second</span> <span class="pre">inputs</span> <span class="pre">B</span> <span class="pre">and</span> <span class="pre">C</span> <span class="pre">simultaneously,\nproducing</span> <span class="pre">two</span> <span class="pre">outputs:\n\n-</span> <span class="pre">**AddSharedInput**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulSharedInput**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n\nThis</span> <span class="pre">fused</span> <span class="pre">form</span> <span class="pre">avoids</span> <span class="pre">reading</span> <span class="pre">A</span> <span class="pre">twice</span> <span class="pre">when</span> <span class="pre">computing</span> <span class="pre">two</span> <span class="pre">independent\noperations</span> <span class="pre">that</span> <span class="pre">share</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">operand.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MaskedScatterNDOfShape':</span> <span class="pre">OrtOpDesc(name='MaskedScatterNDOfShape',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='MaskedScatterNDOfShape</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">a</span> <span class="pre">masked</span> <span class="pre">variant</span> <span class="pre">of</span> <span class="pre">the\nScatterNDOfShape</span> <span class="pre">operation.</span>&#160; <span class="pre">Each</span> <span class="pre">scatter</span> <span class="pre">step</span> <span class="pre">is</span> <span class="pre">skipped</span> <span class="pre">when</span> <span class="pre">the\ncorresponding</span> <span class="pre">index</span> <span class="pre">value</span> <span class="pre">equals</span> <span class="pre">a</span> <span class="pre">configurable</span> <span class="pre">``masked_value,``</span> <span class="pre">allowing\npadding</span> <span class="pre">indices</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">ignored</span> <span class="pre">without</span> <span class="pre">pre-filtering:\n\noutput</span> <span class="pre">=</span> <span class="pre">zeros(shape)\nfor</span> <span class="pre">each</span> <span class="pre">i:\nif</span> <span class="pre">indices[i]</span> <span class="pre">!=</span> <span class="pre">masked_value:\noutput[indices[i]]</span> <span class="pre">op=</span> <span class="pre">updates[i]\n\nInputs:\n\n-</span> <span class="pre">0:</span> <span class="pre">``shape``</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">—</span> <span class="pre">1-D</span> <span class="pre">``int64``</span> <span class="pre">tensor</span> <span class="pre">defining</span> <span class="pre">the</span> <span class="pre">output</span> <span class="pre">shape</span> <span class="pre">(CPU).\n-</span> <span class="pre">1:</span> <span class="pre">``indices``</span>&#160;&#160;&#160;&#160;&#160; <span class="pre">—</span> <span class="pre">integer</span> <span class="pre">indices</span> <span class="pre">tensor</span> <span class="pre">(CPU).\n-</span> <span class="pre">2:</span> <span class="pre">``updates``</span>&#160;&#160;&#160;&#160;&#160; <span class="pre">—</span> <span class="pre">data</span> <span class="pre">tensor</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">``T``</span> <span class="pre">(GPU).\n\nThe</span> <span class="pre">``reduction``</span> <span class="pre">and</span> <span class="pre">``masked_value``</span> <span class="pre">behaviour</span> <span class="pre">is</span> <span class="pre">configured</span> <span class="pre">via</span> <span class="pre">kernel\nattributes</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">names.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MulAdd':</span> <span class="pre">OrtOpDesc(name='MulAdd',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddMul</span> <span class="pre">/</span> <span class="pre">MulAdd</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">two</span> <span class="pre">element-wise</span> <span class="pre">ternary\noperations</span> <span class="pre">on</span> <span class="pre">three</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C:\n\n-</span> <span class="pre">**AddMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):</span> <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulAdd**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``</span> <span class="pre">&lt;math&gt;\n\nBoth</span> <span class="pre">variants</span> <span class="pre">support</span> <span class="pre">an</span> <span class="pre">optional</span> <span class="pre">kernel</span> <span class="pre">attribute</span> <span class="pre">``transposeMiddle.``</span>&#160; <span class="pre">When\nset</span> <span class="pre">to</span> <span class="pre">``true``</span> <span class="pre">on</span> <span class="pre">a</span> <span class="pre">4-D</span> <span class="pre">input</span> <span class="pre">the</span> <span class="pre">two</span> <span class="pre">middle</span> <span class="pre">axes</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">output</span> <span class="pre">are\ntransposed,</span> <span class="pre">which</span> <span class="pre">avoids</span> <span class="pre">a</span> <span class="pre">separate</span> <span class="pre">Transpose</span> <span class="pre">node</span> <span class="pre">in</span> <span class="pre">common</span> <span class="pre">attention-kernel\npatterns.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MulMul':</span> <span class="pre">OrtOpDesc(name='MulMul',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddAdd</span> <span class="pre">/</span> <span class="pre">MulMul</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">for</span> <span class="pre">three</span> <span class="pre">inputs.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">two</span> <span class="pre">element-wise</span> <span class="pre">ternary\noperations</span> <span class="pre">on</span> <span class="pre">three</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C:\n\n-</span> <span class="pre">**AddAdd**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):</span> <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``</span> <span class="pre">&lt;math&gt;\n\nWhen</span> <span class="pre">all</span> <span class="pre">inputs</span> <span class="pre">share</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">shape</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">uses</span> <span class="pre">a</span> <span class="pre">no-broadcast</span> <span class="pre">path</span> <span class="pre">for\nbetter</span> <span class="pre">performance.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MulMulMul':</span> <span class="pre">OrtOpDesc(name='MulMulMul',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_3',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddAddAdd</span> <span class="pre">/</span> <span class="pre">MulMulMul</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">for</span> <span class="pre">four</span> <span class="pre">inputs.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">two</span> <span class="pre">element-wise</span> <span class="pre">quaternary\noperations</span> <span class="pre">on</span> <span class="pre">four</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C,</span> <span class="pre">D:\n\n-</span> <span class="pre">**AddAddAdd**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulMulMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MulMulSigmoid':</span> <span class="pre">OrtOpDesc(name='MulMulSigmoid',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">MulMulSigmoid</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">element-wise</span> <span class="pre">binary\noperation</span> <span class="pre">applied</span> <span class="pre">to</span> <span class="pre">two</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">x</span> <span class="pre">and</span> <span class="pre">y:\n\n&lt;math&gt;\n\nThe</span> <span class="pre">sigmoid</span> <span class="pre">is</span> <span class="pre">applied</span> <span class="pre">only</span> <span class="pre">to</span> <span class="pre">y,</span> <span class="pre">making</span> <span class="pre">this</span> <span class="pre">a</span> <span class="pre">gated</span> <span class="pre">variant</span> <span class="pre">of</span> <span class="pre">the\nSiLU</span> <span class="pre">/</span> <span class="pre">Swish</span> <span class="pre">activation</span> <span class="pre">commonly</span> <span class="pre">found</span> <span class="pre">in</span> <span class="pre">gated</span> <span class="pre">linear</span> <span class="pre">units</span> <span class="pre">(GLUs)</span> <span class="pre">used</span> <span class="pre">in\ntransformer</span> <span class="pre">feed-forward</span> <span class="pre">networks.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MulSharedInput':</span> <span class="pre">OrtOpDesc(name='MulSharedInput',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpOutput(name='output_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">AddSharedInput</span> <span class="pre">/</span> <span class="pre">MulSharedInput</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">an</span> <span class="pre">operation</span> <span class="pre">that</span> <span class="pre">applies</span> <span class="pre">the\nsame</span> <span class="pre">first</span> <span class="pre">input</span> <span class="pre">A</span> <span class="pre">to</span> <span class="pre">two</span> <span class="pre">different</span> <span class="pre">second</span> <span class="pre">inputs</span> <span class="pre">B</span> <span class="pre">and</span> <span class="pre">C</span> <span class="pre">simultaneously,\nproducing</span> <span class="pre">two</span> <span class="pre">outputs:\n\n-</span> <span class="pre">**AddSharedInput**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true``</span> <span class="pre">):\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulSharedInput**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n\nThis</span> <span class="pre">fused</span> <span class="pre">form</span> <span class="pre">avoids</span> <span class="pre">reading</span> <span class="pre">A</span> <span class="pre">twice</span> <span class="pre">when</span> <span class="pre">computing</span> <span class="pre">two</span> <span class="pre">independent\noperations</span> <span class="pre">that</span> <span class="pre">share</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">operand.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MulSigmoid':</span> <span class="pre">OrtOpDesc(name='MulSigmoid',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">MulSigmoid</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">(SiLU</span> <span class="pre">/</span> <span class="pre">Swish</span> <span class="pre">activation).\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">element-wise</span> <span class="pre">unary\noperation:\n\n&lt;math&gt;\n\nThis</span> <span class="pre">is</span> <span class="pre">equivalent</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">SiLU</span> <span class="pre">(Sigmoid</span> <span class="pre">Linear</span> <span class="pre">Unit)</span> <span class="pre">/</span> <span class="pre">Swish</span> <span class="pre">activation\nfunction,</span> <span class="pre">which</span> <span class="pre">is</span> <span class="pre">commonly</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">transformer</span> <span class="pre">feed-forward</span> <span class="pre">blocks.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'MulSub':</span> <span class="pre">OrtOpDesc(name='MulSub',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">SubMul</span> <span class="pre">/</span> <span class="pre">MulSub</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">element-wise</span> <span class="pre">ternary</span> <span class="pre">operations\non</span> <span class="pre">three</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C.</span>&#160; <span class="pre">The</span> <span class="pre">template</span> <span class="pre">parameter\n``addition``</span> <span class="pre">selects</span> <span class="pre">whether</span> <span class="pre">subtraction</span> <span class="pre">precedes</span> <span class="pre">or</span> <span class="pre">follows</span> <span class="pre">multiplication,\nand</span> <span class="pre">the</span> <span class="pre">optional</span> <span class="pre">kernel</span> <span class="pre">attribute</span> <span class="pre">``negative``</span> <span class="pre">inverts</span> <span class="pre">the</span> <span class="pre">sign</span> <span class="pre">of</span> <span class="pre">the\nsubtraction</span> <span class="pre">operand:\n\n-</span> <span class="pre">**SubMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**SubMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``true):``\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulSub**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulSub**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``true):``\n</span>&#160; <span class="pre">&lt;math&gt;\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'NegXplus1':</span> <span class="pre">OrtOpDesc(name='NegXplus1',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='NegXplus1</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">—</span> <span class="pre">element-wise</span> <span class="pre">complement</span> <span class="pre">(1</span> <span class="pre">−</span> <span class="pre">x).\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">unary</span> <span class="pre">element-wise\noperation:\n\n&lt;math&gt;\n\nThis</span> <span class="pre">is</span> <span class="pre">the</span> <span class="pre">arithmetic</span> <span class="pre">complement</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">input,</span> <span class="pre">useful</span> <span class="pre">for</span> <span class="pre">computing\nprobability</span> <span class="pre">complements</span> <span class="pre">(e.g.</span> <span class="pre">&lt;math&gt;)</span> <span class="pre">without</span> <span class="pre">an</span> <span class="pre">extra</span> <span class="pre">Constant</span> <span class="pre">and\nSub</span> <span class="pre">node</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">graph.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half,``</span> <span class="pre">``int32_t.``'),</span> <span class="pre">'ReplaceZero':</span> <span class="pre">OrtOpDesc(name='ReplaceZero',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='ReplaceZero</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">—</span> <span class="pre">substitute</span> <span class="pre">zero</span> <span class="pre">elements.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">unary</span> <span class="pre">element-wise\noperation:\n\n&lt;math&gt;\n\nThe</span> <span class="pre">replacement</span> <span class="pre">scalar</span> <span class="pre">``by``</span> <span class="pre">is</span> <span class="pre">read</span> <span class="pre">from</span> <span class="pre">a</span> <span class="pre">kernel</span> <span class="pre">attribute</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">same\nname.</span>&#160; <span class="pre">The</span> <span class="pre">operator</span> <span class="pre">is</span> <span class="pre">useful</span> <span class="pre">for</span> <span class="pre">masking</span> <span class="pre">out</span> <span class="pre">padding</span> <span class="pre">tokens</span> <span class="pre">or</span> <span class="pre">avoiding\ndivision</span> <span class="pre">by</span> <span class="pre">zero</span> <span class="pre">in</span> <span class="pre">subsequent</span> <span class="pre">operations.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'Rotary':</span> <span class="pre">OrtOpDesc(name='Rotary',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Rotary</span> <span class="pre">positional</span> <span class="pre">embedding</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">that</span> <span class="pre">apply</span> <span class="pre">a</span> <span class="pre">rotary</span> <span class="pre">transformation\nto</span> <span class="pre">the</span> <span class="pre">last</span> <span class="pre">dimension</span> <span class="pre">of</span> <span class="pre">an</span> <span class="pre">input</span> <span class="pre">tensor.</span>&#160; <span class="pre">The</span> <span class="pre">operation</span> <span class="pre">implements</span> <span class="pre">rotary\nposition</span> <span class="pre">encodings</span> <span class="pre">(RoPE)</span> <span class="pre">as</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">models</span> <span class="pre">such</span> <span class="pre">as</span> <span class="pre">LLaMA</span> <span class="pre">and</span> <span class="pre">GPT-NeoX.\n\nEach</span> <span class="pre">pair</span> <span class="pre">of</span> <span class="pre">elements</span> <span class="pre">&lt;math&gt;</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">last\ndimension</span> <span class="pre">is</span> <span class="pre">rotated</span> <span class="pre">depending</span> <span class="pre">on</span> <span class="pre">``RotarySide:``\n\n-</span> <span class="pre">**LEFT**</span> <span class="pre">side</span> <span class="pre">(``rotary_side_``</span> <span class="pre">=</span> <span class="pre">LEFT):\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**RIGHT**</span> <span class="pre">side</span> <span class="pre">(``rotary_side_``</span> <span class="pre">=</span> <span class="pre">RIGHT):\n</span>&#160; <span class="pre">&lt;math&gt;\n\nThe</span> <span class="pre">side</span> <span class="pre">is</span> <span class="pre">selected</span> <span class="pre">via</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">attribute</span> <span class="pre">``&quot;side&quot;``</span> <span class="pre">(integer,</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">LEFT,\n2</span> <span class="pre">=</span> <span class="pre">RIGHT).</span>&#160; <span class="pre">The</span> <span class="pre">first</span> <span class="pre">input</span> <span class="pre">provides</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">tensor</span> <span class="pre">and</span> <span class="pre">is</span> <span class="pre">expected</span> <span class="pre">in\ndevice</span> <span class="pre">memory;</span> <span class="pre">the</span> <span class="pre">second</span> <span class="pre">input</span> <span class="pre">(optional</span> <span class="pre">shape</span> <span class="pre">hint)</span> <span class="pre">is</span> <span class="pre">read</span> <span class="pre">from</span> <span class="pre">CPU\nmemory.\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'ScatterNDOfShape':</span> <span class="pre">OrtOpDesc(name='ScatterNDOfShape',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='ScatterNDOfShape</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">scattering</span> <span class="pre">``updates``</span> <span class="pre">into</span> <span class="pre">a\nzero-initialised</span> <span class="pre">output</span> <span class="pre">tensor</span> <span class="pre">whose</span> <span class="pre">shape</span> <span class="pre">is</span> <span class="pre">defined</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">first</span> <span class="pre">input.\nThe</span> <span class="pre">operation</span> <span class="pre">is</span> <span class="pre">equivalent</span> <span class="pre">to:\n\noutput</span> <span class="pre">=</span> <span class="pre">zeros(shape)\noutput[indices[i]]</span> <span class="pre">op=</span> <span class="pre">updates[i]</span>&#160; <span class="pre">for</span> <span class="pre">each</span> <span class="pre">i\n\nwhere</span> <span class="pre">``op``</span> <span class="pre">is</span> <span class="pre">determined</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">``reduction``</span> <span class="pre">kernel</span> <span class="pre">attribute\n(``Reduction::None``</span> <span class="pre">overwrites,</span> <span class="pre">``Add``</span> <span class="pre">accumulates,</span> <span class="pre">etc.).</span>&#160; <span class="pre">A</span> <span class="pre">second\nstrategy</span> <span class="pre">attribute</span> <span class="pre">(``Strategy::None``</span> <span class="pre">or</span> <span class="pre">``Optimize)``</span> <span class="pre">lets</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">choose\na</span> <span class="pre">shape-specific</span> <span class="pre">fast</span> <span class="pre">path</span> <span class="pre">at</span> <span class="pre">runtime.\n\nInputs:\n\n-</span> <span class="pre">0:</span> <span class="pre">``shape``</span>&#160;&#160; <span class="pre">—</span> <span class="pre">1-D</span> <span class="pre">``int64``</span> <span class="pre">tensor</span> <span class="pre">defining</span> <span class="pre">the</span> <span class="pre">output</span> <span class="pre">shape</span> <span class="pre">(CPU).\n-</span> <span class="pre">1:</span> <span class="pre">``indices``</span> <span class="pre">—</span> <span class="pre">integer</span> <span class="pre">indices</span> <span class="pre">tensor</span> <span class="pre">(CPU).\n-</span> <span class="pre">2:</span> <span class="pre">``updates``</span> <span class="pre">—</span> <span class="pre">data</span> <span class="pre">tensor</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">``T``</span> <span class="pre">(GPU).\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'SubMul':</span> <span class="pre">OrtOpDesc(name='SubMul',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_2',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">SubMul</span> <span class="pre">/</span> <span class="pre">MulSub</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">element-wise</span> <span class="pre">ternary</span> <span class="pre">operations\non</span> <span class="pre">three</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C.</span>&#160; <span class="pre">The</span> <span class="pre">template</span> <span class="pre">parameter\n``addition``</span> <span class="pre">selects</span> <span class="pre">whether</span> <span class="pre">subtraction</span> <span class="pre">precedes</span> <span class="pre">or</span> <span class="pre">follows</span> <span class="pre">multiplication,\nand</span> <span class="pre">the</span> <span class="pre">optional</span> <span class="pre">kernel</span> <span class="pre">attribute</span> <span class="pre">``negative``</span> <span class="pre">inverts</span> <span class="pre">the</span> <span class="pre">sign</span> <span class="pre">of</span> <span class="pre">the\nsubtraction</span> <span class="pre">operand:\n\n-</span> <span class="pre">**SubMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**SubMul**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``true,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``true):``\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulSub**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``false):``\n</span>&#160; <span class="pre">&lt;math&gt;\n-</span> <span class="pre">**MulSub**</span> <span class="pre">(``addition``</span> <span class="pre">=</span> <span class="pre">``false,``</span> <span class="pre">``negative``</span> <span class="pre">=</span> <span class="pre">``true):``\n</span>&#160; <span class="pre">&lt;math&gt;\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``'),</span> <span class="pre">'Transpose2DCastFP16':</span> <span class="pre">OrtOpDesc(name='Transpose2DCastFP16',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Transpose2DCast</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">—</span> <span class="pre">2-D</span> <span class="pre">matrix</span> <span class="pre">transpose</span> <span class="pre">with</span> <span class="pre">type\nconversion.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">transposing</span> <span class="pre">a</span> <span class="pre">2-D</span> <span class="pre">matrix</span> <span class="pre">and\nsimultaneously</span> <span class="pre">casting</span> <span class="pre">its</span> <span class="pre">elements</span> <span class="pre">to</span> <span class="pre">a</span> <span class="pre">different</span> <span class="pre">numeric</span> <span class="pre">type.</span>&#160; <span class="pre">Two\nregistered</span> <span class="pre">operator</span> <span class="pre">names</span> <span class="pre">are</span> <span class="pre">available</span> <span class="pre">depending</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">output</span> <span class="pre">type:\n\n-</span> <span class="pre">**Transpose2DCastFP16**</span> <span class="pre">—</span> <span class="pre">input</span> <span class="pre">``float``</span> <span class="pre">→</span> <span class="pre">output</span> <span class="pre">``half.``\n-</span> <span class="pre">**Transpose2DCastFP32**</span> <span class="pre">—</span> <span class="pre">input</span> <span class="pre">``half``</span> <span class="pre">→</span> <span class="pre">output</span> <span class="pre">``float.``\n\nThe</span> <span class="pre">operator</span> <span class="pre">fuses</span> <span class="pre">the</span> <span class="pre">Transpose</span> <span class="pre">and</span> <span class="pre">Cast</span> <span class="pre">nodes</span> <span class="pre">into</span> <span class="pre">a</span> <span class="pre">single</span> <span class="pre">tiled</span> <span class="pre">CUDA\nkernel,</span> <span class="pre">avoiding</span> <span class="pre">a</span> <span class="pre">round-trip</span> <span class="pre">through</span> <span class="pre">global</span> <span class="pre">memory</span> <span class="pre">compared</span> <span class="pre">to</span> <span class="pre">executing\nthem</span> <span class="pre">separately.\n\nThe</span> <span class="pre">input</span> <span class="pre">and</span> <span class="pre">output</span> <span class="pre">types</span> <span class="pre">are</span> <span class="pre">chosen</span> <span class="pre">at</span> <span class="pre">construction</span> <span class="pre">time</span> <span class="pre">and</span> <span class="pre">stored</span> <span class="pre">in</span> <span class="pre">the\noperator</span> <span class="pre">descriptor.'),</span> <span class="pre">'Transpose2DCastFP32':</span> <span class="pre">OrtOpDesc(name='Transpose2DCastFP32',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='Transpose2DCast</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">—</span> <span class="pre">2-D</span> <span class="pre">matrix</span> <span class="pre">transpose</span> <span class="pre">with</span> <span class="pre">type\nconversion.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">for</span> <span class="pre">transposing</span> <span class="pre">a</span> <span class="pre">2-D</span> <span class="pre">matrix</span> <span class="pre">and\nsimultaneously</span> <span class="pre">casting</span> <span class="pre">its</span> <span class="pre">elements</span> <span class="pre">to</span> <span class="pre">a</span> <span class="pre">different</span> <span class="pre">numeric</span> <span class="pre">type.</span>&#160; <span class="pre">Two\nregistered</span> <span class="pre">operator</span> <span class="pre">names</span> <span class="pre">are</span> <span class="pre">available</span> <span class="pre">depending</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">output</span> <span class="pre">type:\n\n-</span> <span class="pre">**Transpose2DCastFP16**</span> <span class="pre">—</span> <span class="pre">input</span> <span class="pre">``float``</span> <span class="pre">→</span> <span class="pre">output</span> <span class="pre">``half.``\n-</span> <span class="pre">**Transpose2DCastFP32**</span> <span class="pre">—</span> <span class="pre">input</span> <span class="pre">``half``</span> <span class="pre">→</span> <span class="pre">output</span> <span class="pre">``float.``\n\nThe</span> <span class="pre">operator</span> <span class="pre">fuses</span> <span class="pre">the</span> <span class="pre">Transpose</span> <span class="pre">and</span> <span class="pre">Cast</span> <span class="pre">nodes</span> <span class="pre">into</span> <span class="pre">a</span> <span class="pre">single</span> <span class="pre">tiled</span> <span class="pre">CUDA\nkernel,</span> <span class="pre">avoiding</span> <span class="pre">a</span> <span class="pre">round-trip</span> <span class="pre">through</span> <span class="pre">global</span> <span class="pre">memory</span> <span class="pre">compared</span> <span class="pre">to</span> <span class="pre">executing\nthem</span> <span class="pre">separately.\n\nThe</span> <span class="pre">input</span> <span class="pre">and</span> <span class="pre">output</span> <span class="pre">types</span> <span class="pre">are</span> <span class="pre">chosen</span> <span class="pre">at</span> <span class="pre">construction</span> <span class="pre">time</span> <span class="pre">and</span> <span class="pre">stored</span> <span class="pre">in</span> <span class="pre">the\noperator</span> <span class="pre">descriptor.'),</span> <span class="pre">'TriMatrix':</span> <span class="pre">OrtOpDesc(name='TriMatrix',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cuda',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CUDAExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='input_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='input_1',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output_0',</span> <span class="pre">dtype='T',</span> <span class="pre">description='')],</span> <span class="pre">doc='TriMatrix</span> <span class="pre">CUDA</span> <span class="pre">custom</span> <span class="pre">operator</span> <span class="pre">—</span> <span class="pre">triangular</span> <span class="pre">matrix</span> <span class="pre">generator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">and</span> <span class="pre">operator</span> <span class="pre">classes</span> <span class="pre">that</span> <span class="pre">create</span> <span class="pre">a</span> <span class="pre">2-D</span> <span class="pre">triangular</span> <span class="pre">matrix\nwhose</span> <span class="pre">lower-triangle,</span> <span class="pre">diagonal,</span> <span class="pre">and</span> <span class="pre">upper-triangle</span> <span class="pre">elements</span> <span class="pre">are</span> <span class="pre">filled</span> <span class="pre">with\nuser-supplied</span> <span class="pre">scalar</span> <span class="pre">values.\n\nFor</span> <span class="pre">a</span> <span class="pre">matrix</span> <span class="pre">of</span> <span class="pre">size</span> <span class="pre">&lt;math&gt;,</span> <span class="pre">element\n&lt;math&gt;</span> <span class="pre">is</span> <span class="pre">set</span> <span class="pre">to:\n\n&lt;math&gt;\n\nInputs:\n\n-</span> <span class="pre">0:</span> <span class="pre">``shape``</span>&#160; <span class="pre">—</span> <span class="pre">1-D</span> <span class="pre">``int64``</span> <span class="pre">tensor</span> <span class="pre">&lt;math&gt;</span> <span class="pre">(CPU).\n-</span> <span class="pre">1:</span> <span class="pre">``values``</span> <span class="pre">—</span> <span class="pre">1-D</span> <span class="pre">tensor</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">``T``</span> <span class="pre">with</span> <span class="pre">three</span> <span class="pre">elements\n</span>&#160; <span class="pre">&lt;math&gt;</span> <span class="pre">(CPU).\n\nSupported</span> <span class="pre">element</span> <span class="pre">types:</span> <span class="pre">``float,``</span> <span class="pre">``half.``')}</span></span><a class="headerlink" href="#yaourt.ortops.doc.CUDA_OPS" title="Link to this definition">#</a></dt>
+<dd><p>All fused-kernel CUDA custom ops provided by
+<em>yet-another-onnxruntime-extensions</em>, keyed by op name.  Populated at
+import time by parsing the C++ source files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yaourt.ortops.doc.FUSED_KERNEL_CPU_OPS">
+<span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">FUSED_KERNEL_CPU_OPS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#yaourt.ortops.doc.OrtOpDesc" title="yaourt.ortops.doc.OrtOpDesc"><span class="pre">OrtOpDesc</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'MulMul':</span> <span class="pre">OrtOpDesc(name='MulMul',</span> <span class="pre">domain='yaourt.ortops.fused_kernel.cpu',</span> <span class="pre">since_version=1,</span> <span class="pre">execution_provider='CPUExecutionProvider',</span> <span class="pre">inputs=[OrtOpInput(name='A',</span> <span class="pre">dtype='float32',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='B',</span> <span class="pre">dtype='float32',</span> <span class="pre">description=''),</span> <span class="pre">OrtOpInput(name='C',</span> <span class="pre">dtype='float32',</span> <span class="pre">description='')],</span> <span class="pre">outputs=[OrtOpOutput(name='output',</span> <span class="pre">dtype='float32',</span> <span class="pre">description='')],</span> <span class="pre">doc='Fused</span> <span class="pre">MulMul</span> <span class="pre">CPU</span> <span class="pre">custom</span> <span class="pre">operator.\n\nDeclares</span> <span class="pre">the</span> <span class="pre">kernel</span> <span class="pre">class</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">element-wise</span> <span class="pre">ternary</span> <span class="pre">multiplication\napplied</span> <span class="pre">to</span> <span class="pre">three</span> <span class="pre">broadcastable</span> <span class="pre">input</span> <span class="pre">tensors</span> <span class="pre">A,</span> <span class="pre">B,</span> <span class="pre">C:\n\n&lt;math&gt;\n\nThe</span> <span class="pre">implementation</span> <span class="pre">uses</span> <span class="pre">AVX2</span> <span class="pre">SIMD</span> <span class="pre">instructions</span> <span class="pre">for</span> <span class="pre">vectorised</span> <span class="pre">throughput\nand</span> <span class="pre">std::thread</span> <span class="pre">for</span> <span class="pre">multi-threaded</span> <span class="pre">parallelism.\n\nSupported</span> <span class="pre">element</span> <span class="pre">type:</span> <span class="pre">``float.``')}</span></span><a class="headerlink" href="#yaourt.ortops.doc.FUSED_KERNEL_CPU_OPS" title="Link to this definition">#</a></dt>
+<dd><p>All fused-kernel CPU custom ops provided by
+<em>yet-another-onnxruntime-extensions</em>, keyed by op name.  Populated at
+import time by parsing the C++ source files.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -606,6 +664,1382 @@ derived from the C++ source files.</p>
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="yaourt.ortops.doc.print_cpu_ops_rst">
+<span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">print_cpu_ops_rst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#yaourt.ortops.doc.print_cpu_ops_rst" title="Link to this definition">#</a></dt>
+<dd><p>Renders the CPU custom-op catalogue as RST and writes it to stdout.</p>
+<p>Renders <a class="reference internal" href="#yaourt.ortops.doc.CPU_OPS" title="yaourt.ortops.doc.CPU_OPS"><code class="xref py py-data docutils literal notranslate"><span class="pre">CPU_OPS</span></code></a> as valid reStructuredText suitable for a
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span> <span class="pre">:rst:</span></code> block in the Sphinx documentation.  Each op is
+rendered as a sub-section with a <code class="docutils literal notranslate"><span class="pre">list-table</span></code> for its metadata, and
+bulleted lists for its inputs and outputs, ensuring the rendered page is
+always derived from the C++ source files without manual maintenance.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yaourt.ortops.doc</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_cpu_ops_rst</span>
+
+<span class="n">print_cpu_ops_rst</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<section id="densetosparse">
+<h2>DenseToSparse<a class="headerlink" href="#densetosparse" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.sparse.cpu</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CPUExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Since version</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Converts a 2-D dense float32 tensor into a compact flat sparse encoding.
+Only non-zero elements are stored. The 1-D output tensor encodes the
+original shape, the number of non-zero elements, their flat indices
+(stored as uint32), and their values (float32). The encoding is suitable
+as input to SparseToDense for a lossless round-trip.</p>
+<p>Constraints: input must be exactly 2-D; only float32 is supported.</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">X</span></code> (<em>float32</em>) — 2-D dense float32 input tensor of shape [n_rows, n_cols]. Zero elements are not stored in the sparse encoding.</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Y</span></code> (<em>float32</em>) — 1-D float32 tensor containing the sparse encoding of X. Layout: header | flat indices (uint32) | non-zero values (float32).</p></li>
+</ul>
+</section>
+<section id="sparsetodense">
+<h2>SparseToDense<a class="headerlink" href="#sparsetodense" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.sparse.cpu</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CPUExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Since version</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Converts the compact sparse encoding produced by DenseToSparse back into
+a 2-D dense float32 tensor. Positions that were zero in the original
+tensor are filled with 0.0. The output shape is recovered from the
+sparse header embedded in the input.</p>
+<p>Constraints: input must be 1-D with a valid sparse header; the encoded
+shape must be 2-D; only float32 is supported.</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">X</span></code> (<em>float32</em>) — 1-D float32 sparse encoding produced by DenseToSparse.</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Y</span></code> (<em>float32</em>) — Reconstructed 2-D dense float32 tensor. The shape is recovered from the sparse header embedded in X.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yaourt.ortops.doc.print_cuda_ops">
+<span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">print_cuda_ops</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#yaourt.ortops.doc.print_cuda_ops" title="Link to this definition">#</a></dt>
+<dd><p>Prints the fused-kernel CUDA custom-op catalogue to stdout.</p>
+<p>Renders <a class="reference internal" href="#yaourt.ortops.doc.CUDA_OPS" title="yaourt.ortops.doc.CUDA_OPS"><code class="xref py py-data docutils literal notranslate"><span class="pre">CUDA_OPS</span></code></a> as plain text suitable for a <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code>
+block in the Sphinx documentation, ensuring the rendered output is always
+derived from the C++ source files.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yaourt.ortops.doc</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_cuda_ops</span>
+
+<span class="n">print_cuda_ops</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    AddAdd
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddAdd / MulMul CUDA custom operator for three inputs.
+      
+      Declares the kernel and operator classes for two element-wise ternary
+      operations on three broadcastable input tensors A, B, C:
+      
+      - **AddAdd** (``addition`` = ``true`` ): &lt;math&gt;
+      - **MulMul** (``addition`` = ``false):`` &lt;math&gt;
+      
+      When all inputs share the same shape the kernel uses a no-broadcast path for
+      better performance.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    AddAddAdd
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddAddAdd / MulMulMul CUDA custom operator for four inputs.
+      
+      Declares the kernel and operator classes for two element-wise quaternary
+      operations on four broadcastable input tensors A, B, C, D:
+      
+      - **AddAddAdd** (``addition`` = ``true`` ):
+        &lt;math&gt;
+      - **MulMulMul** (``addition`` = ``false):``
+        &lt;math&gt;
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x4
+      outputs  : T x1
+    
+    AddMul
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddMul / MulAdd CUDA custom operator.
+      
+      Declares the kernel and operator classes for two element-wise ternary
+      operations on three broadcastable input tensors A, B, C:
+      
+      - **AddMul** (``addition`` = ``true`` ): &lt;math&gt;
+      - **MulAdd** (``addition`` = ``false):`` &lt;math&gt;
+      
+      Both variants support an optional kernel attribute ``transposeMiddle.``  When
+      set to ``true`` on a 4-D input the two middle axes of the output are
+      transposed, which avoids a separate Transpose node in common attention-kernel
+      patterns.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    AddSharedInput
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddSharedInput / MulSharedInput CUDA custom operator.
+      
+      Declares the kernel and operator classes for an operation that applies the
+      same first input A to two different second inputs B and C simultaneously,
+      producing two outputs:
+      
+      - **AddSharedInput** (``addition`` = ``true`` ):
+        &lt;math&gt;
+      - **MulSharedInput** (``addition`` = ``false):``
+        &lt;math&gt;
+      
+      This fused form avoids reading A twice when computing two independent
+      operations that share the same operand.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x2
+    
+    MaskedScatterNDOfShape
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      MaskedScatterNDOfShape CUDA custom operator.
+      
+      Declares the kernel and operator classes for a masked variant of the
+      ScatterNDOfShape operation.  Each scatter step is skipped when the
+      corresponding index value equals a configurable ``masked_value,`` allowing
+      padding indices to be ignored without pre-filtering:
+      
+      output = zeros(shape)
+      for each i:
+      if indices[i] != masked_value:
+      output[indices[i]] op= updates[i]
+      
+      Inputs:
+      
+      - 0: ``shape``        — 1-D ``int64`` tensor defining the output shape (CPU).
+      - 1: ``indices``      — integer indices tensor (CPU).
+      - 2: ``updates``      — data tensor of type ``T`` (GPU).
+      
+      The ``reduction`` and ``masked_value`` behaviour is configured via kernel
+      attributes of the same names.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    MulAdd
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddMul / MulAdd CUDA custom operator.
+      
+      Declares the kernel and operator classes for two element-wise ternary
+      operations on three broadcastable input tensors A, B, C:
+      
+      - **AddMul** (``addition`` = ``true`` ): &lt;math&gt;
+      - **MulAdd** (``addition`` = ``false):`` &lt;math&gt;
+      
+      Both variants support an optional kernel attribute ``transposeMiddle.``  When
+      set to ``true`` on a 4-D input the two middle axes of the output are
+      transposed, which avoids a separate Transpose node in common attention-kernel
+      patterns.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    MulMul
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddAdd / MulMul CUDA custom operator for three inputs.
+      
+      Declares the kernel and operator classes for two element-wise ternary
+      operations on three broadcastable input tensors A, B, C:
+      
+      - **AddAdd** (``addition`` = ``true`` ): &lt;math&gt;
+      - **MulMul** (``addition`` = ``false):`` &lt;math&gt;
+      
+      When all inputs share the same shape the kernel uses a no-broadcast path for
+      better performance.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    MulMulMul
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddAddAdd / MulMulMul CUDA custom operator for four inputs.
+      
+      Declares the kernel and operator classes for two element-wise quaternary
+      operations on four broadcastable input tensors A, B, C, D:
+      
+      - **AddAddAdd** (``addition`` = ``true`` ):
+        &lt;math&gt;
+      - **MulMulMul** (``addition`` = ``false):``
+        &lt;math&gt;
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x4
+      outputs  : T x1
+    
+    MulMulSigmoid
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused MulMulSigmoid CUDA custom operator.
+      
+      Declares the kernel and operator classes for the element-wise binary
+      operation applied to two broadcastable input tensors x and y:
+      
+      &lt;math&gt;
+      
+      The sigmoid is applied only to y, making this a gated variant of the
+      SiLU / Swish activation commonly found in gated linear units (GLUs) used in
+      transformer feed-forward networks.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x2
+      outputs  : T x1
+    
+    MulSharedInput
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused AddSharedInput / MulSharedInput CUDA custom operator.
+      
+      Declares the kernel and operator classes for an operation that applies the
+      same first input A to two different second inputs B and C simultaneously,
+      producing two outputs:
+      
+      - **AddSharedInput** (``addition`` = ``true`` ):
+        &lt;math&gt;
+      - **MulSharedInput** (``addition`` = ``false):``
+        &lt;math&gt;
+      
+      This fused form avoids reading A twice when computing two independent
+      operations that share the same operand.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x2
+    
+    MulSigmoid
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused MulSigmoid CUDA custom operator (SiLU / Swish activation).
+      
+      Declares the kernel and operator classes for the element-wise unary
+      operation:
+      
+      &lt;math&gt;
+      
+      This is equivalent to the SiLU (Sigmoid Linear Unit) / Swish activation
+      function, which is commonly used in transformer feed-forward blocks.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x1
+      outputs  : T x1
+    
+    MulSub
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused SubMul / MulSub CUDA custom operator.
+      
+      Declares the kernel and operator classes for element-wise ternary operations
+      on three broadcastable input tensors A, B, C.  The template parameter
+      ``addition`` selects whether subtraction precedes or follows multiplication,
+      and the optional kernel attribute ``negative`` inverts the sign of the
+      subtraction operand:
+      
+      - **SubMul** (``addition`` = ``true,`` ``negative`` = ``false):``
+        &lt;math&gt;
+      - **SubMul** (``addition`` = ``true,`` ``negative`` = ``true):``
+        &lt;math&gt;
+      - **MulSub** (``addition`` = ``false,`` ``negative`` = ``false):``
+        &lt;math&gt;
+      - **MulSub** (``addition`` = ``false,`` ``negative`` = ``true):``
+        &lt;math&gt;
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    NegXplus1
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      NegXplus1 CUDA custom operator — element-wise complement (1 − x).
+      
+      Declares the kernel and operator classes for the unary element-wise
+      operation:
+      
+      &lt;math&gt;
+      
+      This is the arithmetic complement of the input, useful for computing
+      probability complements (e.g. &lt;math&gt;) without an extra Constant and
+      Sub node in the graph.
+      
+      Supported element types: ``float,`` ``half,`` ``int32_t.``
+      inputs   : T x1
+      outputs  : T x1
+    
+    ReplaceZero
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      ReplaceZero CUDA custom operator — substitute zero elements.
+      
+      Declares the kernel and operator classes for the unary element-wise
+      operation:
+      
+      &lt;math&gt;
+      
+      The replacement scalar ``by`` is read from a kernel attribute of the same
+      name.  The operator is useful for masking out padding tokens or avoiding
+      division by zero in subsequent operations.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x1
+      outputs  : T x1
+    
+    Rotary
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Rotary positional embedding CUDA custom operator.
+      
+      Declares the kernel and operator classes that apply a rotary transformation
+      to the last dimension of an input tensor.  The operation implements rotary
+      position encodings (RoPE) as used in models such as LLaMA and GPT-NeoX.
+      
+      Each pair of elements &lt;math&gt; in the last
+      dimension is rotated depending on ``RotarySide:``
+      
+      - **LEFT** side (``rotary_side_`` = LEFT):
+        &lt;math&gt;
+      - **RIGHT** side (``rotary_side_`` = RIGHT):
+        &lt;math&gt;
+      
+      The side is selected via the kernel attribute ``&quot;side&quot;`` (integer, 1 = LEFT,
+      2 = RIGHT).  The first input provides the data tensor and is expected in
+      device memory; the second input (optional shape hint) is read from CPU
+      memory.
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x2
+      outputs  : T x1
+    
+    ScatterNDOfShape
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      ScatterNDOfShape CUDA custom operator.
+      
+      Declares the kernel and operator classes for scattering ``updates`` into a
+      zero-initialised output tensor whose shape is defined by the first input.
+      The operation is equivalent to:
+      
+      output = zeros(shape)
+      output[indices[i]] op= updates[i]  for each i
+      
+      where ``op`` is determined by the ``reduction`` kernel attribute
+      (``Reduction::None`` overwrites, ``Add`` accumulates, etc.).  A second
+      strategy attribute (``Strategy::None`` or ``Optimize)`` lets the kernel choose
+      a shape-specific fast path at runtime.
+      
+      Inputs:
+      
+      - 0: ``shape``   — 1-D ``int64`` tensor defining the output shape (CPU).
+      - 1: ``indices`` — integer indices tensor (CPU).
+      - 2: ``updates`` — data tensor of type ``T`` (GPU).
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    SubMul
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Fused SubMul / MulSub CUDA custom operator.
+      
+      Declares the kernel and operator classes for element-wise ternary operations
+      on three broadcastable input tensors A, B, C.  The template parameter
+      ``addition`` selects whether subtraction precedes or follows multiplication,
+      and the optional kernel attribute ``negative`` inverts the sign of the
+      subtraction operand:
+      
+      - **SubMul** (``addition`` = ``true,`` ``negative`` = ``false):``
+        &lt;math&gt;
+      - **SubMul** (``addition`` = ``true,`` ``negative`` = ``true):``
+        &lt;math&gt;
+      - **MulSub** (``addition`` = ``false,`` ``negative`` = ``false):``
+        &lt;math&gt;
+      - **MulSub** (``addition`` = ``false,`` ``negative`` = ``true):``
+        &lt;math&gt;
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x3
+      outputs  : T x1
+    
+    Transpose2DCastFP16
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Transpose2DCast CUDA custom operator — 2-D matrix transpose with type
+      conversion.
+      
+      Declares the kernel and operator classes for transposing a 2-D matrix and
+      simultaneously casting its elements to a different numeric type.  Two
+      registered operator names are available depending on the output type:
+      
+      - **Transpose2DCastFP16** — input ``float`` → output ``half.``
+      - **Transpose2DCastFP32** — input ``half`` → output ``float.``
+      
+      The operator fuses the Transpose and Cast nodes into a single tiled CUDA
+      kernel, avoiding a round-trip through global memory compared to executing
+      them separately.
+      
+      The input and output types are chosen at construction time and stored in the
+      operator descriptor.
+      inputs   : T x1
+      outputs  : T x1
+    
+    Transpose2DCastFP32
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      Transpose2DCast CUDA custom operator — 2-D matrix transpose with type
+      conversion.
+      
+      Declares the kernel and operator classes for transposing a 2-D matrix and
+      simultaneously casting its elements to a different numeric type.  Two
+      registered operator names are available depending on the output type:
+      
+      - **Transpose2DCastFP16** — input ``float`` → output ``half.``
+      - **Transpose2DCastFP32** — input ``half`` → output ``float.``
+      
+      The operator fuses the Transpose and Cast nodes into a single tiled CUDA
+      kernel, avoiding a round-trip through global memory compared to executing
+      them separately.
+      
+      The input and output types are chosen at construction time and stored in the
+      operator descriptor.
+      inputs   : T x1
+      outputs  : T x1
+    
+    TriMatrix
+      domain   : yaourt.ortops.fused_kernel.cuda
+      provider : CUDAExecutionProvider
+      version  : 1
+      TriMatrix CUDA custom operator — triangular matrix generator.
+      
+      Declares the kernel and operator classes that create a 2-D triangular matrix
+      whose lower-triangle, diagonal, and upper-triangle elements are filled with
+      user-supplied scalar values.
+      
+      For a matrix of size &lt;math&gt;, element
+      &lt;math&gt; is set to:
+      
+      &lt;math&gt;
+      
+      Inputs:
+      
+      - 0: ``shape``  — 1-D ``int64`` tensor &lt;math&gt; (CPU).
+      - 1: ``values`` — 1-D tensor of type ``T`` with three elements
+        &lt;math&gt; (CPU).
+      
+      Supported element types: ``float,`` ``half.``
+      inputs   : T x2
+      outputs  : T x1
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yaourt.ortops.doc.print_cuda_ops_rst">
+<span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">print_cuda_ops_rst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#yaourt.ortops.doc.print_cuda_ops_rst" title="Link to this definition">#</a></dt>
+<dd><p>Renders the fused-kernel CUDA custom-op catalogue as RST and writes it to stdout.</p>
+<p>Renders <a class="reference internal" href="#yaourt.ortops.doc.CUDA_OPS" title="yaourt.ortops.doc.CUDA_OPS"><code class="xref py py-data docutils literal notranslate"><span class="pre">CUDA_OPS</span></code></a> as valid reStructuredText suitable for a
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span> <span class="pre">:rst:</span></code> block in the Sphinx documentation.  Each op is
+rendered as a sub-section with a <code class="docutils literal notranslate"><span class="pre">list-table</span></code> for its metadata followed
+by its description, ensuring the rendered page is always derived from the
+C++ source files without manual maintenance.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yaourt.ortops.doc</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_cuda_ops_rst</span>
+
+<span class="n">print_cuda_ops_rst</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<section id="addadd">
+<h2>AddAdd<a class="headerlink" href="#addadd" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddAdd / MulMul CUDA custom operator for three inputs.</p>
+<p>Declares the kernel and operator classes for two element-wise ternary
+operations on three broadcastable input tensors A, B, C:</p>
+<ul class="simple">
+<li><p><strong>AddAdd</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ): &lt;math&gt;</p></li>
+<li><p><strong>MulMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code> &lt;math&gt;</p></li>
+</ul>
+<p>When all inputs share the same shape the kernel uses a no-broadcast path for
+better performance.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="addaddadd">
+<h2>AddAddAdd<a class="headerlink" href="#addaddadd" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddAddAdd / MulMulMul CUDA custom operator for four inputs.</p>
+<p>Declares the kernel and operator classes for two element-wise quaternary
+operations on four broadcastable input tensors A, B, C, D:</p>
+<ul class="simple">
+<li><p><strong>AddAddAdd</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ):
+&lt;math&gt;</p></li>
+<li><p><strong>MulMulMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+</ul>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="addmul">
+<h2>AddMul<a class="headerlink" href="#addmul" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddMul / MulAdd CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for two element-wise ternary
+operations on three broadcastable input tensors A, B, C:</p>
+<ul class="simple">
+<li><p><strong>AddMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ): &lt;math&gt;</p></li>
+<li><p><strong>MulAdd</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code> &lt;math&gt;</p></li>
+</ul>
+<p>Both variants support an optional kernel attribute <code class="docutils literal notranslate"><span class="pre">transposeMiddle.</span></code>  When
+set to <code class="docutils literal notranslate"><span class="pre">true</span></code> on a 4-D input the two middle axes of the output are
+transposed, which avoids a separate Transpose node in common attention-kernel
+patterns.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="addsharedinput">
+<h2>AddSharedInput<a class="headerlink" href="#addsharedinput" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddSharedInput / MulSharedInput CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for an operation that applies the
+same first input A to two different second inputs B and C simultaneously,
+producing two outputs:</p>
+<ul class="simple">
+<li><p><strong>AddSharedInput</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ):
+&lt;math&gt;</p></li>
+<li><p><strong>MulSharedInput</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+</ul>
+<p>This fused form avoids reading A twice when computing two independent
+operations that share the same operand.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="maskedscatterndofshape">
+<h2>MaskedScatterNDOfShape<a class="headerlink" href="#maskedscatterndofshape" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>MaskedScatterNDOfShape CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for a masked variant of the
+ScatterNDOfShape operation.  Each scatter step is skipped when the
+corresponding index value equals a configurable <code class="docutils literal notranslate"><span class="pre">masked_value,</span></code> allowing
+padding indices to be ignored without pre-filtering:</p>
+<p>output = zeros(shape)
+for each i:
+if indices[i] != masked_value:
+output[indices[i]] op= updates[i]</p>
+<p>Inputs:</p>
+<ul class="simple">
+<li><p>0: <code class="docutils literal notranslate"><span class="pre">shape</span></code>        — 1-D <code class="docutils literal notranslate"><span class="pre">int64</span></code> tensor defining the output shape (CPU).</p></li>
+<li><p>1: <code class="docutils literal notranslate"><span class="pre">indices</span></code>      — integer indices tensor (CPU).</p></li>
+<li><p>2: <code class="docutils literal notranslate"><span class="pre">updates</span></code>      — data tensor of type <code class="docutils literal notranslate"><span class="pre">T</span></code> (GPU).</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">reduction</span></code> and <code class="docutils literal notranslate"><span class="pre">masked_value</span></code> behaviour is configured via kernel
+attributes of the same names.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="muladd">
+<h2>MulAdd<a class="headerlink" href="#muladd" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddMul / MulAdd CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for two element-wise ternary
+operations on three broadcastable input tensors A, B, C:</p>
+<ul class="simple">
+<li><p><strong>AddMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ): &lt;math&gt;</p></li>
+<li><p><strong>MulAdd</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code> &lt;math&gt;</p></li>
+</ul>
+<p>Both variants support an optional kernel attribute <code class="docutils literal notranslate"><span class="pre">transposeMiddle.</span></code>  When
+set to <code class="docutils literal notranslate"><span class="pre">true</span></code> on a 4-D input the two middle axes of the output are
+transposed, which avoids a separate Transpose node in common attention-kernel
+patterns.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="mulmul">
+<h2>MulMul<a class="headerlink" href="#mulmul" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddAdd / MulMul CUDA custom operator for three inputs.</p>
+<p>Declares the kernel and operator classes for two element-wise ternary
+operations on three broadcastable input tensors A, B, C:</p>
+<ul class="simple">
+<li><p><strong>AddAdd</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ): &lt;math&gt;</p></li>
+<li><p><strong>MulMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code> &lt;math&gt;</p></li>
+</ul>
+<p>When all inputs share the same shape the kernel uses a no-broadcast path for
+better performance.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="mulmulmul">
+<h2>MulMulMul<a class="headerlink" href="#mulmulmul" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddAddAdd / MulMulMul CUDA custom operator for four inputs.</p>
+<p>Declares the kernel and operator classes for two element-wise quaternary
+operations on four broadcastable input tensors A, B, C, D:</p>
+<ul class="simple">
+<li><p><strong>AddAddAdd</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ):
+&lt;math&gt;</p></li>
+<li><p><strong>MulMulMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+</ul>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="mulmulsigmoid">
+<h2>MulMulSigmoid<a class="headerlink" href="#mulmulsigmoid" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused MulMulSigmoid CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for the element-wise binary
+operation applied to two broadcastable input tensors x and y:</p>
+<p>&lt;math&gt;</p>
+<p>The sigmoid is applied only to y, making this a gated variant of the
+SiLU / Swish activation commonly found in gated linear units (GLUs) used in
+transformer feed-forward networks.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="mulsharedinput">
+<h2>MulSharedInput<a class="headerlink" href="#mulsharedinput" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused AddSharedInput / MulSharedInput CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for an operation that applies the
+same first input A to two different second inputs B and C simultaneously,
+producing two outputs:</p>
+<ul class="simple">
+<li><p><strong>AddSharedInput</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code> ):
+&lt;math&gt;</p></li>
+<li><p><strong>MulSharedInput</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+</ul>
+<p>This fused form avoids reading A twice when computing two independent
+operations that share the same operand.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="mulsigmoid">
+<h2>MulSigmoid<a class="headerlink" href="#mulsigmoid" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused MulSigmoid CUDA custom operator (SiLU / Swish activation).</p>
+<p>Declares the kernel and operator classes for the element-wise unary
+operation:</p>
+<p>&lt;math&gt;</p>
+<p>This is equivalent to the SiLU (Sigmoid Linear Unit) / Swish activation
+function, which is commonly used in transformer feed-forward blocks.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="mulsub">
+<h2>MulSub<a class="headerlink" href="#mulsub" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused SubMul / MulSub CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for element-wise ternary operations
+on three broadcastable input tensors A, B, C.  The template parameter
+<code class="docutils literal notranslate"><span class="pre">addition</span></code> selects whether subtraction precedes or follows multiplication,
+and the optional kernel attribute <code class="docutils literal notranslate"><span class="pre">negative</span></code> inverts the sign of the
+subtraction operand:</p>
+<ul class="simple">
+<li><p><strong>SubMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+<li><p><strong>SubMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">true):</span></code>
+&lt;math&gt;</p></li>
+<li><p><strong>MulSub</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+<li><p><strong>MulSub</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">true):</span></code>
+&lt;math&gt;</p></li>
+</ul>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="negxplus1">
+<h2>NegXplus1<a class="headerlink" href="#negxplus1" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>NegXplus1 CUDA custom operator — element-wise complement (1 − x).</p>
+<p>Declares the kernel and operator classes for the unary element-wise
+operation:</p>
+<p>&lt;math&gt;</p>
+<p>This is the arithmetic complement of the input, useful for computing
+probability complements (e.g. &lt;math&gt;) without an extra Constant and
+Sub node in the graph.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half,</span></code> <code class="docutils literal notranslate"><span class="pre">int32_t.</span></code></p>
+</section>
+<section id="replacezero">
+<h2>ReplaceZero<a class="headerlink" href="#replacezero" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ReplaceZero CUDA custom operator — substitute zero elements.</p>
+<p>Declares the kernel and operator classes for the unary element-wise
+operation:</p>
+<p>&lt;math&gt;</p>
+<p>The replacement scalar <code class="docutils literal notranslate"><span class="pre">by</span></code> is read from a kernel attribute of the same
+name.  The operator is useful for masking out padding tokens or avoiding
+division by zero in subsequent operations.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="rotary">
+<h2>Rotary<a class="headerlink" href="#rotary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Rotary positional embedding CUDA custom operator.</p>
+<p>Declares the kernel and operator classes that apply a rotary transformation
+to the last dimension of an input tensor.  The operation implements rotary
+position encodings (RoPE) as used in models such as LLaMA and GPT-NeoX.</p>
+<p>Each pair of elements &lt;math&gt; in the last
+dimension is rotated depending on <code class="docutils literal notranslate"><span class="pre">RotarySide:</span></code></p>
+<ul class="simple">
+<li><p><strong>LEFT</strong> side (<code class="docutils literal notranslate"><span class="pre">rotary_side_</span></code> = LEFT):
+&lt;math&gt;</p></li>
+<li><p><strong>RIGHT</strong> side (<code class="docutils literal notranslate"><span class="pre">rotary_side_</span></code> = RIGHT):
+&lt;math&gt;</p></li>
+</ul>
+<p>The side is selected via the kernel attribute <code class="docutils literal notranslate"><span class="pre">&quot;side&quot;</span></code> (integer, 1 = LEFT,
+2 = RIGHT).  The first input provides the data tensor and is expected in
+device memory; the second input (optional shape hint) is read from CPU
+memory.</p>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="scatterndofshape">
+<h2>ScatterNDOfShape<a class="headerlink" href="#scatterndofshape" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ScatterNDOfShape CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for scattering <code class="docutils literal notranslate"><span class="pre">updates</span></code> into a
+zero-initialised output tensor whose shape is defined by the first input.
+The operation is equivalent to:</p>
+<p>output = zeros(shape)
+output[indices[i]] op= updates[i]  for each i</p>
+<p>where <code class="docutils literal notranslate"><span class="pre">op</span></code> is determined by the <code class="docutils literal notranslate"><span class="pre">reduction</span></code> kernel attribute
+(<code class="docutils literal notranslate"><span class="pre">Reduction::None</span></code> overwrites, <code class="docutils literal notranslate"><span class="pre">Add</span></code> accumulates, etc.).  A second
+strategy attribute (<code class="docutils literal notranslate"><span class="pre">Strategy::None</span></code> or <code class="docutils literal notranslate"><span class="pre">Optimize)</span></code> lets the kernel choose
+a shape-specific fast path at runtime.</p>
+<p>Inputs:</p>
+<ul class="simple">
+<li><p>0: <code class="docutils literal notranslate"><span class="pre">shape</span></code>   — 1-D <code class="docutils literal notranslate"><span class="pre">int64</span></code> tensor defining the output shape (CPU).</p></li>
+<li><p>1: <code class="docutils literal notranslate"><span class="pre">indices</span></code> — integer indices tensor (CPU).</p></li>
+<li><p>2: <code class="docutils literal notranslate"><span class="pre">updates</span></code> — data tensor of type <code class="docutils literal notranslate"><span class="pre">T</span></code> (GPU).</p></li>
+</ul>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="submul">
+<h2>SubMul<a class="headerlink" href="#submul" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused SubMul / MulSub CUDA custom operator.</p>
+<p>Declares the kernel and operator classes for element-wise ternary operations
+on three broadcastable input tensors A, B, C.  The template parameter
+<code class="docutils literal notranslate"><span class="pre">addition</span></code> selects whether subtraction precedes or follows multiplication,
+and the optional kernel attribute <code class="docutils literal notranslate"><span class="pre">negative</span></code> inverts the sign of the
+subtraction operand:</p>
+<ul class="simple">
+<li><p><strong>SubMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+<li><p><strong>SubMul</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">true,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">true):</span></code>
+&lt;math&gt;</p></li>
+<li><p><strong>MulSub</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">false):</span></code>
+&lt;math&gt;</p></li>
+<li><p><strong>MulSub</strong> (<code class="docutils literal notranslate"><span class="pre">addition</span></code> = <code class="docutils literal notranslate"><span class="pre">false,</span></code> <code class="docutils literal notranslate"><span class="pre">negative</span></code> = <code class="docutils literal notranslate"><span class="pre">true):</span></code>
+&lt;math&gt;</p></li>
+</ul>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+<section id="transpose2dcastfp16">
+<h2>Transpose2DCastFP16<a class="headerlink" href="#transpose2dcastfp16" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Transpose2DCast CUDA custom operator — 2-D matrix transpose with type
+conversion.</p>
+<p>Declares the kernel and operator classes for transposing a 2-D matrix and
+simultaneously casting its elements to a different numeric type.  Two
+registered operator names are available depending on the output type:</p>
+<ul class="simple">
+<li><p><strong>Transpose2DCastFP16</strong> — input <code class="docutils literal notranslate"><span class="pre">float</span></code> → output <code class="docutils literal notranslate"><span class="pre">half.</span></code></p></li>
+<li><p><strong>Transpose2DCastFP32</strong> — input <code class="docutils literal notranslate"><span class="pre">half</span></code> → output <code class="docutils literal notranslate"><span class="pre">float.</span></code></p></li>
+</ul>
+<p>The operator fuses the Transpose and Cast nodes into a single tiled CUDA
+kernel, avoiding a round-trip through global memory compared to executing
+them separately.</p>
+<p>The input and output types are chosen at construction time and stored in the
+operator descriptor.</p>
+</section>
+<section id="transpose2dcastfp32">
+<h2>Transpose2DCastFP32<a class="headerlink" href="#transpose2dcastfp32" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Transpose2DCast CUDA custom operator — 2-D matrix transpose with type
+conversion.</p>
+<p>Declares the kernel and operator classes for transposing a 2-D matrix and
+simultaneously casting its elements to a different numeric type.  Two
+registered operator names are available depending on the output type:</p>
+<ul class="simple">
+<li><p><strong>Transpose2DCastFP16</strong> — input <code class="docutils literal notranslate"><span class="pre">float</span></code> → output <code class="docutils literal notranslate"><span class="pre">half.</span></code></p></li>
+<li><p><strong>Transpose2DCastFP32</strong> — input <code class="docutils literal notranslate"><span class="pre">half</span></code> → output <code class="docutils literal notranslate"><span class="pre">float.</span></code></p></li>
+</ul>
+<p>The operator fuses the Transpose and Cast nodes into a single tiled CUDA
+kernel, avoiding a round-trip through global memory compared to executing
+them separately.</p>
+<p>The input and output types are chosen at construction time and stored in the
+operator descriptor.</p>
+</section>
+<section id="trimatrix">
+<h2>TriMatrix<a class="headerlink" href="#trimatrix" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cuda</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CUDAExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>TriMatrix CUDA custom operator — triangular matrix generator.</p>
+<p>Declares the kernel and operator classes that create a 2-D triangular matrix
+whose lower-triangle, diagonal, and upper-triangle elements are filled with
+user-supplied scalar values.</p>
+<p>For a matrix of size &lt;math&gt;, element
+&lt;math&gt; is set to:</p>
+<p>&lt;math&gt;</p>
+<p>Inputs:</p>
+<ul class="simple">
+<li><p>0: <code class="docutils literal notranslate"><span class="pre">shape</span></code>  — 1-D <code class="docutils literal notranslate"><span class="pre">int64</span></code> tensor &lt;math&gt; (CPU).</p></li>
+<li><p>1: <code class="docutils literal notranslate"><span class="pre">values</span></code> — 1-D tensor of type <code class="docutils literal notranslate"><span class="pre">T</span></code> with three elements
+&lt;math&gt; (CPU).</p></li>
+</ul>
+<p>Supported element types: <code class="docutils literal notranslate"><span class="pre">float,</span></code> <code class="docutils literal notranslate"><span class="pre">half.</span></code></p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yaourt.ortops.doc.print_fused_kernel_cpu_ops">
+<span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">print_fused_kernel_cpu_ops</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#yaourt.ortops.doc.print_fused_kernel_cpu_ops" title="Link to this definition">#</a></dt>
+<dd><p>Prints the fused-kernel CPU custom-op catalogue to stdout.</p>
+<p>Renders <a class="reference internal" href="#yaourt.ortops.doc.FUSED_KERNEL_CPU_OPS" title="yaourt.ortops.doc.FUSED_KERNEL_CPU_OPS"><code class="xref py py-data docutils literal notranslate"><span class="pre">FUSED_KERNEL_CPU_OPS</span></code></a> as plain text suitable for a
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code> block in the Sphinx documentation, ensuring the rendered
+output is always derived from the C++ source files.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yaourt.ortops.doc</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_fused_kernel_cpu_ops</span>
+
+<span class="n">print_fused_kernel_cpu_ops</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    MulMul
+      domain   : yaourt.ortops.fused_kernel.cpu
+      provider : CPUExecutionProvider
+      version  : 1
+      Fused MulMul CPU custom operator.
+      
+      Declares the kernel class for the element-wise ternary multiplication
+      applied to three broadcastable input tensors A, B, C:
+      
+      &lt;math&gt;
+      
+      The implementation uses AVX2 SIMD instructions for vectorised throughput
+      and std::thread for multi-threaded parallelism.
+      
+      Supported element type: ``float.``
+      inputs   : float32 x3
+      outputs  : float32 x1
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yaourt.ortops.doc.print_fused_kernel_cpu_ops_rst">
+<span class="sig-prename descclassname"><span class="pre">yaourt.ortops.doc.</span></span><span class="sig-name descname"><span class="pre">print_fused_kernel_cpu_ops_rst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#yaourt.ortops.doc.print_fused_kernel_cpu_ops_rst" title="Link to this definition">#</a></dt>
+<dd><p>Outputs the fused-kernel CPU custom-op catalogue as RST to stdout.</p>
+<p>Renders <a class="reference internal" href="#yaourt.ortops.doc.FUSED_KERNEL_CPU_OPS" title="yaourt.ortops.doc.FUSED_KERNEL_CPU_OPS"><code class="xref py py-data docutils literal notranslate"><span class="pre">FUSED_KERNEL_CPU_OPS</span></code></a> as valid reStructuredText suitable for
+a <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span> <span class="pre">:rst:</span></code> block in the Sphinx documentation.  Each op is
+rendered as a sub-section with a <code class="docutils literal notranslate"><span class="pre">list-table</span></code> for its metadata followed by
+its description, ensuring the rendered page is always derived from the C++
+source files without manual maintenance.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">yaourt.ortops.doc</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_fused_kernel_cpu_ops_rst</span>
+
+<span class="n">print_fused_kernel_cpu_ops_rst</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<section id="id1">
+<h2>MulMul<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Domain</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">yaourt.ortops.fused_kernel.cpu</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Execution provider</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CPUExecutionProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inputs</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Outputs</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fused MulMul CPU custom operator.</p>
+<p>Declares the kernel class for the element-wise ternary multiplication
+applied to three broadcastable input tensors A, B, C:</p>
+<p>&lt;math&gt;</p>
+<p>The implementation uses AVX2 SIMD instructions for vectorised throughput
+and std::thread for multi-threaded parallelism.</p>
+<p>Supported element type: <code class="docutils literal notranslate"><span class="pre">float.</span></code></p>
+</section>
+</dd></dl>
+
 <section id="cpu-ops-catalogue">
 <h2>CPU ops catalogue<a class="headerlink" href="#cpu-ops-catalogue" title="Link to this heading">#</a></h2>
 <p>&lt;&lt;&lt;</p>
@@ -698,8 +2132,11 @@ derived from the C++ source files.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-c-sources">Supported C++ sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-c-sources-sparse-cpu-lite-api">Supported C++ sources — sparse CPU (lite API)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-c-sources-fused-kernel-cuda-custom-op-base-api">Supported C++ sources — fused kernel CUDA (custom-op-base API)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.CPU_OPS"><code class="docutils literal notranslate"><span class="pre">CPU_OPS</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.CUDA_OPS"><code class="docutils literal notranslate"><span class="pre">CUDA_OPS</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.FUSED_KERNEL_CPU_OPS"><code class="docutils literal notranslate"><span class="pre">FUSED_KERNEL_CPU_OPS</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.OrtOpDesc"><code class="docutils literal notranslate"><span class="pre">OrtOpDesc</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.OrtOpDesc.__eq__"><code class="docutils literal notranslate"><span class="pre">OrtOpDesc.__eq__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.OrtOpDesc.__hash__"><code class="docutils literal notranslate"><span class="pre">OrtOpDesc.__hash__</span></code></a></li>
@@ -725,6 +2162,11 @@ derived from the C++ source files.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.print_cpu_ops"><code class="docutils literal notranslate"><span class="pre">print_cpu_ops()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.print_cpu_ops_rst"><code class="docutils literal notranslate"><span class="pre">print_cpu_ops_rst()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.print_cuda_ops"><code class="docutils literal notranslate"><span class="pre">print_cuda_ops()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.print_cuda_ops_rst"><code class="docutils literal notranslate"><span class="pre">print_cuda_ops_rst()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.print_fused_kernel_cpu_ops"><code class="docutils literal notranslate"><span class="pre">print_fused_kernel_cpu_ops()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yaourt.ortops.doc.print_fused_kernel_cpu_ops_rst"><code class="docutils literal notranslate"><span class="pre">print_fused_kernel_cpu_ops_rst()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-ops-catalogue">CPU ops catalogue</a></li>
 </ul>
   </nav></div>

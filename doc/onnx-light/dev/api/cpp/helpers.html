@@ -1,0 +1,899 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Helpers &#8212; onnx-light 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/cpp/helpers';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Streaming" href="streaming.html" />
+    <link rel="prev" title="C++ API" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="onnx-light 0.1.0 documentation - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="onnx-light 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../onnx/index.html">onnx_light.onnx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/helper.html">onnx_light.onnx.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/io_helper.html">onnx_light.onnx.io_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/pychecker.html">onnx_light.onnx.pychecker</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">C++ API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Helpers</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="streaming.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stream.html">stream.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_string.html">simple_string.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="thread_pool.html">thread_pool.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fields.html">fields.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="onnx_proto.html">ONNX proto classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="onnx_helper.html">onnx_helper.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="onnx_alias.html">onnx_alias.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stream_class.html">stream_class.h</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">C++ API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Helpers</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="helpers">
+<h1>Helpers<a class="headerlink" href="#helpers" title="Link to this heading">#</a></h1>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.EXT_THROW">
+<span class="target" id="onnx__extended__helpers_8h_1a4c7f4db510579f161e8b025ee205a44e"></span><span class="sig-name descname"><span class="n"><span class="pre">EXT_THROW</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.EXT_THROW" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c._THROW_DEFINED">
+<span class="target" id="onnx__extended__helpers_8h_1ad28c56ea09c635aaaf91fecb1afc8047"></span><span class="sig-name descname"><span class="n"><span class="pre">_THROW_DEFINED</span></span></span><a class="headerlink" href="#c._THROW_DEFINED" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.EXT_ENFORCE">
+<span class="target" id="onnx__extended__helpers_8h_1a97d9ab8f8498cbf6461d6eb3b8b9e16d"></span><span class="sig-name descname"><span class="n"><span class="pre">EXT_ENFORCE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">cond</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.EXT_ENFORCE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c._ENFORCE_DEFINED">
+<span class="target" id="onnx__extended__helpers_8h_1ab1034abd811f547a6adb242e9e2f427b"></span><span class="sig-name descname"><span class="n"><span class="pre">_ENFORCE_DEFINED</span></span></span><a class="headerlink" href="#c._ENFORCE_DEFINED" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv421onnx_extended_helpers">
+<span id="_CPPv321onnx_extended_helpers"></span><span id="_CPPv221onnx_extended_helpers"></span><span id="onnx_extended_helpers"></span><span class="target" id="namespaceonnx__extended__helpers"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onnx_extended_helpers</span></span></span><a class="headerlink" href="#_CPPv421onnx_extended_helpers" title="Link to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers7VersionEv">
+<span id="_CPPv3N21onnx_extended_helpers7VersionEv"></span><span id="_CPPv2N21onnx_extended_helpers7VersionEv"></span><span id="onnx_extended_helpers::Version"></span><span class="target" id="namespaceonnx__extended__helpers_1ad1ed9ae6110d34117d4ef05786654dea"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers7VersionEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers11SplitStringERKNSt6stringEc">
+<span id="_CPPv3N21onnx_extended_helpers11SplitStringERKNSt6stringEc"></span><span id="_CPPv2N21onnx_extended_helpers11SplitStringERKNSt6stringEc"></span><span id="onnx_extended_helpers::SplitString__ssCR.c"></span><span class="target" id="namespaceonnx__extended__helpers_1aabd93034f4ee129e77e0ac66ce504a44"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SplitString</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">delimiter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers11SplitStringERKNSt6stringEc" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPKc">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPKc"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPKc"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.cCP"></span><span class="target" id="namespaceonnx__extended__helpers_1a4f59e38c669d4023765464a2e9323f91"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPKc" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6stringE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6stringE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6stringE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.ssCR"></span><span class="target" id="namespaceonnx__extended__helpers_1a2cace3e074051a5bfbf75aa8531fe578"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6stringE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKc">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKc"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKc"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.cCR"></span><span class="target" id="namespaceonnx__extended__helpers_1a47ee8b2649b90ca6d5a02a725fac1bb3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKc" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint16_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint16_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint16_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.uint16_tCR"></span><span class="target" id="namespaceonnx__extended__helpers_1a5e9cd5aac4e245727474219a1bd3dd1e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint16_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint32_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint32_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint32_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.uint32_tCR"></span><span class="target" id="namespaceonnx__extended__helpers_1a8db52e8360c2f208f742604ee71ea24d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint32_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint64_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint64_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint64_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.uint64_tCR"></span><span class="target" id="namespaceonnx__extended__helpers_1ad2f15b45ee1a65a1aba117e4f66cee8f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint64_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int16_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int16_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int16_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.int16_tCR"></span><span class="target" id="namespaceonnx__extended__helpers_1af775de69a9e959880e40ed8c9129a821"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int16_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int16_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int32_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int32_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int32_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.int32_tCR"></span><span class="target" id="namespaceonnx__extended__helpers_1af6cc0dc6ab359f67d4627db6b9f7967d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int32_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int64_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int64_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int64_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.int64_tCR"></span><span class="target" id="namespaceonnx__extended__helpers_1ab96ca0efc70e3c3eb994d100f2e31399"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int64_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRPK8uint64_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRPK8uint64_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRPK8uint64_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.uint64_tCPR"></span><span class="target" id="namespaceonnx__extended__helpers_1a577d6338d7501f757c70de5cc7ab7670"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRPK8uint64_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPK8uint64_t">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPK8uint64_t"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPK8uint64_t"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.uint64_tCP"></span><span class="target" id="namespaceonnx__extended__helpers_1a66ef742969791bf11e19ca1491f8c774"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPK8uint64_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKf">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKf"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKf"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.floatCR"></span><span class="target" id="namespaceonnx__extended__helpers_1a33e0065a6b738c7b0e67838478f1b9f5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKf" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKd">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKd"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKd"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.doubleCR"></span><span class="target" id="namespaceonnx__extended__helpers_1a77deeddfd4a9752e799a32ce57048ac6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKd" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint16_tEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint16_tEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint16_tEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:uint16_t:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1a2236dfc52bbd44ccb12d1ec45db150cf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint16_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint16_tEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint32_tEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint32_tEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint32_tEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:uint32_t:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1abe0fb91d96d4640b20d53bf2abe8e595"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint32_tEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint64_tEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint64_tEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint64_tEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:uint64_t:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1a553e4037e8e7ddf37f3d2510cca47b6d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint64_tEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int16_tEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int16_tEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int16_tEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:int16_t:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1a1c0e01ddf1cef9eca9e0020cae111e41"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int16_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int16_tEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int32_tEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int32_tEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int32_tEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:int32_t:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1a8c00c45db550670d4a5208948966d4b1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int32_tEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int64_tEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int64_tEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int64_tEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:int64_t:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1a037bc55b9c111e4b4a3c8bea19ef9fb8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int64_tEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIfEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIfEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIfEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:float:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1ac4bee7f8ab9d929ad189f1dff17add7c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIfEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIdEE">
+<span id="_CPPv3N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIdEE"></span><span id="_CPPv2N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIdEE"></span><span id="onnx_extended_helpers::MakeStringInternalElement__StringStreamR.std::vector:double:CR"></span><span class="target" id="namespaceonnx__extended__helpers_1aa8f07dc65ce31564556ea32e2d252f14"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIdEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T">
+<span id="_CPPv3I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK1T"></span><span id="_CPPv2I0_NSt11enable_if_tIXstd::is_integral<T>::value && !std::is_same<T, bool>::value && !std::is_same<T, char>::value && !std::is_same<T, uint16_t>::value && !std::is_same<T, uint32_t>::value && !std::is_same<T, uint64_t>::value && !std::is_same<T, int16_t>::value && !std::is_same<T, int32_t>::value && !std::is_same<T, int64_t>::valueEiEEEN21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_integral</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int16_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_same</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int64_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceonnx__extended__helpers_1aa3cf8602f8dd8f8f96a9ffbd96161211"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternalElement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternalElement::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers18MakeStringInternalER12StringStream">
+<span id="_CPPv3N21onnx_extended_helpers18MakeStringInternalER12StringStream"></span><span id="_CPPv2N21onnx_extended_helpers18MakeStringInternalER12StringStream"></span><span id="onnx_extended_helpers::MakeStringInternal__StringStreamR"></span><span class="target" id="namespaceonnx__extended__helpers_1ae4c51f1d82cf3aafdf5a88a506617477"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternal</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers18MakeStringInternalER12StringStream" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1T">
+<span id="_CPPv3I0DpEN21onnx_extended_helpers18MakeStringInternalER12StringStreamRK1T"></span><span id="_CPPv2I0DpEN21onnx_extended_helpers18MakeStringInternalER12StringStreamRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceonnx__extended__helpers_1a215b8efdc16f658547f462c9e56b9994"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternal</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1T" title="onnx_extended_helpers::MakeStringInternal::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1T" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1TDpRK4Args">
+<span id="_CPPv3I0DpEN21onnx_extended_helpers18MakeStringInternalER12StringStreamRK1TDpRK4Args"></span><span id="_CPPv2I0DpEN21onnx_extended_helpers18MakeStringInternalER12StringStreamRK1TDpRK4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceonnx__extended__helpers_1aaca48b04b5bdb4a4fba9351672c39aea"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeStringInternal</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ss</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1TDpRK4Args" title="onnx_extended_helpers::MakeStringInternal::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1TDpRK4Args" title="onnx_extended_helpers::MakeStringInternal::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1TDpRK4Args" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN21onnx_extended_helpers10MakeStringENSt6stringEDpRK4Args">
+<span id="_CPPv3IDpEN21onnx_extended_helpers10MakeStringEDpRK4Args"></span><span id="_CPPv2IDpEN21onnx_extended_helpers10MakeStringEDpRK4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceonnx__extended__helpers_1abca4d90669f270188d3fd06100cf779b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeString</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4IDpEN21onnx_extended_helpers10MakeStringENSt6stringEDpRK4Args" title="onnx_extended_helpers::MakeString::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN21onnx_extended_helpers10MakeStringENSt6stringEDpRK4Args" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStreamE">
+<span id="_CPPv3N21onnx_extended_helpers12StringStreamE"></span><span id="_CPPv2N21onnx_extended_helpers12StringStreamE"></span><span id="onnx_extended_helpers::StringStream"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StringStream</span></span></span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;onnx_extended_helpers.h&gt;</em></div>
+<p>String builder used by helper formatting functions. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream12StringStreamEv">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream12StringStreamEv"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream12StringStreamEv"></span><span id="onnx_extended_helpers::StringStream::StringStream"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a96103ad1a110e4800019985905a54177"></span><span class="sig-name descname"><span class="n"><span class="pre">StringStream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream12StringStreamEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStreamD0Ev">
+<span id="_CPPv3N21onnx_extended_helpers12StringStreamD0Ev"></span><span id="_CPPv2N21onnx_extended_helpers12StringStreamD0Ev"></span><span id="onnx_extended_helpers::StringStream::~StringStream"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a2f7864e6ef1b8aa6bb868af1b14c766b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~StringStream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStreamD0Ev" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream13append_uint16ERK8uint16_t">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream13append_uint16ERK8uint16_t"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream13append_uint16ERK8uint16_t"></span><span id="onnx_extended_helpers::StringStream::append_uint16__uint16_tCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a36d1157388d2f0544bf7dea2624908f1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_uint16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_uint16ERK8uint16_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream13append_uint32ERK8uint32_t">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream13append_uint32ERK8uint32_t"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream13append_uint32ERK8uint32_t"></span><span id="onnx_extended_helpers::StringStream::append_uint32__uint32_tCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a29d3ef563b7457d4b68577a7b9f9f5f9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_uint32</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_uint32ERK8uint32_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream13append_uint64ERK8uint64_t">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream13append_uint64ERK8uint64_t"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream13append_uint64ERK8uint64_t"></span><span id="onnx_extended_helpers::StringStream::append_uint64__uint64_tCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1afe79d44e936d54842dd0f743d1c5459b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_uint64</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_uint64ERK8uint64_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream12append_int16ERK7int16_t">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream12append_int16ERK7int16_t"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream12append_int16ERK7int16_t"></span><span id="onnx_extended_helpers::StringStream::append_int16__int16_tCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a547f9a2d8d5188e402fb155f3c6b0b34"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_int16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int16_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_int16ERK7int16_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream12append_int32ERK7int32_t">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream12append_int32ERK7int32_t"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream12append_int32ERK7int32_t"></span><span id="onnx_extended_helpers::StringStream::append_int32__int32_tCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1ae9608d7fa8f5f4834af9f7c415d2beb9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_int32</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_int32ERK7int32_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream12append_int64ERK7int64_t">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream12append_int64ERK7int64_t"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream12append_int64ERK7int64_t"></span><span id="onnx_extended_helpers::StringStream::append_int64__int64_tCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1aa6931be2b30aa3c0909744bb405a4923"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_int64</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_int64ERK7int64_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream12append_floatERKf">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream12append_floatERKf"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream12append_floatERKf"></span><span id="onnx_extended_helpers::StringStream::append_float__floatCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a958a28e7250ae0d846da0382696fa813"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_float</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_floatERKf" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream13append_doubleERKd">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream13append_doubleERKd"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream13append_doubleERKd"></span><span id="onnx_extended_helpers::StringStream::append_double__doubleCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a8f002df8167a761fd571d92d38dc2ec4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_double</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_doubleERKd" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream11append_charERKc">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream11append_charERKc"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream11append_charERKc"></span><span id="onnx_extended_helpers::StringStream::append_char__cCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1adc6259b85113666d406ec46645772fed"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_char</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream11append_charERKc" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream13append_stringERKNSt6stringE">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream13append_stringERKNSt6stringE"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream13append_stringERKNSt6stringE"></span><span id="onnx_extended_helpers::StringStream::append_string__ssCR"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1ae40c932b7cf62efd37011697bcd4d97e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_string</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_stringERKNSt6stringE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream12append_charpEPKc">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream12append_charpEPKc"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream12append_charpEPKc"></span><span id="onnx_extended_helpers::StringStream::append_charp__cCP"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a5560d936066086896a91db20897c6e22"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">append_charp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_charpEPKc" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream3strEv">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream3strEv"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream3strEv"></span><span id="onnx_extended_helpers::StringStream::str"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a30f5f9c53ec165328b523c3833f691c4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">str</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream3strEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N21onnx_extended_helpers12StringStream9NewStreamEv">
+<span id="_CPPv3N21onnx_extended_helpers12StringStream9NewStreamEv"></span><span id="_CPPv2N21onnx_extended_helpers12StringStream9NewStreamEv"></span><span id="onnx_extended_helpers::StringStream::NewStream"></span><span class="target" id="classonnx__extended__helpers_1_1StringStream_1a534faeb53fe319043e53e66ca026b453"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N21onnx_extended_helpers12StringStreamE" title="onnx_extended_helpers::StringStream"><span class="n"><span class="pre">StringStream</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">NewStream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N21onnx_extended_helpers12StringStream9NewStreamEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv44std_">
+<span id="_CPPv34std_"></span><span id="_CPPv24std_"></span><span id="std_"></span><span class="target" id="namespacestd__"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">std_</span></span></span><a class="headerlink" href="#_CPPv44std_" title="Link to this definition">#</a><br /></dt>
+<dd><dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4std_4spanE">
+<span id="_CPPv3I0EN4std_4spanE"></span><span id="_CPPv2I0EN4std_4spanE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classstd___1_1span"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">span</span></span></span><a class="headerlink" href="#_CPPv4I0EN4std_4spanE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;simple_span.h&gt;</em></div>
+<p>Lightweight span implementation for contiguous memory. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4std_4span4spanEP1TNSt6size_tE">
+<span id="_CPPv3N4std_4span4spanEP1TNSt6size_tE"></span><span id="_CPPv2N4std_4span4spanEP1TNSt6size_tE"></span><span id="std_::span::span__TP.std::s"></span><span class="target" id="classstd___1_1span_1a9ee001fb3659b8bdd9d3b638758e17fa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">span</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN4std_4spanE" title="std_::span::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4std_4span4spanEP1TNSt6size_tE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4std_4span4dataEv">
+<span id="_CPPv3NK4std_4span4dataEv"></span><span id="_CPPv2NK4std_4span4dataEv"></span><span id="std_::span::dataC"></span><span class="target" id="classstd___1_1span_1a8784a4a0f863fb7db4015abf5df29dc1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4std_4spanE" title="std_::span::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4std_4span4dataEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4std_4span4sizeEv">
+<span id="_CPPv3NK4std_4span4sizeEv"></span><span id="_CPPv2NK4std_4span4sizeEv"></span><span id="std_::span::sizeC"></span><span class="target" id="classstd___1_1span_1a805044345f46f62f77cc548c4f5e655e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4std_4span4sizeEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4std_4spanixENSt6size_tE">
+<span id="_CPPv3NK4std_4spanixENSt6size_tE"></span><span id="_CPPv2NK4std_4spanixENSt6size_tE"></span><span id="std_::span::subscript-operator__std::sC"></span><span class="target" id="classstd___1_1span_1a31aa77843198650b45c3668c28b54951"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4std_4spanE" title="std_::span::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">[]</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4std_4spanixENSt6size_tE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4std_4span5beginEv">
+<span id="_CPPv3NK4std_4span5beginEv"></span><span id="_CPPv2NK4std_4span5beginEv"></span><span id="std_::span::beginC"></span><span class="target" id="classstd___1_1span_1a2b9f3aeed11a9680fd5a0ede831a1f33"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4std_4spanE" title="std_::span::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4std_4span5beginEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4std_4span3endEv">
+<span id="_CPPv3NK4std_4span3endEv"></span><span id="_CPPv2NK4std_4span3endEv"></span><span id="std_::span::endC"></span><span class="target" id="classstd___1_1span_1a6d2c5ac24d6146e01f3044c5503083ea"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4std_4spanE" title="std_::span::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4std_4span3endEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4std_4span5data_E">
+<span id="_CPPv3N4std_4span5data_E"></span><span id="_CPPv2N4std_4span5data_E"></span><span id="std_::span::data___TP"></span><span class="target" id="classstd___1_1span_1a18daea2e367643fc4b5242a9177be884"></span><a class="reference internal" href="#_CPPv4I0EN4std_4spanE" title="std_::span::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data_</span></span></span><a class="headerlink" href="#_CPPv4N4std_4span5data_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4std_4span5size_E">
+<span id="_CPPv3N4std_4span5size_E"></span><span id="_CPPv2N4std_4span5size_E"></span><span id="std_::span::size___std::s"></span><span class="target" id="classstd___1_1span_1a854d4fb0f4b21e684a585de5cf21e9cc"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_</span></span></span><a class="headerlink" href="#_CPPv4N4std_4span5size_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">C++ API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="streaming.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Streaming</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c.EXT_THROW"><code class="docutils literal notranslate"><span class="pre">EXT_THROW</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c._THROW_DEFINED"><code class="docutils literal notranslate"><span class="pre">_THROW_DEFINED</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c.EXT_ENFORCE"><code class="docutils literal notranslate"><span class="pre">EXT_ENFORCE</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c._ENFORCE_DEFINED"><code class="docutils literal notranslate"><span class="pre">_ENFORCE_DEFINED</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv421onnx_extended_helpers"><code class="docutils literal notranslate"><span class="pre">onnx_extended_helpers</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers7VersionEv"><code class="docutils literal notranslate"><span class="pre">Version()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers11SplitStringERKNSt6stringEc"><code class="docutils literal notranslate"><span class="pre">SplitString()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPKc"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKc"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint16_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint32_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK8uint64_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int16_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int32_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRK7int64_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRPK8uint64_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamPK8uint64_t"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKf"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKd"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint16_tEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint32_tEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI8uint64_tEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int16_tEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int32_tEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorI7int64_tEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIfEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers25MakeStringInternalElementER12StringStreamRKNSt6vectorIdEE"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0_NSt11enable_if_tIXaaNSt11is_integralI1TE5valueEaantNSt7is_sameI1TbE5valueEaantNSt7is_sameI1TcE5valueEaantNSt7is_sameI1T8uint16_tE5valueEaantNSt7is_sameI1T8uint32_tE5valueEaantNSt7is_sameI1T8uint64_tE5valueEaantNSt7is_sameI1T7int16_tE5valueEaantNSt7is_sameI1T7int32_tE5valueEntNSt7is_sameI1T7int64_tE5valueEEiEEEN21onnx_extended_helpers25MakeStringInternalElementEvR12StringStreamRK1T"><code class="docutils literal notranslate"><span class="pre">MakeStringInternalElement()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers18MakeStringInternalER12StringStream"><code class="docutils literal notranslate"><span class="pre">MakeStringInternal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1T"><code class="docutils literal notranslate"><span class="pre">MakeStringInternal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0DpEN21onnx_extended_helpers18MakeStringInternalEvR12StringStreamRK1TDpRK4Args"><code class="docutils literal notranslate"><span class="pre">MakeStringInternal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4IDpEN21onnx_extended_helpers10MakeStringENSt6stringEDpRK4Args"><code class="docutils literal notranslate"><span class="pre">MakeString()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStreamE"><code class="docutils literal notranslate"><span class="pre">onnx_extended_helpers::StringStream</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream12StringStreamEv"><code class="docutils literal notranslate"><span class="pre">StringStream()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStreamD0Ev"><code class="docutils literal notranslate"><span class="pre">~StringStream()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_uint16ERK8uint16_t"><code class="docutils literal notranslate"><span class="pre">append_uint16()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_uint32ERK8uint32_t"><code class="docutils literal notranslate"><span class="pre">append_uint32()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_uint64ERK8uint64_t"><code class="docutils literal notranslate"><span class="pre">append_uint64()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_int16ERK7int16_t"><code class="docutils literal notranslate"><span class="pre">append_int16()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_int32ERK7int32_t"><code class="docutils literal notranslate"><span class="pre">append_int32()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_int64ERK7int64_t"><code class="docutils literal notranslate"><span class="pre">append_int64()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_floatERKf"><code class="docutils literal notranslate"><span class="pre">append_float()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_doubleERKd"><code class="docutils literal notranslate"><span class="pre">append_double()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream11append_charERKc"><code class="docutils literal notranslate"><span class="pre">append_char()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream13append_stringERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">append_string()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream12append_charpEPKc"><code class="docutils literal notranslate"><span class="pre">append_charp()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream3strEv"><code class="docutils literal notranslate"><span class="pre">str()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N21onnx_extended_helpers12StringStream9NewStreamEv"><code class="docutils literal notranslate"><span class="pre">NewStream()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv44std_"><code class="docutils literal notranslate"><span class="pre">std_</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4I0EN4std_4spanE"><code class="docutils literal notranslate"><span class="pre">std_::span</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4std_4span4spanEP1TNSt6size_tE"><code class="docutils literal notranslate"><span class="pre">span()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK4std_4span4dataEv"><code class="docutils literal notranslate"><span class="pre">data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK4std_4span4sizeEv"><code class="docutils literal notranslate"><span class="pre">size()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK4std_4spanixENSt6size_tE"><code class="docutils literal notranslate"><span class="pre">operator[]()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK4std_4span5beginEv"><code class="docutils literal notranslate"><span class="pre">begin()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK4std_4span3endEv"><code class="docutils literal notranslate"><span class="pre">end()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4std_4span5data_E"><code class="docutils literal notranslate"><span class="pre">data_</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4std_4span5size_E"><code class="docutils literal notranslate"><span class="pre">size_</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/cpp/helpers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

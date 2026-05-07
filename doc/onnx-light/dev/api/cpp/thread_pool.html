@@ -1,0 +1,654 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>thread_pool.h &#8212; onnx-light 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/cpp/thread_pool';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="fields.h" href="fields.html" />
+    <link rel="prev" title="simple_string.h" href="simple_string.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="onnx-light 0.1.0 documentation - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="onnx-light 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../onnx/index.html">onnx_light.onnx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/helper.html">onnx_light.onnx.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/io_helper.html">onnx_light.onnx.io_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/pychecker.html">onnx_light.onnx.pychecker</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">C++ API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="streaming.html">Streaming</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="stream.html">stream.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_string.html">simple_string.h</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">thread_pool.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fields.html">fields.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="onnx_proto.html">ONNX proto classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="onnx_helper.html">onnx_helper.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="onnx_alias.html">onnx_alias.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stream_class.html">stream_class.h</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">C++ API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="streaming.html" class="nav-link">Streaming</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">thread_pool.h</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="thread-pool-h">
+<h1>thread_pool.h<a class="headerlink" href="#thread-pool-h" title="Link to this heading">#</a></h1>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv44onnx">
+<span id="_CPPv34onnx"></span><span id="_CPPv24onnx"></span><span id="onnx"></span><span class="target" id="namespaceonnx"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onnx</span></span></span><br /></dt>
+<dd><dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utilsE">
+<span id="_CPPv3N4onnx5utilsE"></span><span id="_CPPv2N4onnx5utilsE"></span><span id="onnx::utils"></span><span class="target" id="namespaceonnx_1_1utils"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">utils</span></span></span><br /></dt>
+<dd><dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPoolE">
+<span id="_CPPv3N4onnx5utils10ThreadPoolE"></span><span id="_CPPv2N4onnx5utils10ThreadPoolE"></span><span id="onnx::utils::ThreadPool"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ThreadPool</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPoolE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;thread_pool.h&gt;</em></div>
+<p>Thread pool used to parallelize delayed block loading. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool10ThreadPoolEv">
+<span id="_CPPv3N4onnx5utils10ThreadPool10ThreadPoolEv"></span><span id="_CPPv2N4onnx5utils10ThreadPool10ThreadPoolEv"></span><span id="onnx::utils::ThreadPool::ThreadPool"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a550e6982c0d788753e4cc741a4c51a9d"></span><span class="sig-name descname"><span class="n"><span class="pre">ThreadPool</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool10ThreadPoolEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPoolD0Ev">
+<span id="_CPPv3N4onnx5utils10ThreadPoolD0Ev"></span><span id="_CPPv2N4onnx5utils10ThreadPoolD0Ev"></span><span id="onnx::utils::ThreadPool::~ThreadPool"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1ad26e7239fd26beffb8a69f631b23a163"></span><span class="sig-name descname"><span class="n"><span class="pre">~ThreadPool</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPoolD0Ev" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool5StartE7int32_t">
+<span id="_CPPv3N4onnx5utils10ThreadPool5StartE7int32_t"></span><span id="_CPPv2N4onnx5utils10ThreadPool5StartE7int32_t"></span><span id="onnx::utils::ThreadPool::Start__int32_t"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1ad5d909c9a98baf8960e962d523b2d56b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Start</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_threads</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool5StartE7int32_t" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool10SubmitTaskENSt8functionIFvvEEE">
+<span id="_CPPv3N4onnx5utils10ThreadPool10SubmitTaskENSt8functionIFvvEEE"></span><span id="_CPPv2N4onnx5utils10ThreadPool10SubmitTaskENSt8functionIFvvEEE"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1adc89e5be74f37d2e18266ba1dbcb06dd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SubmitTask</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">job</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool10SubmitTaskENSt8functionIFvvEEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool4WaitEv">
+<span id="_CPPv3N4onnx5utils10ThreadPool4WaitEv"></span><span id="_CPPv2N4onnx5utils10ThreadPool4WaitEv"></span><span id="onnx::utils::ThreadPool::Wait"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1aa9881ff66bbe515b428112aafe7156e1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Wait</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool4WaitEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4onnx5utils10ThreadPool14GetThreadCountEv">
+<span id="_CPPv3NK4onnx5utils10ThreadPool14GetThreadCountEv"></span><span id="_CPPv2NK4onnx5utils10ThreadPool14GetThreadCountEv"></span><span id="onnx::utils::ThreadPool::GetThreadCountC"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a5a34e13bd1114135b7f612bb713dec80"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetThreadCount</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4onnx5utils10ThreadPool14GetThreadCountEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4onnx5utils10ThreadPool9IsStartedEv">
+<span id="_CPPv3NK4onnx5utils10ThreadPool9IsStartedEv"></span><span id="_CPPv2NK4onnx5utils10ThreadPool9IsStartedEv"></span><span id="onnx::utils::ThreadPool::IsStartedC"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1abf891924c731bd48220b1172129df944"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsStarted</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4onnx5utils10ThreadPool9IsStartedEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool5ClearEv">
+<span id="_CPPv3N4onnx5utils10ThreadPool5ClearEv"></span><span id="_CPPv2N4onnx5utils10ThreadPool5ClearEv"></span><span id="onnx::utils::ThreadPool::Clear"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a310af7a5f4c95434565734f1765aa37a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool5ClearEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool13worker_threadEv">
+<span id="_CPPv3N4onnx5utils10ThreadPool13worker_threadEv"></span><span id="_CPPv2N4onnx5utils10ThreadPool13worker_threadEv"></span><span id="onnx::utils::ThreadPool::worker_thread"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a587e02f6e2d26d77ee2a3fd7f3bc9cc6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">worker_thread</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool13worker_threadEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool8workers_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool8workers_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool8workers_E"></span><span id="onnx::utils::ThreadPool::workers___std::vector:std::thread:"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1aec96650fd866aa260fbeb8a5d8e3e087"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">thread</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">workers_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool8workers_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool5jobs_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool5jobs_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool5jobs_E"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1ac24f19050df933d1c0c98ebfc4a9d93a"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">queue</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">jobs_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool5jobs_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool6mutex_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool6mutex_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool6mutex_E"></span><span id="onnx::utils::ThreadPool::mutex___std::mutex"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a2889d9e5c3ff5b987361a679305071db"></span><span class="k"><span class="pre">mutable</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">mutex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mutex_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool6mutex_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool8work_cv_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool8work_cv_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool8work_cv_E"></span><span id="onnx::utils::ThreadPool::work_cv___std::condition_variable"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a113a6f7b0717e03be61e08ecb324e343"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">condition_variable</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">work_cv_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool8work_cv_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool8done_cv_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool8done_cv_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool8done_cv_E"></span><span id="onnx::utils::ThreadPool::done_cv___std::condition_variable"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1aab25145e791f91b6624c1f3d99f54d69"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">condition_variable</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">done_cv_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool8done_cv_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool5stop_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool5stop_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool5stop_E"></span><span id="onnx::utils::ThreadPool::stop___b"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a5a9d36d3b87246ccbe828e17718c8a45"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stop_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool5stop_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool11is_started_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool11is_started_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool11is_started_E"></span><span id="onnx::utils::ThreadPool::is_started___b"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a4b5922d356fa9fa59b3d57f0cc5b2354"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_started_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool11is_started_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4onnx5utils10ThreadPool13pending_jobs_E">
+<span id="_CPPv3N4onnx5utils10ThreadPool13pending_jobs_E"></span><span id="_CPPv2N4onnx5utils10ThreadPool13pending_jobs_E"></span><span id="onnx::utils::ThreadPool::pending_jobs___s"></span><span class="target" id="classonnx_1_1utils_1_1ThreadPool_1a81ac7559127fecb64d813ee2b5615151"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pending_jobs_</span></span></span><a class="headerlink" href="#_CPPv4N4onnx5utils10ThreadPool13pending_jobs_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="simple_string.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">simple_string.h</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fields.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">fields.h</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv44onnx"><code class="docutils literal notranslate"><span class="pre">onnx</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utilsE"><code class="docutils literal notranslate"><span class="pre">onnx::utils</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPoolE"><code class="docutils literal notranslate"><span class="pre">onnx::utils::ThreadPool</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool10ThreadPoolEv"><code class="docutils literal notranslate"><span class="pre">ThreadPool()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPoolD0Ev"><code class="docutils literal notranslate"><span class="pre">~ThreadPool()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool5StartE7int32_t"><code class="docutils literal notranslate"><span class="pre">Start()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool10SubmitTaskENSt8functionIFvvEEE"><code class="docutils literal notranslate"><span class="pre">SubmitTask()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool4WaitEv"><code class="docutils literal notranslate"><span class="pre">Wait()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK4onnx5utils10ThreadPool14GetThreadCountEv"><code class="docutils literal notranslate"><span class="pre">GetThreadCount()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK4onnx5utils10ThreadPool9IsStartedEv"><code class="docutils literal notranslate"><span class="pre">IsStarted()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool5ClearEv"><code class="docutils literal notranslate"><span class="pre">Clear()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool13worker_threadEv"><code class="docutils literal notranslate"><span class="pre">worker_thread()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool8workers_E"><code class="docutils literal notranslate"><span class="pre">workers_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool5jobs_E"><code class="docutils literal notranslate"><span class="pre">jobs_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool6mutex_E"><code class="docutils literal notranslate"><span class="pre">mutex_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool8work_cv_E"><code class="docutils literal notranslate"><span class="pre">work_cv_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool8done_cv_E"><code class="docutils literal notranslate"><span class="pre">done_cv_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool5stop_E"><code class="docutils literal notranslate"><span class="pre">stop_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool11is_started_E"><code class="docutils literal notranslate"><span class="pre">is_started_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N4onnx5utils10ThreadPool13pending_jobs_E"><code class="docutils literal notranslate"><span class="pre">pending_jobs_</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/cpp/thread_pool.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
