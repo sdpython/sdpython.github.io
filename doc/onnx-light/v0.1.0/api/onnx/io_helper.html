@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -141,6 +141,13 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../design/index.html">
+    Design
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     API
@@ -250,6 +257,13 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../design/index.html">
+    Design
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     API
@@ -319,9 +333,6 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">onnx_light.onnx.io_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pychecker.html">onnx_light.onnx.pychecker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="protos.html">protos</a></li>
-
-
-
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../cpp/index.html">C++ API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -329,16 +340,20 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../cpp/streaming.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/stream.html">stream.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/simple_string.html">simple_string.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/simple_span.html">simple_span.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/thread_pool.html">thread_pool.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/fields.html">fields.h</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../cpp/onnx_proto.html">ONNX proto classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx.html">onnx.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_helper.html">onnx_helper.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_alias.html">onnx_alias.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/stream_class.html">stream_class.h</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/load_onnx_light_time_example.html">Standalone C++ example: load an ONNX file with onnx_light</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cpp/load_onnx_time_example.html">Standalone C++ example: measure ONNX loading time</a></li>
 </ul>
 </details></li>
 </ul>
@@ -406,18 +421,108 @@
                   
   <section id="module-onnx_light.onnx.io_helper">
 <span id="onnx-light-onnx-io-helper"></span><h1>onnx_light.onnx.io_helper<a class="headerlink" href="#module-onnx_light.onnx.io_helper" title="Link to this heading">#</a></h1>
-<p class="rubric">Functions</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(f[, skip_raw_data, raw_data_threshold, ...])</p></td>
-<td><p>Loads a serialized ModelProto into memory.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(proto, f[, format, ...])</p></td>
-<td><p>Saves the ModelProto to the specified path and optionally, serializes tensors with raw data as external data before saving.</p></td>
-</tr>
-</tbody>
-</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_light.onnx.io_helper.load">
+<span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.io_helper.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_raw_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_data_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_external_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_block_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="protos.html#onnx_light.onnx.ModelProto" title="onnx_light.onnx.onnx_proto._onnxpy.ModelProto"><span class="pre">ModelProto</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.io_helper.load" title="Link to this definition">#</a></dt>
+<dd><p>Loads a serialized ModelProto into memory.</p>
+<p>When <em>f</em> is a file path, the file is loaded via memory-mapping (<code class="docutils literal notranslate"><span class="pre">mmap</span></code>
+on POSIX, <code class="docutils literal notranslate"><span class="pre">CreateFileMapping</span></code> on Windows), which avoids per-byte system
+calls and lets the OS prefetch pages transparently.  This makes file
+loading nearly as fast as parsing from an already-in-memory bytes object.
+When <em>f</em> is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> object, it is parsed in-place using a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StringStream</span></code> with no additional copy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> – path or bytes</p></li>
+<li><p><strong>skip_raw_data</strong> – skips the raw data of every tensor, this can be used
+to load only the architecture of the model even if the model is stored in
+one unique file</p></li>
+<li><p><strong>raw_data_threshold</strong> – if <cite>skip_raw_data</cite> is True, still keeps the tensors
+smaller than this size (in bytes)</p></li>
+<li><p><strong>load_external_data</strong> – Whether to load the external data.
+Set to True if the data is under the same directory of the model.</p></li>
+<li><p><strong>parallel</strong> – parallelize the loading of the tensors</p></li>
+<li><p><strong>num_threads</strong> – number of threads to use, -1 means the number of cores</p></li>
+<li><p><strong>location</strong> – location of the external weights
+(can be different from the value stored in the main model).
+When <code class="docutils literal notranslate"><span class="pre">load_external_data</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and this parameter is omitted,
+the primary external data file is auto-discovered from the tensor
+metadata stored in the model file.</p></li>
+<li><p><strong>min_block_size</strong> – minimum raw-data block size in bytes to read in parallel
+when <cite>parallel</cite> is True; tensor blocks smaller than this threshold are read
+on the calling thread to avoid thread-pool overhead for tiny tensors.
+A value of 0 (default) parallelizes all blocks.</p></li>
+<li><p><strong>no_copy</strong> – <p>if True, raw tensor data is <strong>not</strong> copied into owned buffers.
+Instead each TensorProto stores a pointer directly into the source bytes buffer.
+This avoids one memory allocation + copy per tensor and can be significantly
+faster when loading large models from an in-memory bytes object.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The caller <strong>must</strong> keep the original bytes object alive for the entire
+lifetime of the returned model.  Modifying or releasing the bytes while
+the model is still in use leads to undefined behaviour.
+This option is silently ignored when <em>f</em> is a file path (file-backed
+streams cannot be zero-copy).</p>
 </div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Loaded in-memory ModelProto.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_light.onnx.io_helper.save">
+<span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.io_helper.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="protos.html#onnx_light.onnx.ModelProto" title="onnx_light.onnx.onnx_proto._onnxpy.ModelProto"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'protobuf'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_as_external_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_tensors_to_one_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_block_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_external_file_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.io_helper.save" title="Link to this definition">#</a></dt>
+<dd><p>Saves the ModelProto to the specified path and optionally,
+serializes tensors with raw data as external data before saving.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proto</strong> – should be a in-memory ModelProto</p></li>
+<li><p><strong>f</strong> – can be a file-like object (has “write” function) or a string containing
+a file name or a pathlike object</p></li>
+<li><p><strong>format</strong> – The serialization format. When it is not specified, it is inferred
+from the file extension when <code class="docutils literal notranslate"><span class="pre">f</span></code> is a path. If not specified _and_
+<code class="docutils literal notranslate"><span class="pre">f</span></code> is not a path, ‘protobuf’ is used. The encoding is assumed to
+be “utf-8” when the format is a text format.</p></li>
+<li><p><strong>save_as_external_data</strong> – If true, save tensors to external file(s).
+all_tensors_to_one_file: Effective only if save_as_external_data is True.
+If true, save all tensors to one external file specified by location.
+If false, save each tensor to a file named with the tensor name.</p></li>
+<li><p><strong>all_tensors_to_one_file</strong> – if <cite>save_as_external_data</cite> is True,
+then saves all tensors into one file instead of a file per tensor</p></li>
+<li><p><strong>location</strong> – Effective only if <cite>save_as_external_data</cite> is true.
+Specify the external file that all tensors to save to.
+If an absolute path is given it is used as-is; the value stored in
+the ONNX metadata will be the path relative to the model file.
+If not specified, defaults to <code class="docutils literal notranslate"><span class="pre">str(f)</span> <span class="pre">+</span> <span class="pre">&quot;.data&quot;</span></code> (next to the model
+file with a <code class="docutils literal notranslate"><span class="pre">.data</span></code> suffix).</p></li>
+<li><p><strong>size_threshold</strong> – Effective only if save_as_external_data is True.
+Threshold for size of data. Only when tensor’s data
+is &gt;= the size_threshold it will be converted
+to external data. To convert every tensor with raw data
+to external data set size_threshold=0.</p></li>
+<li><p><strong>convert_attribute</strong> – Effective only if save_as_external_data is True.
+If true, convert all tensors to external data
+If false, convert only non-attribute tensors to external data</p></li>
+<li><p><strong>parallel</strong> – parallelize writing of large raw-data blocks</p></li>
+<li><p><strong>num_threads</strong> – number of threads to use, -1 means the number of cores</p></li>
+<li><p><strong>min_block_size</strong> – minimum raw-data block size in bytes to write in parallel
+when <cite>parallel</cite> is True; tensor blocks smaller than this threshold are
+written on the calling thread to avoid thread-pool overhead.
+A value of 0 (default) parallelizes all blocks.</p></li>
+<li><p><strong>max_external_file_size</strong> – maximum size in bytes for one external
+weight file when saving with external data. A value of 0 (default)
+means no limit.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -458,6 +563,19 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.io_helper.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.io_helper.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">

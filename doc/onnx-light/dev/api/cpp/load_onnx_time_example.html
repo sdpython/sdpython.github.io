@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Standalone C++ example: measure ONNX loading time &#8212; onnx-light 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/cpp/load_onnx_time_example';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Examples" href="../../auto_examples/index.html" />
+    <link rel="prev" title="Standalone C++ example: load an ONNX file with onnx_light" href="load_onnx_light_time_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="onnx-light 0.1.0 documentation - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="onnx-light 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../design/index.html">
+    Design
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../design/index.html">
+    Design
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../onnx/index.html">onnx_light.onnx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/helper.html">onnx_light.onnx.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/io_helper.html">onnx_light.onnx.io_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/pychecker.html">onnx_light.onnx.pychecker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onnx/protos.html">protos</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">C++ API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="streaming.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stream.html">stream.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_string.html">simple_string.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_span.html">simple_span.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="thread_pool.html">thread_pool.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fields.html">fields.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="onnx_proto.html">ONNX proto classes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="onnx.html">onnx.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="onnx_helper.html">onnx_helper.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="onnx_alias.html">onnx_alias.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stream_class.html">stream_class.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="load_onnx_light_time_example.html">Standalone C++ example: load an ONNX file with onnx_light</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Standalone C++ example: measure ONNX loading time</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">C++ API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Standalone C++ example: measure ONNX loading time</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="standalone-c-example-measure-onnx-loading-time">
+<span id="l-cpp-load-onnx-time-example"></span><h1>Standalone C++ example: measure ONNX loading time<a class="headerlink" href="#standalone-c-example-measure-onnx-loading-time" title="Link to this heading">#</a></h1>
+<p>This page documents <code class="docutils literal notranslate"><span class="pre">examples/load_onnx_time</span></code>, a self-contained CMake
+project that demonstrates how to consume <em>onnx-light</em> as an installed C++
+library, repeatedly load an ONNX file, and report wall-clock timing
+statistics.</p>
+<section id="step-1-install-the-c-library">
+<h2>Step 1 – Install the C++ library<a class="headerlink" href="#step-1-install-the-c-library" title="Link to this heading">#</a></h2>
+<p>From the <em>onnx-light</em> repository root, build and install the static library
+and its public headers.  The Python extension is not required:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build-install<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-DONNX_LIGHT_BUILD_PYTHON<span class="o">=</span>OFF<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/usr/local
+cmake<span class="w"> </span>--build<span class="w">  </span>build-install
+cmake<span class="w"> </span>--install<span class="w"> </span>build-install
+</pre></div>
+</div>
+</section>
+<section id="step-2-build-the-example">
+<h2>Step 2 – Build the example<a class="headerlink" href="#step-2-build-the-example" title="Link to this heading">#</a></h2>
+<p>Point <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> at the install prefix chosen above:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-S<span class="w"> </span>examples/load_onnx_time<span class="w"> </span>-B<span class="w"> </span>build-load-onnx-time<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-DCMAKE_PREFIX_PATH<span class="o">=</span>/usr/local
+cmake<span class="w"> </span>--build<span class="w"> </span>build-load-onnx-time
+</pre></div>
+</div>
+<p>Or use the helper scripts to install the library to a local prefix and build
+the example in one step:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>examples/load_onnx_time/build.sh
+</pre></div>
+</div>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>examples\load_onnx_time\build.bat
+</pre></div>
+</div>
+<p>The helper scripts build the executable under <code class="docutils literal notranslate"><span class="pre">build/load-onnx-time-example</span></code>
+(<code class="docutils literal notranslate"><span class="pre">build\load-onnx-time-example\Release</span></code> on Windows with a multi-config
+generator).</p>
+</section>
+<section id="step-3-run-the-example">
+<h2>Step 3 – Run the example<a class="headerlink" href="#step-3-run-the-example" title="Link to this heading">#</a></h2>
+<p>The optional second argument controls the number of timed iterations.
+When omitted, the example runs five load passes.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build-load-onnx-time/load_onnx_time<span class="w"> </span>path/to/model.onnx<span class="w"> </span><span class="m">10</span>
+</pre></div>
+</div>
+<p>When using the helper script defaults:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build/load-onnx-time-example/load_onnx_time<span class="w"> </span>path/to/model.onnx<span class="w"> </span><span class="m">10</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Loaded: path/to/model.onnx
+  File size (MB)   : 12.345
+  Iterations       : 10
+  Total load (ms)  : 123.456
+  Average load (ms): 12.346
+  Min load (ms)    : 11.876
+  Max load (ms)    : 13.420
+  IR version       : 9
+  Producer name    : my_framework
+  Graph name       : my_graph
+  Nodes            : 42
+  Inputs           : 2
+  Outputs          : 1
+  Initializers     : 10
+</pre></div>
+</div>
+</section>
+<section id="cmakelists-txt">
+<h2>CMakeLists.txt<a class="headerlink" href="#cmakelists-txt" title="Link to this heading">#</a></h2>
+<p>The example CMake project uses <code class="docutils literal notranslate"><span class="pre">find_package</span></code> to locate the installed
+library and links against the exported <code class="docutils literal notranslate"><span class="pre">onnx::onnx</span></code> target:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.15</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">load_onnx_time</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD_REQUIRED</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span><span class="s">onnx</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">load_onnx_time</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">load_onnx_time</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">onnx::onnx</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="main-cpp">
+<h2>main.cpp<a class="headerlink" href="#main-cpp" title="Link to this heading">#</a></h2>
+<p>The program opens the ONNX file with <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::utils::MmapStream</span></code>,
+parses it with <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">onnx::ParseModelProtoFromStream()</span></code>, measures each
+iteration with <code class="docutils literal notranslate"><span class="pre">std::chrono::steady_clock</span></code>, and prints aggregate timing
+statistics together with a short model summary.</p>
+</section>
+<section id="key-api-types">
+<h2>Key API types<a class="headerlink" href="#key-api-types" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::utils::MmapStream</span></code></dt><dd><p>Memory-mapped binary input stream backed by a file. Constructed with the
+path to the <code class="docutils literal notranslate"><span class="pre">.onnx</span></code> file; throws <code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code> if the file
+cannot be opened or mapped.</p>
+</dd>
+<dt><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::ParseOptions</span></code></dt><dd><p>Controls parsing behavior for each timed load pass.</p>
+</dd>
+<dt><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">onnx::ParseModelProtoFromStream()</span></code></dt><dd><p>Parses the binary protobuf stream into a <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::ModelProto</span></code>.</p>
+</dd>
+<dt><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::ModelProto</span></code></dt><dd><p>Top-level ONNX model container.  The example reuses the parsed model from
+the last iteration to print graph metadata next to the timing results.</p>
+</dd>
+</dl>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="load_onnx_light_time_example.html"><span class="doc">Standalone C++ example: load an ONNX file with onnx_light</span></a> – standalone example that loads a model and prints
+metadata without timing it.</p></li>
+<li><p><a class="reference internal" href="stream.html"><span class="doc">stream.h</span></a> – full reference for <code class="docutils literal notranslate"><span class="pre">FileStream</span></code>, <code class="docutils literal notranslate"><span class="pre">StringStream</span></code>,
+and write streams.</p></li>
+<li><p><a class="reference internal" href="onnx_helper.html"><span class="doc">onnx_helper.h</span></a> – <code class="docutils literal notranslate"><span class="pre">ParseModelProtoFromStream</span></code> and related helpers.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="load_onnx_light_time_example.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Standalone C++ example: load an ONNX file with onnx_light</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../auto_examples/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-install-the-c-library">Step 1 – Install the C++ library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-build-the-example">Step 2 – Build the example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-run-the-example">Step 3 – Run the example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cmakelists-txt">CMakeLists.txt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-cpp">main.cpp</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-api-types">Key API types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/cpp/load_onnx_time_example.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

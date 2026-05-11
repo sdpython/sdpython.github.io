@@ -20,7 +20,7 @@ _USER_CACHE_DIR = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"
 _CACHE_DIR = os.path.join(_USER_CACHE_DIR, "onnx-light", "ci_durations_workflows")
 
 # Workflows that are NOT CI (skip documentation / style / spelling workflows)
-_SKIP_PATTERNS = ("docs", "style", "spelling", "pyrefly", "mypy", "doc_")
+_SKIP_PATTERNS = ("docs", "style", "spelling", "pyrefly", "mypy", "doc_", "clang")
 
 
 def _gh_get(path, params=""):

@@ -570,7 +570,7 @@ prevent successful dynamic-shape export.</p></li>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="n">PatchDetails</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of patches applied: </span><span class="si">{</span><span class="n">details</span><span class="o">.</span><span class="n">n_patches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">details</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patch</span><span class="o">.</span><span class="n">family</span></a></a></a><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">patch</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patch</span><span class="o">.</span><span class="n">family</span></a></a><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">patch</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of patches applied: 5
@@ -598,13 +598,16 @@ version.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>torch: DynamicDimConstraintPrinter._print_Symbol -&gt; patched_DynamicDimConstraintPrinter._print_Symbol
 --- original
 +++ rewritten
-@@ -1,6 +1,5 @@
- def _print_Symbol(self, expr: sympy.Symbol) -&gt; str:
+@@ -1,6 +1,7 @@
+-def _print_Symbol(self, expr: sympy.Symbol) -&gt; str:
 -    if not isinstance(expr, sympy.Symbol):
 -        raise AssertionError(f&quot;Expected sympy.Symbol, got {type(expr)}&quot;)
 -    if not self.symbol_to_source.get(expr):
 -        raise AssertionError(f&quot;Unknown symbol {expr} created by constraints solver&quot;)
 -    return self.symbol_to_source[expr][0].name
++def _print_Symbol(self, expr: &quot;sympy.Symbol&quot;) -&gt; str:  # type: ignore # noqa: F821
++    import sympy
++
 +    assert isinstance(expr, sympy.Symbol), str(type(expr))
 +    if self.symbol_to_source.get(expr):  # type: ignore
 +        return self.symbol_to_source[expr][0].name  # type: ignore
@@ -613,16 +616,17 @@ version.</p>
 torch: infer_size -&gt; patched_infer_size
 --- original
 +++ rewritten
-@@ -1,10 +1,13 @@
+@@ -1,10 +1,15 @@
 -def infer_size(a: Sequence[IntLikeType], b: Sequence[IntLikeType]) -&gt; tuple[IntLikeType, ...]:
 -    from torch.fx.experimental.symbolic_shapes import guard_or_false
--
 +def patched_infer_size(a, b):
 +    &quot;&quot;&quot;
 +    Patches ``torch._subclasses.fake_impls.infer_size``.
 +    This patch is needed to export
 +    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.
 +    &quot;&quot;&quot;
++    import torch.fx.experimental.symbolic_shapes as _sym_shapes
+
      dimsA = len(a)
      dimsB = len(b)
      ndim = max(dimsA, dimsB)
@@ -631,7 +635,7 @@ torch: infer_size -&gt; patched_infer_size
      for i in range(ndim - 1, -1, -1):
          offset = ndim - 1 - i
          dimA = dimsA - 1 - offset
-@@ -23,11 +26,21 @@
+@@ -23,11 +28,21 @@
          # expression of an or statement as-is, without bool()&#39;ing it; if this
          # were not the case, we&#39;d need to write this using torch.sym_or() or
          # something like that).
@@ -643,19 +647,19 @@ torch: infer_size -&gt; patched_infer_size
 -        )
 -        expandedSizes[i] = sizeB if guard_or_false(sizeA == 1) else sizeA
 +        try:
-+            b1 = fx_symbolic_shapes.guard_or_false(sizeA == 1)
-+        except fx_symbolic_shapes.GuardOnDataDependentSymNode:
++            b1 = _sym_shapes.guard_or_false(sizeA == 1)
++        except _sym_shapes.GuardOnDataDependentSymNode:
 +            b1 = False
 +        try:
-+            b2 = fx_symbolic_shapes.guard_or_false(sizeB == 1)
-+        except fx_symbolic_shapes.GuardOnDataDependentSymNode:
++            b2 = _sym_shapes.guard_or_false(sizeB == 1)
++        except _sym_shapes.GuardOnDataDependentSymNode:
 +            b2 = False
 +        try:
-+            b3 = fx_symbolic_shapes.guard_or_false(sizeA == sizeB)
-+        except fx_symbolic_shapes.GuardOnDataDependentSymNode:
++            b3 = _sym_shapes.guard_or_false(sizeA == sizeB)
++        except _sym_shapes.GuardOnDataDependentSymNode:
 +            b3 = False
 +        if b1 or b2 or b3:
-+            expandedSizes[i] = sizeB if fx_symbolic_shapes.guard_or_false(sizeA == 1) else sizeA
++            expandedSizes[i] = sizeB if _sym_shapes.guard_or_false(sizeA == 1) else sizeA
 +        else:
 +            # PATCHED: generic case, the dimension is known, no need to assert
 +            expandedSizes[i] = torch.sym_max(sizeA, sizeB)  # type: ignore
@@ -664,7 +668,7 @@ torch: infer_size -&gt; patched_infer_size
 torch: _broadcast_shapes -&gt; patched__broadcast_shapes
 --- original
 +++ rewritten
-@@ -1,12 +1,11 @@
+@@ -1,12 +1,12 @@
 -def _broadcast_shapes(*_shapes):
 -    from torch.fx.experimental.symbolic_shapes import (
 -        guard_or_false,
@@ -672,20 +676,20 @@ torch: _broadcast_shapes -&gt; patched__broadcast_shapes
 -        has_guarding_hint,
 -        is_nested_int,
 -    )
--
--    backed_so = torch.fx.experimental._config.backed_size_oblivious
 +def patched__broadcast_shapes(*_shapes):
 +    &quot;&quot;&quot;
 +    Patches ``torch._refs._broadcast_shapes``.
 +    This patch is needed to export
 +    :class:`yobx.torch.tiny_models.TinyBroadcastAddModel`.
 +    &quot;&quot;&quot;
-+    from functools import reduce
++    import torch.fx.experimental.symbolic_shapes as _sym_shapes
+
+-    backed_so = torch.fx.experimental._config.backed_size_oblivious
 +    from torch._prims_common import IntLike
 
      shapes = tuple(
          (x,) if isinstance(x, IntLike) else x for x in filter(lambda x: x is not None, _shapes)
-@@ -19,62 +18,36 @@
+@@ -19,62 +19,36 @@
      for shape in shapes:
          if not isinstance(shape, Sequence):
              raise RuntimeError(
@@ -705,15 +709,13 @@ torch: _broadcast_shapes -&gt; patched__broadcast_shapes
          for idx in range(-1, -1 - len(shape), -1):
 -            # NB: handle nested ints specially to avoid invalid guarding on Ne(j0, 1).
 -            if is_nested_int(shape[idx]):
-+            if fx_symbolic_shapes.is_nested_int(shape[idx]):
++            if _sym_shapes.is_nested_int(shape[idx]):
                  # Broadcasting is allowed for (j0, 1) or (j0, j0);
                  # not (j0, j1), (j0, 5), etc.
 -                if is_nested_int(common_shape[idx]) and guard_or_false(
--                    shape[idx] == common_shape[idx]
--                ):
-+                if fx_symbolic_shapes.is_nested_int(
-+                    common_shape[idx]
-+                ) and fx_symbolic_shapes.guard_or_false(shape[idx] == common_shape[idx]):
++                if _sym_shapes.is_nested_int(common_shape[idx]) and _sym_shapes.guard_or_false(
+                     shape[idx] == common_shape[idx]
+                 ):
                      continue
              else:
 -                # When backed size oblivious is used, we specialize for broadcasting
@@ -737,17 +739,17 @@ torch: _broadcast_shapes -&gt; patched__broadcast_shapes
 -                    if b == 1 and a != 1:
 -                        torch._check(common_shape[idx] == 1)
 -                if guard_or_false(shape[idx] == common_shape[idx]):
-+                if fx_symbolic_shapes.guard_or_false(shape[idx] == common_shape[idx]):
++                if _sym_shapes.guard_or_false(shape[idx] == common_shape[idx]):
                      continue
 -
 -            if guard_or_false(common_shape[idx] == 1):
 +            # PATCHED: two cases, if == for sure, no broadcast,
 +            # otherwise maybe broadcast with max(dimensions)
-+            if fx_symbolic_shapes.guard_or_false(common_shape[idx] != 1):
++            if _sym_shapes.guard_or_false(common_shape[idx] != 1):
 +                pass
-+            elif fx_symbolic_shapes.guard_or_false(
-+                common_shape[idx] == 1
-+            ) or fx_symbolic_shapes.guard_or_false(shape[idx] != 1):
++            elif _sym_shapes.guard_or_false(common_shape[idx] == 1) or _sym_shapes.guard_or_false(
++                shape[idx] != 1
++            ):
                  if shape[idx] &lt; 0:
                      raise ValueError(&quot;Attempting to broadcast a dimension with negative length!&quot;)
 -                common_shape[idx] = shape[idx]
@@ -776,7 +778,7 @@ torch: _get_range_constraints -&gt; patched__get_range_constraints
 +def patched__get_range_constraints(
      mod: torch.nn.Module,
 -    export_artifact: ExportArtifact,
-+    export_artifact: torch.export._trace.ExportArtifact,
++    export_artifact: &quot;torch.export._trace.ExportArtifact&quot;,  # noqa: F821
      args,
      kwargs,
      dynamic_shapes,
@@ -787,10 +789,11 @@ torch: _get_range_constraints -&gt; patched__get_range_constraints
 +    &quot;&quot;&quot;
      gm: torch.fx.GraphModule = export_artifact.aten.gm
 -    export_graph_signature: ExportGraphSignature = export_artifact.aten.sig
+-    fake_mode: FakeTensorMode = export_artifact.fake_mode
 +    export_graph_signature: torch.export.graph_signature.ExportGraphSignature = (
 +        export_artifact.aten.sig
 +    )
-     fake_mode: FakeTensorMode = export_artifact.fake_mode
++    fake_mode: &quot;FakeTensorMode&quot; = export_artifact.fake_mode  # type: ignore # noqa: F821
      num_lifted = next(
          (
              i
@@ -910,12 +913,12 @@ This makes the figure capturable by sphinx-gallery.
 <a class="reference internal" href="../api/doc.html#yobx.doc.plot_text" title="yobx.doc.plot_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">yobx.doc.plot_text()</span></code></a> automates this rendering.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>  <span class="c1"># noqa: E402</span>
 
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">_DIFF_COLORS</span></a></a></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="s2">&quot;#2a9d2a&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="s2">&quot;#cc2222&quot;</span><span class="p">,</span> <span class="s2">&quot;@&quot;</span><span class="p">:</span> <span class="s2">&quot;#1a6fbf&quot;</span><span class="p">}</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">_DIFF_COLORS</span></a></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="s2">&quot;#2a9d2a&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="s2">&quot;#cc2222&quot;</span><span class="p">,</span> <span class="s2">&quot;@&quot;</span><span class="p">:</span> <span class="s2">&quot;#1a6fbf&quot;</span><span class="p">}</span>
 
 <span class="n">smallest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">make_diff</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()))</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">diff_preview</span></a></a></a> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">smallest</span><span class="o">.</span><span class="n">make_diff</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">10</span><span class="p">])</span>
-<span class="n">doc</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">diff_preview</span></a></a></a><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">smallest</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">line_color_map</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">_DIFF_COLORS</span></a></a></a><span class="p">)</span>
-<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a></a></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">diff_preview</span></a></a> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">smallest</span><span class="o">.</span><span class="n">make_diff</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">diff_preview</span></a></a><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">smallest</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">line_color_map</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">_DIFF_COLORS</span></a></a><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a></a><span class="p">()</span>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_patch_model_001.png" srcset="../_images/sphx_glr_plot_patch_model_001.png" alt="_print_Symbol" class = "sphx-glr-single-img"/></section>
@@ -929,17 +932,17 @@ patched functions were exercised by calling
 <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicCache</span></code> pytree structure is understood by the
 exporter.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_tiny_model</span><span class="p">(</span><span class="s2">&quot;arnir0/Tiny-LLM&quot;</span><span class="p">)</span>
-<span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ds</span></a></a></a> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">export_inputs</span></a></a></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">dynamic_shapes</span></a></a></a>
+<span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ds</span></a></a> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">export_inputs</span></a></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">dynamic_shapes</span></a></a>
 
 <span class="k">with</span> <span class="p">(</span>
     <span class="n">register_flattening_functions</span><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="n">apply_patches_for_model</span><span class="p">(</span><span class="n">patch_torch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span> <span class="k">as</span> <span class="n">details2</span><span class="p">,</span>
 <span class="p">):</span>
-    <a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a></a> <span class="o">=</span> <a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">use_dyn_not_str</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ds</span></a></a></a><span class="p">))</span>
+    <a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a> <span class="o">=</span> <a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">use_dyn_not_str</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ds</span></a></a><span class="p">))</span>
 
-<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patches</span></a></a></a> <span class="o">=</span> <span class="n">details2</span><span class="o">.</span><span class="n">patches_involved_in_graph</span><span class="p">(</span><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram.graph" title="torch.export.ExportedProgram.graph" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-property"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram.graph" title="torch.export.ExportedProgram.graph" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-property"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram.graph" title="torch.export.ExportedProgram.graph" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-property"><span class="n">ep</span><span class="o">.</span><span class="n">graph</span></a></a></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Patches involved in the exported graph: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patches</span></a></a></a><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">details2</span><span class="o">.</span><span class="n">make_report</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patches</span></a></a></a><span class="p">))</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patches</span></a></a> <span class="o">=</span> <span class="n">details2</span><span class="o">.</span><span class="n">patches_involved_in_graph</span><span class="p">(</span><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram.graph" title="torch.export.ExportedProgram.graph" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-property"><a href="https://docs.pytorch.org/docs/stable/user_guide/torch_compiler/export/api_reference.html#torch.export.ExportedProgram.graph" title="torch.export.ExportedProgram.graph" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-property"><span class="n">ep</span><span class="o">.</span><span class="n">graph</span></a></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Patches involved in the exported graph: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patches</span></a></a><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">details2</span><span class="o">.</span><span class="n">make_report</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">patches</span></a></a><span class="p">))</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Patches involved in the exported graph: 1
@@ -1281,7 +1284,7 @@ transformers: LlamaRotaryEmbedding.forward -&gt; common_RotaryEmbedding.forward
     aten.to.dtype(mul_1, torch.float32) -&gt; to_9
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.567 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.440 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-torch-plot-patch-model-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/43b2e0ff67f8c955e78f7e6c063316cc/plot_patch_model.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_patch_model.ipynb</span></code></a></p>
