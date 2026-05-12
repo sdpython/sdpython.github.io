@@ -1,0 +1,841 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>status.h &#8212; onnx-light 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/cpp/onnx/common/status';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="string_utils.h" href="string_utils.html" />
+    <link rel="prev" title="scoped_resource.h" href="scoped_resource.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo.svg" class="logo__image only-light" alt="onnx-light 0.1.0 documentation - Home"/>
+    <img src="../../../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="onnx-light 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../design/index.html">
+    Design
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../design/index.html">
+    Design
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../onnx/index.html">onnx_light.onnx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/helper.html">onnx_light.onnx.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/io_helper.html">onnx_light.onnx.io_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/pychecker.html">onnx_light.onnx.pychecker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/protos.html">protos</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../index.html">C++ API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../helpers.html">Helpers</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">onnx</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../checker.html">checker.h</a></li>
+<li class="toctree-l3 current active has-children"><a class="reference internal" href="index.html">common</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="array_ref.html">array_ref.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="assertions.html">assertions.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="common.html">common.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html">constants.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="file_utils.html">file_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="onnx_pb.html">onnx_pb.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="path.html">path.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="platform_helpers.html">platform_helpers.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="proto_util.html">proto_util.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="proto_utils.html">proto_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scoped_resource.html">scoped_resource.h</a></li>
+<li class="toctree-l4 current active"><a class="current reference internal" href="#">status.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="string_utils.html">string_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tensor.html">tensor.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../defs/index.html">defs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../defs/attr_proto_util.html">attr_proto_util.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/data_propagators.html">data_propagators.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/data_type_utils.html">data_type_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/doc_strings.html">doc_strings.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/function.html">function.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/parser.html">parser.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/printer.html">printer.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/schema.html">schema.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/shape_inference.html">shape_inference.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/tensor_util.html">tensor_util.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../inliner/index.html">inliner</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../inliner/inliner.html">inliner.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../onnx_proto/index.html">onnx_proto</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/onnx.html">onnx.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/onnx_helper.html">onnx_helper.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/onnx_alias.html">onnx_alias.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/stream_class.html">stream_class.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/stream.html">stream.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/simple_string.html">simple_string.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/simple_span.html">simple_span.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/thread_pool.html">thread_pool.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/fields.html">fields.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../shape_inference/index.html">shape_inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../shape_inference/attribute_binder.html">attribute_binder.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../shape_inference/implementation.html">implementation.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../version_converter/index.html">version_converter</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/BaseConverter.html">BaseConverter.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/convert.html">convert.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/helper.html">helper.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/adapters/index.html">adapters</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../load_onnx_light_time_example.html">Standalone C++ example: load an ONNX file with onnx_light</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../load_onnx_time_example.html">Standalone C++ example: measure ONNX loading time</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">C++ API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">onnx</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">common</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">status.h</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="status-h">
+<h1>status.h<a class="headerlink" href="#status-h" title="Link to this heading">#</a></h1>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv420ONNX_LIGHT_NAMESPACE">
+<span id="_CPPv320ONNX_LIGHT_NAMESPACE"></span><span id="_CPPv220ONNX_LIGHT_NAMESPACE"></span><span id="ONNX_LIGHT_NAMESPACE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONNX_LIGHT_NAMESPACE</span></span></span><br /></dt>
+<dd><dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6CommonE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6CommonE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6CommonE"></span><span id="ONNX_LIGHT_NAMESPACE::Common"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Common</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6CommonE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a4d5a24f1277d5c3218413487e9c5710a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StatusCategory</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE" title="Link to this definition">#</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory4NONEE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory4NONEE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory4NONEE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a4d5a24f1277d5c3218413487e9c5710aab50339a10e1de285ac99d4c3990b8693"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NONE</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory4NONEE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory7CHECKERE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory7CHECKERE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory7CHECKERE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a4d5a24f1277d5c3218413487e9c5710aa62c02a5298c1a0a11741c90330deaded"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHECKER</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory7CHECKERE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory9OPTIMIZERE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory9OPTIMIZERE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory9OPTIMIZERE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a4d5a24f1277d5c3218413487e9c5710aaadf93ff7044c8587b68c572ea1781e6c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OPTIMIZER</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory9OPTIMIZERE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a488f618c6ee3c71e166c2ed329094878"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StatusCode</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE" title="Link to this definition">#</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode2OKE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common10StatusCode2OKE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common10StatusCode2OKE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a488f618c6ee3c71e166c2ed329094878ae0aa021e21dddbd6d8cecec71e9cf564"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OK</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode2OKE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode4FAILE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common10StatusCode4FAILE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common10StatusCode4FAILE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a488f618c6ee3c71e166c2ed329094878ac2759effffc94bb9acc71d69fe3e8a1f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FAIL</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode4FAILE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_ARGUMENTE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_ARGUMENTE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_ARGUMENTE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a488f618c6ee3c71e166c2ed329094878af295a0c3e37c94f078e1c5476479132d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INVALID_ARGUMENT</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_ARGUMENTE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_PROTOBUFE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_PROTOBUFE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_PROTOBUFE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a488f618c6ee3c71e166c2ed329094878a3511bda4c7b28ebd927e90ddbee239b5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INVALID_PROTOBUF</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_PROTOBUFE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6CommonlsERNSt7ostreamERK6Status">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6CommonlsERNSt7ostreamERK6Status"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6CommonlsERNSt7ostreamERK6Status"></span><span id="ONNX_LIGHT_NAMESPACE::Common::lshift-operator__osR.StatusCR"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1Common_1a9e91058e600da72610c6e01573c4a303"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">status</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6CommonlsERNSt7ostreamERK6Status" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6StatusE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6StatusE"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Status</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;status.h&gt;</em></div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusEv">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusEv"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::Status"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a67a4b5779ae92d25e4b0b797611303a4"></span><span class="sig-name descname"><span class="n"><span class="pre">Status</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCodeRKNSt6stringE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCodeRKNSt6stringE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCodeRKNSt6stringE"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::Status__StatusCategory.StatusCode.ssCR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a0d55543fb996ae987a117889e98497da"></span><span class="sig-name descname"><span class="n"><span class="pre">Status</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCategory"><span class="n"><span class="pre">StatusCategory</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">category</span></span>, <a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCode"><span class="n"><span class="pre">StatusCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">code</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">msg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCodeRKNSt6stringE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCode">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCode"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCode"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::Status__StatusCategory.StatusCode"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a02f360255d4fa8afcc88695bab023192"></span><span class="sig-name descname"><span class="n"><span class="pre">Status</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCategory"><span class="n"><span class="pre">StatusCategory</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">category</span></span>, <a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCode"><span class="n"><span class="pre">StatusCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCode" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERK6Status">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERK6Status"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERK6Status"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::Status__StatusCR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1aa75a6c80a9f7f26d162eaf3e1230e3d5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Status</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERK6Status" title="ONNX_LIGHT_NAMESPACE::Common::Status::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERK6Status" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERK6Status">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERK6Status"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERK6Status"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::assign-operator__StatusCR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a655cb9e5cd82dfacd4f0977c5bcb9bb5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERK6Status" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERR6Status">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERR6Status"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERR6Status"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::Status__StatusRR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a989a249af317980689c01b197c2a4bb8"></span><span class="sig-name descname"><span class="n"><span class="pre">Status</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERR6Status" title="ONNX_LIGHT_NAMESPACE::Common::Status::Status"><span class="n"><span class="pre">Status</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERR6Status" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERR6Status">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERR6Status"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERR6Status"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::assign-operator__StatusRR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1acc16642743425871d271d2b1b31c39aa"></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERR6Status" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusD0Ev">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6StatusD0Ev"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6StatusD0Ev"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::~Status"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a153c5296e8e8636b00f4981bd6fe3957"></span><span class="sig-name descname"><span class="n"><span class="pre">~Status</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusD0Ev" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status4IsOKEv">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE6Common6Status4IsOKEv"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE6Common6Status4IsOKEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::IsOKC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1ad53fb53104933756a9c71d3f11a572ac"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsOK</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status4IsOKEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status4CodeEv">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE6Common6Status4CodeEv"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE6Common6Status4CodeEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::CodeC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a313207efaca4e81fe4c27a406554fd72"></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCode"><span class="n"><span class="pre">StatusCode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Code</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status4CodeEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status8CategoryEv">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE6Common6Status8CategoryEv"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE6Common6Status8CategoryEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::CategoryC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a3f45b47edfae0fe9db608efb2f0bcb21"></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCategory"><span class="n"><span class="pre">StatusCategory</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Category</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status8CategoryEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status12ErrorMessageEv">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE6Common6Status12ErrorMessageEv"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE6Common6Status12ErrorMessageEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::ErrorMessageC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a7d9fc0147b0e6e6ddb0533b9b8ba1ec6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ErrorMessage</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status12ErrorMessageEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status8ToStringEv">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE6Common6Status8ToStringEv"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE6Common6Status8ToStringEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::ToStringC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a4b01298ee8eb802d0b84fbabad06086e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ToString</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status8ToStringEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6StatuseqERK6Status">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE6Common6StatuseqERK6Status"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE6Common6StatuseqERK6Status"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::eq-operator__StatusCRC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1abda5cd2e9722d00625200b9fd4afcd79"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6StatuseqERK6Status" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6StatusneERK6Status">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE6Common6StatusneERK6Status"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE6Common6StatusneERK6Status"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::neq-operator__StatusCRC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1ad976b5b17723a4f73a2b496b8c407156"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6StatusneERK6Status" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status2OKEv">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status2OKEv"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status2OKEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::OK"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1addb13d8af44282f92ae6f508943ca42c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE" title="ONNX_LIGHT_NAMESPACE::Common::Status"><span class="n"><span class="pre">Status</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">OK</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status2OKEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6state_E">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status6state_E"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status6state_E"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::state___std::unique_ptr:State:"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1a8a0f468fc0822dfacac68f99560cfe5c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5StateE" title="ONNX_LIGHT_NAMESPACE::Common::Status::State"><span class="n"><span class="pre">State</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">state_</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6state_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status11EmptyStringEv">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status11EmptyStringEv"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status11EmptyStringEv"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::EmptyString"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1af92cfedded8ef69f60bdea3c5fb0be89"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">EmptyString</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status11EmptyStringEv" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5StateE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status5StateE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status5StateE"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::State"></span><span class="target" id="structONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1_1State"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">State</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5StateE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State5StateE14StatusCategory10StatusCodeNSt6stringE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status5State5StateE14StatusCategory10StatusCodeNSt6stringE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status5State5StateE14StatusCategory10StatusCodeNSt6stringE"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::State::State__StatusCategory.StatusCode.ss"></span><span class="target" id="structONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1_1State_1ae77978542cce200227ea20279589c4ed"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">State</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCategory"><span class="n"><span class="pre">StatusCategory</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">cat_</span></span>, <a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCode"><span class="n"><span class="pre">StatusCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">code_</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">msg_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State5StateE14StatusCategory10StatusCodeNSt6stringE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State8categoryE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status5State8categoryE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status5State8categoryE"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::State::category__StatusCategory"></span><span class="target" id="structONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1_1State_1a4b174da73c71dd1379d7a5424ae73fa8"></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCategory"><span class="n"><span class="pre">StatusCategory</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">category</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCategory"><span class="n"><span class="pre">StatusCategory</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory4NONEE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCategory::NONE"><span class="n"><span class="pre">NONE</span></span></a><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State8categoryE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State4codeE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status5State4codeE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status5State4codeE"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::State::code__StatusCode"></span><span class="target" id="structONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1_1State_1a26221164ace1999959482abc6995d4cf"></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE" title="ONNX_LIGHT_NAMESPACE::Common::StatusCode"><span class="n"><span class="pre">StatusCode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State4codeE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State3msgE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE6Common6Status5State3msgE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE6Common6Status5State3msgE"></span><span id="ONNX_LIGHT_NAMESPACE::Common::Status::State::msg__ss"></span><span class="target" id="structONNX__LIGHT__NAMESPACE_1_1Common_1_1Status_1_1State_1a6ce560514cd7392b14a6440884880e2a"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">msg</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State3msgE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="scoped_resource.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">scoped_resource.h</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="string_utils.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">string_utils.h</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv420ONNX_LIGHT_NAMESPACE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6CommonE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE::Common</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategoryE"><code class="docutils literal notranslate"><span class="pre">StatusCategory</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory4NONEE"><code class="docutils literal notranslate"><span class="pre">NONE</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory7CHECKERE"><code class="docutils literal notranslate"><span class="pre">CHECKER</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common14StatusCategory9OPTIMIZERE"><code class="docutils literal notranslate"><span class="pre">OPTIMIZER</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCodeE"><code class="docutils literal notranslate"><span class="pre">StatusCode</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode2OKE"><code class="docutils literal notranslate"><span class="pre">OK</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode4FAILE"><code class="docutils literal notranslate"><span class="pre">FAIL</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_ARGUMENTE"><code class="docutils literal notranslate"><span class="pre">INVALID_ARGUMENT</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common10StatusCode16INVALID_PROTOBUFE"><code class="docutils literal notranslate"><span class="pre">INVALID_PROTOBUF</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6CommonlsERNSt7ostreamERK6Status"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE::Common::Status</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusEv"><code class="docutils literal notranslate"><span class="pre">Status()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCodeRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">Status()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusE14StatusCategory10StatusCode"><code class="docutils literal notranslate"><span class="pre">Status()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERK6Status"><code class="docutils literal notranslate"><span class="pre">Status()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERK6Status"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6StatusERR6Status"><code class="docutils literal notranslate"><span class="pre">Status()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusaSERR6Status"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6StatusD0Ev"><code class="docutils literal notranslate"><span class="pre">~Status()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status4IsOKEv"><code class="docutils literal notranslate"><span class="pre">IsOK()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status4CodeEv"><code class="docutils literal notranslate"><span class="pre">Code()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status8CategoryEv"><code class="docutils literal notranslate"><span class="pre">Category()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status12ErrorMessageEv"><code class="docutils literal notranslate"><span class="pre">ErrorMessage()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6Status8ToStringEv"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6StatuseqERK6Status"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE6Common6StatusneERK6Status"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status2OKEv"><code class="docutils literal notranslate"><span class="pre">OK()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status6state_E"><code class="docutils literal notranslate"><span class="pre">state_</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status11EmptyStringEv"><code class="docutils literal notranslate"><span class="pre">EmptyString()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5StateE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE::Common::Status::State</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State5StateE14StatusCategory10StatusCodeNSt6stringE"><code class="docutils literal notranslate"><span class="pre">State()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State8categoryE"><code class="docutils literal notranslate"><span class="pre">category</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State4codeE"><code class="docutils literal notranslate"><span class="pre">code</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE6Common6Status5State3msgE"><code class="docutils literal notranslate"><span class="pre">msg</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/api/cpp/onnx/common/status.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

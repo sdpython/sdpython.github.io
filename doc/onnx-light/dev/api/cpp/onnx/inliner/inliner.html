@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>inliner.h &#8212; onnx-light 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/cpp/onnx/inliner/inliner';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="onnx_proto" href="../onnx_proto/index.html" />
+    <link rel="prev" title="inliner" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo.svg" class="logo__image only-light" alt="onnx-light 0.1.0 documentation - Home"/>
+    <img src="../../../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="onnx-light 0.1.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../design/index.html">
+    Design
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../design/index.html">
+    Design
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../misc.html">
+    Miscellaneous
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/xadupre/onnx-light" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../onnx/index.html">onnx_light.onnx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/helper.html">onnx_light.onnx.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/io_helper.html">onnx_light.onnx.io_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/pychecker.html">onnx_light.onnx.pychecker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../onnx/protos.html">protos</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../index.html">C++ API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../helpers.html">Helpers</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../index.html">onnx</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../checker.html">checker.h</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../common/index.html">common</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../common/array_ref.html">array_ref.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/assertions.html">assertions.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/common.html">common.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/constants.html">constants.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/file_utils.html">file_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/onnx_pb.html">onnx_pb.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/path.html">path.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/platform_helpers.html">platform_helpers.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/proto_util.html">proto_util.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/proto_utils.html">proto_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/scoped_resource.html">scoped_resource.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/status.html">status.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/string_utils.html">string_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../common/tensor.html">tensor.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../defs/index.html">defs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../defs/attr_proto_util.html">attr_proto_util.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/data_propagators.html">data_propagators.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/data_type_utils.html">data_type_utils.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/doc_strings.html">doc_strings.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/function.html">function.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/parser.html">parser.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/printer.html">printer.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/schema.html">schema.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/shape_inference.html">shape_inference.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../defs/tensor_util.html">tensor_util.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 current active has-children"><a class="reference internal" href="index.html">inliner</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l4 current active"><a class="current reference internal" href="#">inliner.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../onnx_proto/index.html">onnx_proto</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/onnx.html">onnx.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/onnx_helper.html">onnx_helper.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/onnx_alias.html">onnx_alias.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/stream_class.html">stream_class.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/stream.html">stream.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/simple_string.html">simple_string.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/simple_span.html">simple_span.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/thread_pool.html">thread_pool.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../onnx_proto/fields.html">fields.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../shape_inference/index.html">shape_inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../shape_inference/attribute_binder.html">attribute_binder.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../shape_inference/implementation.html">implementation.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../version_converter/index.html">version_converter</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/BaseConverter.html">BaseConverter.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/convert.html">convert.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/helper.html">helper.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../version_converter/adapters/index.html">adapters</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../load_onnx_light_time_example.html">Standalone C++ example: load an ONNX file with onnx_light</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../load_onnx_time_example.html">Standalone C++ example: measure ONNX loading time</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">C++ API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">onnx</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">inliner</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">inliner.h</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="inliner-h">
+<h1>inliner.h<a class="headerlink" href="#inliner-h" title="Link to this heading">#</a></h1>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv420ONNX_LIGHT_NAMESPACE">
+<span id="_CPPv320ONNX_LIGHT_NAMESPACE"></span><span id="_CPPv220ONNX_LIGHT_NAMESPACE"></span><span id="ONNX_LIGHT_NAMESPACE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONNX_LIGHT_NAMESPACE</span></span></span><br /></dt>
+<dd><dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inlinerE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inlinerE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inlinerE"></span><span id="ONNX_LIGHT_NAMESPACE::inliner"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1inliner"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inliner</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inlinerE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner10FunctionIdE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner10FunctionIdE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner10FunctionIdE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1inliner_1abbf0b33664fe7572b865d3180eb72562"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FunctionId</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner10FunctionIdE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner16FunctionIdVectorE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner16FunctionIdVectorE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner16FunctionIdVectorE"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1inliner_1a9f516006ad46435348d889a5fa8a1601"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FunctionIdVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner10FunctionIdE" title="ONNX_LIGHT_NAMESPACE::inliner::FunctionId"><span class="n"><span class="pre">FunctionId</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner16FunctionIdVectorE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSetPK15ISchemaRegistry">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSetPK15ISchemaRegistry"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSetPK15ISchemaRegistry"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::InlineSelectedFunctions__ModelProtoR.FunctionIdSetCR.ISchemaRegistryCP"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1inliner_1a550cf1f05f371e8624bb29334c50db8d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InlineSelectedFunctions</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../onnx_proto/onnx.html#_CPPv4N20ONNX_LIGHT_NAMESPACE10ModelProtoE" title="ONNX_LIGHT_NAMESPACE::ModelProto"><span class="n"><span class="pre">ModelProto</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">model</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE" title="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet"><span class="n"><span class="pre">FunctionIdSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">to_inline</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../defs/schema.html#_CPPv4N20ONNX_LIGHT_NAMESPACE15ISchemaRegistryE" title="ONNX_LIGHT_NAMESPACE::ISchemaRegistry"><span class="n"><span class="pre">ISchemaRegistry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">schema_registry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSetPK15ISchemaRegistry" title="Link to this definition">#</a><br /></dt>
+<dd><p>Inlines the schema-defined functions in the given model that are in the given set. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only call-sites in the main graph are inlined. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The model in which functions will be inlined. </p></li>
+<li><p><strong>to_inline</strong> – The set of functions to inline. </p></li>
+<li><p><strong>schema_registry</strong> – The schema registry used for function lookup. If nullptr, the default schema registry is used. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner28InlineSelectedLocalFunctionsER10ModelProtoRK13FunctionIdSet">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner28InlineSelectedLocalFunctionsER10ModelProtoRK13FunctionIdSet"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner28InlineSelectedLocalFunctionsER10ModelProtoRK13FunctionIdSet"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::InlineSelectedLocalFunctions__ModelProtoR.FunctionIdSetCR"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1inliner_1ab06f17ea9a526d34e6bb71946cac5017"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InlineSelectedLocalFunctions</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../onnx_proto/onnx.html#_CPPv4N20ONNX_LIGHT_NAMESPACE10ModelProtoE" title="ONNX_LIGHT_NAMESPACE::ModelProto"><span class="n"><span class="pre">ModelProto</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">model</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE" title="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet"><span class="n"><span class="pre">FunctionIdSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">to_inline</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner28InlineSelectedLocalFunctionsER10ModelProtoRK13FunctionIdSet" title="Link to this definition">#</a><br /></dt>
+<dd><p>Inlines the model-local functions in the given model that are in the given set. </p>
+<p>This function processes the model and replaces all call-sites of the specified model-local functions with their inlined implementations. The inlined functions are also removed from the model’s list of functions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function does not perform schema-defined function inlining. For schema-defined function inlining, use InlineSelectedFunctions instead. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The model in which functions will be inlined. </p></li>
+<li><p><strong>to_inline</strong> – The set of functions to inline.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSet">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSet"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSet"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::InlineSelectedFunctions__ModelProtoR.FunctionIdSetCR"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1inliner_1a1029b7ecf9c04baf5123ece68ea05f02"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InlineSelectedFunctions</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../onnx_proto/onnx.html#_CPPv4N20ONNX_LIGHT_NAMESPACE10ModelProtoE" title="ONNX_LIGHT_NAMESPACE::ModelProto"><span class="n"><span class="pre">ModelProto</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">model</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE" title="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet"><span class="n"><span class="pre">FunctionIdSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">to_inline</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSet" title="Link to this definition">#</a><br /></dt>
+<dd><p>Inlines the model-local functions in the given model that are in the given set. </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Deprecated:</span></em></dt>
+<dd><p>This function is deprecated. Use InlineSelectedLocalFunctions instead, to avoid confusion with the overloaded version of InlineSelectedFunctions that inlines schema-defined functions as well. </p>
+</dd></dl>
+
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner20InlineLocalFunctionsER10ModelProtob">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner20InlineLocalFunctionsER10ModelProtob"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner20InlineLocalFunctionsER10ModelProtob"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::InlineLocalFunctions__ModelProtoR.b"></span><span class="target" id="namespaceONNX__LIGHT__NAMESPACE_1_1inliner_1a0ab7c16dd71a39b07ee71061dbd12e56"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InlineLocalFunctions</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../onnx_proto/onnx.html#_CPPv4N20ONNX_LIGHT_NAMESPACE10ModelProtoE" title="ONNX_LIGHT_NAMESPACE::ModelProto"><span class="n"><span class="pre">ModelProto</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">model</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">convert_version</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner20InlineLocalFunctionsER10ModelProtob" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1FunctionIdSet"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FunctionIdSet</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;inliner.h&gt;</em></div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet8ContainsERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3NK20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet8ContainsERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2NK20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet8ContainsERKNSt6stringERKNSt6stringE"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet::Contains__ssCR.ssCRC"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1FunctionIdSet_1aec4615eaed044ce9ad7a14ca4b7aa19e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Contains</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">function_domain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">function_name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet8ContainsERKNSt6stringERKNSt6stringE" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetD0Ev">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetD0Ev"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetD0Ev"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet::~FunctionIdSet"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1FunctionIdSet_1a83a74d1b6f9d4ec248677e4e43572b7a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~FunctionIdSet</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetD0Ev" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet6CreateERR16FunctionIdVectorb">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet6CreateERR16FunctionIdVectorb"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet6CreateERR16FunctionIdVectorb"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet::Create__FunctionIdVectorRR.b"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1FunctionIdSet_1ae68a5e833d9592d6ec43884316a79c26"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE" title="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet"><span class="n"><span class="pre">FunctionIdSet</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Create</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner16FunctionIdVectorE" title="ONNX_LIGHT_NAMESPACE::inliner::FunctionIdVector"><span class="n"><span class="pre">FunctionIdVector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">function_ids</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">invert</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet6CreateERR16FunctionIdVectorb" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7RenamerE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7RenamerE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7RenamerE"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Renamer</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7RenamerE" title="Link to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;inliner.h&gt;</em></div>
+<p>A utility class for renaming variables during graph inlining operations. </p>
+<p>This class provides a simplified interface to the InliningRenamer functionality, allowing users to bind formal parameter names to actual parameter names and rename nodes with unique prefixes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK10GraphProto">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK10GraphProto"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK10GraphProto"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer::Renamer__ssCR.GraphProtoCR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer_1a257f21c8ca1399c66ebc2bdba25cbe22"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Renamer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">prefix</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../onnx_proto/onnx.html#_CPPv4N20ONNX_LIGHT_NAMESPACE10GraphProtoE" title="ONNX_LIGHT_NAMESPACE::GraphProto"><span class="n"><span class="pre">GraphProto</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">graph</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK10GraphProto" title="Link to this definition">#</a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer"><span class="std std-ref">Renamer</span></a> with the given prefix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> – The prefix to add to intermediate variable names to ensure uniqueness. </p></li>
+<li><p><strong>graph</strong> – The graph context for name generation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK13FunctionProto">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK13FunctionProto"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK13FunctionProto"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer::Renamer__ssCR.FunctionProtoCR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer_1a708e14268d203ee3751a0cc238c2043d"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Renamer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">prefix</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../onnx_proto/onnx.html#_CPPv4N20ONNX_LIGHT_NAMESPACE13FunctionProtoE" title="ONNX_LIGHT_NAMESPACE::FunctionProto"><span class="n"><span class="pre">FunctionProto</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">function</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK13FunctionProto" title="Link to this definition">#</a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer"><span class="std std-ref">Renamer</span></a> with the given prefix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> – The prefix to add to intermediate variable names to ensure uniqueness. </p></li>
+<li><p><strong>function</strong> – The function context for name generation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7RenamerD0Ev">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7RenamerD0Ev"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7RenamerD0Ev"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer::~Renamer"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer_1a20290d4285b420f9fb25799be39840e4"></span><span class="sig-name descname"><span class="n"><span class="pre">~Renamer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7RenamerD0Ev" title="Link to this definition">#</a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer8BindNameERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7Renamer8BindNameERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7Renamer8BindNameERKNSt6stringERKNSt6stringE"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer::BindName__ssCR.ssCR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer_1a5992cb6f92d65cd7e73f0c39f4cf708f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BindName</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">formal_name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">actual_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer8BindNameERKNSt6stringERKNSt6stringE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Binds a formal parameter name to an actual parameter name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formal_name</strong> – The formal parameter name in the source graph. </p></li>
+<li><p><strong>actual_name</strong> – The actual parameter name to use in the target. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer16BindToUniqueNameERKNSt6stringE">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7Renamer16BindToUniqueNameERKNSt6stringE"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7Renamer16BindToUniqueNameERKNSt6stringE"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer::BindToUniqueName__ssCR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer_1a2030e5f5d5df5c5f240d266aa57795ee"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BindToUniqueName</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">original_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer16BindToUniqueNameERKNSt6stringE" title="Link to this definition">#</a><br /></dt>
+<dd><p>Creates a unique name for the given name and binds it. </p>
+<p>This method creates a unique name based on the prefix and binds the original name to the unique name for later reference renaming.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>original_name</strong> – The name to create a unique version of. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The unique name that was created and bound. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer10RenameNodeER9NodeProto">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7Renamer10RenameNodeER9NodeProto"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7Renamer10RenameNodeER9NodeProto"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer::RenameNode__NodeProtoR"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer_1acfa066a36fe4996a32f7d1b7069e4c4e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RenameNode</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../onnx_proto/onnx.html#_CPPv4N20ONNX_LIGHT_NAMESPACE9NodeProtoE" title="ONNX_LIGHT_NAMESPACE::NodeProto"><span class="n"><span class="pre">NodeProto</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer10RenameNodeER9NodeProto" title="Link to this definition">#</a><br /></dt>
+<dd><p>Renames all variables in the given node according to the current bindings. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> – The node to rename. Input and output names will be updated in place. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer6pImpl_E">
+<span id="_CPPv3N20ONNX_LIGHT_NAMESPACE7inliner7Renamer6pImpl_E"></span><span id="_CPPv2N20ONNX_LIGHT_NAMESPACE7inliner7Renamer6pImpl_E"></span><span id="ONNX_LIGHT_NAMESPACE::inliner::Renamer::pImpl___std::unique_ptr:Impl:"></span><span class="target" id="classONNX__LIGHT__NAMESPACE_1_1inliner_1_1Renamer_1ad5c82be7b900a4314c8fa1e180a915fa"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Impl</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pImpl_</span></span></span><a class="headerlink" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer6pImpl_E" title="Link to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">inliner</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../onnx_proto/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">onnx_proto</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv420ONNX_LIGHT_NAMESPACE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inlinerE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE::inliner</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner10FunctionIdE"><code class="docutils literal notranslate"><span class="pre">FunctionId</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner16FunctionIdVectorE"><code class="docutils literal notranslate"><span class="pre">FunctionIdVector</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSetPK15ISchemaRegistry"><code class="docutils literal notranslate"><span class="pre">InlineSelectedFunctions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner28InlineSelectedLocalFunctionsER10ModelProtoRK13FunctionIdSet"><code class="docutils literal notranslate"><span class="pre">InlineSelectedLocalFunctions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner23InlineSelectedFunctionsER10ModelProtoRK13FunctionIdSet"><code class="docutils literal notranslate"><span class="pre">InlineSelectedFunctions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner20InlineLocalFunctionsER10ModelProtob"><code class="docutils literal notranslate"><span class="pre">InlineLocalFunctions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE::inliner::FunctionIdSet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4NK20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet8ContainsERKNSt6stringERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">Contains()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSetD0Ev"><code class="docutils literal notranslate"><span class="pre">~FunctionIdSet()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner13FunctionIdSet6CreateERR16FunctionIdVectorb"><code class="docutils literal notranslate"><span class="pre">Create()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7RenamerE"><code class="docutils literal notranslate"><span class="pre">ONNX_LIGHT_NAMESPACE::inliner::Renamer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK10GraphProto"><code class="docutils literal notranslate"><span class="pre">Renamer()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer7RenamerERKNSt6stringERK13FunctionProto"><code class="docutils literal notranslate"><span class="pre">Renamer()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7RenamerD0Ev"><code class="docutils literal notranslate"><span class="pre">~Renamer()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer8BindNameERKNSt6stringERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">BindName()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer16BindToUniqueNameERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">BindToUniqueName()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer10RenameNodeER9NodeProto"><code class="docutils literal notranslate"><span class="pre">RenameNode()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#_CPPv4N20ONNX_LIGHT_NAMESPACE7inliner7Renamer6pImpl_E"><code class="docutils literal notranslate"><span class="pre">pImpl_</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/api/cpp/onnx/inliner/inliner.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

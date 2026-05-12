@@ -399,7 +399,7 @@ The key differences lie in how the serialization layer is implemented.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#no-protobuf-dependency" id="id1">No protobuf dependency</a></p></li>
 <li><p><a class="reference internal" href="#files-larger-than-2-gb" id="id2">Files larger than 2 GB</a></p></li>
-<li><p><a class="reference internal" href="#memory-mapped-i-o" id="id3">Memory-mapped I/O</a></p></li>
+<li><p><a class="reference internal" href="#buffered-file-i-o" id="id3">Buffered file I/O</a></p></li>
 <li><p><a class="reference internal" href="#parallel-tensor-loading" id="id4">Parallel tensor loading</a></p></li>
 <li><p><a class="reference internal" href="#zero-copy-parsing" id="id5">Zero-copy parsing</a></p></li>
 <li><p><a class="reference internal" href="#c-class-generation-via-macros" id="id6">C++ class generation via macros</a></p></li>
@@ -447,14 +447,13 @@ standard <code class="docutils literal notranslate"><span class="pre">onnx</span
 models of arbitrary size are supported.</p>
 </section>
 <hr class="docutils" />
-<section id="memory-mapped-i-o">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Memory-mapped I/O</a><a class="headerlink" href="#memory-mapped-i-o" title="Link to this heading">#</a></h2>
-<p>For file-based loading, <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> uses memory-mapped I/O
-(<code class="docutils literal notranslate"><span class="pre">mmap</span></code> on POSIX, <code class="docutils literal notranslate"><span class="pre">CreateFileMapping</span> <span class="pre">/</span> <span class="pre">MapViewOfFile</span></code> on Windows) via
-<code class="docutils literal notranslate"><span class="pre">MmapStream</span></code> (<code class="docutils literal notranslate"><span class="pre">stream.h</span></code> / <code class="docutils literal notranslate"><span class="pre">stream.cpp</span></code>).  After the initial <code class="docutils literal notranslate"><span class="pre">open</span></code>,
-the kernel maps the file’s pages on demand without any extra copy into a
-user-space buffer.  The hint <code class="docutils literal notranslate"><span class="pre">MADV_SEQUENTIAL</span></code> is passed so the OS can
-prefetch pages ahead of the sequential parse.</p>
+<section id="buffered-file-i-o">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Buffered file I/O</a><a class="headerlink" href="#buffered-file-i-o" title="Link to this heading">#</a></h2>
+<p>For file-based loading, <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> uses <code class="docutils literal notranslate"><span class="pre">FileStream</span></code>
+(<code class="docutils literal notranslate"><span class="pre">stream.h</span></code> / <code class="docutils literal notranslate"><span class="pre">stream.cpp</span></code>), a buffered binary reader that opens the
+file with <code class="docutils literal notranslate"><span class="pre">std::ifstream</span></code> and reads ahead in 4096-byte chunks.  On
+POSIX platforms a second file descriptor is opened for parallel block reads
+via <code class="docutils literal notranslate"><span class="pre">pread</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">onnx</span></code> package reads the whole file into a Python <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object first
 and then passes it to protobuf, which copies it again internally.</p>
 </section>
@@ -545,6 +544,9 @@ separate file:</p>
 <span class="n">onnxl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;model.onnx&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;model.onnx.data&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Serializing to two files does <strong>not</strong> mutate the in-memory <code class="docutils literal notranslate"><span class="pre">ModelProto</span></code>.
+<code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> applies external-data metadata on a temporary copy while writing
+and keeps the original model unchanged.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">location</span></code> value stored inside the <code class="docutils literal notranslate"><span class="pre">.onnx</span></code> metadata is automatically
 reduced to a <em>relative</em> path (just the file name) when an absolute path is
 provided, so the two files can be moved together without breaking the
@@ -705,7 +707,7 @@ dependency-free loading and saving.</p>
 <td><p>Yes (<code class="docutils literal notranslate"><span class="pre">max_external_file_size</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td><p>Standalone C++ library</p></td>
-<td><p>No</p></td>
+<td><p>Yes</p></td>
 <td><p>Yes (<code class="docutils literal notranslate"><span class="pre">find_package(onnx_light)</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td><p>Wire format</p></td>
@@ -767,7 +769,7 @@ dependency-free loading and saving.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-protobuf-dependency">No protobuf dependency</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#files-larger-than-2-gb">Files larger than 2 GB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-mapped-i-o">Memory-mapped I/O</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#buffered-file-i-o">Buffered file I/O</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-tensor-loading">Parallel tensor loading</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-copy-parsing">Zero-copy parsing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-class-generation-via-macros">C++ class generation via macros</a></li>

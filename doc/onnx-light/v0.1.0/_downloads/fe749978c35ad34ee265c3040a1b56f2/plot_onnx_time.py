@@ -7,7 +7,8 @@ Measures loading and saving time for an ONNX model
 This script builds a small ONNX model and benchmarks the time to load
 and save it using :mod:`onnx`, :mod:`onnx_light.onnx`, and
 :mod:`onnxruntime`.
-When the standalone C++ example executables ``load_onnx_light_time`` and
+When the standalone C++ example executables ``load_onnx_time``,
+``load_onnx_light_time``, and
 ``save_onnx_light_time`` are available, it also includes their timing output.
 The model structure is identical in all cases.
 
@@ -45,6 +46,14 @@ model loading overhead rather than compilation or fusion costs.
 * ``1filex4``: saves in a single file with 4 threads
 * ``2filex1``: saves in a file and another for external data with 1 thread
 * ``2filex4``: saves in a file and another for external data with 4 threads
+
+Selectable benchmark scenarios (via ``--scenario``):
+``load``, ``save``, ``serialize``, ``parse``, ``cpp``, ``all``.
+The ``cpp`` scenario runs the standalone C++ timing executables
+(``load_onnx_time``, ``load_onnx_light_time``, ``save_onnx_light_time``)
+when they are available. The executable discovery automatically skips
+them when the ``CI`` environment variable is set, so no results are
+produced in CI environments where the executables have not been built.
 """
 
 import argparse
@@ -78,7 +87,7 @@ from onnx_light.onnx.doc import find_standalone_executable, measure_cpp_with_exa
 
 N_INIT = 40
 DIM = 256 if os.environ.get("UNITTEST_GOING") == "1" else 2048
-BENCHMARK_SCENARIOS = ("load", "save", "serialize", "parse")
+BENCHMARK_SCENARIOS = ("load", "save", "serialize", "parse", "cpp")
 
 
 def _parse_benchmark_scenarios(args=None) -> set[str]:
@@ -93,7 +102,7 @@ def _parse_benchmark_scenarios(args=None) -> set[str]:
         choices=(*BENCHMARK_SCENARIOS, "all"),
         help=(
             "Scenario to execute. May be specified multiple times. "
-            "Supported values: load, save, serialize, parse, all."
+            "Supported values: load, save, serialize, parse, cpp, all."
         ),
     )
     parsed, _ = parser.parse_known_args(args=args)
@@ -160,14 +169,18 @@ onnxl.save(onxl, ext_load_onnx, location=ext_load_data)
 # Benchmark helper.
 
 MIN_TIME_THRESHOLD = 1e-9
-CPP_LOAD_METRIC_PATTERN = re.compile(r"^\s*(Average|Min|Max) load \(ms\)\s*:\s*([0-9.eE+-]+)\s*$")
-CPP_SAVE_METRIC_PATTERN = re.compile(r"^\s*(Average|Min|Max) save \(ms\)\s*:\s*([0-9.eE+-]+)\s*$")
+CPP_LOAD_METRIC_PATTERN = re.compile(
+    r"^\s*(Average|Median|Min|Max|Std|Standard deviation) load \(ms\)\s*:\s*([0-9.eE+-]+)\s*$"
+)
+CPP_SAVE_METRIC_PATTERN = re.compile(
+    r"^\s*(Average|Median|Min|Max|Std|Standard deviation) save \(ms\)\s*:\s*([0-9.eE+-]+)\s*$"
+)
 WINDOWS_BUILD_CONFIGS = ("Release", "RelWithDebInfo", "Debug", "MinSizeRel")
 
 
 def measure(name: str, fn, n: int = 5, warmup: int = 1) -> dict:
     """
-    Executes *fn* with warm-up iterations and records timing and CPU statistics.
+    Executes *fn* with warm-up iterations and records timing statistics.
 
     Args:
         name: Benchmark name.
@@ -176,43 +189,63 @@ def measure(name: str, fn, n: int = 5, warmup: int = 1) -> dict:
         warmup: Number of non-measured warm-up iterations.
 
     Returns:
-        A dictionary containing name, median, avg, min, max, and cpu.
+        A dictionary containing name, median, avg, min, max, and std.
     """
     for _ in range(max(0, warmup)):
         fn()
     times = []
-    cpu_utils = []
     for _ in range(n):
-        p0 = time.process_time()
         t0 = time.perf_counter()
         fn()
-        dt = time.perf_counter() - t0
-        times.append(dt)
-        # Multi-threaded workloads may legitimately report CPU utilization >100%.
-        cpu_util = 0.0 if dt <= MIN_TIME_THRESHOLD else (time.process_time() - p0) / dt * 100.0
-        cpu_utils.append(cpu_util)
+        times.append(time.perf_counter() - t0)
+    arr = np.array(times)
     return {
         "name": name,
-        "median": float(np.median(times)),
-        "avg": float(np.mean(times)),
-        "min": float(np.min(times)),
-        "max": float(np.max(times)),
-        "cpu": float(np.mean(cpu_utils)),
+        "median": float(np.median(arr)),
+        "avg": float(np.mean(arr)),
+        "min": float(np.min(arr)),
+        "max": float(np.max(arr)),
+        "std": float(np.std(arr)),
     }
 
 
+def _flush_file(path: str) -> None:
+    """Flushes one file descriptor so benchmark timing includes write-back."""
+    with open(path, "r+b") as stream:
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
 def print_stats(name: str, stats: dict) -> None:
-    """Prints timing values in milliseconds and CPU utilization."""
+    """Prints timing statistics (average, median, max, and standard deviation) in milliseconds."""
     print(
         f"{name:<35} avg={stats['avg'] * 1e3:.1f} ms"
         f" median={stats['median'] * 1e3:.1f} ms"
         f" max={stats['max'] * 1e3:.1f} ms"
-        f" cpu={stats['cpu']:.0f}%"
+        f" std={stats['std'] * 1e3:.1f} ms"
+    )
+
+
+def _find_load_onnx_time_executable() -> str | None:
+    """Locates the standalone C++ timing executable.
+
+    Returns:
+        The path to ``load_onnx_time`` if available, otherwise ``None``.
+    """
+    return find_standalone_executable(
+        "load_onnx_time",
+        [
+            pathlib.Path("build/load-onnx-time-example/load_onnx_time"),
+            pathlib.Path("build/examples/load_onnx_time/load_onnx_time"),
+            pathlib.Path("build-load-onnx-time/load_onnx_time"),
+        ],
+        script_file=globals().get("__file__"),
+        windows_build_configs=WINDOWS_BUILD_CONFIGS,
     )
 
 
 def _find_load_onnx_light_time_executable() -> str | None:
-    """Locates the standalone C++ timing executable.
+    """Locates the standalone ``load_onnx_light_time`` executable.
 
     Returns:
         The path to ``load_onnx_light_time`` if available, otherwise ``None``.
@@ -230,20 +263,41 @@ def _find_load_onnx_light_time_executable() -> str | None:
 
 
 def _measure_cpp_load_with_example(
-    onnx_file: str, n: int = 5, num_threads: int = 1
+    onnx_file: str,
+    n: int = 5,
+    num_threads: int = 1,
+    executable_name: str = "load_onnx_light_time",
 ) -> dict | None:
-    """Measures C++ loading performance through ``load_onnx_light_time``.
+    """Measures C++ loading performance through a standalone executable.
+
+    Args:
+        onnx_file: Model path to pass to the standalone executable.
+        n: Number of iterations to pass to the standalone executable.
+        num_threads: Number of loading threads to pass to the standalone executable.
+        executable_name: Executable selector to use:
+            ``"load_onnx_time"`` or ``"load_onnx_light_time"``.
 
     Returns:
         A benchmark dictionary matching :func:`measure` output keys if successful,
         otherwise ``None``.
     """
+    if executable_name == "load_onnx_time":
+        executable = _find_load_onnx_time_executable()
+        result_name = f"load/1filex{num_threads}/onnx-cpp"
+    elif executable_name == "load_onnx_light_time":
+        executable = _find_load_onnx_light_time_executable()
+        result_name = f"load/1filex{num_threads}/onnxlight-cpp"
+    else:
+        raise ValueError(
+            "executable_name must be 'load_onnx_time' or "
+            f"'load_onnx_light_time', got {executable_name!r}"
+        )
     return measure_cpp_with_example(
-        executable=_find_load_onnx_light_time_executable(),
+        executable=executable,
         args=[onnx_file, str(n), str(num_threads)],
         metric_pattern=CPP_LOAD_METRIC_PATTERN,
-        result_name=f"load/1filex{num_threads}/onnxlight-cpp",
-        executable_name="load_onnx_light_time",
+        result_name=result_name,
+        executable_name=executable_name,
     )
 
 
@@ -268,7 +322,7 @@ def _find_save_onnx_light_time_executable() -> str | None:
 def _measure_cpp_save_with_example(
     onnx_file: str, n: int = 5, num_threads: int = 1
 ) -> dict | None:
-    """Measures C++ saving performance (with external data) through ``save_onnx_light_time``.
+    """Measures C++ one-file save performance through ``save_onnx_light_time``.
 
     Returns:
         A benchmark dictionary matching :func:`measure` output keys if successful,
@@ -280,9 +334,9 @@ def _measure_cpp_save_with_example(
     with tempfile.TemporaryDirectory() as tmp_save_dir:
         return measure_cpp_with_example(
             executable=executable,
-            args=[onnx_file, tmp_save_dir, str(n), str(num_threads)],
+            args=[onnx_file, tmp_save_dir, str(n), str(num_threads), "onefile"],
             metric_pattern=CPP_SAVE_METRIC_PATTERN,
-            result_name=f"save/2filex{num_threads}/onnxlight-cpp",
+            result_name=f"save/1filex{num_threads}/onnxlight-cpp",
             executable_name="save_onnx_light_time",
         )
 
@@ -326,25 +380,6 @@ if _run_scenario("load"):
         )
     )
     print_stats("load/1filex1/ort", data[-1])
-
-    # %%
-    # Load with standalone C++ ``load_onnx_light_time`` example when available.
-    # The executable uses ``MmapStream`` as well, so this row measures the same
-    # file-backed parsing path as ``onnxl.load(onnx_path)``.
-
-    cpp_load_x1 = _measure_cpp_load_with_example(onnx_path, num_threads=1)
-    if cpp_load_x1 is not None:
-        data.append(cpp_load_x1)
-        print_stats(cpp_load_x1["name"], cpp_load_x1)
-    else:
-        print(
-            "load_onnx_light_time executable not found (or failed), skipping C++ load benchmark."
-        )
-
-    cpp_load_x4 = _measure_cpp_load_with_example(onnx_path, num_threads=4)
-    if cpp_load_x4 is not None:
-        data.append(cpp_load_x4)
-        print_stats(cpp_load_x4["name"], cpp_load_x4)
 
 # %%
 # Serialize and Parse benchmarks
@@ -500,20 +535,20 @@ if _run_scenario("save"):
 
     out_onnx_ext = os.path.join(tmp_dir, "out_onnx_ext.onnx")
     out_onnx_ext_location = "out_onnx_ext.data"
-    data.append(
-        measure(
-            "save/2filex1/onnx",
-            lambda: onnx.save_model(
-                onx,
-                out_onnx_ext,
-                save_as_external_data=True,
-                all_tensors_to_one_file=True,
-                location=out_onnx_ext_location,
-            ),
-            n=1,
-            warmup=0,
+    out_onnx_ext_data = os.path.join(tmp_dir, out_onnx_ext_location)
+
+    def _save_onnx_external_with_flush() -> None:
+        onnx.save_model(
+            onx,
+            out_onnx_ext,
+            save_as_external_data=True,
+            all_tensors_to_one_file=True,
+            location=out_onnx_ext_location,
         )
-    )
+        _flush_file(out_onnx_ext_data)
+        _flush_file(out_onnx_ext)
+
+    data.append(measure("save/2filex1/onnx", _save_onnx_external_with_flush, n=1, warmup=0))
     print_stats("save/2filex1/onnx", data[-1])
 
     # %%
@@ -546,6 +581,8 @@ if _run_scenario("save"):
     # ``SerializeToStream`` routes large ``raw_data`` blobs directly to the
     # weights file via ``TwoFilesWriteStream``, and ``ClearExternalData``
     # restores the in-memory model.  No numpy arrays are created.
+    # As for the ``onnx`` row, the two output files are explicitly ``fsync``-ed
+    # so both benchmarks include descriptor flush/write-back costs.
     # The main ``.onnx`` structure is accumulated in a ``StringWriteStream``
     # (memory buffer) and flushed to disk in a single write after all tensor
     # data has been written, mirroring the sequential I/O pattern used by
@@ -553,11 +590,13 @@ if _run_scenario("save"):
 
     out_ext = os.path.join(tmp_dir, "out_ext.onnx")
     out_ext_data = out_ext + ".data"
-    data.append(
-        measure(
-            "save/2filex1/onnxlight", lambda: onnxl.save(onxl, out_ext, location=out_ext_data)
-        )
-    )
+
+    def _save_onnxlight_external_with_flush() -> None:
+        onnxl.save(onxl, out_ext, location=out_ext_data)
+        _flush_file(out_ext_data)
+        _flush_file(out_ext)
+
+    data.append(measure("save/2filex1/onnxlight", _save_onnxlight_external_with_flush))
     print_stats("save/2filex1/onnxlight", data[-1])
 
     # %%
@@ -574,6 +613,48 @@ if _run_scenario("save"):
         )
     )
     print_stats("save/2filex4/onnxlight", data[-1])
+
+# %%
+# C++ benchmarks
+# --------------
+#
+# Run the standalone C++ benchmark executables when available.
+# These scenarios measure the same operations as ``load`` and ``save``
+# but use the compiled C++ timing executables directly, bypassing the
+# Python interpreter overhead entirely.
+
+if _run_scenario("cpp"):
+    # %%
+    # Load with standalone C++ ``load_onnx_light_time`` example when available.
+    # The executable uses ``FileStream`` as well, so this row measures the same
+    # file-backed parsing path as ``onnxl.load(onnx_path)``.
+
+    cpp_load_x1 = _measure_cpp_load_with_example(onnx_path, num_threads=1)
+    if cpp_load_x1 is not None:
+        data.append(cpp_load_x1)
+        print_stats(cpp_load_x1["name"], cpp_load_x1)
+    else:
+        print(
+            "load_onnx_light_time executable not found (or failed), skipping C++ load benchmark."
+        )
+
+    cpp_load_x4 = _measure_cpp_load_with_example(onnx_path, num_threads=4)
+    if cpp_load_x4 is not None:
+        data.append(cpp_load_x4)
+        print_stats(cpp_load_x4["name"], cpp_load_x4)
+
+    # %%
+    # Load with standalone C++ ``load_onnx_time`` example when available.
+    # The executable uses the standard onnx protobuf library for loading.
+
+    cpp_load_onnx_x1 = _measure_cpp_load_with_example(
+        onnx_path, num_threads=1, executable_name="load_onnx_time"
+    )
+    if cpp_load_onnx_x1 is not None:
+        data.append(cpp_load_onnx_x1)
+        print_stats(cpp_load_onnx_x1["name"], cpp_load_onnx_x1)
+    else:
+        print("load_onnx_time executable not found (or failed), skipping C++ load benchmark.")
 
     # %%
     # Save with standalone C++ ``save_onnx_light_time`` example when available.
@@ -652,7 +733,8 @@ df = df.sort_index(ascending=False)
 
 # %%
 # Plot the results.
-# The average, median, and max are shown for each operation.
+# The average and median are shown for each operation, with a 95% confidence
+# interval annotation derived from the measured standard deviation.
 # Bars are colored by library: blue family for ``onnx``, orange family for
 # ``onnx_light``, green family for ``onnxruntime``.  Solid shades represent
 # the average; lighter shades the median.
@@ -674,7 +756,7 @@ ax = df[["avg", "median"]].plot.barh(
     ),
     xlabel="seconds",
     legend=False,
-    figsize=(12, 6),
+    figsize=(12, 8),
 )
 
 # Row names use "onnxlight" / "ort" as recorded during benchmarking.
@@ -699,13 +781,14 @@ for container, col in zip(ax.containers, ["avg", "median"]):
 
 first_container = ax.containers[0]
 for bar, name in zip(first_container, row_names):
-    cpu = df.loc[name, "cpu"]
-    if not np.isfinite(cpu):
+    std = df.loc[name, "std"]
+    if not np.isfinite(std):
         continue
+    ci = 1.96 * std
     ax.text(
         bar.get_width(),
         bar.get_y() + bar.get_height() / 2.0,
-        f" {cpu:.0f}%",
+        f" ±{ci * 1e3:.1f} ms",
         va="center",
         ha="left",
     )
