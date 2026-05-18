@@ -1,0 +1,42 @@
+.. _op_ai_onnx_ReduceMean:
+
+ReduceMean
+==========
+
+- **Domain**: ``ai.onnx``
+- **Since version**: 18
+
+Computes the mean of the input tensor's elements along the provided axes. The resulting
+tensor has the same rank as the input if ``keepdims`` equals 1. If ``keepdims`` equals 0, then
+the resulting tensor has the reduced dimension pruned. Input tensors of rank zero are
+valid. Reduction over an empty set of values yields undefined.
+
+
+The above behavior is similar to numpy, with the exception that numpy defaults ``keepdims``
+to ``False`` instead of ``True``.
+
+**Inputs**
+
+- **data** (*T*): An input tensor.
+- **axes** (*tensor(int64)*) (optional): Optional input list of integers, along which to reduce. The default is to reduce over empty axes. When axes is empty (either not provided or explicitly empty), behavior depends on 'noop_with_empty_axes': reduction over all axes if 'noop_with_empty_axes' is false, and reduction over the empty set of axes when 'noop_with_empty_axes' is true. Accepted range is [-r, r-1] where r = rank(data).
+
+**Outputs**
+
+- **reduced** (*T*): Reduced output tensor.
+
+**Attributes**
+
+- **keepdims** (*int*): Keep the reduced dimension or not, default 1 means keep reduced dimension.
+- **noop_with_empty_axes** (*int*): Defines behavior when axes is not provided or is empty. If false (default), reduction happens over all axes (similar to the case when `axis=None` in numpy). If true, reduction happens over an empty set of axes (similar to the case when `axis=()` in numpy). Note that reduction over an empty set of axes means that the reduction step behaves like a no-op (identity function), but composite-reduction operators will still perform the non-reduction steps as needed. Thus, ReduceLogSum returns the Log of input tensor, and ReduceSumSquare returns the Square of the input tensor, in this case.
+
+**Type Constraints**
+
+- **T**: Constrain input and output types to numeric tensors.
+  Allowed types: tensor(bfloat16), tensor(double), tensor(float), tensor(float16), tensor(int32), tensor(int64), tensor(uint32), tensor(uint64).
+
+Version History
+---------------
+
+- :doc:`Version 13 <ReduceMean-13>`
+- :doc:`Version 11 <ReduceMean-11>`
+- :doc:`Version 1 <ReduceMean-1>`

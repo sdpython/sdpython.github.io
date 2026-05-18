@@ -27,8 +27,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="_static/documentation_options.js?v=01f34227"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
@@ -53,26 +53,33 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Design" href="design/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -98,7 +105,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -150,6 +157,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="api/index.html">
     API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="operators/index.html">
+    ONNX Operators
   </a>
 </li>
 
@@ -268,6 +282,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="api/index.html">
     API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="operators/index.html">
+    ONNX Operators
   </a>
 </li>
 
@@ -405,18 +426,66 @@ returned model is in use.  This constraint does not apply to the
 standard <code class="docutils literal notranslate"><span class="pre">onnx</span></code> package.</p>
 </div>
 </li>
+<li><p><strong>Encrypted save / load</strong> – Models can be encrypted with AES-256-CBC
+(PBKDF2-HMAC-SHA256 key derivation) and saved to a single self-contained
+<code class="docutils literal notranslate"><span class="pre">.onnxc</span></code> file, or serialized to an in-memory <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object.  This
+feature is unique to <code class="docutils literal notranslate"><span class="pre">onnx-light</span></code> and requires that the package was built
+with OpenSSL support:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+
+<span class="c1"># File-based</span>
+<span class="n">onnxl</span><span class="o">.</span><span class="n">save_encrypted</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;model.onnxc&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;my_passphrase&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">load_encrypted</span><span class="p">(</span><span class="s2">&quot;model.onnxc&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;my_passphrase&quot;</span><span class="p">)</span>
+
+<span class="c1"># In-memory bytes (no file I/O)</span>
+<span class="n">blob</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">save_encrypted_string</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;my_passphrase&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">load_encrypted_string</span><span class="p">(</span><span class="n">blob</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;my_passphrase&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </section>
 <section id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
 <p>Install the package in editable mode:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span><span class="w"> </span>-v
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace
+</pre></div>
+</div>
+<p>To speed up compilation with multiple threads, pass <code class="docutils literal notranslate"><span class="pre">--parallel</span></code> (or <code class="docutils literal notranslate"><span class="pre">-j</span></code>)
+with the number of jobs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace<span class="w"> </span>--parallel<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</div>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build_ext</span></code> auto-enables parallel builds
+(<code class="docutils literal notranslate"><span class="pre">--parallel</span> <span class="pre">&lt;cpu_count&gt;</span></code>) unless <code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_PARALLEL_LEVEL</span></code> is already set.</p>
+<p>Alternatively, when installing with pip, control parallel builds using the
+<code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_PARALLEL_LEVEL</span></code> environment variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CMAKE_BUILD_PARALLEL_LEVEL</span><span class="o">=</span><span class="m">8</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
 </pre></div>
 </div>
 <p>Run a quick check:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import onnx_light; print(onnx_light.__version__)&quot;</span>
 </pre></div>
 </div>
+<p>Build and run the C++ unit tests from the editable build:</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-C<span class="w"> </span>build-dir<span class="o">=</span>build<span class="w"> </span>-C<span class="w"> </span>cmake.build-type<span class="o">=</span>Debug<span class="w"> </span>-C<span class="w"> </span>cmake.define.ONNX_LIGHT_BUILD_TESTS<span class="o">=</span>ON<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>--output-on-failure
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace<span class="w"> </span>--build-temp<span class="w"> </span>build<span class="w"> </span>--cpp-tests
+ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>--output-on-failure
+</pre></div>
+</div>
+<p>On multi-config generators such as Visual Studio, add the matching
+configuration to <code class="docutils literal notranslate"><span class="pre">ctest</span></code>: use <code class="docutils literal notranslate"><span class="pre">-C</span> <span class="pre">Debug</span></code> when the build was configured with
+<code class="docutils literal notranslate"><span class="pre">cmake.build-type=Debug</span></code>, and <code class="docutils literal notranslate"><span class="pre">-C</span> <span class="pre">Release</span></code> after <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span>
+<span class="pre">build_ext</span> <span class="pre">--cpp-tests</span></code>.</p>
 <p>Load a model with parallel tensor parsing:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span>
 
@@ -430,6 +499,7 @@ standard <code class="docutils literal notranslate"><span class="pre">onnx</span
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="design/index.html">Design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators/index.html">ONNX Operators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html#core-examples">Core examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
@@ -474,21 +544,21 @@ standard <code class="docutils literal notranslate"><span class="pre">onnx</span
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx-without-protobuf">onnx without protobuf</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting started</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/index.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -503,8 +573,8 @@ standard <code class="docutils literal notranslate"><span class="pre">onnx</span
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -514,7 +584,7 @@ standard <code class="docutils literal notranslate"><span class="pre">onnx</span
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
     <br/>
   </p>
 </div>
@@ -528,7 +598,7 @@ standard <code class="docutils literal notranslate"><span class="pre">onnx</span
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.1.
 </p></div>
       
     </div>

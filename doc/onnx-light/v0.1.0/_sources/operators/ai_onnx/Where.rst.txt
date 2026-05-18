@@ -1,0 +1,36 @@
+.. _op_ai_onnx_Where:
+
+Where
+=====
+
+- **Domain**: ``ai.onnx``
+- **Since version**: 16
+
+Return elements, either from X or Y, depending on condition.
+Where behaves like
+`numpy.where <https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html>`_
+with three parameters.
+
+This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; for more details please check `the doc <Broadcasting.md>`_.
+
+**Inputs**
+
+- **condition** (*B*): When True (nonzero), yield X, otherwise yield Y
+- **X** (*T*): values selected at indices where condition is True
+- **Y** (*T*): values selected at indices where condition is False
+
+**Outputs**
+
+- **output** (*T*): Tensor of shape equal to the broadcasted shape of condition, X, and Y.
+
+**Type Constraints**
+
+- **B**: Constrain to boolean tensors.
+  Allowed types: tensor(bool).
+- **T**: Constrain input and output types to all tensor types (including bfloat).
+  Allowed types: tensor(bfloat16), tensor(bool), tensor(complex128), tensor(complex64), tensor(double), tensor(float), tensor(float16), tensor(int16), tensor(int32), tensor(int64), tensor(int8), tensor(string), tensor(uint16), tensor(uint32), tensor(uint64), tensor(uint8).
+
+Version History
+---------------
+
+- :doc:`Version 9 <Where-9>`

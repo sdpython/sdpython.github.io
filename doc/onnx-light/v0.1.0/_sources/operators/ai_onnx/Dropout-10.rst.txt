@@ -1,0 +1,36 @@
+.. _op_ai_onnx_Dropout-10:
+
+Dropout - version 10
+====================
+
+This page documents version **10** of operator **Dropout**. See :doc:`Dropout` for the latest version (since version 22).
+
+- **Domain**: ``ai.onnx``
+- **Since version**: 10
+
+Dropout takes one input floating tensor and produces two tensor outputs,
+output (floating tensor) and mask (``Tensor ``). Depending on whether it is
+in test mode or not, the output Y will either be a random dropout, or a simple
+copy of the input. Note that our implementation of Dropout does scaling in
+the training phase, so during testing nothing needs to be done.
+This operator has **optional** inputs/outputs. See `the doc <IR.md>`_ for more details about the representation of optional arguments. An empty string may be used in the place of an actual argument's name to indicate a missing argument. Trailing optional arguments (those not followed by an argument that is present) may also be simply omitted.
+
+**Inputs**
+
+- **data** (*T*): The input data as Tensor.
+
+**Outputs**
+
+- **output** (*T*): The output.
+- **mask** (*T1*) (optional): The output mask.
+
+**Attributes**
+
+- **ratio** (*float*): The ratio of random dropout
+
+**Type Constraints**
+
+- **T**: Constrain input and output types to float tensors.
+  Allowed types: tensor(double), tensor(float), tensor(float16).
+- **T1**: Constrain output mask types to boolean tensors.
+  Allowed types: tensor(bool).
