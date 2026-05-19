@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>CMDs (Command Line Tools) &#8212; my-own-accelerator 0.1.0 documentation</title>
+    <title>pr-stats command &#8212; my-own-accelerator 0.1.0 documentation</title>
   
   
   
@@ -53,12 +53,12 @@
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'cmds/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cmds/pr_stats';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Obtaining a GitHub Personal Access Token" href="github_token.html" />
-    <link rel="prev" title="my-own-accelerator documentation" href="../index.html" />
+    <link rel="next" title="review-local command" href="review_local.html" />
+    <link rel="prev" title="Obtaining a GitHub Personal Access Token" href="github_token.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -150,7 +150,7 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="index.html">
     CMDs (Command Line Tools)
   </a>
 </li>
@@ -236,7 +236,7 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="index.html">
     CMDs (Command Line Tools)
   </a>
 </li>
@@ -282,9 +282,9 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="github_token.html">Obtaining a GitHub Personal Access Token</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr_stats.html">pr-stats command</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pr-stats command</a></li>
 <li class="toctree-l1"><a class="reference internal" href="review_local.html">review-local command</a></li>
 <li class="toctree-l1"><a class="reference internal" href="review_pr.html">review-pr command</a></li>
 </ul>
@@ -327,7 +327,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">CMDs (Command Line Tools)</span></li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">CMDs (Command Line Tools)</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pr-stats command</span></li>
   </ul>
 </nav>
 </div>
@@ -344,36 +347,31 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="cmds-command-line-tools">
-<h1>CMDs (Command Line Tools)<a class="headerlink" href="#cmds-command-line-tools" title="Link to this heading">#</a></h1>
-<p>The library implements command line tools for GitHub token setup, pull-request
-reviewing, and pull-request activity reporting.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>moa
+  <section id="pr-stats-command">
+<h1>pr-stats command<a class="headerlink" href="#pr-stats-command" title="Link to this heading">#</a></h1>
+<p>The PR activity report command is available either as a script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pr-stats<span class="w"> </span>xadupre<span class="w"> </span>my-own-accelerator<span class="w"> </span>--output-dir<span class="w"> </span>.<span class="w"> </span>--prefix<span class="w"> </span>pr_activity
 </pre></div>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: python -m moa [-h] [{review-pr,review-local,pr-stats}]
-
-positional arguments:
-  {review-pr,review-local,pr-stats}
-                        Command to run (defaults to review-pr when omitted).
-
-options:
-  -h, --help            show this help message and exit
-
-Commands:
-  review-pr     Review a GitHub pull request and print markdown.
-  review-local  Review local files and print markdown.
-  pr-stats      Build pull request activity reports (CSV, Excel, graphs).
+<p>or through the package entrypoint:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>moa<span class="w"> </span>pr-stats<span class="w"> </span>xadupre<span class="w"> </span>my-own-accelerator
 </pre></div>
 </div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="github_token.html">Obtaining a GitHub Personal Access Token</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pr_stats.html">pr-stats command</a></li>
-<li class="toctree-l1"><a class="reference internal" href="review_local.html">review-local command</a></li>
-<li class="toctree-l1"><a class="reference internal" href="review_pr.html">review-pr command</a></li>
+<p>The command scans completed pull requests (open PRs are skipped) and produces:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;.csv</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;.xlsx</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_status.svg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_comments.svg</span></code></p></li>
 </ul>
-</div>
+<p>Each row includes pull request author, creation datetime, merge/close status,
+manual comment count, Copilot command count, and total workflow job duration
+for that PR (in seconds).</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--since</span></code> to only include pull requests created on/after a given date
+(<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> or ISO datetime), and <code class="docutils literal notranslate"><span class="pre">--cache-file</span></code> to control where the
+PR statistics cache is stored. By default, cache is written to
+<code class="docutils literal notranslate"><span class="pre">&lt;output-dir&gt;/&lt;prefix&gt;_cache.json</span></code> and cached PR rows are reused on
+subsequent runs instead of requesting their comment statistics again.</p>
 </section>
 
 
@@ -387,20 +385,20 @@ Commands:
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="github_token.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">my-own-accelerator documentation</p>
+        <p class="prev-next-title">Obtaining a GitHub Personal Access Token</p>
       </div>
     </a>
     <a class="right-next"
-       href="github_token.html"
+       href="review_local.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Obtaining a GitHub Personal Access Token</p>
+        <p class="prev-next-title">review-local command</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -418,7 +416,7 @@ Commands:
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/cmds/index.rst.txt">
+    <a href="../_sources/cmds/pr_stats.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
