@@ -23,18 +23,18 @@ is the same as ``x_scale``. The output type also determines the precision of the
 **Inputs**
 
 - **x** (*T1*): N-D quantized input tensor to be de-quantized.
-- **x_scale** (*T2*): Scale for input `x`. For per-tensor/layer dequantization the scale is a scalar, for per per-axis dequantization it is a 1-D Tensor and for blocked dequantization it has the same shape as the input, except for one dimension in which blocking is performed.
-- **x_zero_point** (*T1*) (optional): Zero point for input `x`. Shape must match x_scale. It's optional. Zero point is 0 when it's not specified.
+- **x_scale** (*T2*): Scale for input ``x``. For per-tensor/layer dequantization the scale is a scalar, for per per-axis dequantization it is a 1-D Tensor and for blocked dequantization it has the same shape as the input, except for one dimension in which blocking is performed.
+- **x_zero_point** (*T1*) (optional): Zero point for input ``x``. Shape must match x_scale. It's optional. Zero point is 0 when it's not specified.
 
 **Outputs**
 
-- **y** (*T3*): N-D full precision output tensor. It has the same shape as input `x`. The data type is specified by the `output_dtype` attribute or, in its absence, the type of `x_scale`.
+- **y** (*T3*): N-D full precision output tensor. It has the same shape as input ``x``. The data type is specified by the ``output_dtype`` attribute or, in its absence, the type of ``x_scale``.
 
 **Attributes**
 
-- **axis** (*int*): (Optional) The axis of the dequantizing dimension of the input tensor. Used for per-axis and blocked quantization. Negative value means counting dimensions from the back. Accepted range is `[-r, r-1]` where `r = rank(input)`.
-- **block_size** (*int*): (Optional) The size of the quantization block (number of times every scale is replicated). Used only for blocked quantization. The block size is a positive integer. Given `x` shape `(D0, ..., Di, ..., Dn)`, `y_scale` shape `(S0, ... Si, ...Sn)` and `axis=i`, the accepted range is `[ceil(Di/Si), ceil(Di/(Si-1))-1]`
-- **output_dtype** (*int*): (Optional) The output data type. If not supplied, the output data type is inferred from `x_scale` data type (`T2`)
+- **axis** (*int*): (Optional) The axis of the dequantizing dimension of the input tensor. Used for per-axis and blocked quantization. Negative value means counting dimensions from the back. Accepted range is ``[-r, r-1]`` where ``r = rank(input)``.
+- **block_size** (*int*): (Optional) The size of the quantization block (number of times every scale is replicated). Used only for blocked quantization. The block size is a positive integer. Given ``x`` shape ``(D0, ..., Di, ..., Dn)``, ``y_scale`` shape ``(S0, ... Si, ...Sn)`` and ``axis=i``, the accepted range is ``[ceil(Di/Si), ceil(Di/(Si-1))-1]``
+- **output_dtype** (*int*): (Optional) The output data type. If not supplied, the output data type is inferred from ``x_scale`` data type (``T2``)
 
 **Type Constraints**
 

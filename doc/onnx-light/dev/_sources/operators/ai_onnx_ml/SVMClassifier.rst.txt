@@ -5,3 +5,35 @@ SVMClassifier
 
 - **Domain**: ``ai.onnx.ml``
 - **Since version**: 1
+
+Support Vector Machine classifier
+
+**Inputs**
+
+- **X** (*T1*): Data to be classified.
+
+**Outputs**
+
+- **Y** (*T2*): Classification outputs (one class per example).
+- **Z** (*tensor(float)*): Class scores (one per class per example), if prob_a and prob_b are provided they are probabilities for each class, otherwise they are raw scores.
+
+**Attributes**
+
+- **classlabels_ints** (*int[]*): Class labels if using integer labels. One and only one of the 'classlabels_*' attributes must be defined.
+- **classlabels_strings** (*string[]*): Class labels if using string labels. One and only one of the 'classlabels_*' attributes must be defined.
+- **coefficients** (*float[]*)
+- **kernel_params** (*float[]*): List of 3 elements containing gamma, coef0, and degree, in that order. Zero if unused for the kernel.
+- **kernel_type** (*string*): The kernel type, one of 'LINEAR,' 'POLY,' 'RBF,' 'SIGMOID'.
+- **post_transform** (*string*): Indicates the transform to apply to the score.  One of 'NONE,' 'SOFTMAX,' 'LOGISTIC,' 'SOFTMAX_ZERO,' or 'PROBIT'
+- **prob_a** (*float[]*): First set of probability coefficients.
+- **prob_b** (*float[]*): Second set of probability coefficients. This array must be same size as prob_a. If these are provided then output Z are probability estimates, otherwise they are raw scores.
+- **rho** (*float[]*)
+- **support_vectors** (*float[]*)
+- **vectors_per_class** (*int[]*)
+
+**Type Constraints**
+
+- **T1**: The input must be a tensor of a numeric type, either [C] or [N,C].
+  Allowed types: tensor(double), tensor(float), tensor(int32), tensor(int64).
+- **T2**: The output type will be a tensor of strings or integers, depending on which of the classlabels_* attributes is used. Its size will match the batch size of the input.
+  Allowed types: tensor(int64), tensor(string).

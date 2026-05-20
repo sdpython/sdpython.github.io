@@ -1,0 +1,55 @@
+.. _op_ai_onnx_ml_TreeEnsembleClassifier-1:
+
+TreeEnsembleClassifier - version 1
+==================================
+
+This page documents version **1** of operator **TreeEnsembleClassifier**. See :doc:`TreeEnsembleClassifier` for the latest version (since version 5).
+
+- **Domain**: ``ai.onnx.ml``
+- **Since version**: 1
+
+Tree Ensemble classifier.  Returns the top class for each of N inputs. 
+    The attributes named 'nodes_X' form a sequence of tuples, associated by
+    index into the sequences, which must all be of equal length. These tuples
+    define the nodes. 
+    Similarly, all fields prefixed with 'class_' are tuples of votes at the leaves.
+    A leaf may have multiple votes, where each vote is weighted by
+    the associated class_weights index. 
+    One and only one of classlabels_strings or classlabels_int64s
+    will be defined. The class_ids are indices into this list.
+
+**Inputs**
+
+- **X** (*T1*): Input of shape [N,F]
+
+**Outputs**
+
+- **Y** (*T2*): N, Top class for each point
+- **Z** (*tensor(float)*): The class score for each class, for each point, a tensor of shape [N,E].
+
+**Attributes**
+
+- **base_values** (*float[]*): Base values for classification, added to final class score; the size must be the same as the classes or can be left unassigned (assumed 0)
+- **class_ids** (*int[]*): The index of the class list that each weight is for.
+- **class_nodeids** (*int[]*): node id that this weight is for.
+- **class_treeids** (*int[]*): The id of the tree that this node is in.
+- **class_weights** (*float[]*): The weight for the class in class_id.
+- **classlabels_int64s** (*int[]*): Class labels if using integer labels. One and only one of the 'classlabels_*' attributes must be defined.
+- **classlabels_strings** (*string[]*): Class labels if using string labels. One and only one of the 'classlabels_*' attributes must be defined.
+- **nodes_falsenodeids** (*int[]*): Child node if expression is false.
+- **nodes_featureids** (*int[]*): Feature id for each node.
+- **nodes_hitrates** (*float[]*): Popularity of each node, used for performance and may be omitted.
+- **nodes_missing_value_tracks_true** (*int[]*): For each node, define what to do in the presence of a missing value: if a value is missing (NaN), use the 'true' or 'false' branch based on the value in this array. This attribute may be left undefined, and the default value is false (0) for all nodes.
+- **nodes_modes** (*string[]*): The node kind, that is, the comparison to make at the node. There is no comparison to make at a leaf node. One of 'BRANCH_LEQ', 'BRANCH_LT', 'BRANCH_GTE', 'BRANCH_GT', 'BRANCH_EQ', 'BRANCH_NEQ', 'LEAF'
+- **nodes_nodeids** (*int[]*): Node id for each node. Ids may restart at zero for each tree, but it not required to.
+- **nodes_treeids** (*int[]*): Tree id for each node.
+- **nodes_truenodeids** (*int[]*): Child node if expression is true.
+- **nodes_values** (*float[]*): Thresholds to do the splitting on for each node.
+- **post_transform** (*string*): Indicates the transform to apply to the score.   One of 'NONE,' 'SOFTMAX,' 'LOGISTIC,' 'SOFTMAX_ZERO,' or 'PROBIT.'
+
+**Type Constraints**
+
+- **T1**: The input type must be a tensor of a numeric type.
+  Allowed types: tensor(double), tensor(float), tensor(int32), tensor(int64).
+- **T2**: The output type will be a tensor of strings or integers, depending on which of the classlabels_* attributes is used.
+  Allowed types: tensor(int64), tensor(string).

@@ -9,6 +9,7 @@ DynamicQuantizeLinear
 A Function to fuse calculation for Scale, Zero Point and FP32->8Bit conversion of FP32 Input data.
 Outputs Scale, ZeroPoint and Quantized Input for a given FP32 Input.
 Scale is calculated as:
+
 .. code-block::
 
     y_scale = (maximum(0, max(x)) - minimum(0, min(x))) / (qmax - qmin)
@@ -18,6 +19,7 @@ Scale is calculated as:
 * data range is adjusted to include 0.
 
 Zero point is calculated as:
+
 .. code-block::
 
     intermediate_zero_point = qmin - min(x)/y_scale
@@ -29,6 +31,7 @@ Zero point is calculated as:
 * rounding to nearest ties to even.
 
 Data quantization formula is:
+
 .. code-block::
 
     y = saturate (round (x / y_scale) + y_zero_point)

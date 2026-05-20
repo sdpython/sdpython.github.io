@@ -26,7 +26,7 @@ the resulting Python objects delegate all parsing and serialization to the
 ``libprotobuf`` C++ library.
 
 ``onnx_light`` ships its own hand-written parser and serializer implemented
-entirely in C++ (see ``onnx_light/onnx/onnx_proto/``).  There is **no
+entirely in C++ (see ``onnx_light/onnx_proto/``).  There is **no
 dependency on protobuf at compile time or at runtime**.
 
 Design implications:
@@ -36,6 +36,10 @@ Design implications:
 * All parsing and serialization code lives in a single self-contained library
   that can be consumed by other C++ projects without installing protobuf
   (see :epkg:`C++ onnx-light examples`).
+* C++ projects that only need protobuf-compatible message types can link
+  ``onnx_light::lib_onnx_proto`` directly; ``onnx_light::onnx_light`` is only
+  needed when features tied to operator notions are required (checker, schema
+  lookup, shape inference, version conversion, ...).
 * The wire format produced by ``onnx_light`` is 100 % compatible with the
   official ONNX binary format, so models can be freely exchanged between the
   two libraries.
@@ -59,7 +63,7 @@ Buffered file I/O
 -----------------
 
 For file-based loading, ``onnx_light`` uses ``FileStream``
-(``stream.h`` / ``stream.cpp``), a buffered binary reader that opens the
+(``stream.h`` / ``stream.cc``), a buffered binary reader that opens the
 file with ``std::ifstream`` and reads ahead in 4096-byte chunks.  On
 POSIX platforms a second file descriptor is opened for parallel block reads
 via ``pread``.
@@ -86,7 +90,7 @@ parsing across a thread pool:
     model = onnxl.load("model.onnx", parallel=True, num_threads=4)
 
 On the C++ side the thread pool is implemented in ``thread_pool.h`` /
-``thread_pool.cpp``.  Each worker independently parses a slice of the
+``thread_pool.cc``.  Each worker independently parses a slice of the
 initializer list, so wall-clock loading time scales with the number of
 hardware threads available.
 
@@ -422,7 +426,8 @@ Summary
      - Yes (``max_external_file_size``)
    * - Standalone C++ library
      - Yes
-     - Yes (``find_package(onnx_light)``)
+     - Yes (``onnx_light::lib_onnx_proto`` for proto-only code,
+       ``onnx_light::onnx_light`` when operator-aware APIs are needed)
    * - Wire format
      - ONNX binary protobuf
      - ONNX binary protobuf (identical)

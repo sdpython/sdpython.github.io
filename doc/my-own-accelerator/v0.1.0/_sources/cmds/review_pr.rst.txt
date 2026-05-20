@@ -32,13 +32,11 @@ Synopsis
 --------
 
 .. runpython::
-    :rst:
 
     from moa.commands.review_pr import _build_parser
     parser = _build_parser()
-    usage = parser.format_usage().strip().replace("usage: ", "", 1)
-    indented = "\n".join("    " + line for line in usage.splitlines())
-    print(f".. code-block:: text\n\n{indented}")
+    parser.prog = f"python -m moa {parser.prog}"
+    parser.print_help()
 
 Positional Arguments
 --------------------
@@ -59,7 +57,8 @@ Optional Arguments
 ``--token TOKEN``
     GitHub personal access token used to authenticate API requests.
     Resolution order: explicit flag value → ``GITHUB_TOKEN`` environment
-    variable (automatically set in GitHub Actions workflows) → value cached
+    variable (automatically set in GitHub Actions workflows) → project-specific
+    value cached with ``--save`` (``owner/repo`` key) → classic cached value
     with ``--save`` → unauthenticated.  For private repositories or to avoid
     rate limiting, a token with at least ``repo:read`` scope is required.
 
@@ -142,6 +141,13 @@ Optional Arguments
     Defaults to ``openai/gpt-4o-mini``::
 
         review-pr --copilot-review --model openai/gpt-4o xadupre my-own-accelerator 1
+
+``-v``, ``--verbose``
+    Print progress information to standard error while the command is
+    running. Verbose output also shows which token source is used
+    (``--token``, ``GITHUB_TOKEN``, project-specific cache, classic cache,
+    or unauthenticated) and the token type (``explicit``, ``fine-grained``,
+    ``classic``, or ``none``).
 
 ``-h``, ``--help``
     Print a short help message and exit.

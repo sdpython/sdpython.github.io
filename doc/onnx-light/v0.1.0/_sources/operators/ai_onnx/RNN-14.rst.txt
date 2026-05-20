@@ -47,27 +47,28 @@ NOTE: Below are optional
 Equations (Default: f=Tanh):
 
 * Ht = f(Xt*(Wi^T) + Ht-1*(Ri^T) + Wbi + Rbi)
+
 This operator has **optional** inputs/outputs. See `the doc <IR.md>`_ for more details about the representation of optional arguments. An empty string may be used in the place of an actual argument's name to indicate a missing argument. Trailing optional arguments (those not followed by an argument that is present) may also be simply omitted.
 
 **Inputs**
 
-- **X** (*T*): The input sequences packed (and potentially padded) into one 3-D tensor with the shape of `[seq_length, batch_size, input_size]`.
-- **W** (*T*): The weight tensor for input gate. Concatenation of `Wi` and `WBi` (if bidirectional). The tensor has shape `[num_directions, hidden_size, input_size]`.
-- **R** (*T*): The recurrence weight tensor. Concatenation of `Ri` and `RBi` (if bidirectional). The tensor has shape `[num_directions, hidden_size, hidden_size]`.
-- **B** (*T*) (optional): The bias tensor for input gate. Concatenation of `[Wbi, Rbi]` and `[WBbi, RBbi]` (if bidirectional). The tensor has shape `[num_directions, 2*hidden_size]`. Optional: If not specified - assumed to be 0.
-- **sequence_lens** (*T1*) (optional): Optional tensor specifying lengths of the sequences in a batch. If not specified - assumed all sequences in the batch to have length `seq_length`. It has shape `[batch_size]`.
-- **initial_h** (*T*) (optional): Optional initial value of the hidden. If not specified - assumed to be 0. It has shape `[num_directions, batch_size, hidden_size]`.
+- **X** (*T*): The input sequences packed (and potentially padded) into one 3-D tensor with the shape of ``[seq_length, batch_size, input_size]``.
+- **W** (*T*): The weight tensor for input gate. Concatenation of ``Wi`` and ``WBi`` (if bidirectional). The tensor has shape ``[num_directions, hidden_size, input_size]``.
+- **R** (*T*): The recurrence weight tensor. Concatenation of ``Ri`` and ``RBi`` (if bidirectional). The tensor has shape ``[num_directions, hidden_size, hidden_size]``.
+- **B** (*T*) (optional): The bias tensor for input gate. Concatenation of ``[Wbi, Rbi]`` and ``[WBbi, RBbi]`` (if bidirectional). The tensor has shape ``[num_directions, 2*hidden_size]``. Optional: If not specified - assumed to be 0.
+- **sequence_lens** (*T1*) (optional): Optional tensor specifying lengths of the sequences in a batch. If not specified - assumed all sequences in the batch to have length ``seq_length``. It has shape ``[batch_size]``.
+- **initial_h** (*T*) (optional): Optional initial value of the hidden. If not specified - assumed to be 0. It has shape ``[num_directions, batch_size, hidden_size]``.
 
 **Outputs**
 
-- **Y** (*T*) (optional): A tensor that concats all the intermediate output values of the hidden. It has shape `[seq_length, num_directions, batch_size, hidden_size]`. 
-- **Y_h** (*T*) (optional): The last output value of the hidden. It has shape `[num_directions, batch_size, hidden_size]`.
+- **Y** (*T*) (optional): A tensor that concats all the intermediate output values of the hidden. It has shape ``[seq_length, num_directions, batch_size, hidden_size]``.
+- **Y_h** (*T*) (optional): The last output value of the hidden. It has shape ``[num_directions, batch_size, hidden_size]``.
 
 **Attributes**
 
 - **activation_alpha** (*float[]*): Optional scaling values used by some activation functions. The values are consumed in the order of activation functions, for example (f, g, h) in LSTM. Default values are the same as of corresponding ONNX operators.For example with LeakyRelu, the default alpha is 0.01.
 - **activation_beta** (*float[]*): Optional scaling values used by some activation functions. The values are consumed in the order of activation functions, for example (f, g, h) in LSTM. Default values are the same as of corresponding ONNX operators.
-- **activations** (*string[]*): One (or two if bidirectional) activation function for input gate. The activation function must be one of the activation functions specified above. Optional: Default `Tanh` if not specified.
+- **activations** (*string[]*): One (or two if bidirectional) activation function for input gate. The activation function must be one of the activation functions specified above. Optional: Default ``Tanh`` if not specified.
 - **clip** (*float*): Cell clip threshold. Clipping bounds the elements of a tensor in the range of [-threshold, +threshold] and is applied to the input of activations. No clip if not specified.
 - **direction** (*string*): Specify if the RNN is forward, reverse, or bidirectional. Must be one of forward (default), reverse, or bidirectional.
 - **hidden_size** (*int*): Number of neurons in the hidden layer

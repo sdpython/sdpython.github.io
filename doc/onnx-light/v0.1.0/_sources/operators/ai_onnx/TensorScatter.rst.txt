@@ -36,18 +36,18 @@ in the batch.
 
 **Inputs**
 
-- **past_cache** (*T*): Past state cache for key or value with shape `(batch_size, D1, D2, ..., max_sequence_length, ..., Dn)`.
-- **update** (*T*): New update tensor with shape `(batch_size, D1, D2, ..., sequence_length, ..., Dn)`.
-- **write_indices** (*tensor(int64)*) (optional): Write indices for the incoming update tensor in the cache. Shape is `(batch_size,)`. Assumed to be all zeros if not provided.
+- **past_cache** (*T*): Past state cache for key or value with shape ``(batch_size, D1, D2, ..., max_sequence_length, ..., Dn)``.
+- **update** (*T*): New update tensor with shape ``(batch_size, D1, D2, ..., sequence_length, ..., Dn)``.
+- **write_indices** (*tensor(int64)*) (optional): Write indices for the incoming update tensor in the cache. Shape is ``(batch_size,)``. Assumed to be all zeros if not provided.
 
 **Outputs**
 
-- **present_cache** (*T*): Updated cache. Same shape as `past_cache`.
+- **present_cache** (*T*): Updated cache. Same shape as ``past_cache``.
 
 **Attributes**
 
-- **axis** (*int*): Sequence dimension of the `past_cache` and `update` tensors. It cannot be 0 (the batch dimension). Default is -2.
-- **mode** (*string*): Write mode of cache update. Supported modes include `linear` and `circular`. `linear` mode requires write_indices+sequence_length<=max_sequence_length. For `circular` mode, the updates happen in wrap-around fashion, ie, the update index is modulo `max_sequence_length`
+- **axis** (*int*): Sequence dimension of the ``past_cache`` and ``update`` tensors. It cannot be 0 (the batch dimension). Default is -2.
+- **mode** (*string*): Write mode of cache update. Supported modes include ``linear`` and ``circular``. ``linear`` mode requires write_indices+sequence_length<=max_sequence_length. For ``circular`` mode, the updates happen in wrap-around fashion, ie, the update index is modulo ``max_sequence_length``
 
 **Type Constraints**
 

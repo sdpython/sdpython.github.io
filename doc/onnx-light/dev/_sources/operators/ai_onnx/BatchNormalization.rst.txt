@@ -20,6 +20,7 @@ There are multiple cases for the number of outputs, which we list below:
 
 When training_mode=False, extra outputs are invalid.
 The outputs are updated as follows when training_mode=True:
+
 .. code-block::
 
     running_mean = input_mean * momentum + current_mean * (1 - momentum)
@@ -28,6 +29,7 @@ The outputs are updated as follows when training_mode=True:
     Y = (X - current_mean) / sqrt(current_var + epsilon) * scale + B
 
 where:
+
 .. code-block::
 
     current_mean = ReduceMean(X, axis=all_except_channel_index)
@@ -40,6 +42,7 @@ where ``N`` is the population size (this formula does not use sample size ``N - 
 The computation of ReduceMean and ReduceVar uses float to avoid overflow for float16 inputs.
 
 When training_mode=False:
+
 .. code-block::
 
     Y = (X - input_mean) / sqrt(input_var + epsilon) * scale + B

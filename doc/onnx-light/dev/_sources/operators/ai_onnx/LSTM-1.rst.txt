@@ -91,20 +91,20 @@ Equations (Default: f=Sigmoid, g=Tanh, h=Tanh):
 
 **Inputs**
 
-- **X** (*T*): The input sequences packed (and potentially padded) into one 3-D tensor with the shape of `[seq_length, batch_size, input_size]`.
-- **W** (*T*): The weight tensor for the gates. Concatenation of `W[iofc]` and `WB[iofc]` (if bidirectional) along dimension 0. The tensor has shape `[num_directions, 4*hidden_size, input_size]`.
-- **R** (*T*): The recurrence weight tensor. Concatenation of `R[iofc]` and `RB[iofc]` (if bidirectional) along dimension 0. This tensor has shape `[num_directions, 4*hidden_size, hidden_size]`.
-- **B** (*T*) (optional): The bias tensor for input gate. Concatenation of `[Wb[iofc], Rb[iofc]]`, and `[WBb[iofc], RBb[iofc]]` (if bidirectional) along dimension 0. This tensor has shape `[num_directions, 8*hidden_size]`. Optional: If not specified - assumed to be 0.
-- **sequence_lens** (*T1*) (optional): Optional tensor specifying lengths of the sequences in a batch. If not specified - assumed all sequences in the batch to have length `seq_length`. It has shape `[batch_size]`.
-- **initial_h** (*T*) (optional): Optional initial value of the hidden. If not specified - assumed to be 0. It has shape `[num_directions, batch_size, hidden_size]`.
-- **initial_c** (*T*) (optional): Optional initial value of the cell. If not specified - assumed to be 0. It has shape `[num_directions, batch_size, hidden_size]`.
-- **P** (*T*) (optional): The weight tensor for peepholes. Concatenation of `P[iof]` and `PB[iof]` (if bidirectional) along dimension 0. It has shape `[num_directions, 3*hidde_size]`. Optional: If not specified - assumed to be 0.
+- **X** (*T*): The input sequences packed (and potentially padded) into one 3-D tensor with the shape of ``[seq_length, batch_size, input_size]``.
+- **W** (*T*): The weight tensor for the gates. Concatenation of ``W[iofc]`` and ``WB[iofc]`` (if bidirectional) along dimension 0. The tensor has shape ``[num_directions, 4*hidden_size, input_size]``.
+- **R** (*T*): The recurrence weight tensor. Concatenation of ``R[iofc]`` and ``RB[iofc]`` (if bidirectional) along dimension 0. This tensor has shape ``[num_directions, 4*hidden_size, hidden_size]``.
+- **B** (*T*) (optional): The bias tensor for input gate. Concatenation of ``[Wb[iofc], Rb[iofc]]``, and ``[WBb[iofc], RBb[iofc]]`` (if bidirectional) along dimension 0. This tensor has shape ``[num_directions, 8*hidden_size]``. Optional: If not specified - assumed to be 0.
+- **sequence_lens** (*T1*) (optional): Optional tensor specifying lengths of the sequences in a batch. If not specified - assumed all sequences in the batch to have length ``seq_length``. It has shape ``[batch_size]``.
+- **initial_h** (*T*) (optional): Optional initial value of the hidden. If not specified - assumed to be 0. It has shape ``[num_directions, batch_size, hidden_size]``.
+- **initial_c** (*T*) (optional): Optional initial value of the cell. If not specified - assumed to be 0. It has shape ``[num_directions, batch_size, hidden_size]``.
+- **P** (*T*) (optional): The weight tensor for peepholes. Concatenation of ``P[iof]`` and ``PB[iof]`` (if bidirectional) along dimension 0. It has shape ``[num_directions, 3*hidde_size]``. Optional: If not specified - assumed to be 0.
 
 **Outputs**
 
-- **Y** (*T*) (optional): A tensor that concats all the intermediate output values of the hidden. It has shape `[seq_length, num_directions, batch_size, hidden_size]`. It is optional if `output_sequence` is 0.
-- **Y_h** (*T*) (optional): The last output value of the hidden. It has shape `[num_directions, batch_size, hidden_size]`.
-- **Y_c** (*T*) (optional): The last output value of the cell. It has shape `[num_directions, batch_size, hidden_size]`.
+- **Y** (*T*) (optional): A tensor that concats all the intermediate output values of the hidden. It has shape ``[seq_length, num_directions, batch_size, hidden_size]``. It is optional if ``output_sequence`` is 0.
+- **Y_h** (*T*) (optional): The last output value of the hidden. It has shape ``[num_directions, batch_size, hidden_size]``.
+- **Y_c** (*T*) (optional): The last output value of the cell. It has shape ``[num_directions, batch_size, hidden_size]``.
 
 **Attributes**
 

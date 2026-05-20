@@ -110,10 +110,10 @@ Rotary embeddings are defined using the following algorithm:
 
 **Inputs**
 
-- **X** (*T*): The input tensor representing the token embeddings. 4D tensor with shape `(batch_size, num_heads, sequence_length, head_size)` or 3D tensor with shape `(batch_size, sequence_length, hidden_size)`. For cases with a 4D input tensor, `head_size` has to be even. For cases with a 3D input tensor, `num_heads` attribute must be provided and `hidden_size` must be an even multiple of `num_heads` where `hidden_size = num_heads * head_size`
-- **cos_cache** (*T*): The cosine values for the rotation. 2D tensor with shape `(max_position_id_plus_1, head_size / 2)` for full rotation or `(max_position_id_plus_1, rotary_embedding_dim / 2)` for partial rotation when `position_ids` are provided. 3D tensor with shape `(batch_size, sequence_length, head_size / 2)` for full rotation or `(batch_size, sequence_length, rotary_embedding_dim / 2)` for partial rotation when `position_ids` are not provided. `max_position_id_plus_1` is a parameter to the model.
-- **sin_cache** (*T*): The sine values for the rotation. 2D tensor with shape `(max_position_id_plus_1, head_size / 2)` for full rotation or `(max_position_id_plus_1, rotary_embedding_dim / 2)` for partial rotation when `position_ids` are provided. 3D tensor with shape `(batch_size, sequence_length, head_size / 2)` for full rotation or `(batch_size, sequence_length, rotary_embedding_dim / 2)` for partial rotation when `position_ids` are not provided. `max_position_id_plus_1` is a parameter to the model.
-- **position_ids** (*M*) (optional): The position indices for the tokens. 2D tensor with shape `(batch_size, sequence_length)`
+- **X** (*T*): The input tensor representing the token embeddings. 4D tensor with shape ``(batch_size, num_heads, sequence_length, head_size)`` or 3D tensor with shape ``(batch_size, sequence_length, hidden_size)``. For cases with a 4D input tensor, ``head_size`` has to be even. For cases with a 3D input tensor, ``num_heads`` attribute must be provided and ``hidden_size`` must be an even multiple of ``num_heads`` where ``hidden_size = num_heads * head_size``
+- **cos_cache** (*T*): The cosine values for the rotation. 2D tensor with shape ``(max_position_id_plus_1, head_size / 2)`` for full rotation or ``(max_position_id_plus_1, rotary_embedding_dim / 2)`` for partial rotation when ``position_ids`` are provided. 3D tensor with shape ``(batch_size, sequence_length, head_size / 2)`` for full rotation or ``(batch_size, sequence_length, rotary_embedding_dim / 2)`` for partial rotation when ``position_ids`` are not provided. ``max_position_id_plus_1`` is a parameter to the model.
+- **sin_cache** (*T*): The sine values for the rotation. 2D tensor with shape ``(max_position_id_plus_1, head_size / 2)`` for full rotation or ``(max_position_id_plus_1, rotary_embedding_dim / 2)`` for partial rotation when ``position_ids`` are provided. 3D tensor with shape ``(batch_size, sequence_length, head_size / 2)`` for full rotation or ``(batch_size, sequence_length, rotary_embedding_dim / 2)`` for partial rotation when ``position_ids`` are not provided. ``max_position_id_plus_1`` is a parameter to the model.
+- **position_ids** (*M*) (optional): The position indices for the tokens. 2D tensor with shape ``(batch_size, sequence_length)``
 
 **Outputs**
 
@@ -122,7 +122,7 @@ Rotary embeddings are defined using the following algorithm:
 **Attributes**
 
 - **interleaved** (*int*): Rotate using interleaved pattern. Default value is 0 (False).
-- **num_heads** (*int*): Number of attention heads. Must be provided when input is a 3D tensor. 
+- **num_heads** (*int*): Number of attention heads. Must be provided when input is a 3D tensor.
 - **rotary_embedding_dim** (*int*): Rotary embedding dimension used to apply partial rotary embeddings.
 
 **Type Constraints**

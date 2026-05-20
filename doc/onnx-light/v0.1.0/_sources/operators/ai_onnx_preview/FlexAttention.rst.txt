@@ -24,6 +24,7 @@ Output Shape:
 - Y: ``(batch_size, q_num_heads, q_sequence_length, v_head_size)``
 
 FlexAttention Computation:
+
 .. code-block::
 
     Scores = (Q @ K^T) * scale
@@ -45,6 +46,7 @@ Each modifier subgraph takes exactly one rank-4 tensor input and must produce
 exactly one rank-4 tensor output of the same shape and element type.
 - score_mod input/output shape: ``(batch_size, q_num_heads, q_sequence_length, kv_sequence_length)``
 - prob_mod  input/output shape: ``(batch_size, q_num_heads, q_sequence_length, kv_sequence_length)``
+
 The element type is determined by softmax_precision (defaults to float32 for
 non-double inputs, otherwise double).
 
@@ -53,13 +55,13 @@ large negative value appropriate for the target precision).
 
 **Inputs**
 
-- **Q** (*T1*): Query tensor with shape `(batch_size, q_num_heads, q_seq_len, head_size)`.
-- **K** (*T1*): Key tensor with shape `(batch_size, kv_num_heads, kv_seq_len, head_size)`.
-- **V** (*T1*): Value tensor with shape `(batch_size, kv_num_heads, kv_seq_len, v_head_size)`.
+- **Q** (*T1*): Query tensor with shape ``(batch_size, q_num_heads, q_seq_len, head_size)``.
+- **K** (*T1*): Key tensor with shape ``(batch_size, kv_num_heads, kv_seq_len, head_size)``.
+- **V** (*T1*): Value tensor with shape ``(batch_size, kv_num_heads, kv_seq_len, v_head_size)``.
 
 **Outputs**
 
-- **Y** (*T1*): Output tensor with shape `(batch_size, q_num_heads, q_seq_len, v_head_size)`.
+- **Y** (*T1*): Output tensor with shape ``(batch_size, q_num_heads, q_seq_len, v_head_size)``.
 
 **Attributes**
 
