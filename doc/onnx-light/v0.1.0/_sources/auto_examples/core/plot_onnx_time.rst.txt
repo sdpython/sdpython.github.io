@@ -31,6 +31,11 @@ When the standalone C++ example executables ``load_onnx_time``,
 ``save_onnx_light_time`` are available, it also includes their timing output.
 The model structure is identical in all cases.
 
+Use ``--model <path>`` on the command line to benchmark an existing ONNX file
+instead of the default synthetic model.  The script also prints a short
+statistics block (node count, initializer count, total tensor size, etc.)
+for whichever model is used.
+
 The ``onnx_light.onnx`` implementation does not depend on protobuf and
 therefore avoids the overhead of the protobuf serialization layer.
 It also supports parallel loading of tensor weights through the
@@ -81,12 +86,19 @@ when they are available. The executable discovery automatically skips
 them when the ``CI`` environment variable is set, so no results are
 produced in CI environments where the executables have not been built.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-88
+Use ``--model <path>`` to supply an existing single-file ONNX model.
+When provided the synthetic model is not created, and the supplied file
+is used directly as the benchmark target.  The external-data variant
+(used for ``2file`` benchmarks) is still derived from the loaded model
+and written to the temporary directory.
+
+.. GENERATED FROM PYTHON SOURCE LINES 76-101
 
 .. code-block:: Python
 
 
     import argparse
+    import math
     import os
     import pathlib
     import re
@@ -106,6 +118,7 @@ produced in CI environments where the executables have not been built.
     _ort_sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL
 
     import onnx_light.onnx as onnxl
+    import onnx_light.onnx_lib.helper as onnxlh
     from onnx_light.doc import find_standalone_executable, measure_cpp_with_example
 
 
@@ -115,15 +128,16 @@ produced in CI environments where the executables have not been built.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-94
+.. GENERATED FROM PYTHON SOURCE LINES 102-108
 
 Setup
 -----
 
-Build a small synthetic ONNX model with several ``Gemm`` nodes and large
-initializers so that the load/save times are measurable.
+Define benchmark parameters and command-line argument parsers.
+Use --model <path> to benchmark an existing ONNX file instead of the
+default synthetic model built from make_model().
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-155
+.. GENERATED FROM PYTHON SOURCE LINES 108-234
 
 .. code-block:: Python
 
@@ -155,7 +169,28 @@ initializers so that the load/save times are measurable.
         return set(values)
 
 
+    def _parse_model_path(args=None) -> str | None:
+        """Parses the ``--model`` command-line argument and returns the path.
+
+        Returns:
+            Path to an existing ONNX model file, or ``None`` if not provided.
+        """
+        parser = argparse.ArgumentParser(add_help=False)
+        parser.add_argument(
+            "--model",
+            dest="model_path",
+            default=None,
+            help=(
+                "Path to an existing single-file ONNX model to benchmark "
+                "instead of the default synthetic model."
+            ),
+        )
+        parsed, _ = parser.parse_known_args(args=args)
+        return parsed.model_path
+
+
     SELECTED_SCENARIOS = _parse_benchmark_scenarios()
+    _CLI_MODEL_PATH = _parse_model_path()
 
 
     def _run_scenario(name: str) -> bool:
@@ -184,28 +219,70 @@ initializers so that the load/save times are measurable.
         return model
 
 
-    model = make_model()
-    size_bytes = model.ByteSize()
-    print(f"Model size: {size_bytes / 2 ** 20:.3f} MB")
+    def _tensor_data_bytes(tensor: onnx.TensorProto) -> int:
+        """Returns the in-memory byte count of a TensorProto's stored data.
+
+        Uses :func:`onnx_light.onnx_lib.helper.tensor_dtype_to_np_dtype` to map
+        the element type to a numpy dtype and derives the byte count from the
+        tensor dimensions, avoiding a full array materialisation.
+
+        Returns:
+            Byte count of the tensor's data, or ``0`` when it cannot be determined.
+        """
+        if tensor.raw_data:
+            return len(tensor.raw_data)
+        if tensor.data_type not in onnxlh.TENSOR_TYPE_MAP:
+            return 0
+        np_dtype = onnxlh.tensor_dtype_to_np_dtype(tensor.data_type)
+        n_elements = math.prod(tensor.dims) if tensor.dims else 1
+        return int(np_dtype.itemsize * n_elements)
+
+
+    def print_model_stats(model: onnx.ModelProto, file_path: str | None = None) -> None:
+        """Prints summary statistics for *model* to stdout.
+
+        Args:
+            model: The ONNX model to inspect.
+            file_path: Optional path to the model file on disk; when given the
+                file size is included in the output.
+        """
+        graph = model.graph
+        n_nodes = len(graph.node)
+        n_initializers = len(graph.initializer)
+        n_inputs = len(graph.input)
+        n_outputs = len(graph.output)
+        total_tensor_bytes = sum(_tensor_data_bytes(t) for t in graph.initializer)
+        opsets = ", ".join(f"{op.domain or 'ai.onnx'}={op.version}" for op in model.opset_import)
+        print("Model statistics")
+        print("----------------")
+        print(f"  IR version              : {model.ir_version}")
+        print(f"  Opset(s)                : {opsets}")
+        print(f"  Number of nodes         : {n_nodes}")
+        print(f"  Number of inputs        : {n_inputs}")
+        print(f"  Number of outputs       : {n_outputs}")
+        print(f"  Number of initializers  : {n_initializers}")
+        print(f"  Total initializer size  : {total_tensor_bytes / 2 ** 20:.3f} MB")
+        if file_path and os.path.exists(file_path):
+            print(f"  File size               : {os.path.getsize(file_path) / 2 ** 20:.3f} MB")
+        print(f"  Serialized model size   : {model.ByteSize() / 2 ** 20:.3f} MB")
 
 
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    Model size: 640.002 MB
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-157
+.. GENERATED FROM PYTHON SOURCE LINES 235-240
 
-Write the model to a temporary file.
+Model setup
+-----------
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-175
+Either load an existing model supplied via ``--model`` or build the default
+synthetic one and write it to a temporary directory.
+
+.. GENERATED FROM PYTHON SOURCE LINES 240-268
 
 .. code-block:: Python
 
@@ -213,8 +290,19 @@ Write the model to a temporary file.
     tmp_dir = "temp_plot_onnx_time"
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
-    onnx_path = os.path.join(tmp_dir, "bench.onnx")
-    onnx.save(model, onnx_path)
+
+    if _CLI_MODEL_PATH is not None:
+        onnx_path = os.path.abspath(_CLI_MODEL_PATH)
+        model = onnx.load(onnx_path)
+        print(f"Using provided model: {onnx_path}")
+    else:
+        model = make_model()
+        onnx_path = os.path.join(tmp_dir, "bench.onnx")
+        onnx.save(model, onnx_path)
+
+    size_bytes = model.ByteSize()
+    print(f"Model size: {size_bytes / 2 ** 20:.3f} MB")
+
     file_size = os.path.getsize(onnx_path)
     print(f"File size : {file_size / 2 ** 20:.3f} MB")
 
@@ -230,21 +318,59 @@ Write the model to a temporary file.
 
 
 
-
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
 
+    Model size: 640.002 MB
     File size : 640.002 MB
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-177
+.. GENERATED FROM PYTHON SOURCE LINES 269-274
+
+Model statistics
+----------------
+
+Print a summary of the model: number of nodes, initializers (tensors),
+total weight size, file size, and serialized size.
+
+.. GENERATED FROM PYTHON SOURCE LINES 274-277
+
+.. code-block:: Python
+
+
+    print_model_stats(model, onnx_path)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Model statistics
+    ----------------
+      IR version              : 9
+      Opset(s)                : ai.onnx=18
+      Number of nodes         : 40
+      Number of inputs        : 1
+      Number of outputs       : 1
+      Number of initializers  : 40
+      Total initializer size  : 640.000 MB
+      File size               : 640.002 MB
+      Serialized model size   : 640.002 MB
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 278-279
 
 Benchmark helper.
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-406
+.. GENERATED FROM PYTHON SOURCE LINES 279-508
 
 .. code-block:: Python
 
@@ -485,20 +611,20 @@ Benchmark helper.
 
  .. code-block:: none
 
-    load/1filex1/onnx                   avg=794.6 ms median=720.2 ms max=1160.4 ms std=191.6 ms
-    load/1filex1/onnxlight              avg=374.2 ms median=339.8 ms max=510.6 ms std=69.5 ms
-    load/1filex4/onnxlight              avg=110.4 ms median=105.9 ms max=130.0 ms std=9.8 ms
-    load/1filex1/ort                    avg=661.0 ms median=656.0 ms max=716.2 ms std=40.1 ms
+    load/1filex1/onnx                   avg=556.4 ms median=537.6 ms max=657.4 ms std=51.7 ms
+    load/1filex1/onnxlight              avg=278.0 ms median=278.6 ms max=307.4 ms std=17.3 ms
+    load/1filex4/onnxlight              avg=94.6 ms median=93.6 ms max=98.1 ms std=2.0 ms
+    load/1filex1/ort                    avg=678.6 ms median=740.1 ms max=843.9 ms std=131.5 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 407-409
+.. GENERATED FROM PYTHON SOURCE LINES 509-511
 
 Serialize and Parse benchmarks
 ------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 409-443
+.. GENERATED FROM PYTHON SOURCE LINES 511-545
 
 .. code-block:: Python
 
@@ -544,18 +670,18 @@ Serialize and Parse benchmarks
 
  .. code-block:: none
 
-    serialize/x1/onnx                   avg=1240.9 ms median=1247.0 ms max=1379.8 ms std=112.6 ms
-    serialize/x1/onnxlight              avg=643.8 ms median=641.4 ms max=659.1 ms std=8.8 ms
-    serialize/x4/onnxlight              avg=623.7 ms median=617.9 ms max=642.8 ms std=15.3 ms
+    serialize/x1/onnx                   avg=1414.2 ms median=1523.0 ms max=1593.8 ms std=183.6 ms
+    serialize/x1/onnxlight              avg=584.5 ms median=570.1 ms max=631.7 ms std=29.2 ms
+    serialize/x4/onnxlight              avg=552.4 ms median=556.2 ms max=584.9 ms std=21.9 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 444-445
+.. GENERATED FROM PYTHON SOURCE LINES 546-547
 
 ParseFromString comparison between ``onnx`` and ``onnx_light.onnx``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 445-534
+.. GENERATED FROM PYTHON SOURCE LINES 547-636
 
 .. code-block:: Python
 
@@ -656,16 +782,16 @@ ParseFromString comparison between ``onnx`` and ``onnx_light.onnx``.
 
  .. code-block:: none
 
-    parse/x1/onnx                       avg=304.3 ms median=301.4 ms max=318.7 ms std=7.5 ms
-    parse/x1/onnxlight                  avg=337.5 ms median=310.8 ms max=442.4 ms std=52.7 ms
-    parse/x4/onnxlight                  avg=103.3 ms median=103.2 ms max=105.0 ms std=1.5 ms
+    parse/x1/onnx                       avg=311.4 ms median=284.5 ms max=431.9 ms std=60.4 ms
+    parse/x1/onnxlight                  avg=332.4 ms median=277.1 ms max=541.7 ms std=105.1 ms
+    parse/x4/onnxlight                  avg=90.4 ms median=90.2 ms max=93.5 ms std=1.6 ms
     parse/nc/onnxlight                  avg=0.0 ms median=0.0 ms max=0.0 ms std=0.0 ms
-    parse/ncx4/onnxlight                avg=0.4 ms median=0.4 ms max=0.5 ms std=0.0 ms
+    parse/ncx4/onnxlight                avg=0.3 ms median=0.3 ms max=0.3 ms std=0.0 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 535-544
+.. GENERATED FROM PYTHON SOURCE LINES 637-646
 
 Save benchmarks
 ---------------
@@ -677,7 +803,7 @@ Absolute paths ensure onnxlight stores only the basename in the ``.onnx``
 metadata, letting both ``onnx.load`` and ``onnxl.load`` resolve the data
 file automatically.
 
-.. GENERATED FROM PYTHON SOURCE LINES 544-639
+.. GENERATED FROM PYTHON SOURCE LINES 646-741
 
 .. code-block:: Python
 
@@ -784,17 +910,17 @@ file automatically.
 
  .. code-block:: none
 
-    save/1filex1/onnx                   avg=1986.5 ms median=2022.6 ms max=2031.1 ms std=51.3 ms
-    save/2filex1/onnx                   avg=1025.4 ms median=1025.4 ms max=1025.4 ms std=0.0 ms
-    save/1filex1/onnxlight              avg=481.5 ms median=457.9 ms max=634.0 ms std=80.0 ms
-    save/1filex4/onnxlight              avg=352.0 ms median=333.9 ms max=433.9 ms std=42.1 ms
-    save/2filex1/onnxlight              avg=679.6 ms median=647.8 ms max=1016.0 ms std=179.0 ms
-    save/2filex4/onnxlight              avg=375.3 ms median=364.8 ms max=469.3 ms std=49.2 ms
+    save/1filex1/onnx                   avg=1744.3 ms median=1791.8 ms max=1823.2 ms std=87.9 ms
+    save/2filex1/onnx                   avg=685.7 ms median=685.7 ms max=685.7 ms std=0.0 ms
+    save/1filex1/onnxlight              avg=629.4 ms median=483.7 ms max=1210.8 ms std=298.5 ms
+    save/1filex4/onnxlight              avg=400.4 ms median=366.1 ms max=500.8 ms std=70.3 ms
+    save/2filex1/onnxlight              avg=530.1 ms median=536.2 ms max=561.7 ms std=22.8 ms
+    save/2filex4/onnxlight              avg=315.5 ms median=317.4 ms max=320.7 ms std=4.5 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 640-647
+.. GENERATED FROM PYTHON SOURCE LINES 742-749
 
 C++ benchmarks
 --------------
@@ -804,7 +930,7 @@ These scenarios measure the same operations as ``load`` and ``save``
 but use the compiled C++ timing executables directly, bypassing the
 Python interpreter overhead entirely.
 
-.. GENERATED FROM PYTHON SOURCE LINES 647-709
+.. GENERATED FROM PYTHON SOURCE LINES 749-811
 
 .. code-block:: Python
 
@@ -878,24 +1004,24 @@ Python interpreter overhead entirely.
 
  .. code-block:: none
 
-    load/1filex1/onnxlight-cpp          avg=264.8 ms median=233.1 ms max=510.5 ms std=138.5 ms
-    load/1filex4/onnxlight-cpp          avg=85.5 ms median=89.1 ms max=106.7 ms std=22.4 ms
-    load/2filex1/onnxlight-cpp-nocopy   avg=1.5 ms median=1.5 ms max=1.8 ms std=0.2 ms
-    load/1filex1/onnx-cpp               avg=218.2 ms median=168.4 ms max=432.1 ms std=107.2 ms
-    save/1filex1/onnxlight-cpp          avg=677.9 ms median=656.7 ms max=782.3 ms std=63.2 ms
-    save/1filex4/onnxlight-cpp          avg=388.1 ms median=390.9 ms max=477.2 ms std=55.2 ms
+    load/1filex1/onnxlight-cpp          avg=293.8 ms median=252.2 ms max=478.6 ms std=92.6 ms
+    load/1filex4/onnxlight-cpp          avg=70.4 ms median=69.6 ms max=84.2 ms std=11.8 ms
+    load/2filex1/onnxlight-cpp-nocopy   avg=0.9 ms median=0.9 ms max=0.9 ms std=0.0 ms
+    load/1filex1/onnx-cpp               avg=190.4 ms median=153.3 ms max=353.4 ms std=81.7 ms
+    save/1filex1/onnxlight-cpp          avg=450.4 ms median=436.1 ms max=529.8 ms std=42.9 ms
+    save/1filex4/onnxlight-cpp          avg=308.5 ms median=296.4 ms max=420.8 ms std=61.7 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 710-714
+.. GENERATED FROM PYTHON SOURCE LINES 812-816
 
 Load with ``onnx`` using external data
 --------------------------------------
 
 Reload the model previously saved with external data using ``onnx.load``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 714-774
+.. GENERATED FROM PYTHON SOURCE LINES 816-876
 
 .. code-block:: Python
 
@@ -967,21 +1093,21 @@ Reload the model previously saved with external data using ``onnx.load``.
 
  .. code-block:: none
 
-    load/2filex1/onnx                   avg=247.4 ms median=233.0 ms max=303.2 ms std=40.3 ms
-    load/2filex1/onnxlight              avg=148.7 ms median=138.2 ms max=174.5 ms std=19.7 ms
-    load/2filex1/onnxlight-nocopy       avg=34.5 ms median=34.2 ms max=41.4 ms std=3.8 ms
-    load/2filex4/onnxlight              avg=106.3 ms median=110.4 ms max=117.1 ms std=9.1 ms
-    load/2filex1/ort                    avg=339.5 ms median=346.9 ms max=359.8 ms std=16.5 ms
+    load/2filex1/onnx                   avg=178.9 ms median=180.8 ms max=198.9 ms std=16.0 ms
+    load/2filex1/onnxlight              avg=111.3 ms median=101.5 ms max=150.5 ms std=24.1 ms
+    load/2filex1/onnxlight-nocopy       avg=28.1 ms median=28.0 ms max=29.1 ms std=0.5 ms
+    load/2filex4/onnxlight              avg=55.3 ms median=51.8 ms max=63.7 ms std=5.7 ms
+    load/2filex1/ort                    avg=291.3 ms median=290.9 ms max=309.4 ms std=12.2 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 775-777
+.. GENERATED FROM PYTHON SOURCE LINES 877-879
 
 Results
 --------
 
-.. GENERATED FROM PYTHON SOURCE LINES 777-782
+.. GENERATED FROM PYTHON SOURCE LINES 879-884
 
 .. code-block:: Python
 
@@ -1000,40 +1126,40 @@ Results
 
                                          median       avg       min       max       std
     name                                                                               
-    load/1filex1/onnx                  0.720173  0.794563  0.633445  1.160358  0.191610
-    load/1filex1/onnx-cpp              0.168357  0.218154  0.154816  0.432104  0.107211
-    load/1filex1/onnxlight             0.339781  0.374239  0.326015  0.510625  0.069506
-    load/1filex1/onnxlight-cpp         0.233055  0.264831  0.124809  0.510451  0.138509
-    load/1filex1/ort                   0.655962  0.660962  0.605781  0.716234  0.040068
-    load/1filex4/onnxlight             0.105906  0.110419  0.103839  0.129966  0.009842
-    load/1filex4/onnxlight-cpp         0.089091  0.085489  0.043903  0.106706  0.022413
-    load/2filex1/onnx                  0.232984  0.247415  0.192623  0.303220  0.040268
-    load/2filex1/onnxlight             0.138230  0.148747  0.129163  0.174464  0.019657
-    load/2filex1/onnxlight-cpp-nocopy  0.001470  0.001512  0.001308  0.001786  0.000160
-    load/2filex1/onnxlight-nocopy      0.034180  0.034487  0.030335  0.041421  0.003779
-    load/2filex1/ort                   0.346944  0.339494  0.314128  0.359849  0.016536
-    load/2filex4/onnxlight             0.110353  0.106319  0.095021  0.117147  0.009088
-    parse/nc/onnxlight                 0.000036  0.000037  0.000035  0.000044  0.000003
-    parse/ncx4/onnxlight               0.000417  0.000414  0.000367  0.000466  0.000035
-    parse/x1/onnx                      0.301369  0.304265  0.298120  0.318728  0.007462
-    parse/x1/onnxlight                 0.310813  0.337502  0.304651  0.442428  0.052707
-    parse/x4/onnxlight                 0.103214  0.103312  0.101006  0.104970  0.001461
-    save/1filex1/onnx                  2.022563  1.986472  1.909072  2.031133  0.051314
-    save/1filex1/onnxlight             0.457915  0.481460  0.404677  0.634006  0.079984
-    save/1filex1/onnxlight-cpp         0.656701  0.677885  0.592186  0.782320  0.063236
-    save/1filex4/onnxlight             0.333938  0.352023  0.316472  0.433899  0.042064
-    save/1filex4/onnxlight-cpp         0.390870  0.388074  0.304801  0.477248  0.055172
-    save/2filex1/onnx                  1.025432  1.025432  1.025432  1.025432  0.000000
-    save/2filex1/onnxlight             0.647848  0.679562  0.500706  1.015966  0.178986
-    save/2filex4/onnxlight             0.364825  0.375346  0.325676  0.469292  0.049195
-    serialize/x1/onnx                  1.246955  1.240865  1.112289  1.379817  0.112587
-    serialize/x1/onnxlight             0.641411  0.643815  0.632119  0.659139  0.008832
-    serialize/x4/onnxlight             0.617875  0.623671  0.606250  0.642805  0.015296
+    load/1filex1/onnx                  0.537550  0.556356  0.515431  0.657418  0.051701
+    load/1filex1/onnx-cpp              0.153336  0.190376  0.140500  0.353396  0.081663
+    load/1filex1/onnxlight             0.278610  0.277961  0.257114  0.307393  0.017326
+    load/1filex1/onnxlight-cpp         0.252163  0.293799  0.239933  0.478624  0.092567
+    load/1filex1/ort                   0.740096  0.678575  0.497350  0.843882  0.131464
+    load/1filex4/onnxlight             0.093554  0.094633  0.092930  0.098068  0.001973
+    load/1filex4/onnxlight-cpp         0.069602  0.070351  0.057405  0.084211  0.011754
+    load/2filex1/onnx                  0.180774  0.178882  0.159618  0.198926  0.016033
+    load/2filex1/onnxlight             0.101453  0.111347  0.088231  0.150474  0.024084
+    load/2filex1/onnxlight-cpp-nocopy  0.000897  0.000894  0.000814  0.000943  0.000048
+    load/2filex1/onnxlight-nocopy      0.028018  0.028100  0.027519  0.029081  0.000532
+    load/2filex1/ort                   0.290875  0.291302  0.273865  0.309363  0.012243
+    load/2filex4/onnxlight             0.051784  0.055264  0.048900  0.063691  0.005659
+    parse/nc/onnxlight                 0.000030  0.000030  0.000029  0.000032  0.000001
+    parse/ncx4/onnxlight               0.000263  0.000273  0.000239  0.000326  0.000029
+    parse/x1/onnx                      0.284478  0.311375  0.275733  0.431924  0.060378
+    parse/x1/onnxlight                 0.277129  0.332418  0.269928  0.541739  0.105069
+    parse/x4/onnxlight                 0.090227  0.090446  0.089041  0.093467  0.001588
+    save/1filex1/onnx                  1.791762  1.744285  1.582653  1.823207  0.087902
+    save/1filex1/onnxlight             0.483717  0.629358  0.407930  1.210786  0.298542
+    save/1filex1/onnxlight-cpp         0.436087  0.450436  0.411892  0.529766  0.042928
+    save/1filex4/onnxlight             0.366079  0.400361  0.320128  0.500791  0.070278
+    save/1filex4/onnxlight-cpp         0.296372  0.308544  0.231218  0.420815  0.061745
+    save/2filex1/onnx                  0.685656  0.685656  0.685656  0.685656  0.000000
+    save/2filex1/onnxlight             0.536187  0.530121  0.492699  0.561693  0.022772
+    save/2filex4/onnxlight             0.317364  0.315499  0.308922  0.320694  0.004497
+    serialize/x1/onnx                  1.523039  1.414224  1.162863  1.593840  0.183557
+    serialize/x1/onnxlight             0.570104  0.584543  0.552867  0.631732  0.029168
+    serialize/x4/onnxlight             0.556186  0.552439  0.525735  0.584950  0.021855
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 783-789
+.. GENERATED FROM PYTHON SOURCE LINES 885-891
 
 Plot the results.
 The average and median are shown for each operation, with a 95% confidence
@@ -1042,7 +1168,7 @@ Bars are colored by library: blue family for ``onnx``, orange family for
 ``onnx_light``, green family for ``onnxruntime``.  Solid shades represent
 the average; lighter shades the median.
 
-.. GENERATED FROM PYTHON SOURCE LINES 789-862
+.. GENERATED FROM PYTHON SOURCE LINES 891-964
 
 .. code-block:: Python
 
@@ -1131,13 +1257,13 @@ the average; lighter shades the median.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 863-866
+.. GENERATED FROM PYTHON SOURCE LINES 965-968
 
 Cleanup
 --------
 Remove all temporary files created during the benchmark.
 
-.. GENERATED FROM PYTHON SOURCE LINES 866-868
+.. GENERATED FROM PYTHON SOURCE LINES 968-970
 
 .. code-block:: Python
 
@@ -1153,7 +1279,7 @@ Remove all temporary files created during the benchmark.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 26.125 seconds)
+   **Total running time of the script:** (1 minutes 27.304 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_onnx_time.py:
