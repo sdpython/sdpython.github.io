@@ -48,7 +48,7 @@
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/copybutton.js?v=da8d6423"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
@@ -151,6 +151,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../design/index.html">
     Design
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../howto/index.html">
+    How-to
   </a>
 </li>
 
@@ -284,6 +291,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../howto/index.html">
+    How-to
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../../index.html">
     API
@@ -382,6 +396,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../checker.html">onnx_light.onnx.checker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compose.html">onnx_light.onnx.compose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../defs.html">onnx_light.onnx.defs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../expressions.html">onnx_light.onnx_expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../schema_diff.html">onnx_light.onnx.defs.schema_diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helper.html">onnx_light.onnx.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../inliner.html">onnx_light.onnx.inliner</a></li>
@@ -472,8 +487,21 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../cpp/onnx_op/index.html">onnx_op</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/light_op_schema.html">light_op_schema.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets.html">operator_sets.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_controlflow.html">operator_sets_controlflow.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_generator.html">operator_sets_generator.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_image.html">operator_sets_image.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_logical.html">operator_sets_logical.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_math.html">operator_sets_math.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_nn.html">operator_sets_nn.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_reduction.html">operator_sets_reduction.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_sequence.html">operator_sets_sequence.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_tensor.html">operator_sets_tensor.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_op/operator_sets_traditionalml.html">operator_sets_traditionalml.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../cpp/onnx_backend/index.html">onnx_backend</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/onnx_backend/random.html">random.h</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../cpp/onnx_proto/index.html">onnx_proto</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -565,6 +593,11 @@
                   
   <section id="module-onnx_light.backend.random">
 <span id="onnx-light-backend-random"></span><h1>onnx_light.backend.random<a class="headerlink" href="#module-onnx_light.backend.random" title="Link to this heading">#</a></h1>
+<p>Deterministic pseudo-random helpers.</p>
+<p>This module is a thin Python wrapper around the C++ implementation in
+<code class="docutils literal notranslate"><span class="pre">onnx_light.onnx_backend</span></code> exposed through the <code class="docutils literal notranslate"><span class="pre">_onnxpy.backend</span></code>
+nanobind submodule. The behavior is bit-identical to the prior pure-Python
+implementation.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="onnx_light.backend.random.rand">
 <span class="sig-prename descclassname"><span class="pre">onnx_light.backend.random.</span></span><span class="sig-name descname"><span class="pre">rand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.integer" title="(in NumPy v2.4)"><span class="pre">integer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></span><a class="headerlink" href="#onnx_light.backend.random.rand" title="Link to this definition">#</a></dt>
@@ -577,7 +610,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A float when no shape is provided, otherwise a <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>.</p>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> of float64 values with the requested shape.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -592,13 +625,13 @@
 <li><p><strong>low</strong> – Lower bound, inclusive. If <code class="docutils literal notranslate"><span class="pre">high</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, this becomes the
 exclusive upper bound and the lower bound becomes 0.</p></li>
 <li><p><strong>high</strong> – Exclusive upper bound.</p></li>
-<li><p><strong>size</strong> – Output size. <code class="docutils literal notranslate"><span class="pre">None</span></code> returns a scalar.</p></li>
+<li><p><strong>size</strong> – Output size. Must not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>seed</strong> – Optional integer seed.</p></li>
 <li><p><strong>dtype</strong> – Integer dtype of the output.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An integer scalar when <code class="docutils literal notranslate"><span class="pre">size</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, otherwise a <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>.</p>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> of integers with the requested shape.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -617,7 +650,7 @@ values minus 6), which approximates a normal distribution.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A float when no shape is provided, otherwise a <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>.</p>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> of float64 values with the requested shape.</p>
 </dd>
 </dl>
 </dd></dl>

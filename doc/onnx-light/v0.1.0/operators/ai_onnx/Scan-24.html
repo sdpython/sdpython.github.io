@@ -1145,34 +1145,35 @@ be variadic, the initial-states and scan-inputs are listed together as one input
 Similarly, the final-states and scan-outputs are listed together as one output parameter.
 The attribute num_scan_inputs indicates the number M of scan-inputs.</p>
 <p>The behavior of</p>
-<blockquote>
-<div><p>Scan   (init_1, …, init_n, scan_1, …, scan_m)</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Scan   (init_1, ..., init_n, scan_1, ..., scan_m)
+</pre></div>
+</div>
 <p>is equivalent to the following pseudo-code:</p>
-<blockquote>
-<div><p>// scan_i.shape[axis_i] denotes the (max) sequence-length of scan_i
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// scan_i.shape[axis_i] denotes the (max) sequence-length of scan_i
 // scan_i.shape[axis_i] is required to be equal to scan_j.shape[axis_j] for all i,j.
-sequence_length = scan_1.shape[axis_1];</p>
-<p>// initialize state-variables
-st_1 = init_1; … st_n = init_n;
+sequence_length = scan_1.shape[axis_1];
+
+// initialize state-variables
+st_1 = init_1; ... st_n = init_n;
 // initialize scan-output variables: [] denotes an empty tensor
-scan_out_1 = []; …; scan_out_k = [];
-// identify number of iterations:</p>
-<p>// execute loop
-for (int t = 0; t  [t] indicates the sub-tensor</p>
-<blockquote>
-<div><p>// of rank one less than T obtained by indexing T at position t along axis k.
-si_1 = scan_1 [t];
-… ;
-si_m = scan_m [t];
-// execute loop-body
-st_1, …, st_n, so_1, …, so_k = loop-body(st_1, …, st_n, si_1, …, si_m)
-// accumulate the scan-output elements
-scan_out_1 = Concat (scan_out_1, so_1); … ; scan_out_k = Concat (scan_out_k, so_k);</p>
-</div></blockquote>
-<p>}</p>
-<p>return st_1, …, st_n, scan_out_1, …, scan_out_k;</p>
-</div></blockquote>
+scan_out_1 = []; ...; scan_out_k = [];
+// identify number of iterations:
+
+// execute loop
+for (int t = 0; t  [t] indicates the sub-tensor
+    // of rank one less than T obtained by indexing T at position t along axis k.
+    si_1 = scan_1 [t];
+    ... ;
+    si_m = scan_m [t];
+    // execute loop-body
+    st_1, ..., st_n, so_1, ..., so_k = loop-body(st_1, ..., st_n, si_1, ..., si_m)
+    // accumulate the scan-output elements
+    scan_out_1 = Concat (scan_out_1, so_1); ... ; scan_out_k = Concat (scan_out_k, so_k);
+}
+
+return st_1, ..., st_n, scan_out_1, ..., scan_out_k;
+</pre></div>
+</div>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>initial_state_and_scan_inputs</strong> (<em>V</em>) (variadic): Initial values of the loop’s N state variables followed by M scan_inputs</p></li>

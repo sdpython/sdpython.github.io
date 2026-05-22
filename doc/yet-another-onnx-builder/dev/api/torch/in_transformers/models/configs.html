@@ -1091,33 +1091,26 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-yobx.torch.in_transformers.models.configs">
-<span id="yobx-torch-in-transformers-models-configs"></span><h1>yobx.torch.in_transformers.models.configs<a class="headerlink" href="#module-yobx.torch.in_transformers.models.configs" title="Link to this heading">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="yobx.torch.in_transformers.models.configs.get_cached_configuration">
-<span class="sig-prename descclassname"><span class="pre">yobx.torch.in_transformers.models.configs.</span></span><span class="sig-name descname"><span class="pre">get_cached_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PreTrainedConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/xadupre/yet-another-onnx-builder/blob/1b7b246/yobx/torch/in_transformers/models/configs.py#L7"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yobx.torch.in_transformers.models.configs.get_cached_configuration" title="Link to this definition">#</a></dt>
-<dd><p>Returns cached configuration to avoid having to many accesses to internet.
-It returns None if not Cache. The list of cached models follows.
-If <em>exc</em> is True or if environment variable <code class="docutils literal notranslate"><span class="pre">NOHTTP</span></code> is defined,
-the function raises an exception if <em>name</em> is not found.</p>
+  <section id="yobx-torch-in-transformers-models-configs">
+<h1>yobx.torch.in_transformers.models.configs<a class="headerlink" href="#yobx-torch-in-transformers-models-configs" title="Link to this heading">#</a></h1>
+<p>Function <cite>yobx.torch.in_transformers.models.configs.get_cached_configuration</cite>
+lets the user retrieve configurations coming from <a class="reference external" href="https://huggingface.co/docs/transformers/en/index">transformers</a>.
+Their purpose is to be able to write unit tests without downloading a configuration.
+Currently, the module contains the following cached configuration:</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_transformers.models.configs</span><span class="w"> </span><span class="kn">import</span> <span class="n">_retrieve_cached_configurations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yobx.torch.in_transformers.models._configs</span><span class="w"> </span><span class="kn">import</span> <span class="n">_retrieve_cached_configurations</span>
 
 <span class="n">configs</span> <span class="o">=</span> <span class="n">_retrieve_cached_configurations</span><span class="p">()</span>
 <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">configs</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
-    [runpythonerror]
-    Traceback (most recent call last):
-      File &quot;&lt;stdin&gt;&quot;, line 9, in &lt;module&gt;
-    ImportError: cannot import name &#39;_retrieve_cached_configurations&#39; from &#39;yobx.torch.in_transformers.models.configs&#39; (~/github/yet-another-onnx-builder/yobx/torch/in_transformers/models/configs.py). Did you mean: &#39;get_cached_configuration&#39;?
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="s1">&#39;arnir0/Tiny-LLM&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-</dd></dl>
-
+<p>To get them, <code class="docutils literal notranslate"><span class="pre">yobx.torch.in_transformers.models.configs.get_cached_configuration(&quot;&lt;name&gt;&quot;,</span> <span class="pre">**kwargs)</span></code>
+where <cite>kwargs</cite> can be used to overwrite some values.</p>
 </section>
 
 
@@ -1158,18 +1151,6 @@ the function raises an exception if <em>name</em> is not found.</p>
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yobx.torch.in_transformers.models.configs.get_cached_configuration"><code class="docutils literal notranslate"><span class="pre">get_cached_configuration()</span></code></a></li>
-</ul>
-  </nav></div>
 
   <div class="sidebar-secondary-item">
 

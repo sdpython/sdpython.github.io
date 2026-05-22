@@ -48,7 +48,7 @@
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/copybutton.js?v=da8d6423"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
@@ -151,6 +151,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../design/index.html">
     Design
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../howto/index.html">
+    How-to
   </a>
 </li>
 
@@ -284,6 +291,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../howto/index.html">
+    How-to
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="index.html">
     API
@@ -382,6 +396,7 @@
 <li class="toctree-l2"><a class="reference internal" href="python/checker.html">onnx_light.onnx.checker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/compose.html">onnx_light.onnx.compose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/defs.html">onnx_light.onnx.defs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/expressions.html">onnx_light.onnx_expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/schema_diff.html">onnx_light.onnx.defs.schema_diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/helper.html">onnx_light.onnx.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/inliner.html">onnx_light.onnx.inliner</a></li>
@@ -472,8 +487,21 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="cpp/onnx_op/index.html">onnx_op</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/light_op_schema.html">light_op_schema.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets.html">operator_sets.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_controlflow.html">operator_sets_controlflow.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_generator.html">operator_sets_generator.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_image.html">operator_sets_image.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_logical.html">operator_sets_logical.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_math.html">operator_sets_math.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_nn.html">operator_sets_nn.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_reduction.html">operator_sets_reduction.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_sequence.html">operator_sets_sequence.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_tensor.html">operator_sets_tensor.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_op/operator_sets_traditionalml.html">operator_sets_traditionalml.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cpp/onnx_backend/index.html">onnx_backend</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="cpp/onnx_backend/random.html">random.h</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="cpp/onnx_proto/index.html">onnx_proto</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -583,6 +611,12 @@
 <span class="sig-name descname"><span class="pre">values</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;nanobind.nb_func</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#onnx_light.onnx.AttributeProto.AttributeType.values" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.AttributeProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.AttributeProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -868,6 +902,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">DeviceConfigurationProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.DeviceConfigurationProto" title="Link to this definition">#</a></dt>
 <dd><p>Describes a multi-device configuration for a model.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.DeviceConfigurationProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.DeviceConfigurationProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.DeviceConfigurationProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.DeviceConfigurationProto" title="onnx_light.onnx_py._onnxpy.DeviceConfigurationProto"><span class="pre">onnx_light.onnx_py._onnxpy.DeviceConfigurationProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.DeviceConfigurationProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -958,6 +998,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.FunctionProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">FunctionProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.FunctionProto" title="Link to this definition">#</a></dt>
 <dd><p>A function defines a sub-operator that can be used in a graph. It is similar to a function in C/C++ or Python, and can be used to define reusable sub-graphs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.FunctionProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.FunctionProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.FunctionProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.FunctionProto" title="onnx_light.onnx_py._onnxpy.FunctionProto"><span class="pre">onnx_light.onnx_py._onnxpy.FunctionProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.FunctionProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -1158,6 +1204,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">GraphProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.GraphProto" title="Link to this definition">#</a></dt>
 <dd><p>A graph defines the computational logic of a model and is comprised of a parameterized list of nodes that form a directed acyclic graph based on their inputs and outputs. This is the equivalent of the ‘network’ or ‘graph’ in many deep learning frameworks.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.GraphProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.GraphProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.GraphProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.GraphProto" title="onnx_light.onnx_py._onnxpy.GraphProto"><span class="pre">onnx_light.onnx_py._onnxpy.GraphProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.GraphProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -1338,6 +1390,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">IntIntListEntryProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.IntIntListEntryProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a key value pair, key is an integer, value is a list of integers.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.IntIntListEntryProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.IntIntListEntryProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.IntIntListEntryProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.IntIntListEntryProto" title="onnx_light.onnx_py._onnxpy.IntIntListEntryProto"><span class="pre">onnx_light.onnx_py._onnxpy.IntIntListEntryProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.IntIntListEntryProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -1416,6 +1474,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.MapProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">MapProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.MapProto" title="Link to this definition">#</a></dt>
 <dd><p>Specifies an associative table, defined by keys and values. MapProto is formed with a repeated field of keys (of type INT8, INT16, INT32, INT64, UINT8, UINT16, UINT32, UINT64, or STRING) and values (of type TENSOR, SPARSE_TENSOR, SEQUENCE, or MAP). Key types and value types have to remain the same throughout the instantiation of the MapProto.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.MapProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.MapProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.MapProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.MapProto" title="onnx_light.onnx_py._onnxpy.MapProto"><span class="pre">onnx_light.onnx_py._onnxpy.MapProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.MapProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -1534,6 +1598,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.ModelProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">ModelProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.ModelProto" title="Link to this definition">#</a></dt>
 <dd><p>ModelProto is a top-level file/container format for bundling a ML model and associating its computation graph with metadata. The semantics of the model are described by the associated GraphProto’s.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.ModelProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ModelProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.ModelProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.ModelProto" title="onnx_light.onnx_py._onnxpy.ModelProto"><span class="pre">onnx_light.onnx_py._onnxpy.ModelProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ModelProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -1757,6 +1827,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">NodeDeviceConfigurationProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.NodeDeviceConfigurationProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a multi-device configuration proto for NodeProto.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.NodeDeviceConfigurationProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.NodeDeviceConfigurationProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.NodeDeviceConfigurationProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.NodeDeviceConfigurationProto" title="onnx_light.onnx_py._onnxpy.NodeDeviceConfigurationProto"><span class="pre">onnx_light.onnx_py._onnxpy.NodeDeviceConfigurationProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.NodeDeviceConfigurationProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -1847,6 +1923,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.NodeProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">NodeProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.NodeProto" title="Link to this definition">#</a></dt>
 <dd><p>Computation graphs are made up of a DAG of nodes, which represent what is commonly called a ‘layer’ or ‘pipeline stage’ in machine learning frameworks. For example, it can be a node of type ‘Conv’ that takes in an image, a filter tensor and a bias tensor, and produces the convolved output.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.NodeProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.NodeProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.NodeProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.NodeProto" title="onnx_light.onnx_py._onnxpy.NodeProto"><span class="pre">onnx_light.onnx_py._onnxpy.NodeProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.NodeProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -2023,6 +2105,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">OperatorSetIdProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.OperatorSetIdProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a unique pair domain, opset version for a set of operators.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.OperatorSetIdProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.OperatorSetIdProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.OperatorSetIdProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.OperatorSetIdProto" title="onnx_light.onnx_py._onnxpy.OperatorSetIdProto"><span class="pre">onnx_light.onnx_py._onnxpy.OperatorSetIdProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.OperatorSetIdProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -2109,6 +2197,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.OptionalProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">OptionalProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.OptionalProto" title="Link to this definition">#</a></dt>
 <dd><p>A container that may or may not hold a value. The value, if present, may be a Tensor, Sparse Tensor, Sequence, Map, or another Optional. An absent value is semantically different from a present value that contains an empty tensor, sequence, or map. For example, an absent optional tensor means the absence of the tensor itself, whereas a present optional tensor that contains an empty tensor means the tensor is present but it has no elements.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.OptionalProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.OptionalProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.OptionalProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.OptionalProto" title="onnx_light.onnx_py._onnxpy.OptionalProto"><span class="pre">onnx_light.onnx_py._onnxpy.OptionalProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.OptionalProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -2283,6 +2377,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">SequenceProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.SequenceProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a dense, ordered, collection of elements that are of homogeneous types. Sequences can be made out of tensors, maps, or sequences. If a sequence is made out of tensors, the tensors must have the same element type (i.e. int32). In some cases, the tensors in a sequence can have different shapes.  Whether the tensors can have different shapes or not depends on the type/shape associated with the corresponding <cite>ValueInfo</cite>. For example, <cite>Sequence&lt;Tensor&lt;float, [M,N]&gt;</cite> means that all tensors have same shape. However, <cite>Sequence&lt;Tensor&lt;float, [omitted,omitted]&gt;</cite> means they can have different shapes (all of rank 2), where <cite>omitted</cite> means the corresponding dimension has no symbolic/constant value. Finally, <cite>Sequence&lt;Tensor&lt;float, omitted&gt;&gt;</cite> means that the different tensors can have different ranks, when the <cite>shape</cite> itself is omitted from the tensor-type. For a more complete description</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.SequenceProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.SequenceProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.SequenceProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.SequenceProto" title="onnx_light.onnx_py._onnxpy.SequenceProto"><span class="pre">onnx_light.onnx_py._onnxpy.SequenceProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.SequenceProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -2421,6 +2521,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">ShardedDimProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.ShardedDimProto" title="Link to this definition">#</a></dt>
 <dd><p>Describes the sharding spec for a single axis of a sharded tensor.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.ShardedDimProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ShardedDimProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.ShardedDimProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.ShardedDimProto" title="onnx_light.onnx_py._onnxpy.ShardedDimProto"><span class="pre">onnx_light.onnx_py._onnxpy.ShardedDimProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ShardedDimProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -2499,6 +2605,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.ShardingSpecProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">ShardingSpecProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.ShardingSpecProto" title="Link to this definition">#</a></dt>
 <dd><p>Describes the sharding spec for a specific, input or output tensor of a node.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.ShardingSpecProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ShardingSpecProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.ShardingSpecProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.ShardingSpecProto" title="onnx_light.onnx_py._onnxpy.ShardingSpecProto"><span class="pre">onnx_light.onnx_py._onnxpy.ShardingSpecProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ShardingSpecProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -2603,6 +2715,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">SimpleShardedDimProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.SimpleShardedDimProto" title="Link to this definition">#</a></dt>
 <dd><p>Indicates that N blocks are divided into M shards. N is allowed to be symbolic where M is required to be a constant.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.SimpleShardedDimProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.SimpleShardedDimProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.SimpleShardedDimProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.SimpleShardedDimProto" title="onnx_light.onnx_py._onnxpy.SimpleShardedDimProto"><span class="pre">onnx_light.onnx_py._onnxpy.SimpleShardedDimProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.SimpleShardedDimProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -2693,6 +2811,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.SparseTensorProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">SparseTensorProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.SparseTensorProto" title="Link to this definition">#</a></dt>
 <dd><p>A sparse tensor.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.SparseTensorProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.SparseTensorProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.SparseTensorProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.SparseTensorProto" title="onnx_light.onnx_py._onnxpy.SparseTensorProto"><span class="pre">onnx_light.onnx_py._onnxpy.SparseTensorProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.SparseTensorProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -2790,6 +2914,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">StringStringEntryProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.StringStringEntryProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a key value pair, both defines a string.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.StringStringEntryProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.StringStringEntryProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.StringStringEntryProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.StringStringEntryProto" title="onnx_light.onnx_py._onnxpy.StringStringEntryProto"><span class="pre">onnx_light.onnx_py._onnxpy.StringStringEntryProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.StringStringEntryProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -2869,6 +2999,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">TensorAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TensorAnnotation" title="Link to this definition">#</a></dt>
 <dd><p>Defines a tensor annotation, useful for quantized tensors.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TensorAnnotation.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorAnnotation.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TensorAnnotation.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TensorAnnotation" title="onnx_light.onnx_py._onnxpy.TensorAnnotation"><span class="pre">onnx_light.onnx_py._onnxpy.TensorAnnotation</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorAnnotation.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -2947,6 +3083,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.TensorProto">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">TensorProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TensorProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a tensor and its content.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TensorProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TensorProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TensorProto" title="onnx_light.onnx_py._onnxpy.TensorProto"><span class="pre">onnx_light.onnx_py._onnxpy.TensorProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorProto.CopyFrom" title="Link to this definition">#</a></dt>
@@ -3196,6 +3338,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">TensorShapeProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TensorShapeProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a tensor shape. A dimension can be either an integer value or a symbolic variable. A symbolic variable represents an unknown dimension.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TensorShapeProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorShapeProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TensorShapeProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TensorShapeProto" title="onnx_light.onnx_py._onnxpy.TensorShapeProto"><span class="pre">onnx_light.onnx_py._onnxpy.TensorShapeProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorShapeProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -3205,6 +3353,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.TensorShapeProto.Dimension">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Dimension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TensorShapeProto.Dimension" title="Link to this definition">#</a></dt>
 <dd><p>Defines a dimension, it can be fixed (an integer dim_value) or dynamic (a string dim_param). Only one of them can be set.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TensorShapeProto.Dimension.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorShapeProto.Dimension.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TensorShapeProto.Dimension.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TensorShapeProto.Dimension" title="onnx_light.onnx_py._onnxpy.TensorShapeProto.Dimension"><span class="pre">onnx_light.onnx_py._onnxpy.TensorShapeProto.Dimension</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TensorShapeProto.Dimension.CopyFrom" title="Link to this definition">#</a></dt>
@@ -3356,6 +3510,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">TypeProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TypeProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines a type, it can be a tensor type (element type and shape), a sequence of the same element type, …</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TypeProto" title="onnx_light.onnx_py._onnxpy.TypeProto"><span class="pre">onnx_light.onnx_py._onnxpy.TypeProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -3365,6 +3525,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Map">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Map" title="Link to this definition">#</a></dt>
 <dd><p>Defines the type of the key and the type of each value in a dictionary.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Map.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Map.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Map.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TypeProto.Map" title="onnx_light.onnx_py._onnxpy.TypeProto.Map"><span class="pre">onnx_light.onnx_py._onnxpy.TypeProto.Map</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Map.CopyFrom" title="Link to this definition">#</a></dt>
@@ -3447,6 +3613,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Optional">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Optional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Optional" title="Link to this definition">#</a></dt>
 <dd><p>Defines the type of an optional value.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Optional.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Optional.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Optional.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TypeProto.Optional" title="onnx_light.onnx_py._onnxpy.TypeProto.Optional"><span class="pre">onnx_light.onnx_py._onnxpy.TypeProto.Optional</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Optional.CopyFrom" title="Link to this definition">#</a></dt>
@@ -3540,6 +3712,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Sequence" title="Link to this definition">#</a></dt>
 <dd><p>Defines the type of each element in a sequence.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Sequence.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Sequence.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Sequence.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TypeProto.Sequence" title="onnx_light.onnx_py._onnxpy.TypeProto.Sequence"><span class="pre">onnx_light.onnx_py._onnxpy.TypeProto.Sequence</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Sequence.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -3627,6 +3805,14 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.SparseTensor">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SparseTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TypeProto.SparseTensor" title="Link to this definition">#</a></dt>
 <dd><p>Defines a sparse tensor type (element type, shape)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.SparseTensor.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.SparseTensor.ByteSize" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.SparseTensor.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TypeProto.SparseTensor" title="onnx_light.onnx_py._onnxpy.TypeProto.SparseTensor"><span class="pre">onnx_light.onnx_py._onnxpy.TypeProto.SparseTensor</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.SparseTensor.CopyFrom" title="Link to this definition">#</a></dt>
@@ -3725,6 +3911,12 @@
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Tensor">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Tensor" title="Link to this definition">#</a></dt>
 <dd><p>Defines a tensor type (element type, shape).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Tensor.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Tensor.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.TypeProto.Tensor.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.TypeProto.Tensor" title="onnx_light.onnx_py._onnxpy.TypeProto.Tensor"><span class="pre">onnx_light.onnx_py._onnxpy.TypeProto.Tensor</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.TypeProto.Tensor.CopyFrom" title="Link to this definition">#</a></dt>
@@ -3914,6 +4106,12 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.</span></span><span class="sig-name descname"><span class="pre">ValueInfoProto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.ValueInfoProto" title="Link to this definition">#</a></dt>
 <dd><p>Defines information on value, including the name, the type, and the shape of the value.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.ValueInfoProto.ByteSize">
+<span class="sig-name descname"><span class="pre">ByteSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ValueInfoProto.ByteSize" title="Link to this definition">#</a></dt>
+<dd><p>Returns the serialized size in bytes, following the protobuf API.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_light.onnx.ValueInfoProto.CopyFrom">
 <span class="sig-name descname"><span class="pre">CopyFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.ValueInfoProto" title="onnx_light.onnx_py._onnxpy.ValueInfoProto"><span class="pre">onnx_light.onnx_py._onnxpy.ValueInfoProto</span></a></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.ValueInfoProto.CopyFrom" title="Link to this definition">#</a></dt>
 <dd><p>Copies one instance into this one.</p>
@@ -4073,6 +4271,7 @@
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.AttributeProto.AttributeType.values"><code class="docutils literal notranslate"><span class="pre">AttributeProto.AttributeType.values</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.AttributeProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">AttributeProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.AttributeProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">AttributeProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.AttributeProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">AttributeProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.AttributeProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">AttributeProto.ParseFromString()</span></code></a></li>
@@ -4122,6 +4321,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deviceconfigurationproto">DeviceConfigurationProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.DeviceConfigurationProto"><code class="docutils literal notranslate"><span class="pre">DeviceConfigurationProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.DeviceConfigurationProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">DeviceConfigurationProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.DeviceConfigurationProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">DeviceConfigurationProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.DeviceConfigurationProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">DeviceConfigurationProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.DeviceConfigurationProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">DeviceConfigurationProto.ParseFromString()</span></code></a></li>
@@ -4140,6 +4340,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functionproto">FunctionProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.FunctionProto"><code class="docutils literal notranslate"><span class="pre">FunctionProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.FunctionProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">FunctionProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.FunctionProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">FunctionProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.FunctionProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">FunctionProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.FunctionProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">FunctionProto.ParseFromString()</span></code></a></li>
@@ -4176,6 +4377,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graphproto">GraphProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.GraphProto"><code class="docutils literal notranslate"><span class="pre">GraphProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.GraphProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">GraphProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.GraphProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">GraphProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.GraphProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">GraphProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.GraphProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">GraphProto.ParseFromString()</span></code></a></li>
@@ -4208,6 +4410,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intintlistentryproto">IntIntListEntryProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.IntIntListEntryProto"><code class="docutils literal notranslate"><span class="pre">IntIntListEntryProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.IntIntListEntryProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">IntIntListEntryProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.IntIntListEntryProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">IntIntListEntryProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.IntIntListEntryProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">IntIntListEntryProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.IntIntListEntryProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">IntIntListEntryProto.ParseFromString()</span></code></a></li>
@@ -4224,6 +4427,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapproto">MapProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.MapProto"><code class="docutils literal notranslate"><span class="pre">MapProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.MapProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">MapProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.MapProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">MapProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.MapProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">MapProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.MapProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">MapProto.ParseFromString()</span></code></a></li>
@@ -4249,6 +4453,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelproto">ModelProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ModelProto"><code class="docutils literal notranslate"><span class="pre">ModelProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ModelProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">ModelProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ModelProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">ModelProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ModelProto.ParseFromEncryptedFile"><code class="docutils literal notranslate"><span class="pre">ModelProto.ParseFromEncryptedFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ModelProto.ParseFromEncryptedString"><code class="docutils literal notranslate"><span class="pre">ModelProto.ParseFromEncryptedString()</span></code></a></li>
@@ -4288,6 +4493,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nodedeviceconfigurationproto">NodeDeviceConfigurationProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeDeviceConfigurationProto"><code class="docutils literal notranslate"><span class="pre">NodeDeviceConfigurationProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeDeviceConfigurationProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">NodeDeviceConfigurationProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeDeviceConfigurationProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">NodeDeviceConfigurationProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeDeviceConfigurationProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">NodeDeviceConfigurationProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeDeviceConfigurationProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">NodeDeviceConfigurationProto.ParseFromString()</span></code></a></li>
@@ -4306,6 +4512,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nodeproto">NodeProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeProto"><code class="docutils literal notranslate"><span class="pre">NodeProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">NodeProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">NodeProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">NodeProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.NodeProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">NodeProto.ParseFromString()</span></code></a></li>
@@ -4338,6 +4545,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operatorsetidproto">OperatorSetIdProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OperatorSetIdProto"><code class="docutils literal notranslate"><span class="pre">OperatorSetIdProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OperatorSetIdProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">OperatorSetIdProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OperatorSetIdProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">OperatorSetIdProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OperatorSetIdProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">OperatorSetIdProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OperatorSetIdProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">OperatorSetIdProto.ParseFromString()</span></code></a></li>
@@ -4358,6 +4566,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optionalproto">OptionalProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OptionalProto"><code class="docutils literal notranslate"><span class="pre">OptionalProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OptionalProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">OptionalProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OptionalProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">OptionalProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OptionalProto.DataType"><code class="docutils literal notranslate"><span class="pre">OptionalProto.DataType</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.OptionalProto.HasField"><code class="docutils literal notranslate"><span class="pre">OptionalProto.HasField()</span></code></a></li>
@@ -4390,6 +4599,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequenceproto">SequenceProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SequenceProto"><code class="docutils literal notranslate"><span class="pre">SequenceProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SequenceProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">SequenceProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SequenceProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">SequenceProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SequenceProto.DataType"><code class="docutils literal notranslate"><span class="pre">SequenceProto.DataType</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SequenceProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">SequenceProto.ParseFromFile()</span></code></a></li>
@@ -4416,6 +4626,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shardeddimproto">ShardedDimProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardedDimProto"><code class="docutils literal notranslate"><span class="pre">ShardedDimProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardedDimProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">ShardedDimProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardedDimProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">ShardedDimProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardedDimProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">ShardedDimProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardedDimProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">ShardedDimProto.ParseFromString()</span></code></a></li>
@@ -4432,6 +4643,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shardingspecproto">ShardingSpecProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardingSpecProto"><code class="docutils literal notranslate"><span class="pre">ShardingSpecProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardingSpecProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">ShardingSpecProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardingSpecProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">ShardingSpecProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardingSpecProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">ShardingSpecProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ShardingSpecProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">ShardingSpecProto.ParseFromString()</span></code></a></li>
@@ -4452,6 +4664,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simpleshardeddimproto">SimpleShardedDimProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SimpleShardedDimProto"><code class="docutils literal notranslate"><span class="pre">SimpleShardedDimProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SimpleShardedDimProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">SimpleShardedDimProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SimpleShardedDimProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">SimpleShardedDimProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SimpleShardedDimProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">SimpleShardedDimProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SimpleShardedDimProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">SimpleShardedDimProto.ParseFromString()</span></code></a></li>
@@ -4470,6 +4683,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sparsetensorproto">SparseTensorProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SparseTensorProto"><code class="docutils literal notranslate"><span class="pre">SparseTensorProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SparseTensorProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">SparseTensorProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SparseTensorProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">SparseTensorProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SparseTensorProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">SparseTensorProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.SparseTensorProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">SparseTensorProto.ParseFromString()</span></code></a></li>
@@ -4488,6 +4702,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stringstringentryproto">StringStringEntryProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.StringStringEntryProto"><code class="docutils literal notranslate"><span class="pre">StringStringEntryProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.StringStringEntryProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">StringStringEntryProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.StringStringEntryProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">StringStringEntryProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.StringStringEntryProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">StringStringEntryProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.StringStringEntryProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">StringStringEntryProto.ParseFromString()</span></code></a></li>
@@ -4504,6 +4719,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorannotation">TensorAnnotation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorAnnotation"><code class="docutils literal notranslate"><span class="pre">TensorAnnotation</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorAnnotation.ByteSize"><code class="docutils literal notranslate"><span class="pre">TensorAnnotation.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorAnnotation.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TensorAnnotation.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorAnnotation.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TensorAnnotation.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorAnnotation.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TensorAnnotation.ParseFromString()</span></code></a></li>
@@ -4520,6 +4736,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorproto">TensorProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorProto"><code class="docutils literal notranslate"><span class="pre">TensorProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">TensorProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TensorProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorProto.DataLocation"><code class="docutils literal notranslate"><span class="pre">TensorProto.DataLocation</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorProto.DataType"><code class="docutils literal notranslate"><span class="pre">TensorProto.DataType</span></code></a></li>
@@ -4559,8 +4776,10 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorshapeproto">TensorShapeProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto.Dimension"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto.Dimension</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto.Dimension.ByteSize"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto.Dimension.ByteSize()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto.Dimension.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto.Dimension.CopyFrom()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto.Dimension.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto.Dimension.ParseFromFile()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TensorShapeProto.Dimension.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TensorShapeProto.Dimension.ParseFromString()</span></code></a></li>
@@ -4588,8 +4807,10 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typeproto">TypeProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto"><code class="docutils literal notranslate"><span class="pre">TypeProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">TypeProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TypeProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Map"><code class="docutils literal notranslate"><span class="pre">TypeProto.Map</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Map.ByteSize"><code class="docutils literal notranslate"><span class="pre">TypeProto.Map.ByteSize()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Map.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TypeProto.Map.CopyFrom()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Map.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TypeProto.Map.ParseFromFile()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Map.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TypeProto.Map.ParseFromString()</span></code></a></li>
@@ -4604,6 +4825,7 @@
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Optional"><code class="docutils literal notranslate"><span class="pre">TypeProto.Optional</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Optional.ByteSize"><code class="docutils literal notranslate"><span class="pre">TypeProto.Optional.ByteSize()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Optional.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TypeProto.Optional.CopyFrom()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Optional.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TypeProto.Optional.ParseFromFile()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Optional.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TypeProto.Optional.ParseFromString()</span></code></a></li>
@@ -4618,6 +4840,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TypeProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TypeProto.ParseFromString()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Sequence"><code class="docutils literal notranslate"><span class="pre">TypeProto.Sequence</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Sequence.ByteSize"><code class="docutils literal notranslate"><span class="pre">TypeProto.Sequence.ByteSize()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Sequence.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TypeProto.Sequence.CopyFrom()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Sequence.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TypeProto.Sequence.ParseFromFile()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Sequence.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TypeProto.Sequence.ParseFromString()</span></code></a></li>
@@ -4633,6 +4856,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.SerializeToFile"><code class="docutils literal notranslate"><span class="pre">TypeProto.SerializeToFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.SerializeToString"><code class="docutils literal notranslate"><span class="pre">TypeProto.SerializeToString()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.SparseTensor"><code class="docutils literal notranslate"><span class="pre">TypeProto.SparseTensor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.SparseTensor.ByteSize"><code class="docutils literal notranslate"><span class="pre">TypeProto.SparseTensor.ByteSize()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.SparseTensor.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TypeProto.SparseTensor.CopyFrom()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.SparseTensor.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TypeProto.SparseTensor.ParseFromFile()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.SparseTensor.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TypeProto.SparseTensor.ParseFromString()</span></code></a></li>
@@ -4646,6 +4870,7 @@
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Tensor"><code class="docutils literal notranslate"><span class="pre">TypeProto.Tensor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Tensor.ByteSize"><code class="docutils literal notranslate"><span class="pre">TypeProto.Tensor.ByteSize()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Tensor.CopyFrom"><code class="docutils literal notranslate"><span class="pre">TypeProto.Tensor.CopyFrom()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Tensor.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">TypeProto.Tensor.ParseFromFile()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.TypeProto.Tensor.ParseFromString"><code class="docutils literal notranslate"><span class="pre">TypeProto.Tensor.ParseFromString()</span></code></a></li>
@@ -4681,6 +4906,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valueinfoproto">ValueInfoProto</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ValueInfoProto"><code class="docutils literal notranslate"><span class="pre">ValueInfoProto</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ValueInfoProto.ByteSize"><code class="docutils literal notranslate"><span class="pre">ValueInfoProto.ByteSize()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ValueInfoProto.CopyFrom"><code class="docutils literal notranslate"><span class="pre">ValueInfoProto.CopyFrom()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ValueInfoProto.ParseFromFile"><code class="docutils literal notranslate"><span class="pre">ValueInfoProto.ParseFromFile()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.ValueInfoProto.ParseFromString"><code class="docutils literal notranslate"><span class="pre">ValueInfoProto.ParseFromString()</span></code></a></li>

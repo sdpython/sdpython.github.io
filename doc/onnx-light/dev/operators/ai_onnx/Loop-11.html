@@ -1102,113 +1102,125 @@
 </ul>
 <p>Generic Looping construct. This loop has multiple termination conditions:</p>
 <ol class="arabic simple">
-<li><p>Trip count. Iteration count specified at runtime. Set by
-specifying the input M. Optional. Set to empty string to omit.
-Note that a static trip count (specified at graph construction time) can be
-specified by passing in a constant node for input M.</p></li>
-<li><p>Loop termination condition. This is an input to the op that determines
-whether to run the first iteration and also a loop-carried dependency for
-the body graph. The body graph must yield a value for the condition variable,
-whether this input is provided or not.</p></li>
+<li><p>Trip count. Iteration count specified at runtime. Set by</p></li>
 </ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>specifying the input M. Optional. Set to empty string to omit.
+Note that a static trip count (specified at graph construction time) can be
+specified by passing in a constant node for input M.
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Loop termination condition. This is an input to the op that determines</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>whether to run the first iteration and also a loop-carried dependency for
+the body graph. The body graph must yield a value for the condition variable,
+whether this input is provided or not.
+</pre></div>
+</div>
 <p>This table summarizes the operating modes of this operator with equivalent
 C-style code:</p>
 <p>Operator inputs defined as (max_trip_count, condition_var).</p>
-<blockquote>
-<div><dl>
-<dt>input (“”, “”):</dt><dd><dl class="simple">
-<dt>for (int i=0; ; ++i) {</dt><dd><p>cond = … // Note this value is ignored, but is required in the body</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-<dt>input (“”, cond) // Note this is analogous to a while loop</dt><dd><p>bool cond = …;
-for (int i=0; cond; ++i) {</p>
-<blockquote>
-<div><p>cond = …;</p>
-</div></blockquote>
-<p>}</p>
-</dd>
-<dt>input (“”, 1) // Note this is analogous to a do-while loop</dt><dd><p>bool cond = true
-for (int i=0; cond; ++i) {</p>
-<blockquote>
-<div><p>cond = …;</p>
-</div></blockquote>
-<p>}</p>
-</dd>
-<dt>input (trip_count, “”) // Note this is analogous to a for loop</dt><dd><blockquote>
-<div><p>int trip_count = …
-for (int i=0; i  ]()</p>
-</div></blockquote>
-<p>%b = Constant[value =  ]()
-%keepgoing = Constant[value =  ]()
-%max_trip_count = Constant[value =  ]()
-%keepgoing_out, %b_out, %user_defined_vals = Loop`body =   &lt;%max_trip_count, %keepgoing, %b&gt;`_
-return</p>
-</dd>
-</dl>
-<p>}</p>
-<dl class="simple">
-<dt>graph body-net (</dt><dd><p>%i[INT32, scalar]           // iteration number
-%keepgoing_in[BOOL, scalar] // incoming loop-termination-condition; not used
-%b_in[INT32, scalar]        // incoming value of loop-carried-dependency b</p>
-</dd>
-<dt>) {</dt><dd><p>%my_local = Add(%a, %b_in)
-%b_out = Sub(%a, %b_in) // outgoing value of loop-carried-dependency b
-%keepgoing_out = Greater(%my_local, %b_out) // outgoing loop-termination-condition
-%user_defined_val = Add(%b_in, %b_in) // scan-output value to be accumulated
-return %keepgoing_out, %b_out, %user_defined_val</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>input (&quot;&quot;, &quot;&quot;):
+    for (int i=0; ; ++i) {
+      cond = ... // Note this value is ignored, but is required in the body
+    }
+
+input (&quot;&quot;, cond) // Note this is analogous to a while loop
+    bool cond = ...;
+    for (int i=0; cond; ++i) {
+      cond = ...;
+    }
+
+input (&quot;&quot;, 1) // Note this is analogous to a do-while loop
+    bool cond = true
+    for (int i=0; cond; ++i) {
+      cond = ...;
+    }
+
+input (trip_count, &quot;&quot;) // Note this is analogous to a for loop
+    int trip_count = ...
+    for (int i=0; i  ]()
+  %b = Constant[value =  ]()
+  %keepgoing = Constant[value =  ]()
+  %max_trip_count = Constant[value =  ]()
+  %keepgoing_out, %b_out, %user_defined_vals = Loop[body =  ](%max_trip_count, %keepgoing, %b)
+  return
+}
+
+graph body-net (
+  %i[INT32, scalar]           // iteration number
+  %keepgoing_in[BOOL, scalar] // incoming loop-termination-condition; not used
+  %b_in[INT32, scalar]        // incoming value of loop-carried-dependency b
+) {
+  %my_local = Add(%a, %b_in)
+  %b_out = Sub(%a, %b_in) // outgoing value of loop-carried-dependency b
+  %keepgoing_out = Greater(%my_local, %b_out) // outgoing loop-termination-condition
+  %user_defined_val = Add(%b_in, %b_in) // scan-output value to be accumulated
+  return %keepgoing_out, %b_out, %user_defined_val
+}
+</pre></div>
+</div>
 <p><em>Sample equivalent C code</em></p>
-<blockquote>
-<div><dl>
-<dt>{</dt><dd><p>/* User-defined code (enclosing scope) <em>/
-int a = 3, b = 6;
-bool keepgoing = true; // Analogous to input cond
-/</em> End user-defined code <a href="#id1"><span class="problematic" id="id2">*</span></a>/</p>
-<p>/* Implicitly-defined code <em>/
-const int max_trip_count = 10; // Analogous to input M
-int user_defined_vals[]; // Imagine this is resizable
-/</em> End implicitly-defined code <em>/
-/</em> initialize loop-carried variables and scan-output variables <a href="#id3"><span class="problematic" id="id4">*</span></a>/
-bool keepgoing_out = keepgoing
-int b_out = b</p>
-<dl>
-<dt>for (int i=0; i   b_out;</dt><dd><p>user_defined_val = b_in + b_in; // b_in and b_out are different variables
-/* End user-defined code <a href="#id5"><span class="problematic" id="id6">*</span></a>/</p>
-<p>/* Implicitly defined-code <a href="#id7"><span class="problematic" id="id8">*</span></a>/
-user_defined_vals[i] = user_defined_val // accumulate scan-output values</p>
-</dd>
-</dl>
-<p>}
-// int t = my_local; // Can’t do this. my_local is not accessible here.</p>
-<p>// The values below are bound to the output variables of the loop and therefore accessible
-// b_out; user_defined_vals; keepgoing_out;</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
+  /* User-defined code (enclosing scope) */
+  int a = 3, b = 6;
+  bool keepgoing = true; // Analogous to input cond
+  /* End user-defined code */
+
+  /* Implicitly-defined code */
+  const int max_trip_count = 10; // Analogous to input M
+  int user_defined_vals[]; // Imagine this is resizable
+  /* End implicitly-defined code */
+  /* initialize loop-carried variables and scan-output variables */
+  bool keepgoing_out = keepgoing
+  int b_out = b
+
+  for (int i=0; i   b_out;
+    user_defined_val = b_in + b_in; // b_in and b_out are different variables
+    /* End user-defined code */
+
+    /* Implicitly defined-code */
+    user_defined_vals[i] = user_defined_val // accumulate scan-output values
+  }
+  // int t = my_local; // Can&#39;t do this. my_local is not accessible here.
+
+  // The values below are bound to the output variables of the loop and therefore accessible
+  // b_out; user_defined_vals; keepgoing_out;
+}
+</pre></div>
+</div>
 <p>There are several things of note in this code snippet:</p>
 <ol class="arabic simple">
-<li><p>Values from the enclosing scope (i.e. variable “a” here) are in scope and can
-be referenced in the inputs of the loop.</p></li>
-<li><p>Any values computed in the loop body that needs to be used in a subsequent
-iteration or after the loop are modeled using a pair of variables in the loop-body,
+<li><p>Values from the enclosing scope (i.e. variable “a” here) are in scope and can</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>be referenced in the inputs of the loop.
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Any values computed in the loop body that needs to be used in a subsequent</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>iteration or after the loop are modeled using a pair of variables in the loop-body,
 consisting of an input variable (eg., b_in) and an output variable (eg., b_out).
 These are referred to as loop-carried dependences. The loop operation node
 supplies the input value of the input variable for the first iteration, and
 returns the output value of the output variable produced by the final
-iteration.</p></li>
-<li><p>Scan_output variables are used to implicitly concatenate values computed across
-all the iterations. In the above example, the value of user_defined_val computed
-over all iterations are concatenated and returned as the value of user_defined_vals
-after the loop.</p></li>
-<li><p>Values created in the body cannot be accessed in the enclosing scope,
-except using the mechanism described above.</p></li>
+iteration.
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Scan_output variables are used to implicitly concatenate values computed across</p></li>
 </ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>all the iterations. In the above example, the value of user_defined_val computed
+over all iterations are concatenated and returned as the value of user_defined_vals
+after the loop.
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Values created in the body cannot be accessed in the enclosing scope,</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>except using the mechanism described above.
+</pre></div>
+</div>
 <p>Note that the semantics of this op support “diagonal” or “wavefront” execution.
 (See Step 3 here for an example:
 <a class="reference external" href="https://devblogs.nvidia.com/optimizing-recurrent-neural-networks-cudnn-5/">https://devblogs.nvidia.com/optimizing-recurrent-neural-networks-cudnn-5/</a>).

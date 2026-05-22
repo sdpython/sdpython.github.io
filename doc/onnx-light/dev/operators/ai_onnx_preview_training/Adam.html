@@ -1099,8 +1099,8 @@
 <li><p><strong>Domain</strong>: <code class="docutils literal notranslate"><span class="pre">ai.onnx.preview.training</span></code></p></li>
 <li><p><strong>Since version</strong>: 1</p></li>
 </ul>
-<dl>
-<dt>Compute one iteration of Adam, a stochastic gradient based optimization</dt><dd><p>algorithm. This operator can conduct the optimization of multiple tensor variables.</p>
+<p>Compute one iteration of Adam, a stochastic gradient based optimization
+algorithm. This operator can conduct the optimization of multiple tensor variables.</p>
 <p>Let’s define the behavior of this operator. First of all, Adam requires
 some parameters:</p>
 <blockquote>
@@ -1139,27 +1139,31 @@ are constants. Moreover, the corresponding output tensors are</p>
 <p>Those outputs are computed following the pseudo code below.</p>
 <p>Let “+”, “-”, “*”, and “/” are all element-wise arithmetic operations with
 numpy-style broadcasting support. The pseudo code to compute those outputs is:</p>
-<blockquote>
-<div><p>// Add gradient of 0.5 * norm_coefficient * ||X||_2^2, where ||X||_2 is the 2-norm.
-G_regularized = norm_coefficient * X + G</p>
-<p>// Update exponentially-averaged historical gradient.
-V_new = alpha * V + (1 - alpha) * G_regularized</p>
-<p>// Update exponentially-averaged historical squared gradient.
-H_new = beta * H + (1 - beta) * G_regularized * G_regularized</p>
-<p>// Compute the element-wise square-root of H_new. V_new will be element-wisely
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// Add gradient of 0.5 * norm_coefficient * ||X||_2^2, where ||X||_2 is the 2-norm.
+G_regularized = norm_coefficient * X + G
+
+// Update exponentially-averaged historical gradient.
+V_new = alpha * V + (1 - alpha) * G_regularized
+
+// Update exponentially-averaged historical squared gradient.
+H_new = beta * H + (1 - beta) * G_regularized * G_regularized
+
+// Compute the element-wise square-root of H_new. V_new will be element-wisely
 // divided by H_sqrt for a better update direction.
-H_sqrt = Sqrt(H_new) + epsilon</p>
-<p>// Compute learning-rate. Note that “alpha**T”/”beta**T” is alpha’s/beta’s T-th power.
-R_adjusted = T &gt; 0 ? R * Sqrt(1 - beta**T) / (1 - alpha**T) : R</p>
-<p>// Compute new value of “X”.
-X_new = X - R_adjusted * V_new / H_sqrt</p>
-<p>// Post-update regularization.
-X_final = (1 - norm_coefficient_post) * X_new</p>
-</div></blockquote>
+H_sqrt = Sqrt(H_new) + epsilon
+
+// Compute learning-rate. Note that &quot;alpha**T&quot;/&quot;beta**T&quot; is alpha&#39;s/beta&#39;s T-th power.
+R_adjusted = T &gt; 0 ? R * Sqrt(1 - beta**T) / (1 - alpha**T) : R
+
+// Compute new value of &quot;X&quot;.
+X_new = X - R_adjusted * V_new / H_sqrt
+
+// Post-update regularization.
+X_final = (1 - norm_coefficient_post) * X_new
+</pre></div>
+</div>
 <p>If there are multiple inputs to be optimized, the pseudo code will be applied
 independently to each of them.</p>
-</dd>
-</dl>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>R</strong> (<em>T1</em>): The initial learning rate.</p></li>

@@ -1099,8 +1099,8 @@
 <li><p><strong>Domain</strong>: <code class="docutils literal notranslate"><span class="pre">ai.onnx.preview.training</span></code></p></li>
 <li><p><strong>Since version</strong>: 1</p></li>
 </ul>
-<dl>
-<dt>Compute one iteration of stochastic gradient update with momentum.</dt><dd><p>This operator can conduct the optimization of multiple tensor variables.</p>
+<p>Compute one iteration of stochastic gradient update with momentum.
+This operator can conduct the optimization of multiple tensor variables.</p>
 <p>Let’s define the behavior of this operator. As you can imagine, SG with momentum requires
 several parameters:</p>
 <blockquote>
@@ -1124,35 +1124,39 @@ momentum (called “V_new”).</p>
 “standard” to use standard momentum. Computation details are described subsequently.</p>
 <p>Let “+”, “-”, “*”, and “/” are all element-wise operations with numpy-style broadcasting.</p>
 <p>Pseudo code for SG with standard momentum:</p>
-<blockquote>
-<div><p>// Add gradient of 0.5 * norm_coefficient * ||X||^2, where ||X|| is the sum of squared
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// Add gradient of 0.5 * norm_coefficient * ||X||^2, where ||X|| is the sum of squared
 // values of all elements in X.
-G_regularized = norm_coefficient * X + G</p>
-<p>// In the first training iteration, beta should always be 1.
-beta_adjusted = T &gt; 0 ? beta : 1</p>
-<p>// Compute the current momentum based on previous momentum and the current gradient.
-V_new = alpha * V + beta_adjusted * G_regularized</p>
-<p>// Update X.
-X_new = X - R * V_new</p>
-</div></blockquote>
+G_regularized = norm_coefficient * X + G
+
+// In the first training iteration, beta should always be 1.
+beta_adjusted = T &gt; 0 ? beta : 1
+
+// Compute the current momentum based on previous momentum and the current gradient.
+V_new = alpha * V + beta_adjusted * G_regularized
+
+// Update X.
+X_new = X - R * V_new
+</pre></div>
+</div>
 <p>Pseudo code for SG with Nesterov’s momentum:</p>
-<blockquote>
-<div><p>// Add gradient of 0.5 * norm_coefficient * ||X||^2, where ||X|| is the sum of squared
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// Add gradient of 0.5 * norm_coefficient * ||X||^2, where ||X|| is the sum of squared
 // values of all elements in X.
-G_regularized = norm_coefficient * X + G;</p>
-<p>// In the first training iteration, beta should always be 1.
-beta_adjusted = T &gt; 0 ? beta : 1</p>
-<p>// Compute the current momentum based on previous momentum and the current gradient.
-V_new = alpha * V + beta_adjusted * G_regularized;</p>
-<p>// Compute final update direction and then update X.
-X_new = X - R * (G_regularized + alpha * V_new)</p>
-</div></blockquote>
+G_regularized = norm_coefficient * X + G;
+
+// In the first training iteration, beta should always be 1.
+beta_adjusted = T &gt; 0 ? beta : 1
+
+// Compute the current momentum based on previous momentum and the current gradient.
+V_new = alpha * V + beta_adjusted * G_regularized;
+
+// Compute final update direction and then update X.
+X_new = X - R * (G_regularized + alpha * V_new)
+</pre></div>
+</div>
 <p>If one assign this operators to optimize multiple inputs, for example, “X_1” and “X_2”. The same
 pseudo code would be extended to handle all tensors jointly. More specifically, we can view “X” as a
 concatenation of “X_1” and “X_2” (of course, their gradient and accumulate gradient should
 be concatenated too) and then our pseudo code becomes applicable.</p>
-</dd>
-</dl>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>R</strong> (<em>T1</em>): The learning rate.</p></li>

@@ -41,6 +41,8 @@ allow variable length sequences of length   (sequence_lengths, init_1, ..., init
 
 is equivalent to the following pseudo-code:
 
+.. code-block:: text
+
     // T.shape[0] denotes the batch-size of T
     // The batch-size of scan_1, ..., scan_m are all required to be equal
     batch_size = scan_1.shape[0];
@@ -77,10 +79,12 @@ be encoded as a ScanLoop. Note that the loop-body is a nested graph, and it dire
 %Wi, %Ri, %Wbi, and %Rbi (typically constants or initializers in the body graph). If these
 values are computed in the outer graph, they need to be passed in as extra state_variables.
 
+.. code-block:: text
+
     graph rnn-encoding {
       %H_0 = ...
       %X = ...
-      %Y_h, %Y = Scan`body =  , num_scan_inputs=1 <"", %H_0, %X>`_
+      %Y_h, %Y = Scan[body =  , num_scan_inputs=1]("", %H_0, %X)
       return %Y, %Y_h
     }
 
@@ -101,6 +105,7 @@ values are computed in the outer graph, they need to be passed in as extra state
       %Accumulate = Identity(%Ht)
       return %Ht, %Accumulate
     }
+
 
 **Inputs**
 

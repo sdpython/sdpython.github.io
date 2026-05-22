@@ -1113,51 +1113,72 @@ where each element defines a slice of <code class="docutils literal notranslate"
 <li><p>b   r-b` =&gt; error condition</p></li>
 </ol>
 <ol class="arabic simple" start="2">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">indices_shape[-1]</span> <span class="pre">==</span> <span class="pre">r-b</span></code>, since the rank of <code class="docutils literal notranslate"><span class="pre">indices</span></code> is <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">indices</span></code> can be thought of as <code class="docutils literal notranslate"><span class="pre">N</span></code> <code class="docutils literal notranslate"><span class="pre">(q-b-1)</span></code>-dimensional tensors
-containing 1-D tensors of dimension <code class="docutils literal notranslate"><span class="pre">r-b</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is an integer equals to the product of 1 and all the elements in the batch dimensions
-of the indices_shape. Let us think of each such <code class="docutils literal notranslate"><span class="pre">r-b</span></code> ranked tensor as <code class="docutils literal notranslate"><span class="pre">indices_slice</span></code>. Each <em>scalar value</em> corresponding to <code class="docutils literal notranslate"><span class="pre">data[0:b-1,indices_slice]</span></code>
-is filled into the corresponding location of the <code class="docutils literal notranslate"><span class="pre">(q-b-1)</span></code>-dimensional tensor to form the <code class="docutils literal notranslate"><span class="pre">output</span></code> tensor (Example 1 below)</p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">indices_shape[-1]</span> <span class="pre">&lt;</span> <span class="pre">r-b</span></code>, since the rank of <code class="docutils literal notranslate"><span class="pre">indices</span></code> is <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">indices</span></code> can be thought of as <code class="docutils literal notranslate"><span class="pre">N</span></code> <code class="docutils literal notranslate"><span class="pre">(q-b-1)</span></code>-dimensional tensor
-containing 1-D tensors of dimension <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">r-b</span></code>. Let us think of each such tensors as <code class="docutils literal notranslate"><span class="pre">indices_slice</span></code>. Each <em>tensor slice</em> corresponding
-to <code class="docutils literal notranslate"><span class="pre">data[0:b-1,</span> <span class="pre">indices_slice</span> <span class="pre">,</span> <span class="pre">:]</span></code> is filled into the corresponding location of the <code class="docutils literal notranslate"><span class="pre">(q-b-1)</span></code>-dimensional tensor
-to form the <code class="docutils literal notranslate"><span class="pre">output</span></code> tensor (Examples 2, 3, 4 and 5 below)</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">indices_shape[-1]</span> <span class="pre">==</span> <span class="pre">r-b</span></code>, since the rank of <code class="docutils literal notranslate"><span class="pre">indices</span></code> is <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">indices</span></code> can be thought of as <code class="docutils literal notranslate"><span class="pre">N</span></code> <code class="docutils literal notranslate"><span class="pre">(q-b-1)</span></code>-dimensional tensors</p></li>
 </ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>containing 1-D tensors of dimension `r-b`, where `N` is an integer equals to the product of 1 and all the elements in the batch dimensions
+of the indices_shape. Let us think of each such `r-b` ranked tensor as `indices_slice`. Each *scalar value* corresponding to `data[0:b-1,indices_slice]`
+is filled into the corresponding location of the `(q-b-1)`-dimensional tensor to form the `output` tensor (Example 1 below)
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">indices_shape[-1]</span> <span class="pre">&lt;</span> <span class="pre">r-b</span></code>, since the rank of <code class="docutils literal notranslate"><span class="pre">indices</span></code> is <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">indices</span></code> can be thought of as <code class="docutils literal notranslate"><span class="pre">N</span></code> <code class="docutils literal notranslate"><span class="pre">(q-b-1)</span></code>-dimensional tensor</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>containing 1-D tensors of dimension `&lt; r-b`. Let us think of each such tensors as `indices_slice`. Each *tensor slice* corresponding
+to `data[0:b-1, indices_slice , :]` is filled into the corresponding location of the `(q-b-1)`-dimensional tensor
+to form the `output` tensor (Examples 2, 3, 4 and 5 below)
+</pre></div>
+</div>
 <p>This operator is the inverse of <code class="docutils literal notranslate"><span class="pre">ScatterND</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Example</span> <span class="pre">1</span></code></p>
-<blockquote>
-<div><p>batch_dims = 0</p>
-<p>data    = [[0,1],[2,3]]   # data_shape = [2, 2]</p>
-<p>indices = [[0,0],[1,1]]   # indices_shape = [2, 2]</p>
-<p>output  = [0,3]           # output_shape = [2]</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>batch_dims = 0
+
+data    = [[0,1],[2,3]]   # data_shape = [2, 2]
+
+indices = [[0,0],[1,1]]   # indices_shape = [2, 2]
+
+output  = [0,3]           # output_shape = [2]
+</pre></div>
+</div>
 <p><code class="docutils literal notranslate"><span class="pre">Example</span> <span class="pre">2</span></code></p>
-<blockquote>
-<div><p>batch_dims = 0</p>
-<p>data    = [[0,1],[2,3]]  # data_shape = [2, 2]</p>
-<p>indices = [[1],[0]]      # indices_shape = [2, 1]</p>
-<p>output  = [[2,3],[0,1]]  # output_shape = [2, 2]</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>batch_dims = 0
+
+data    = [[0,1],[2,3]]  # data_shape = [2, 2]
+
+indices = [[1],[0]]      # indices_shape = [2, 1]
+
+output  = [[2,3],[0,1]]  # output_shape = [2, 2]
+</pre></div>
+</div>
 <p><code class="docutils literal notranslate"><span class="pre">Example</span> <span class="pre">3</span></code></p>
-<blockquote>
-<div><p>batch_dims = 0</p>
-<p>data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]</p>
-<p>indices = [[0,1],[1,0]]                 # indices_shape = [2, 2]</p>
-<p>output  = [[2,3],[4,5]]                 # output_shape = [2, 2]</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>batch_dims = 0
+
+data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
+
+indices = [[0,1],[1,0]]                 # indices_shape = [2, 2]
+
+output  = [[2,3],[4,5]]                 # output_shape = [2, 2]
+</pre></div>
+</div>
 <p><code class="docutils literal notranslate"><span class="pre">Example</span> <span class="pre">4</span></code></p>
-<blockquote>
-<div><p>batch_dims = 0</p>
-<p>data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]</p>
-<p>indices = [[[0,1]],[[1,0]]]             # indices_shape = [2, 1, 2]</p>
-<p>output  = [[[2,3]],[[4,5]]]             # output_shape = [2, 1, 2]</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>batch_dims = 0
+
+data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
+
+indices = [[[0,1]],[[1,0]]]             # indices_shape = [2, 1, 2]
+
+output  = [[[2,3]],[[4,5]]]             # output_shape = [2, 1, 2]
+</pre></div>
+</div>
 <p><code class="docutils literal notranslate"><span class="pre">Example</span> <span class="pre">5</span></code></p>
-<blockquote>
-<div><p>batch_dims = 1</p>
-<p>data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]</p>
-<p>indices = [[1],[0]]             # indices_shape = [2, 1]</p>
-<p>output  = [[2,3],[4,5]]             # output_shape = [2, 2]</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>batch_dims = 1
+
+data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
+
+indices = [[1],[0]]             # indices_shape = [2, 1]
+
+output  = [[2,3],[4,5]]             # output_shape = [2, 2]
+</pre></div>
+</div>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>data</strong> (<em>T</em>): Tensor of rank r &gt;= 1.</p></li>

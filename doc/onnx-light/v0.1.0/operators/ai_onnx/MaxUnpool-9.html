@@ -1100,23 +1100,29 @@
 <li><p><strong>Domain</strong>: <code class="docutils literal notranslate"><span class="pre">ai.onnx</span></code></p></li>
 <li><p><strong>Since version</strong>: 9</p></li>
 </ul>
-<dl class="simple">
-<dt>MaxUnpool essentially computes the partial inverse of the MaxPool op.</dt><dd><p>The input information to this op is typically the output information from a MaxPool op. The first
+<p>MaxUnpool essentially computes the partial inverse of the MaxPool op.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The input information to this op is typically the output information from a MaxPool op. The first
 input tensor X is the tensor that needs to be unpooled, which is typically the pooled tensor (first output)
 from MaxPool. The second input tensor, I, contains the indices to the (locally maximal) elements corresponding
 to the elements in the first input tensor X. Input tensor I is typically the second output of the MaxPool op.
-The third (optional) input is a tensor that specifies the output size of the unpooling operation.</p>
-</dd>
-<dt>MaxUnpool is intended to do ‘partial’ inverse of the MaxPool op. ‘Partial’ because all the non-maximal</dt><dd><p>values from the original input to MaxPool are set to zero in the output of the MaxUnpool op. Pooling
-the result of an unpooling operation should give back the original input to the unpooling op.</p>
-</dd>
-<dt>MaxUnpool can produce the same output size for several input sizes, which makes unpooling op ambiguous.</dt><dd><p>The third input argument, output_size, is meant to disambiguate the op and produce output tensor of
-known/predictable size.</p>
-</dd>
-<dt>In addition to the inputs, MaxUnpool takes three attributes, namely kernel_shape, strides, and pads,</dt><dd><p>which define the exact unpooling op. The attributes typically have the same values as the corresponding
-pooling op that the unpooling op is trying to invert.</p>
-</dd>
-</dl>
+The third (optional) input is a tensor that specifies the output size of the unpooling operation.
+</pre></div>
+</div>
+<p>MaxUnpool is intended to do ‘partial’ inverse of the MaxPool op. ‘Partial’ because all the non-maximal</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>values from the original input to MaxPool are set to zero in the output of the MaxUnpool op. Pooling
+the result of an unpooling operation should give back the original input to the unpooling op.
+</pre></div>
+</div>
+<p>MaxUnpool can produce the same output size for several input sizes, which makes unpooling op ambiguous.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The third input argument, output_size, is meant to disambiguate the op and produce output tensor of
+known/predictable size.
+</pre></div>
+</div>
+<p>In addition to the inputs, MaxUnpool takes three attributes, namely kernel_shape, strides, and pads,</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>which define the exact unpooling op. The attributes typically have the same values as the corresponding
+pooling op that the unpooling op is trying to invert.
+</pre></div>
+</div>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>X</strong> (<em>T1</em>): Input data tensor that has to be unpooled. This tensor is typically the first output of the MaxPool op.Dimensions for image case are (N x C x H x W), where N is the batch size, C is the number of channels, and H and W are the height and the width of the data. For non-image case, the dimensions are in the form of (N x C x D1 x D2 … Dn), where N is the batch size. Optionally, if dimension denotation is in effect, the operation expects the input data tensor to arrive with the dimension denotation of [DATA_BATCH, DATA_CHANNEL, DATA_FEATURE, DATA_FEATURE …].</p></li>

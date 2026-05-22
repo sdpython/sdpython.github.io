@@ -1099,38 +1099,34 @@
 <li><p><strong>Domain</strong>: <code class="docutils literal notranslate"><span class="pre">ai.onnx</span></code></p></li>
 <li><p><strong>Since version</strong>: 23</p></li>
 </ul>
-<dl class="simple">
-<dt>This is RMS normalization defined in ONNX as function as described in the paper <a class="reference external" href="https://arxiv.org/pdf/1910.07467">https://arxiv.org/pdf/1910.07467</a>.</dt><dd><p>The overall computation can be split into two stages. The root mean squared norm is taken over the last D dimensions,
+<p>This is RMS normalization defined in ONNX as function as described in the paper <a class="reference external" href="https://arxiv.org/pdf/1910.07467">https://arxiv.org/pdf/1910.07467</a>.
+The overall computation can be split into two stages. The root mean squared norm is taken over the last D dimensions,
 where D is the dimension of normalized_shape. For example, if normalized_shape is (3, 5) (a 2-dimensional shape),
 the rms norm is computed over the last 2 dimensions of the input. The computation required by standardization can be
 described by the following equations.</p>
-</dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    XSquared = Mul(X, X)
-    XSquaredMean = ReduceMean (XSquared)
-    MeanSquareEpsilon = Add(XSquaredMean, epsilon)
-    RMS = Sqrt(MeanSquareEpsilon)
-    Normalized = Div(X, RMS)
-
-where ``normalized_axes`` is ``[axis, ..., rank of X - 1]``. The variables ``RMS`` stand for root mean square,
-Depending on ``stash_type`` attribute, the actual computation
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">XSquared</span> <span class="o">=</span> <span class="n">Mul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">XSquaredMean</span> <span class="o">=</span> <span class="n">ReduceMean</span> <span class="p">(</span><span class="n">XSquared</span><span class="p">)</span>
+<span class="n">MeanSquareEpsilon</span> <span class="o">=</span> <span class="n">Add</span><span class="p">(</span><span class="n">XSquaredMean</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+<span class="n">RMS</span> <span class="o">=</span> <span class="n">Sqrt</span><span class="p">(</span><span class="n">MeanSquareEpsilon</span><span class="p">)</span>
+<span class="n">Normalized</span> <span class="o">=</span> <span class="n">Div</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">RMS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">normalized_axes</span></code> is <code class="docutils literal notranslate"><span class="pre">[axis,</span> <span class="pre">...,</span> <span class="pre">rank</span> <span class="pre">of</span> <span class="pre">X</span> <span class="pre">-</span> <span class="pre">1]</span></code>. The variables <code class="docutils literal notranslate"><span class="pre">RMS</span></code> stand for root mean square,
+Depending on <code class="docutils literal notranslate"><span class="pre">stash_type</span></code> attribute, the actual computation
 must happen in different floating-point precision.
-For example, if ``stash_type`` is 1, this operator casts
+For example, if <code class="docutils literal notranslate"><span class="pre">stash_type</span></code> is 1, this operator casts
 all input variables to 32-bit float, perform the computation, and
-finally cast ``Normalized`` back to the original type of ``X``.
-The second stage then scales the outcome of the first stage using:
+finally cast <code class="docutils literal notranslate"><span class="pre">Normalized</span></code> back to the original type of <code class="docutils literal notranslate"><span class="pre">X</span></code>.
+The second stage then scales the outcome of the first stage using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="o">=</span> <span class="n">Mul</span><span class="p">(</span><span class="n">Normalized</span><span class="p">,</span> <span class="n">Scale</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    Y= Mul(Normalized, Scale)
-
-Let ``d[i]`` indicate the i-th dimension of ``X``.
-If ``X``&#39;s shape is ``[d[0], ..., d[axis-1], d[axis], ..., d[rank-1]]``,
-the shape of ``RMS`` is ``[d[0], ..., d[axis-1], 1, ..., 1]``.
-``Y`` and ``X`` have the same shape. This operator supports unidirectional broadcasting
-(``Scale`` should be unidirectional broadcastable to tensor ``X``);
-for more details please check `the doc &lt;Broadcasting.md&gt;`_.
-</pre></div>
-</div>
+<p>Let <code class="docutils literal notranslate"><span class="pre">d[i]</span></code> indicate the i-th dimension of <code class="docutils literal notranslate"><span class="pre">X</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">X</span></code>’s shape is <code class="docutils literal notranslate"><span class="pre">[d[0],</span> <span class="pre">...,</span> <span class="pre">d[axis-1],</span> <span class="pre">d[axis],</span> <span class="pre">...,</span> <span class="pre">d[rank-1]]</span></code>,
+the shape of <code class="docutils literal notranslate"><span class="pre">RMS</span></code> is <code class="docutils literal notranslate"><span class="pre">[d[0],</span> <span class="pre">...,</span> <span class="pre">d[axis-1],</span> <span class="pre">1,</span> <span class="pre">...,</span> <span class="pre">1]</span></code>.
+<code class="docutils literal notranslate"><span class="pre">Y</span></code> and <code class="docutils literal notranslate"><span class="pre">X</span></code> have the same shape. This operator supports unidirectional broadcasting
+(<code class="docutils literal notranslate"><span class="pre">Scale</span></code> should be unidirectional broadcastable to tensor <code class="docutils literal notranslate"><span class="pre">X</span></code>);
+for more details please check <a class="reference external" href="Broadcasting.md">the doc</a>.</p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>X</strong> (<em>T</em>): The input tensor to be normalized. In general, the shape is (D1, D2, … , Dn) for n-dimensional data, where the root mean squared norm is taken over the last D dimensions, D is determined by the axis attribute.</p></li>

@@ -11,18 +11,27 @@ This page documents version **1** of operator **Loop**. See :doc:`Loop` for the 
 Generic Looping construct. This loop has multiple termination conditions:
 
 1) Trip count. Iteration count specified at runtime. Set by
-   specifying the input M. Optional. Set to empty string to omit.
-   Note that a static trip count (specified at graph construction time) can be
-   specified by passing in a constant node for input M.
+
+.. code-block:: text
+
+    specifying the input M. Optional. Set to empty string to omit.
+    Note that a static trip count (specified at graph construction time) can be
+    specified by passing in a constant node for input M.
+
 2) Loop termination condition. This is an input to the op that determines
-   whether to run the first iteration and also a loop-carried dependency for
-   the body graph. The body graph must yield a value for the condition variable,
-   whether this input is provided or not.
+
+.. code-block:: text
+
+    whether to run the first iteration and also a loop-carried dependency for
+    the body graph. The body graph must yield a value for the condition variable,
+    whether this input is provided or not.
 
 This table summarizes the operating modes of this operator with equivalent
 C-style code:
 
 Operator inputs defined as (max_trip_count, condition_var).
+
+.. code-block:: text
 
     input ("", ""):
         for (int i=0; ; ++i) {
@@ -47,7 +56,7 @@ Operator inputs defined as (max_trip_count, condition_var).
       %b = Constant[value =  ]()
       %keepgoing = Constant[value =  ]()
       %max_trip_count = Constant[value =  ]()
-      %keepgoing_out, %b_out, %user_defined_vals = Loop`body =   <%max_trip_count, %keepgoing, %b>`_
+      %keepgoing_out, %b_out, %user_defined_vals = Loop[body =  ](%max_trip_count, %keepgoing, %b)
       return
     }
 
@@ -64,6 +73,8 @@ Operator inputs defined as (max_trip_count, condition_var).
     }
 
 *Sample equivalent C code*
+
+.. code-block:: text
 
     {
       /* User-defined code (enclosing scope) */
@@ -88,11 +99,19 @@ Operator inputs defined as (max_trip_count, condition_var).
 There are several things of note in this code snippet:
 
 1) Values from the enclosing scope (i.e. variable a here) are in scope and can
-   be referenced in the inputs of the loop.
+
+.. code-block:: text
+
+    be referenced in the inputs of the loop.
+
 2) Any variables which you wish to make available in the enclosing scope (i.e.
-   the variables b and keepgoing) must be declared as either loop-carried
-   dependencies (both at the op inputs and output and at the body net input and
-   output) or scan_outputs.
+
+.. code-block:: text
+
+    the variables b and keepgoing) must be declared as either loop-carried
+    dependencies (both at the op inputs and output and at the body net input and
+    output) or scan_outputs.
+
 3) Values created in the body cannot be accessed in the enclosing scope.
 
 Note that the semantics of this op support "diagonal" or "wavefront" execution.

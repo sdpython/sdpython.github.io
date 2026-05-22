@@ -48,7 +48,7 @@
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/copybutton.js?v=da8d6423"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
@@ -57,7 +57,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="onnx_light.onnx.helper" href="helper.html" />
-    <link rel="prev" title="onnx_light.onnx.defs" href="defs.html" />
+    <link rel="prev" title="onnx_light.onnx_expressions" href="expressions.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -151,6 +151,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../design/index.html">
     Design
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../howto/index.html">
+    How-to
   </a>
 </li>
 
@@ -284,6 +291,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../howto/index.html">
+    How-to
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     API
@@ -382,6 +396,7 @@
 <li class="toctree-l2"><a class="reference internal" href="checker.html">onnx_light.onnx.checker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compose.html">onnx_light.onnx.compose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="defs.html">onnx_light.onnx.defs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressions.html">onnx_light.onnx_expressions</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">onnx_light.onnx.defs.schema_diff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helper.html">onnx_light.onnx.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inliner.html">onnx_light.onnx.inliner</a></li>
@@ -472,8 +487,21 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../cpp/onnx_op/index.html">onnx_op</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/light_op_schema.html">light_op_schema.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets.html">operator_sets.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_controlflow.html">operator_sets_controlflow.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_generator.html">operator_sets_generator.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_image.html">operator_sets_image.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_logical.html">operator_sets_logical.h</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_math.html">operator_sets_math.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_nn.html">operator_sets_nn.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_reduction.html">operator_sets_reduction.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_sequence.html">operator_sets_sequence.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_tensor.html">operator_sets_tensor.h</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_op/operator_sets_traditionalml.html">operator_sets_traditionalml.h</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../cpp/onnx_backend/index.html">onnx_backend</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../cpp/onnx_backend/random.html">random.h</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../cpp/onnx_proto/index.html">onnx_proto</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -565,8 +593,14 @@
 <p>Structured diff between two <code class="xref py py-class docutils literal notranslate"><span class="pre">OpSchema</span></code> versions.</p>
 <p>This module provides <a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.compare_schemas" title="onnx_light.onnx.defs.schema_diff.compare_schemas"><code class="xref py py-func docutils literal notranslate"><span class="pre">compare_schemas()</span></code></a> and the accompanying dataclasses
 (<a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff" title="onnx_light.onnx.defs.schema_diff.SchemaDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaDiff</span></code></a>, <a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff" title="onnx_light.onnx.defs.schema_diff.ParameterDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterDiff</span></code></a>, <a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.AttributeDiff" title="onnx_light.onnx.defs.schema_diff.AttributeDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttributeDiff</span></code></a>,
-<a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ConstraintDiff" title="onnx_light.onnx.defs.schema_diff.ConstraintDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstraintDiff</span></code></a>) for detecting differences — including <strong>breaking
-changes</strong> — between two versions of the same ONNX operator schema.</p>
+<a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ConstraintDiff" title="onnx_light.onnx.defs.schema_diff.ConstraintDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstraintDiff</span></code></a>, <a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="onnx_light.onnx.defs.schema_diff.DocDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocDiff</span></code></a>) for detecting differences —
+including <strong>breaking changes</strong> — between two versions of the same ONNX
+operator schema.</p>
+<p>Documentation strings are diffed at the <strong>line</strong> level (via
+<a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="onnx_light.onnx.defs.schema_diff.DocDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocDiff</span></code></a>), using <a class="reference external" href="https://docs.python.org/3/library/difflib.html#module-difflib" title="(in Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">difflib</span></code></a> (line-based edit distance and
+unified diff) rather than character-level comparison, so the result reads
+naturally both as plain text and inside Sphinx <code class="docutils literal notranslate"><span class="pre">code-block::</span> <span class="pre">diff</span></code>
+directives.</p>
 <p>Typical usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">defs</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_light.onnx.defs.schema_diff</span><span class="w"> </span><span class="kn">import</span> <span class="n">compare_schemas</span>
@@ -722,6 +756,109 @@ removals, and changes.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.defs.schema_diff.</span></span><span class="sig-name descname"><span class="pre">DocDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unified_diff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">added_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removed_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Records a difference between two operator documentation strings.</p>
+<p>Differences are computed at the <strong>line</strong> level using
+<code class="xref py py-func docutils literal notranslate"><span class="pre">difflib.SequenceMatcher()</span></code> and <a class="reference external" href="https://docs.python.org/3/library/difflib.html#difflib.unified_diff" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">difflib.unified_diff()</span></code></a>, rather
+than at the character level.  This matches how humans typically edit
+docstrings (line by line) and produces a much more readable diff.</p>
+<p>A documentation change is never considered breaking on its own, but it is
+still useful information when reviewing a new operator schema version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>old_doc</strong> – Documentation string of the old schema (may be empty).</p></li>
+<li><p><strong>new_doc</strong> – Documentation string of the new schema (may be empty).</p></li>
+<li><p><strong>similarity</strong> – Line-level similarity ratio in <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code> as
+returned by <a class="reference external" href="https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio" title="(in Python v3.14)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">difflib.SequenceMatcher.ratio()</span></code></a> applied to the
+list of lines.  A value of <code class="docutils literal notranslate"><span class="pre">1.0</span></code> means the two docs are identical.</p></li>
+<li><p><strong>unified_diff</strong> – A list of lines produced by
+<a class="reference external" href="https://docs.python.org/3/library/difflib.html#difflib.unified_diff" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">difflib.unified_diff()</span></code></a> describing the line-level edits to
+transform <code class="docutils literal notranslate"><span class="pre">old_doc</span></code> into <code class="docutils literal notranslate"><span class="pre">new_doc</span></code>.  Empty when the two docs
+are identical.</p></li>
+<li><p><strong>added_lines</strong> – Number of inserted lines (<code class="docutils literal notranslate"><span class="pre">+</span></code> lines in the unified
+diff, excluding the file header).</p></li>
+<li><p><strong>removed_lines</strong> – Number of removed lines (<code class="docutils literal notranslate"><span class="pre">-</span></code> lines in the unified
+diff, excluding the file header).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.added_lines">
+<span class="sig-name descname"><span class="pre">added_lines</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.added_lines" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.changed">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">changed</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.changed" title="Link to this definition">#</a></dt>
+<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the two documentation strings differ.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.compare">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'old'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'new'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="onnx_light.onnx.defs.schema_diff.DocDiff"><span class="pre">DocDiff</span></a></span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.compare" title="Link to this definition">#</a></dt>
+<dd><p>Compares two documentation strings at the line level.</p>
+<p>The two strings are split into lines (preserving relative blank
+lines).  Similarity is computed with
+<a class="reference external" href="https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio" title="(in Python v3.14)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">difflib.SequenceMatcher.ratio()</span></code></a> on the resulting lists, which
+is equivalent to a normalised line-level edit distance.  A unified
+diff is produced with <a class="reference external" href="https://docs.python.org/3/library/difflib.html#difflib.unified_diff" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">difflib.unified_diff()</span></code></a> so the result
+renders nicely both as plain text and inside RST <code class="docutils literal notranslate"><span class="pre">code-block::</span>
+<span class="pre">diff</span></code> directives.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>old_doc</strong> – Old documentation string (<code class="docutils literal notranslate"><span class="pre">None</span></code> is treated as
+an empty string).</p></li>
+<li><p><strong>new_doc</strong> – New documentation string (<code class="docutils literal notranslate"><span class="pre">None</span></code> is treated as
+an empty string).</p></li>
+<li><p><strong>old_label</strong> – Label used for the old side of the unified diff
+header.</p></li>
+<li><p><strong>new_label</strong> – Label used for the new side of the unified diff
+header.</p></li>
+<li><p><strong>context_lines</strong> – Number of context lines around each hunk in
+the unified diff.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="onnx_light.onnx.defs.schema_diff.DocDiff"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocDiff</span></code></a> summarising the differences.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="onnx_light.onnx.defs.schema_diff.DocDiff">DocDiff</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.new_doc">
+<span class="sig-name descname"><span class="pre">new_doc</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.new_doc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.old_doc">
+<span class="sig-name descname"><span class="pre">old_doc</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.old_doc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.removed_lines">
+<span class="sig-name descname"><span class="pre">removed_lines</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.removed_lines" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.similarity">
+<span class="sig-name descname"><span class="pre">similarity</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.similarity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.DocDiff.unified_diff">
+<span class="sig-name descname"><span class="pre">unified_diff</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.DocDiff.unified_diff" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.ParameterDiff">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.defs.schema_diff.</span></span><span class="sig-name descname"><span class="pre">ParameterDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_breaking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
@@ -782,7 +919,7 @@ removals, and changes.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.SchemaDiff">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.defs.schema_diff.</span></span><span class="sig-name descname"><span class="pre">SchemaDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff" title="onnx_light.onnx.defs.schema_diff.ParameterDiff"><span class="pre">ParameterDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff" title="onnx_light.onnx.defs.schema_diff.ParameterDiff"><span class="pre">ParameterDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.AttributeDiff" title="onnx_light.onnx.defs.schema_diff.AttributeDiff"><span class="pre">AttributeDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ConstraintDiff" title="onnx_light.onnx.defs.schema_diff.ConstraintDiff"><span class="pre">ConstraintDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_breaking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">breaking_reasons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">onnx_light.onnx.defs.schema_diff.</span></span><span class="sig-name descname"><span class="pre">SchemaDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff" title="onnx_light.onnx.defs.schema_diff.ParameterDiff"><span class="pre">ParameterDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff" title="onnx_light.onnx.defs.schema_diff.ParameterDiff"><span class="pre">ParameterDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.AttributeDiff" title="onnx_light.onnx.defs.schema_diff.AttributeDiff"><span class="pre">AttributeDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ConstraintDiff" title="onnx_light.onnx.defs.schema_diff.ConstraintDiff"><span class="pre">ConstraintDiff</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="onnx_light.onnx.defs.schema_diff.DocDiff"><span class="pre">DocDiff</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_breaking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">breaking_reasons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Summarizes the differences between two versions of an operator schema.</p>
 <p>Use <a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.compare_schemas" title="onnx_light.onnx.defs.schema_diff.compare_schemas"><code class="xref py py-func docutils literal notranslate"><span class="pre">compare_schemas()</span></code></a> to create instances of this class.</p>
@@ -797,6 +934,7 @@ removals, and changes.</p>
 <li><p><strong>outputs</strong> – Differences in formal output parameters.</p></li>
 <li><p><strong>attributes</strong> – Differences in attributes.</p></li>
 <li><p><strong>constraints</strong> – Differences in type constraints.</p></li>
+<li><p><strong>doc</strong> – Line-level diff of the operator documentation strings.</p></li>
 <li><p><strong>is_breaking</strong> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if any individual change is breaking.</p></li>
 <li><p><strong>breaking_reasons</strong> – Human-readable list of reasons why the change is breaking.</p></li>
 </ul>
@@ -815,6 +953,11 @@ removals, and changes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.SchemaDiff.constraints">
 <span class="sig-name descname"><span class="pre">constraints</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.ConstraintDiff" title="onnx_light.onnx.defs.schema_diff.ConstraintDiff"><span class="pre">ConstraintDiff</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.constraints" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="onnx_light.onnx.defs.schema_diff.SchemaDiff.doc">
+<span class="sig-name descname"><span class="pre">doc</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#onnx_light.onnx.defs.schema_diff.DocDiff" title="onnx_light.onnx.defs.schema_diff.DocDiff"><span class="pre">DocDiff</span></a></span><a class="headerlink" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.doc" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -931,12 +1074,12 @@ without any other modification.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="defs.html"
+       href="expressions.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">onnx_light.onnx.defs</p>
+        <p class="prev-next-title">onnx_light.onnx_expressions</p>
       </div>
     </a>
     <a class="right-next"
@@ -985,6 +1128,17 @@ without any other modification.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.ConstraintDiff.removed_types"><code class="docutils literal notranslate"><span class="pre">ConstraintDiff.removed_types</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff"><code class="docutils literal notranslate"><span class="pre">DocDiff</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.added_lines"><code class="docutils literal notranslate"><span class="pre">DocDiff.added_lines</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.changed"><code class="docutils literal notranslate"><span class="pre">DocDiff.changed</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.compare"><code class="docutils literal notranslate"><span class="pre">DocDiff.compare()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.new_doc"><code class="docutils literal notranslate"><span class="pre">DocDiff.new_doc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.old_doc"><code class="docutils literal notranslate"><span class="pre">DocDiff.old_doc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.removed_lines"><code class="docutils literal notranslate"><span class="pre">DocDiff.removed_lines</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.similarity"><code class="docutils literal notranslate"><span class="pre">DocDiff.similarity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.DocDiff.unified_diff"><code class="docutils literal notranslate"><span class="pre">DocDiff.unified_diff</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff"><code class="docutils literal notranslate"><span class="pre">ParameterDiff</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff.compare"><code class="docutils literal notranslate"><span class="pre">ParameterDiff.compare()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.ParameterDiff.details"><code class="docutils literal notranslate"><span class="pre">ParameterDiff.details</span></code></a></li>
@@ -997,6 +1151,7 @@ without any other modification.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.attributes"><code class="docutils literal notranslate"><span class="pre">SchemaDiff.attributes</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.breaking_reasons"><code class="docutils literal notranslate"><span class="pre">SchemaDiff.breaking_reasons</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.constraints"><code class="docutils literal notranslate"><span class="pre">SchemaDiff.constraints</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.doc"><code class="docutils literal notranslate"><span class="pre">SchemaDiff.doc</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.domain"><code class="docutils literal notranslate"><span class="pre">SchemaDiff.domain</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.inputs"><code class="docutils literal notranslate"><span class="pre">SchemaDiff.inputs</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx_light.onnx.defs.schema_diff.SchemaDiff.is_breaking"><code class="docutils literal notranslate"><span class="pre">SchemaDiff.is_breaking</span></code></a></li>

@@ -1127,70 +1127,65 @@ sequence axis or scan axis). The sequence axis or scan axis is required to be 1.
 <p>The operation has an optional sequence_lens input (of shape [BATCH_SIZE]) to
 allow variable length sequences of length   (sequence_lengths, init_1, …, init_n, scan_1, …, scan_m)</p>
 <p>is equivalent to the following pseudo-code:</p>
-<blockquote>
-<div><p>// T.shape[0] denotes the batch-size of T
-// The batch-size of scan_1, …, scan_m are all required to be equal
-batch_size = scan_1.shape[0];</p>
-<p>// scan_i.shape[1] denotes the (max) sequence-length of scan_i
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// T.shape[0] denotes the batch-size of T
+// The batch-size of scan_1, ..., scan_m are all required to be equal
+batch_size = scan_1.shape[0];
+
+// scan_i.shape[1] denotes the (max) sequence-length of scan_i
 // scan_i.shape[1] is required to be equal to scan_j.shape[1] for all i,j.
-max_sequence_length = scan_1.shape[1];</p>
-<dl>
-<dt>for (int batch = 0; batch  [t] indicates the sub-tensor</dt><dd><blockquote>
-<div><p>// of rank one less than T obtained by indexing T at position t along axis k.
-si_1 = (scan_1 [batch]) [t];
-… ;
-si_m = (scan_m [batch]) [t];
-// execute loop-body
-st_1, …, st_n, so_1, …, so_k = loop-body(st_1, …, st_n, si_1, …, si_m)
-// accumulate the scan-output elements
-scan_out_1 = Concat (scan_out_1, so_1); … ; scan_out_k = Concat (scan_out_k, so_k);</p>
-</div></blockquote>
-<p>}
-// accumulate the outputs for this batch:
-bst_1[batch] = st_1; …, bst_n[batch] = st_n;
-// Note scan-outputs will have size max_sequence_length, but only first N values will be meaningful.
-// The remaining values have an undefined value.
-b_scan_out_1[batch] = scan_out_1; …; b_scan_out_k[batch] = scan_out_k;</p>
-</dd>
-</dl>
-<p>}
-return bst_1, …, bst_n, b_scan_out_1, …, b_scan_out_k;</p>
-</div></blockquote>
+max_sequence_length = scan_1.shape[1];
+
+for (int batch = 0; batch  [t] indicates the sub-tensor
+        // of rank one less than T obtained by indexing T at position t along axis k.
+        si_1 = (scan_1 [batch]) [t];
+        ... ;
+        si_m = (scan_m [batch]) [t];
+        // execute loop-body
+        st_1, ..., st_n, so_1, ..., so_k = loop-body(st_1, ..., st_n, si_1, ..., si_m)
+        // accumulate the scan-output elements
+        scan_out_1 = Concat (scan_out_1, so_1); ... ; scan_out_k = Concat (scan_out_k, so_k);
+    }
+    // accumulate the outputs for this batch:
+    bst_1[batch] = st_1; ..., bst_n[batch] = st_n;
+    // Note scan-outputs will have size max_sequence_length, but only first N values will be meaningful.
+    // The remaining values have an undefined value.
+    b_scan_out_1[batch] = scan_out_1; ...; b_scan_out_k[batch] = scan_out_k;
+}
+return bst_1, ..., bst_n, b_scan_out_1, ..., b_scan_out_k;
+</pre></div>
+</div>
 <p><em>Sample usage: Encoding RNN using a Scan</em></p>
 <p>The following example shows how a simple RNN over an input tensor %X, with weight tensor %Wi,
 recurrence weight tensor %Ri, bias tensors %Wbi and %Rbi, and initial hidden-state %H_0 can
 be encoded as a ScanLoop. Note that the loop-body is a nested graph, and it directly computes
 %Wi, %Ri, %Wbi, and %Rbi (typically constants or initializers in the body graph). If these
 values are computed in the outer graph, they need to be passed in as extra state_variables.</p>
-<blockquote>
-<div><dl class="simple">
-<dt>graph rnn-encoding {</dt><dd><p>%H_0 = …
-%X = …
-%Y_h, %Y = Scan`body =  , num_scan_inputs=1 &lt;””, %H_0, %X&gt;`_
-return %Y, %Y_h</p>
-</dd>
-</dl>
-<p>}</p>
-<dl class="simple">
-<dt>graph rnn-cell-1 (</dt><dd><p>%H_tminus1[FLOAT, tensor]
-%X_t[FLOAT, tensor]</p>
-</dd>
-<dt>) {</dt><dd><p>%Wi = …
-%Ri = …
-%Wbi = …
-%Rbi = …
-%t1 = X_t * (Wi^T)
-%t2 = H_tminus1*(Ri^T)
-%t3 = Add(%t1, %t2)
-%t4 = Add(%t3, %Wbi)
-%t5 = Add(%t4, %Rbi)
-%Ht = Tanh(%t5)
-%Accumulate = Identity(%Ht)
-return %Ht, %Accumulate</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>graph rnn-encoding {
+  %H_0 = ...
+  %X = ...
+  %Y_h, %Y = Scan[body =  , num_scan_inputs=1](&quot;&quot;, %H_0, %X)
+  return %Y, %Y_h
+}
+
+graph rnn-cell-1 (
+  %H_tminus1[FLOAT, tensor]
+  %X_t[FLOAT, tensor]
+) {
+  %Wi = ...
+  %Ri = ...
+  %Wbi = ...
+  %Rbi = ...
+  %t1 = X_t * (Wi^T)
+  %t2 = H_tminus1*(Ri^T)
+  %t3 = Add(%t1, %t2)
+  %t4 = Add(%t3, %Wbi)
+  %t5 = Add(%t4, %Rbi)
+  %Ht = Tanh(%t5)
+  %Accumulate = Identity(%Ht)
+  return %Ht, %Accumulate
+}
+</pre></div>
+</div>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>sequence_lens</strong> (<em>I</em>) (optional): Optional tensor specifying lengths of the sequences in a batch. If this input is not specified, all sequences are assumed to be of the maximum sequence length (the dimension of the sequence axis of the scan_input tensors).</p></li>

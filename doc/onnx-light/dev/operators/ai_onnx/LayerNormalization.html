@@ -1099,51 +1099,47 @@
 <li><p><strong>Domain</strong>: <code class="docutils literal notranslate"><span class="pre">ai.onnx</span></code></p></li>
 <li><p><strong>Since version</strong>: 17</p></li>
 </ul>
-<dl class="simple">
-<dt>This is layer normalization defined in ONNX as function.</dt><dd><p>The overall computation can be split into two stages.
+<p>This is layer normalization defined in ONNX as function.
+The overall computation can be split into two stages.
 The first stage is standardization, which makes the
 normalized elements have zero mean and unit variances.
 The computation required by standardization can be
 described by the following equations.</p>
-</dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    Mean = ReduceMean (X)
-    D = Sub(X, Mean)
-    DD = Mul(D, D)
-    Var = ReduceMean (DD)
-    VarEps = Add(Var, epsilon)
-    StdDev = Sqrt(VarEps)
-    InvStdDev = Reciprocal(StdDev)
-    Normalized = Mul(D, InvStdDev)
-
-where ``normalized_axes`` is ``[axis, ..., rank of X - 1]``.
-The variables ``Var`` and ``StdDev`` stand for variance and
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Mean</span> <span class="o">=</span> <span class="n">ReduceMean</span> <span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Mean</span><span class="p">)</span>
+<span class="n">DD</span> <span class="o">=</span> <span class="n">Mul</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<span class="n">Var</span> <span class="o">=</span> <span class="n">ReduceMean</span> <span class="p">(</span><span class="n">DD</span><span class="p">)</span>
+<span class="n">VarEps</span> <span class="o">=</span> <span class="n">Add</span><span class="p">(</span><span class="n">Var</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+<span class="n">StdDev</span> <span class="o">=</span> <span class="n">Sqrt</span><span class="p">(</span><span class="n">VarEps</span><span class="p">)</span>
+<span class="n">InvStdDev</span> <span class="o">=</span> <span class="n">Reciprocal</span><span class="p">(</span><span class="n">StdDev</span><span class="p">)</span>
+<span class="n">Normalized</span> <span class="o">=</span> <span class="n">Mul</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">InvStdDev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">normalized_axes</span></code> is <code class="docutils literal notranslate"><span class="pre">[axis,</span> <span class="pre">...,</span> <span class="pre">rank</span> <span class="pre">of</span> <span class="pre">X</span> <span class="pre">-</span> <span class="pre">1]</span></code>.
+The variables <code class="docutils literal notranslate"><span class="pre">Var</span></code> and <code class="docutils literal notranslate"><span class="pre">StdDev</span></code> stand for variance and
 standard deviation, respectively. The second output is
-``Mean`` and the last one is ``InvStdDev``.
-Depending on ``stash_type`` attribute, the actual computation
+<code class="docutils literal notranslate"><span class="pre">Mean</span></code> and the last one is <code class="docutils literal notranslate"><span class="pre">InvStdDev</span></code>.
+Depending on <code class="docutils literal notranslate"><span class="pre">stash_type</span></code> attribute, the actual computation
 must happen in different floating-point precision.
-For example, if ``stash_type`` is 1, this operator casts
+For example, if <code class="docutils literal notranslate"><span class="pre">stash_type</span></code> is 1, this operator casts
 all input variables to 32-bit float, perform the computation, and
-finally cast ``Normalized`` back to the original type of ``X``.
+finally cast <code class="docutils literal notranslate"><span class="pre">Normalized</span></code> back to the original type of <code class="docutils literal notranslate"><span class="pre">X</span></code>.
 The second stage then scales and shifts the outcome of the
-first stage using
+first stage using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NormalizedScaled</span> <span class="o">=</span> <span class="n">Mul</span><span class="p">(</span><span class="n">Normalized</span><span class="p">,</span> <span class="n">Scale</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">Add</span><span class="p">(</span><span class="n">NormalizedScaled</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    NormalizedScaled = Mul(Normalized, Scale)
-    Y = Add(NormalizedScaled, B)
-
-The second stage doesn&#39;t depends on ``stash_type``.
-All equations are in `this syntax &lt;https://github.com/onnx/onnx/blob/main/docs/Syntax.md&gt;`_.
+<p>The second stage doesn’t depends on <code class="docutils literal notranslate"><span class="pre">stash_type</span></code>.
+All equations are in <a class="reference external" href="https://github.com/onnx/onnx/blob/main/docs/Syntax.md">this syntax</a>.
 The same variable (i.e., input, output, and attribute) uses
-the same name in the equations above and this operator&#39;s definition.
-Let ``d[i]`` indicate the i-th dimension of ``X``.
-If ``X``&#39;s shape is ``[d[0], ..., d[axis-1], d[axis], ..., d[rank-1]]``,
-the shape of ``Mean`` and ``InvStdDev`` is ``[d[0], ..., d[axis-1], 1, ..., 1]``.
-``Y`` and ``X`` have the same shape. This operator supports unidirectional broadcasting
-(tensors ``Scale`` and ``B`` should be unidirectional broadcastable to tensor ``X``);
-for more details please check `the doc &lt;Broadcasting.md&gt;`_.
-</pre></div>
-</div>
+the same name in the equations above and this operator’s definition.
+Let <code class="docutils literal notranslate"><span class="pre">d[i]</span></code> indicate the i-th dimension of <code class="docutils literal notranslate"><span class="pre">X</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">X</span></code>’s shape is <code class="docutils literal notranslate"><span class="pre">[d[0],</span> <span class="pre">...,</span> <span class="pre">d[axis-1],</span> <span class="pre">d[axis],</span> <span class="pre">...,</span> <span class="pre">d[rank-1]]</span></code>,
+the shape of <code class="docutils literal notranslate"><span class="pre">Mean</span></code> and <code class="docutils literal notranslate"><span class="pre">InvStdDev</span></code> is <code class="docutils literal notranslate"><span class="pre">[d[0],</span> <span class="pre">...,</span> <span class="pre">d[axis-1],</span> <span class="pre">1,</span> <span class="pre">...,</span> <span class="pre">1]</span></code>.
+<code class="docutils literal notranslate"><span class="pre">Y</span></code> and <code class="docutils literal notranslate"><span class="pre">X</span></code> have the same shape. This operator supports unidirectional broadcasting
+(tensors <code class="docutils literal notranslate"><span class="pre">Scale</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> should be unidirectional broadcastable to tensor <code class="docutils literal notranslate"><span class="pre">X</span></code>);
+for more details please check <a class="reference external" href="Broadcasting.md">the doc</a>.</p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>X</strong> (<em>T</em>): Tensor to be normalized.</p></li>

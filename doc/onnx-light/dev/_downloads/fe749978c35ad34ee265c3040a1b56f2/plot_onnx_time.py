@@ -22,12 +22,21 @@ therefore avoids the overhead of the protobuf serialization layer.
 It also supports parallel loading of tensor weights through the
 ``parallel`` keyword and loading models stored with external data.
 
-File loading in ``onnx_light.onnx`` uses **memory-mapped I/O** (``mmap``
-on POSIX, ``CreateFileMapping`` on Windows).  The file is mapped directly
-into the virtual address space so that the OS page cache is exposed as
-contiguous memory; no extra system-call-per-byte buffering is required.
-This makes loading from a file nearly as fast as parsing from an
-already-in-memory bytes object.
+When loading a single-file model, ``onnx_light.onnx`` memory-maps the
+``.onnx`` file (``mmap`` on POSIX, ``CreateFileMapping`` on Windows) and
+parses directly out of the mapped region — there is no double-buffered
+``ifstream`` + read-ahead step on top of it.  The same memory-mapping
+strategy is used for the *external weights* file when a model is stored
+with external data: each weights file is mapped once into a shared buffer
+that all tensors point into.
+
+This brings ``load/1filex1/onnxlight-cpp`` close to (or ahead of)
+``load/1filex1/onnx-cpp`` on parser-bound models with many small
+initializers.  When ``no_copy=True`` is requested with a single-file
+model the loader still copies inline ``raw_data`` (so that the parsed
+``ModelProto`` does not depend on the lifetime of the mmap region):
+zero-copy of inline raw data is supported only for ``bytes`` inputs and
+for external weights files.
 
 One key advantage over the ``onnx`` package is zero-copy parsing:
 when ``no_copy=True`` is passed to :func:`onnx_light.onnx.load` (or via
@@ -72,6 +81,17 @@ When provided the synthetic model is not created, and the supplied file
 is used directly as the benchmark target.  The external-data variant
 (used for ``2file`` benchmarks) is still derived from the loaded model
 and written to the temporary directory.
+
+Alternatively, use ``--model-id <huggingface_repo_id>`` to download an
+ONNX model from the `Hugging Face Hub <https://huggingface.co>`_ and
+benchmark it.  For example, ``--model-id onnx-community/Qwen3-0.6B-ONNX``
+downloads `onnx-community/Qwen3-0.6B-ONNX
+<https://huggingface.co/onnx-community/Qwen3-0.6B-ONNX>`_.  The specific
+file to download inside the repository can be selected with
+``--model-file`` (default ``onnx/model.onnx``).  When the download
+fails (for example due to a connectivity issue) the script prints a
+warning and falls back to the default synthetic model so the example
+can still run in offline environments.
 """
 
 import argparse
@@ -82,6 +102,8 @@ import re
 import shutil
 import tempfile
 import time
+import urllib.error
+import urllib.request
 
 import numpy as np
 import pandas
@@ -153,8 +175,80 @@ def _parse_model_path(args=None) -> str | None:
     return parsed.model_path
 
 
+def _parse_model_id(args=None) -> tuple[str | None, str]:
+    """Parses the ``--model-id`` and ``--model-file`` command-line arguments.
+
+    Returns:
+        A tuple ``(model_id, model_file)`` where ``model_id`` is the
+        Hugging Face repository identifier (or ``None`` when not given)
+        and ``model_file`` is the path within the repository of the ONNX
+        file to download (defaults to ``onnx/model.onnx``).
+    """
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument(
+        "--model-id",
+        dest="model_id",
+        default=None,
+        help=(
+            "Hugging Face repository id (e.g. onnx-community/Qwen3-0.6B-ONNX) "
+            "from which to download an ONNX model to benchmark."
+        ),
+    )
+    parser.add_argument(
+        "--model-file",
+        dest="model_file",
+        default="onnx/model.onnx",
+        help=(
+            "Path within the Hugging Face repository of the ONNX file to "
+            "download when --model-id is provided. Defaults to onnx/model.onnx."
+        ),
+    )
+    parsed, _ = parser.parse_known_args(args=args)
+    return parsed.model_id, parsed.model_file
+
+
+def _download_hf_model(model_id: str, model_file: str, dest_dir: str) -> str | None:
+    """Downloads an ONNX model file from the Hugging Face Hub.
+
+    The file is fetched from
+    ``https://huggingface.co/{model_id}/resolve/main/{model_file}`` and
+    written under *dest_dir*.  Any download failure (network error,
+    HTTP error, OS error, ...) is caught and reported with a warning;
+    the function then returns ``None`` so that callers can fall back to
+    a default model.
+
+    Args:
+        model_id: Hugging Face repository identifier.
+        model_file: Path of the ONNX file inside the repository.
+        dest_dir: Directory in which to write the downloaded file.
+
+    Returns:
+        Absolute path to the downloaded file, or ``None`` when the
+        download failed.
+    """
+    url = f"https://huggingface.co/{model_id}/resolve/main/{model_file}"
+    local_path = os.path.abspath(os.path.join(dest_dir, os.path.basename(model_file)))
+    os.makedirs(os.path.dirname(local_path) or ".", exist_ok=True)
+    print(f"Downloading {url} -> {local_path}")
+    try:
+        urllib.request.urlretrieve(url, local_path)  # noqa: S310
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError) as exc:
+        print(
+            f"WARNING: failed to download {url}: {exc}. "
+            "Falling back to the default synthetic model."
+        )
+        if os.path.exists(local_path):
+            try:
+                os.remove(local_path)
+            except OSError:
+                pass
+        return None
+    return local_path
+
+
 SELECTED_SCENARIOS = _parse_benchmark_scenarios()
 _CLI_MODEL_PATH = _parse_model_path()
+_CLI_MODEL_ID, _CLI_MODEL_FILE = _parse_model_id()
 
 
 def _run_scenario(name: str) -> bool:
@@ -246,6 +340,16 @@ if _CLI_MODEL_PATH is not None:
     onnx_path = os.path.abspath(_CLI_MODEL_PATH)
     model = onnx.load(onnx_path)
     print(f"Using provided model: {onnx_path}")
+elif _CLI_MODEL_ID is not None:
+    downloaded = _download_hf_model(_CLI_MODEL_ID, _CLI_MODEL_FILE, tmp_dir)
+    if downloaded is not None:
+        onnx_path = downloaded
+        model = onnx.load(onnx_path)
+        print(f"Using model from Hugging Face id {_CLI_MODEL_ID!r}: {onnx_path}")
+    else:
+        model = make_model()
+        onnx_path = os.path.join(tmp_dir, "bench.onnx")
+        onnx.save(model, onnx_path)
 else:
     model = make_model()
     onnx_path = os.path.join(tmp_dir, "bench.onnx")
@@ -883,8 +987,9 @@ df = df.sort_index(ascending=False)
 
 # %%
 # Plot the results.
-# The average and median are shown for each operation, with a 95% confidence
-# interval annotation derived from the measured standard deviation.
+# The average and median are shown for each operation, with the average value
+# and a 95% confidence interval (derived from the measured standard deviation)
+# annotated alongside the average bar.
 # Bars are colored by library: blue family for ``onnx``, orange family for
 # ``onnx_light``, green family for ``onnxruntime``.  Solid shades represent
 # the average; lighter shades the median.
@@ -933,17 +1038,16 @@ for container, col in zip(ax.containers, ["avg", "median"]):
 
 first_container = ax.containers[0]
 for bar, name in zip(first_container, row_names):
+    avg = df.loc[name, "avg"]
     std = df.loc[name, "std"]
-    if not np.isfinite(std):
+    if not np.isfinite(avg):
         continue
-    ci = 1.96 * std
-    ax.text(
-        bar.get_width(),
-        bar.get_y() + bar.get_height() / 2.0,
-        f" ±{ci * 1e3:.1f} ms",
-        va="center",
-        ha="left",
-    )
+    if np.isfinite(std):
+        ci = 1.96 * std
+        label = f" {avg * 1e3:.1f} ±{ci * 1e3:.1f} ms"
+    else:
+        label = f" {avg * 1e3:.1f} ms"
+    ax.text(bar.get_width(), bar.get_y() + bar.get_height() / 2.0, label, va="center", ha="left")
 
 legend_handles = [
     mpatches.Patch(color=_onnx_avg, label="onnx avg"),

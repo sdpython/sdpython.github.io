@@ -1100,31 +1100,25 @@
 <li><p><strong>Domain</strong>: <code class="docutils literal notranslate"><span class="pre">ai.onnx</span></code></p></li>
 <li><p><strong>Since version</strong>: 18</p></li>
 </ul>
-<dl class="simple">
-<dt>LpPool consumes an input tensor X and applies Lp pooling across</dt><dd><p>the tensor according to kernel sizes, stride sizes, and pad lengths.
+<p>LpPool consumes an input tensor X and applies Lp pooling across
+the tensor according to kernel sizes, stride sizes, and pad lengths.
 Lp pooling consisting of computing the Lp norm on all values of a subset
 of the input tensor according to the kernel size and downsampling the
 data into the output tensor Y for further processing. The output spatial shape will be following:</p>
-</dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">output_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="n">input_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="p">{</span><span class="n">kernelSpatialShape</span><span class="p">})</span> <span class="o">/</span> <span class="n">strides_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="ow">or</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">output_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="n">input_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="p">{</span><span class="n">kernelSpatialShape</span><span class="p">})</span> <span class="o">/</span> <span class="n">strides_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    output_spatial_shape[i] = ceil((input_spatial_shape[i] + pad_shape[i] - {kernelSpatialShape}) / strides_spatial_shape[i] + 1)
-
-if ceil_mode is enabled ``pad_shape[i]`` is the sum of pads along axis ``i``.
-
-``auto_pad`` is a DEPRECATED attribute. If you are using them currently, the output spatial shape will be following:
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">output_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">((</span><span class="n">input_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="p">{</span><span class="n">kernelSpatialShape</span><span class="p">})</span> <span class="o">/</span> <span class="n">strides_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    VALID: output_spatial_shape[i] = ceil((input_spatial_shape[i] - {kernelSpatialShape} + 1) / strides_spatial_shape[i])
-    SAME_UPPER or SAME_LOWER: output_spatial_shape[i] = ceil(input_spatial_shape[i] / strides_spatial_shape[i])
-
-And pad shape will be following if ``SAME_UPPER`` or ``SAME_LOWER``:
+<p>if ceil_mode is enabled <code class="docutils literal notranslate"><span class="pre">pad_shape[i]</span></code> is the sum of pads along axis <code class="docutils literal notranslate"><span class="pre">i</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">auto_pad</span></code> is a DEPRECATED attribute. If you are using them currently, the output spatial shape will be following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VALID</span><span class="p">:</span> <span class="n">output_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">((</span><span class="n">input_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="p">{</span><span class="n">kernelSpatialShape</span><span class="p">}</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">strides_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">SAME_UPPER</span> <span class="ow">or</span> <span class="n">SAME_LOWER</span><span class="p">:</span> <span class="n">output_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">input_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">strides_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>And pad shape will be following if <code class="docutils literal notranslate"><span class="pre">SAME_UPPER</span></code> or <code class="docutils literal notranslate"><span class="pre">SAME_LOWER</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pad_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">output_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">strides_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">{</span><span class="n">kernelSpatialShape</span><span class="p">}</span> <span class="o">-</span> <span class="n">input_spatial_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 </pre></div>
 </div>

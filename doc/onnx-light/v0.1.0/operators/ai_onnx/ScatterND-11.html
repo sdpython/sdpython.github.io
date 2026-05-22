@@ -1106,10 +1106,10 @@ is produced by creating a copy of the input <code class="docutils literal notran
 specified by <code class="docutils literal notranslate"><span class="pre">updates</span></code> at specific index positions specified by <code class="docutils literal notranslate"><span class="pre">indices</span></code>. Its output shape
 is the same as the shape of <code class="docutils literal notranslate"><span class="pre">data</span></code>. Note that <code class="docutils literal notranslate"><span class="pre">indices</span></code> should not have duplicate entries.
 That is, two or more <code class="docutils literal notranslate"><span class="pre">updates</span></code> for the same index-location is not supported.</p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">indices</span></code> is an integer tensor. Let k denote indices.shape[-1], the last dimension in the shape of <code class="docutils literal notranslate"><span class="pre">indices</span></code>.</dt><dd><p><code class="docutils literal notranslate"><span class="pre">indices</span></code> is treated as a (q-1)-dimensional tensor of k-tuples, where each k-tuple is a partial-index into <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">indices</span></code> is an integer tensor. Let k denote indices.shape[-1], the last dimension in the shape of <code class="docutils literal notranslate"><span class="pre">indices</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>`indices` is treated as a (q-1)-dimensional tensor of k-tuples, where each k-tuple is a partial-index into `data`.
+</pre></div>
+</div>
 <p>Hence, k can be a value at most the rank of <code class="docutils literal notranslate"><span class="pre">data</span></code>. When k equals rank(data), each update entry specifies an
 update to a single element of the tensor. When k is less than rank(data) each update entry specifies an
 update to a slice of the tensor. Index values are allowed to be negative, as per the usual
@@ -1122,14 +1122,12 @@ corresponding to the trailing (r-k) dimensions of <code class="docutils literal 
 must equal indices.shape[0:q-1] ++ data.shape[k:r-1], where ++ denotes the concatenation
 of shapes.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">output</span></code> is calculated via the following equation:</p>
-<blockquote>
-<div><p>output = np.copy(data)
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>output = np.copy(data)
 update_indices = indices.shape[:-1]
-for idx in np.ndindex(update_indices):</p>
-<blockquote>
-<div><p>output[tuple(indices[idx])] = updates[idx]</p>
-</div></blockquote>
-</div></blockquote>
+for idx in np.ndindex(update_indices):
+    output[tuple(indices[idx])] = updates[idx]
+</pre></div>
+</div>
 <p>The order of iteration in the above loop is not specified.
 In particular, indices should not have duplicate entries: that is, if idx1 != idx2, then indices[idx1] != indices[idx2].
 This ensures that the output value does not depend on the iteration order.</p>

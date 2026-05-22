@@ -54,7 +54,7 @@
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'design/torch/patches';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'design/torch/patches_idea';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="icon" href="../../_static/logo.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -573,20 +573,20 @@ results when they encounter them.</p>
 <section id="control-flow-is-the-primary-source-of-failures">
 <h3>Control flow is the primary source of failures<a class="headerlink" href="#control-flow-is-the-primary-source-of-failures" title="Link to this heading">#</a></h3>
 <p>The most fundamental issue is <strong>Python control flow</strong> inside traced functions.
-During symbolic tracing, dimension values are <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymInt" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.SymInt</span></code></a> objects
+During symbolic tracing, dimension values are <cite>torch.SymInt</cite> objects
 rather than plain integers.  Any code written as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition_on_size</span><span class="p">:</span>
     <span class="k">raise</span> <span class="n">SomeError</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>will crash the exporter because evaluating the <code class="docutils literal notranslate"><span class="pre">if</span></code> forces the symbolic
-integer to a concrete boolean — a <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#torch.SymBool" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymBool</span></code></a> — which cannot be
+integer to a concrete boolean — a <cite>torch.SymBool</cite> — which cannot be
 resolved at trace time, raising <code class="docutils literal notranslate"><span class="pre">GuardOnDataDependentSymNode</span></code>.</p>
-<p>The fix is to replace such guards with <code class="xref py py-func docutils literal notranslate"><span class="pre">torch._check()</span></code>:</p>
+<p>The fix is to replace such guards with <cite>torch._check</cite>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">condition_on_size</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="xref py py-func docutils literal notranslate"><span class="pre">torch._check()</span></code> is understood by the exporter and recorded as a
+<p><cite>torch._check</cite> is understood by the exporter and recorded as a
 constraint on the symbolic value instead of executing a branch.  The patches
 shipped with this library systematically replace <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">...</span> <span class="pre">:</span> <span class="pre">raise</span></code> patterns
 in torch and transformers internals with <code class="docutils literal notranslate"><span class="pre">torch._check(...)</span></code> equivalents so
@@ -797,13 +797,12 @@ with its diff and the affected graph nodes.</p></li>
 <p>Parameters:</p>
 <ul class="simple">
 <li><p><strong>patch_torch</strong> — applies the four patches in
-<a class="reference internal" href="../../api/torch/in_torch/patches.html#module-yobx.torch.in_torch.patches" title="yobx.torch.in_torch.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_torch.patches</span></code></a> that fix symbolic-shape handling inside
-<a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.12)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a>.</p></li>
+<a class="reference internal" href="../../api/torch/in_torch/patches.html#module-yobx.torch.in_torch.patches" title="yobx.torch.in_torch.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_torch.patches</span></code></a> that fix symbolic-shape handling inside <cite>torch</cite>.</p></li>
 <li><p><strong>patch_transformers</strong> — applies the <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> patches from
 <a class="reference internal" href="../../api/torch/in_transformers/patches.html#module-yobx.torch.in_transformers.patches" title="yobx.torch.in_transformers.patches"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yobx.torch.in_transformers.patches</span></code></a>.  When <em>model</em> is provided, the
 function inspects each sub-module for wrapped <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding.forward</span></code>
 implementations and adds a model-specific patch automatically.</p></li>
-<li><p><strong>model</strong> — the <a class="reference external" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> being exported.  Supplying it
+<li><p><strong>model</strong> — the <cite>torch.nn.Module</cite> being exported.  Supplying it
 enables automatic detection of non-standard <code class="docutils literal notranslate"><span class="pre">RotaryEmbedding</span></code> variants.</p></li>
 <li><p><strong>verbose</strong> — print each patch name as it is applied or removed.</p></li>
 </ul>
@@ -954,7 +953,7 @@ implementations.</p>
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../../_sources/design/torch/patches.rst.txt">
+    <a href="../../_sources/design/torch/patches_idea.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

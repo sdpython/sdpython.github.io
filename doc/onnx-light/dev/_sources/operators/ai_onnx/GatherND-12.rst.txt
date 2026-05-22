@@ -26,66 +26,83 @@ Some salient points about the inputs' rank and shape:
 3) b   r-b` => error condition
 
 2) If ``indices_shape[-1] == r-b``, since the rank of ``indices`` is ``q``, ``indices`` can be thought of as ``N`` ``(q-b-1)``-dimensional tensors
-   containing 1-D tensors of dimension ``r-b``, where ``N`` is an integer equals to the product of 1 and all the elements in the batch dimensions
-   of the indices_shape. Let us think of each such ``r-b`` ranked tensor as ``indices_slice``. Each *scalar value* corresponding to ``data[0:b-1,indices_slice]``
-   is filled into the corresponding location of the ``(q-b-1)``-dimensional tensor to form the ``output`` tensor (Example 1 below)
+
+.. code-block:: text
+
+    containing 1-D tensors of dimension `r-b`, where `N` is an integer equals to the product of 1 and all the elements in the batch dimensions
+    of the indices_shape. Let us think of each such `r-b` ranked tensor as `indices_slice`. Each *scalar value* corresponding to `data[0:b-1,indices_slice]`
+    is filled into the corresponding location of the `(q-b-1)`-dimensional tensor to form the `output` tensor (Example 1 below)
 
 3) If ``indices_shape[-1] < r-b``, since the rank of ``indices`` is ``q``, ``indices`` can be thought of as ``N`` ``(q-b-1)``-dimensional tensor
-   containing 1-D tensors of dimension ``< r-b``. Let us think of each such tensors as ``indices_slice``. Each *tensor slice* corresponding
-   to ``data[0:b-1, indices_slice , :]`` is filled into the corresponding location of the ``(q-b-1)``-dimensional tensor
-   to form the ``output`` tensor (Examples 2, 3, 4 and 5 below)
+
+.. code-block:: text
+
+    containing 1-D tensors of dimension `< r-b`. Let us think of each such tensors as `indices_slice`. Each *tensor slice* corresponding
+    to `data[0:b-1, indices_slice , :]` is filled into the corresponding location of the `(q-b-1)`-dimensional tensor
+    to form the `output` tensor (Examples 2, 3, 4 and 5 below)
 
 This operator is the inverse of ``ScatterND``.
 
 ``Example 1``
 
-  batch_dims = 0
+.. code-block:: text
 
-  data    = [[0,1],[2,3]]   # data_shape = [2, 2]
+    batch_dims = 0
 
-  indices = [[0,0],[1,1]]   # indices_shape = [2, 2]
+    data    = [[0,1],[2,3]]   # data_shape = [2, 2]
 
-  output  = [0,3]           # output_shape = [2]
+    indices = [[0,0],[1,1]]   # indices_shape = [2, 2]
+
+    output  = [0,3]           # output_shape = [2]
 
 ``Example 2``
 
-  batch_dims = 0
+.. code-block:: text
 
-  data    = [[0,1],[2,3]]  # data_shape = [2, 2]
+    batch_dims = 0
 
-  indices = [[1],[0]]      # indices_shape = [2, 1]
+    data    = [[0,1],[2,3]]  # data_shape = [2, 2]
 
-  output  = [[2,3],[0,1]]  # output_shape = [2, 2]
+    indices = [[1],[0]]      # indices_shape = [2, 1]
+
+    output  = [[2,3],[0,1]]  # output_shape = [2, 2]
 
 ``Example 3``
 
-  batch_dims = 0
+.. code-block:: text
 
-  data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
+    batch_dims = 0
 
-  indices = [[0,1],[1,0]]                 # indices_shape = [2, 2]
+    data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
 
-  output  = [[2,3],[4,5]]                 # output_shape = [2, 2]
+    indices = [[0,1],[1,0]]                 # indices_shape = [2, 2]
+
+    output  = [[2,3],[4,5]]                 # output_shape = [2, 2]
 
 ``Example 4``
 
-  batch_dims = 0
+.. code-block:: text
 
-  data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
+    batch_dims = 0
 
-  indices = [[[0,1]],[[1,0]]]             # indices_shape = [2, 1, 2]
+    data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
 
-  output  = [[[2,3]],[[4,5]]]             # output_shape = [2, 1, 2]
+    indices = [[[0,1]],[[1,0]]]             # indices_shape = [2, 1, 2]
+
+    output  = [[[2,3]],[[4,5]]]             # output_shape = [2, 1, 2]
 
 ``Example 5``
 
-  batch_dims = 1
+.. code-block:: text
 
-  data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
+    batch_dims = 1
 
-  indices = [[1],[0]]             # indices_shape = [2, 1]
+    data    = [[[0,1],[2,3]],[[4,5],[6,7]]] # data_shape = [2, 2, 2]
 
-  output  = [[2,3],[4,5]]             # output_shape = [2, 2]
+    indices = [[1],[0]]             # indices_shape = [2, 1]
+
+    output  = [[2,3],[4,5]]             # output_shape = [2, 2]
+
 
 **Inputs**
 

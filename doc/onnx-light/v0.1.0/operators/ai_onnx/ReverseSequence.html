@@ -1103,40 +1103,36 @@
 <p>For each slice i iterating on batch axis, the operator reverses the first sequence_lens[i] elements on time axis,
 and copies elements whose index’s beyond sequence_lens[i] to the output. So the output slice i contains reversed
 sequences on the first sequence_lens[i] elements, then have original values copied for the other elements.</p>
-<dl>
-<dt>Example 1:</dt><dd><dl class="simple">
-<dt>input = [[0.0, 4.0, 8.0,  12.0],</dt><dd><p>[1.0, 5.0, 9.0,  13.0],
-[2.0, 6.0, 10.0, 14.0],
-[3.0, 7.0, 11.0, 15.0]]</p>
-</dd>
-</dl>
-<p>sequence_lens = [4, 3, 2, 1]
+<p>Example 1:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>input = [[0.0, 4.0, 8.0,  12.0],
+         [1.0, 5.0, 9.0,  13.0],
+         [2.0, 6.0, 10.0, 14.0],
+         [3.0, 7.0, 11.0, 15.0]]
+sequence_lens = [4, 3, 2, 1]
 time_axis = 0
-batch_axis = 1</p>
-<dl class="simple">
-<dt>output = [[3.0, 6.0, 9.0,  12.0],</dt><dd><p>[2.0, 5.0, 8.0,  13.0],
-[1.0, 4.0, 10.0, 14.0],
-[0.0, 7.0, 11.0, 15.0]]</p>
-</dd>
-</dl>
-</dd>
-<dt>Example 2:</dt><dd><dl class="simple">
-<dt>input = [[0.0,  1.0,  2.0,  3.0 ],</dt><dd><p>[4.0,  5.0,  6.0,  7.0 ],
-[8.0,  9.0,  10.0, 11.0],
-[12.0, 13.0, 14.0, 15.0]]</p>
-</dd>
-</dl>
-<p>sequence_lens = [1, 2, 3, 4]
+batch_axis = 1
+
+output = [[3.0, 6.0, 9.0,  12.0],
+          [2.0, 5.0, 8.0,  13.0],
+          [1.0, 4.0, 10.0, 14.0],
+          [0.0, 7.0, 11.0, 15.0]]
+</pre></div>
+</div>
+<p>Example 2:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>input = [[0.0,  1.0,  2.0,  3.0 ],
+         [4.0,  5.0,  6.0,  7.0 ],
+         [8.0,  9.0,  10.0, 11.0],
+         [12.0, 13.0, 14.0, 15.0]]
+sequence_lens = [1, 2, 3, 4]
 time_axis = 1
-batch_axis = 0</p>
-<dl class="simple">
-<dt>output = [[0.0,  1.0,  2.0,  3.0 ],</dt><dd><p>[5.0,  4.0,  6.0,  7.0 ],
-[10.0, 9.0,  8.0,  11.0],
-[15.0, 14.0, 13.0, 12.0]]</p>
-</dd>
-</dl>
-</dd>
-</dl>
+batch_axis = 0
+
+output = [[0.0,  1.0,  2.0,  3.0 ],
+          [5.0,  4.0,  6.0,  7.0 ],
+          [10.0, 9.0,  8.0,  11.0],
+          [15.0, 14.0, 13.0, 12.0]]
+</pre></div>
+</div>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>input</strong> (<em>T</em>): Tensor of rank r &gt;= 2.</p></li>

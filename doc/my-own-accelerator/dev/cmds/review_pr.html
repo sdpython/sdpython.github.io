@@ -299,6 +299,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Lines</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="github_token.html">Obtaining a GitHub Personal Access Token</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr_weekly_table.html">pr-weekly-table command</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pr_stats.html">pr-stats command</a></li>
 <li class="toctree-l1"><a class="reference internal" href="review_local.html">review-local command</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">review-pr command</a></li>
@@ -390,10 +391,7 @@ command.</p>
 </section>
 <section id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    usage: python -m moa review-pr [-h] [--token TOKEN] [--api-url URL]
-                                   [--user USERNAME] [--save] [--copilot-review]
-                                   [--model MODEL] [--prompt PROMPT] [-v]
-                                   owner repo pull_request
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    usage: python -m moa review-pr [-h] [--token TOKEN] [--api-url URL] [--user USERNAME] [--save] [--copilot-review] [--model MODEL] [--prompt PROMPT] [-v] owner repo pull_request
     
     Reviews a GitHub pull request and prints markdown.
     
@@ -404,35 +402,18 @@ command.</p>
     
     options:
       -h, --help        show this help message and exit
-      --token TOKEN     GitHub personal access token. Resolution order: flag →
-                        GITHUB_TOKEN env var → project cached value (owner/repo in
-                        ~/.config/moa/review_pr.json) → cached value
-                        (~/.config/moa/review_pr.json). See the
-                        docs/cmds/github_token page for how to obtain one.
-      --api-url URL     Base URL of the GitHub API. Resolution order: flag &gt;
-                        GITHUB_API_URL env var &gt; cached value
-                        (~/.config/moa/review_pr.json) &gt;
-                        https://api.github.com.
-      --user USERNAME   GitHub username of the authenticated user. Resolution
-                        order: flag &gt; GITHUB_USER env var &gt; cached value
-                        (~/.config/moa/review_pr.json). When set and
-                        owner is omitted, the username is used as the repository
-                        owner.
-      --save            Save the resolved --token, --api-url, and --user to
-                        ~/.config/moa/review_pr.json so they are used
-                        automatically in future invocations. The file is created
-                        with owner-only read permissions (0600).
-      --copilot-review  Use GitHub Copilot (via GitHub Models API) to generate an
-                        AI review of the PR. Requires a GitHub token with models
-                        access.
-      --model MODEL     AI model used for --copilot-review (default:
-                        openai/gpt-4o-mini). Any model available on the GitHub
-                        Models API is accepted.
-      --prompt PROMPT   Add a follow-up prompt to the Copilot review session. The
-                        prompt is sent as a continuation of the same conversation
-                        so the model has full context from the initial review. Can
-                        be used multiple times to ask several follow-up questions.
-                        Only meaningful when --copilot-review is also set.
+      --token TOKEN     GitHub personal access token. Resolution order: flag → GITHUB_TOKEN env var → project cached value (owner/repo in ~/.config/moa/review_pr.json) → cached value
+                        (~/.config/moa/review_pr.json). See the docs/cmds/github_token page for how to obtain one.
+      --api-url URL     Base URL of the GitHub API. Resolution order: flag &gt; GITHUB_API_URL env var &gt; cached value (~/.config/moa/review_pr.json) &gt; https://api.github.com.
+      --user USERNAME   GitHub username of the authenticated user. Resolution order: flag &gt; GITHUB_USER env var &gt; cached value (~/.config/moa/review_pr.json). When set and owner is omitted, the username
+                        is used as the repository owner.
+      --save            Save the resolved --token, --api-url, and --user to ~/.config/moa/review_pr.json so they are used automatically in future invocations. The file is created with owner-only read
+                        permissions (0600).
+      --copilot-review  Use GitHub Copilot (via GitHub Models API) to generate an AI review of the PR. Requires a GitHub token with models access.
+      --model MODEL     AI model used for --copilot-review. When omitted, Copilot chooses the model automatically and falls back to openai/gpt-4.1 if needed. Any model available on the GitHub Models API is
+                        accepted.
+      --prompt PROMPT   Add a follow-up prompt to the Copilot review session. The prompt is sent as a continuation of the same conversation so the model has full context from the initial review. Can be used
+                        multiple times to ask several follow-up questions. Only meaningful when --copilot-review is also set.
       -v, --verbose     Print progress information to stderr.
 </pre></div>
 </div>
@@ -530,7 +511,8 @@ section, preceded by a separator and the prompt text.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">--model</span> <span class="pre">MODEL</span></code></dt><dd><p>AI model to use when <code class="docutils literal notranslate"><span class="pre">--copilot-review</span></code> is set.  Accepts any
 model identifier available on the
 <a class="reference external" href="https://docs.github.com/en/github-models">GitHub Models API</a>.
-Defaults to <code class="docutils literal notranslate"><span class="pre">openai/gpt-4o-mini</span></code>:</p>
+When omitted, Copilot chooses the model automatically and falls
+back to <code class="docutils literal notranslate"><span class="pre">openai/gpt-4.1</span></code> if no default model is available:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">review</span><span class="o">-</span><span class="n">pr</span> <span class="o">--</span><span class="n">copilot</span><span class="o">-</span><span class="n">review</span> <span class="o">--</span><span class="n">model</span> <span class="n">openai</span><span class="o">/</span><span class="n">gpt</span><span class="o">-</span><span class="mi">4</span><span class="n">o</span> <span class="n">xadupre</span> <span class="n">my</span><span class="o">-</span><span class="n">own</span><span class="o">-</span><span class="n">accelerator</span> <span class="mi">1</span>
 </pre></div>
 </div>
@@ -539,7 +521,9 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">openai/
 running. Verbose output also shows which token source is used
 (<code class="docutils literal notranslate"><span class="pre">--token</span></code>, <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code>, project-specific cache, classic cache,
 or unauthenticated) and the token type (<code class="docutils literal notranslate"><span class="pre">explicit</span></code>, <code class="docutils literal notranslate"><span class="pre">fine-grained</span></code>,
-<code class="docutils literal notranslate"><span class="pre">classic</span></code>, or <code class="docutils literal notranslate"><span class="pre">none</span></code>).</p>
+<code class="docutils literal notranslate"><span class="pre">classic</span></code>, or <code class="docutils literal notranslate"><span class="pre">none</span></code>). For tokens supplied via <code class="docutils literal notranslate"><span class="pre">--token</span></code> or
+<code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code>, the type is inferred from the token prefix
+(<code class="docutils literal notranslate"><span class="pre">ghp_*</span></code> → <code class="docutils literal notranslate"><span class="pre">classic</span></code>, <code class="docutils literal notranslate"><span class="pre">github_pat_*</span></code> → <code class="docutils literal notranslate"><span class="pre">fine-grained</span></code>).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">-h</span></code>, <code class="docutils literal notranslate"><span class="pre">--help</span></code></dt><dd><p>Print a short help message and exit.</p>
 </dd>
@@ -645,7 +629,7 @@ standard error.</p>
     <span class="n">pull_request</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">token</span><span class="o">=</span><span class="s2">&quot;ghp_xxxxxxxxxxxx&quot;</span><span class="p">,</span>
     <span class="n">copilot_review</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-4o-mini&quot;</span><span class="p">,</span>  <span class="c1"># optional, this is the default</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-4o&quot;</span><span class="p">,</span>  <span class="c1"># optional override</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>
 

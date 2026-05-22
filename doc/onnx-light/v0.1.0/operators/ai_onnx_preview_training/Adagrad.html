@@ -1099,8 +1099,8 @@
 <li><p><strong>Domain</strong>: <code class="docutils literal notranslate"><span class="pre">ai.onnx.preview.training</span></code></p></li>
 <li><p><strong>Since version</strong>: 1</p></li>
 </ul>
-<dl>
-<dt>Compute one iteration of ADAGRAD, a stochastic gradient based optimization</dt><dd><p>algorithm. This operator can conduct the optimization of multiple tensor variables.</p>
+<p>Compute one iteration of ADAGRAD, a stochastic gradient based optimization
+algorithm. This operator can conduct the optimization of multiple tensor variables.</p>
 <p>Let’s define the behavior of this operator. As you can imagine, ADAGRAD requires
 some parameters:</p>
 <blockquote>
@@ -1123,20 +1123,24 @@ the new accumulated squared gradient (called “H_new”). Those outputs are com
 from the given inputs following the pseudo code below.</p>
 <p>Let “+”, “-”, “*”, and “/” are all element-wise arithmetic operations with
 numpy-style broadcasting support. The pseudo code to compute those outputs is:</p>
-<blockquote>
-<div><p>// Compute a scalar learning-rate factor. At the first update of X, T is generally
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// Compute a scalar learning-rate factor. At the first update of X, T is generally
 // 0 (0-based update index) or 1 (1-based update index).
-r = R / (1 + T * decay_factor);</p>
-<p>// Add gradient of 0.5 * norm_coefficient * ||X||_2^2, where ||X||_2 is the 2-norm.
-G_regularized = norm_coefficient * X + G;</p>
-<p>// Compute new accumulated squared gradient.
-H_new = H + G_regularized * G_regularized;</p>
-<p>// Compute the adaptive part of per-coordinate learning rate. Note that Sqrt(…)
+r = R / (1 + T * decay_factor);
+
+// Add gradient of 0.5 * norm_coefficient * ||X||_2^2, where ||X||_2 is the 2-norm.
+G_regularized = norm_coefficient * X + G;
+
+// Compute new accumulated squared gradient.
+H_new = H + G_regularized * G_regularized;
+
+// Compute the adaptive part of per-coordinate learning rate. Note that Sqrt(...)
 // computes element-wise square-root.
-H_adaptive = Sqrt(H_new) + epsilon</p>
-<p>// Compute the new value of “X”.
-X_new = X - r * G_regularized / H_adaptive;</p>
-</div></blockquote>
+H_adaptive = Sqrt(H_new) + epsilon
+
+// Compute the new value of &quot;X&quot;.
+X_new = X - r * G_regularized / H_adaptive;
+</pre></div>
+</div>
 <p>If one assign this operators to optimize multiple inputs, for example, “X_1” and “X_2”, the same
 pseudo code may be extended to handle all tensors jointly. More specifically, we can view “X” as a
 concatenation of “X_1” and “X_2” (of course, their gradient and accumulate gradient should
@@ -1144,8 +1148,6 @@ be concatenated too) and then just reuse the entire pseudo code.</p>
 <p>Note that ADAGRAD was first proposed in <a class="reference external" href="http://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf">http://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf</a>.
 In that reference paper, this operator is a special case of the Figure 1’s composite mirror
 descent update.</p>
-</dd>
-</dl>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p><strong>R</strong> (<em>T1</em>): The initial learning rate.</p></li>
