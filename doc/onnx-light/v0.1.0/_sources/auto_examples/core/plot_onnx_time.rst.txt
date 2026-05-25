@@ -39,7 +39,7 @@ for whichever model is used.
 The ``onnx_light.onnx`` implementation does not depend on protobuf and
 therefore avoids the overhead of the protobuf serialization layer.
 It also supports parallel loading of tensor weights through the
-``parallel`` keyword and loading models stored with external data.
+``num_threads`` keyword and loading models stored with external data.
 
 When loading a single-file model, ``onnx_light.onnx`` memory-maps the
 ``.onnx`` file (``mmap`` on POSIX, ``CreateFileMapping`` on Windows) and
@@ -412,7 +412,7 @@ synthetic one and write it to a temporary directory.
 
     onx = onnx.load(onnx_path)
     onxl = onnxl.load(onnx_path)
-    onxl_x4 = onnxl.load(onnx_path, parallel=True, num_threads=4)
+    onxl_x4 = onnxl.load(onnx_path, num_threads=4)
 
     ext_load_onnx = os.path.abspath(os.path.join(tmp_dir, "ext_load.onnx"))
     ext_load_data = os.path.abspath(os.path.join(tmp_dir, "ext_load.onnx.data"))
@@ -474,7 +474,7 @@ total weight size, file size, and serialized size.
 
 Benchmark helper.
 
-.. GENERATED FROM PYTHON SOURCE LINES 383-612
+.. GENERATED FROM PYTHON SOURCE LINES 383-633
 
 .. code-block:: Python
 
@@ -575,7 +575,7 @@ Benchmark helper.
 
     def _measure_cpp_load_with_example(
         onnx_file: str,
-        n: int = 5,
+        n: int = 20,
         num_threads: int = 1,
         executable_name: str = "load_onnx_light_time",
         file_count: int = 1,
@@ -646,7 +646,7 @@ Benchmark helper.
 
 
     def _measure_cpp_save_with_example(
-        onnx_file: str, n: int = 5, num_threads: int = 1
+        onnx_file: str, n: int = 20, num_threads: int = 1
     ) -> dict | None:
         """Measures C++ one-file save performance through ``save_onnx_light_time``.
 
@@ -687,12 +687,33 @@ Benchmark helper.
         # %%
         # Load with ``onnx_light.onnx`` using parallel tensor loading.
 
+        data.append(measure("load/1filex4/onnxlight", lambda: onnxl.load(onnx_path, num_threads=4)))
+        print_stats("load/1filex4/onnxlight", data[-1])
+
+        # %%
+        # Compare the two file-backed stream implementations explicitly:
+        # ``FileLoadMode.MMAP`` memory-maps the ``.onnx`` file (``mmap`` on POSIX,
+        # ``CreateFileMapping`` on Windows) and parses directly out of the mapped
+        # region, while ``FileLoadMode.IFSTREAM`` forces the buffered
+        # ``std::ifstream``-based reader.  The default ``FileLoadMode.AUTO``
+        # behaves like ``MMAP`` for single-file models when ``no_copy`` is not
+        # requested; running both modes side by side highlights the gain (or
+        # cost) of memory mapping on the current platform/filesystem.
+
         data.append(
             measure(
-                "load/1filex4/onnxlight", lambda: onnxl.load(onnx_path, parallel=True, num_threads=4)
+                "load/1filex1/onnxlight-mmap", lambda: onnxl.load(onnx_path, file_load_mode="MMAP")
             )
         )
-        print_stats("load/1filex4/onnxlight", data[-1])
+        print_stats("load/1filex1/onnxlight-mmap", data[-1])
+
+        data.append(
+            measure(
+                "load/1filex1/onnxlight-ifstream",
+                lambda: onnxl.load(onnx_path, file_load_mode="IFSTREAM"),
+            )
+        )
+        print_stats("load/1filex1/onnxlight-ifstream", data[-1])
 
         # %%
         # Load with ``onnxruntime`` (all optimizations disabled).
@@ -715,20 +736,22 @@ Benchmark helper.
 
  .. code-block:: none
 
-    load/1filex1/onnx                   avg=915.8 ms median=835.2 ms max=1314.1 ms std=236.6 ms
-    load/1filex1/onnxlight              avg=618.6 ms median=538.3 ms max=1122.9 ms std=259.5 ms
-    load/1filex4/onnxlight              avg=131.2 ms median=128.9 ms max=150.4 ms std=10.1 ms
-    load/1filex1/ort                    avg=914.0 ms median=968.1 ms max=1043.0 ms std=136.0 ms
+    load/1filex1/onnx                   avg=866.5 ms median=902.9 ms max=933.3 ms std=67.9 ms
+    load/1filex1/onnxlight              avg=480.6 ms median=464.7 ms max=536.4 ms std=28.5 ms
+    load/1filex4/onnxlight              avg=175.2 ms median=167.9 ms max=204.2 ms std=14.8 ms
+    load/1filex1/onnxlight-mmap         avg=485.3 ms median=469.6 ms max=577.8 ms std=47.1 ms
+    load/1filex1/onnxlight-ifstream     avg=398.1 ms median=397.5 ms max=409.1 ms std=7.0 ms
+    load/1filex1/ort                    avg=832.6 ms median=806.6 ms max=1043.3 ms std=108.4 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 613-615
+.. GENERATED FROM PYTHON SOURCE LINES 634-636
 
 Serialize and Parse benchmarks
 ------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 615-649
+.. GENERATED FROM PYTHON SOURCE LINES 636-669
 
 .. code-block:: Python
 
@@ -751,7 +774,6 @@ Serialize and Parse benchmarks
 
     if _run_scenario("serialize"):
         opts_serial_x4 = onnxl.SerializeOptions()
-        opts_serial_x4.parallel = True
         opts_serial_x4.num_threads = 4
 
         assert len(_serialize_onnx()) > 0
@@ -774,18 +796,18 @@ Serialize and Parse benchmarks
 
  .. code-block:: none
 
-    serialize/x1/onnx                   avg=2136.8 ms median=2142.1 ms max=2280.3 ms std=82.8 ms
-    serialize/x1/onnxlight              avg=938.3 ms median=936.2 ms max=1272.8 ms std=201.5 ms
-    serialize/x4/onnxlight              avg=732.5 ms median=714.4 ms max=874.1 ms std=80.7 ms
+    serialize/x1/onnx                   avg=2261.2 ms median=2288.2 ms max=2376.7 ms std=84.7 ms
+    serialize/x1/onnxlight              avg=894.8 ms median=886.8 ms max=956.3 ms std=37.8 ms
+    serialize/x4/onnxlight              avg=835.2 ms median=826.4 ms max=906.9 ms std=38.8 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 650-651
+.. GENERATED FROM PYTHON SOURCE LINES 670-671
 
 ParseFromString comparison between ``onnx`` and ``onnx_light.onnx``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 651-740
+.. GENERATED FROM PYTHON SOURCE LINES 671-758
 
 .. code-block:: Python
 
@@ -830,13 +852,11 @@ ParseFromString comparison between ``onnx`` and ``onnx_light.onnx``.
         serialized_onnx = onx.SerializeToString()
         serialized_onnxlight = onxl.SerializeToString()
         opts_parse_x4 = onnxl.ParseOptions()
-        opts_parse_x4.parallel = True
         opts_parse_x4.num_threads = 4
         opts_parse_nc = onnxl.ParseOptions()
         opts_parse_nc.no_copy = True
         opts_parse_nc_x4 = onnxl.ParseOptions()
         opts_parse_nc_x4.no_copy = True
-        opts_parse_nc_x4.parallel = True
         opts_parse_nc_x4.num_threads = 4
 
         parsed_onnx = _parse_onnx()
@@ -871,7 +891,7 @@ ParseFromString comparison between ``onnx`` and ``onnx_light.onnx``.
         print_stats("parse/nc/onnxlight", data[-1])
 
         # %%
-        # Parse with zero-copy **and** parallel tensor reads (``no_copy=True, parallel=True``).
+        # Parse with zero-copy **and** parallel tensor reads (``no_copy=True, num_threads=4``).
         # Combines the allocation savings of zero-copy with multi-threaded I/O for large models.
 
         data.append(measure("parse/ncx4/onnxlight", _parse_onnxlight_nc_x4))
@@ -886,16 +906,16 @@ ParseFromString comparison between ``onnx`` and ``onnx_light.onnx``.
 
  .. code-block:: none
 
-    parse/x1/onnx                       avg=365.3 ms median=349.3 ms max=426.4 ms std=34.9 ms
-    parse/x1/onnxlight                  avg=407.1 ms median=383.2 ms max=619.6 ms std=109.4 ms
-    parse/x4/onnxlight                  avg=167.0 ms median=117.8 ms max=368.5 ms std=100.7 ms
+    parse/x1/onnx                       avg=431.0 ms median=419.2 ms max=497.1 ms std=33.4 ms
+    parse/x1/onnxlight                  avg=154.0 ms median=147.2 ms max=184.9 ms std=17.1 ms
+    parse/x4/onnxlight                  avg=65.9 ms median=64.5 ms max=69.8 ms std=2.6 ms
     parse/nc/onnxlight                  avg=0.0 ms median=0.0 ms max=0.0 ms std=0.0 ms
-    parse/ncx4/onnxlight                avg=0.4 ms median=0.4 ms max=0.4 ms std=0.0 ms
+    parse/ncx4/onnxlight                avg=0.5 ms median=0.5 ms max=0.6 ms std=0.1 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 741-750
+.. GENERATED FROM PYTHON SOURCE LINES 759-768
 
 Save benchmarks
 ---------------
@@ -907,7 +927,7 @@ Absolute paths ensure onnxlight stores only the basename in the ``.onnx``
 metadata, letting both ``onnx.load`` and ``onnxl.load`` resolve the data
 file automatically.
 
-.. GENERATED FROM PYTHON SOURCE LINES 750-845
+.. GENERATED FROM PYTHON SOURCE LINES 768-860
 
 .. code-block:: Python
 
@@ -961,8 +981,7 @@ file automatically.
         out_onnxl_x4 = os.path.join(tmp_dir, "out_onnxlight_x4.onnx")
         data.append(
             measure(
-                "save/1filex4/onnxlight",
-                lambda: onnxl.save(onxl_x4, out_onnxl_x4, parallel=True, num_threads=4),
+                "save/1filex4/onnxlight", lambda: onnxl.save(onxl_x4, out_onnxl_x4, num_threads=4)
             )
         )
         print_stats("save/1filex4/onnxlight", data[-1])
@@ -999,9 +1018,7 @@ file automatically.
         data.append(
             measure(
                 "save/2filex4/onnxlight",
-                lambda: onnxl.save(
-                    onxl, out_ext_x4, location=out_ext_x4_data, parallel=True, num_threads=4
-                ),
+                lambda: onnxl.save(onxl, out_ext_x4, location=out_ext_x4_data, num_threads=4),
             )
         )
         print_stats("save/2filex4/onnxlight", data[-1])
@@ -1014,17 +1031,17 @@ file automatically.
 
  .. code-block:: none
 
-    save/1filex1/onnx                   avg=2647.2 ms median=2672.8 ms max=3397.3 ms std=475.3 ms
-    save/2filex1/onnx                   avg=1002.5 ms median=1002.5 ms max=1002.5 ms std=0.0 ms
-    save/1filex1/onnxlight              avg=714.2 ms median=669.7 ms max=876.2 ms std=98.5 ms
-    save/1filex4/onnxlight              avg=511.0 ms median=477.8 ms max=692.6 ms std=96.9 ms
-    save/2filex1/onnxlight              avg=1304.9 ms median=1347.0 ms max=1884.4 ms std=421.1 ms
-    save/2filex4/onnxlight              avg=409.1 ms median=406.9 ms max=454.9 ms std=40.5 ms
+    save/1filex1/onnx                   avg=2269.6 ms median=2217.4 ms max=2844.6 ms std=309.8 ms
+    save/2filex1/onnx                   avg=3253.3 ms median=3253.3 ms max=3253.3 ms std=0.0 ms
+    save/1filex1/onnxlight              avg=2355.6 ms median=2761.2 ms max=3291.2 ms std=923.0 ms
+    save/1filex4/onnxlight              avg=688.8 ms median=628.2 ms max=908.7 ms std=167.8 ms
+    save/2filex1/onnxlight              avg=2799.8 ms median=3204.1 ms max=4025.0 ms std=931.4 ms
+    save/2filex4/onnxlight              avg=750.0 ms median=644.0 ms max=1212.3 ms std=233.1 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 846-853
+.. GENERATED FROM PYTHON SOURCE LINES 861-868
 
 C++ benchmarks
 --------------
@@ -1034,7 +1051,7 @@ These scenarios measure the same operations as ``load`` and ``save``
 but use the compiled C++ timing executables directly, bypassing the
 Python interpreter overhead entirely.
 
-.. GENERATED FROM PYTHON SOURCE LINES 853-915
+.. GENERATED FROM PYTHON SOURCE LINES 868-930
 
 .. code-block:: Python
 
@@ -1108,24 +1125,24 @@ Python interpreter overhead entirely.
 
  .. code-block:: none
 
-    load/1filex1/onnxlight-cpp          avg=471.7 ms median=368.1 ms max=904.1 ms std=217.7 ms
-    load/1filex4/onnxlight-cpp          avg=109.4 ms median=98.1 ms max=158.0 ms std=24.4 ms
-    load/2filex1/onnxlight-cpp-nocopy   avg=0.8 ms median=0.8 ms max=0.9 ms std=0.0 ms
-    load/1filex1/onnx-cpp               avg=248.5 ms median=166.6 ms max=384.9 ms std=103.1 ms
-    save/1filex1/onnxlight-cpp          avg=765.8 ms median=499.5 ms max=1306.3 ms std=362.5 ms
-    save/1filex4/onnxlight-cpp          avg=467.3 ms median=470.8 ms max=564.9 ms std=55.7 ms
+    load/1filex1/onnxlight-cpp          avg=480.0 ms median=460.6 ms max=1029.3 ms std=203.2 ms
+    load/1filex4/onnxlight-cpp          avg=141.9 ms median=134.4 ms max=219.9 ms std=25.2 ms
+    load/2filex1/onnxlight-cpp-nocopy   avg=1.2 ms median=1.2 ms max=1.7 ms std=0.2 ms
+    load/1filex1/onnx-cpp               avg=663.4 ms median=654.8 ms max=1003.2 ms std=220.9 ms
+    save/1filex1/onnxlight-cpp          avg=1422.9 ms median=1402.8 ms max=2746.9 ms std=666.2 ms
+    save/1filex4/onnxlight-cpp          avg=523.9 ms median=481.6 ms max=818.6 ms std=109.6 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 916-920
+.. GENERATED FROM PYTHON SOURCE LINES 931-935
 
 Load with ``onnx`` using external data
 --------------------------------------
 
 Reload the model previously saved with external data using ``onnx.load``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 920-980
+.. GENERATED FROM PYTHON SOURCE LINES 935-993
 
 .. code-block:: Python
 
@@ -1164,14 +1181,12 @@ Reload the model previously saved with external data using ``onnx.load``.
 
         # %%
         # Load with ``onnx_light.onnx`` using external data and parallel tensor loading.
-        # Combine external-data loading with ``parallel=True`` for maximum throughput.
+        # Combine external-data loading with ``num_threads > 1`` for maximum throughput.
 
         data.append(
             measure(
                 "load/2filex4/onnxlight",
-                lambda: onnxl.load(
-                    ext_load_onnx, location=ext_load_data, parallel=True, num_threads=4
-                ),
+                lambda: onnxl.load(ext_load_onnx, location=ext_load_data, num_threads=4),
             )
         )
         print_stats("load/2filex4/onnxlight", data[-1])
@@ -1197,21 +1212,21 @@ Reload the model previously saved with external data using ``onnx.load``.
 
  .. code-block:: none
 
-    load/2filex1/onnx                   avg=330.0 ms median=329.9 ms max=470.8 ms std=101.4 ms
-    load/2filex1/onnxlight              avg=208.9 ms median=211.5 ms max=232.2 ms std=20.2 ms
-    load/2filex1/onnxlight-nocopy       avg=37.7 ms median=36.4 ms max=42.5 ms std=2.4 ms
-    load/2filex4/onnxlight              avg=79.2 ms median=83.7 ms max=99.7 ms std=20.8 ms
-    load/2filex1/ort                    avg=415.3 ms median=422.9 ms max=468.5 ms std=39.2 ms
+    load/2filex1/onnx                   avg=271.5 ms median=289.0 ms max=339.4 ms std=54.5 ms
+    load/2filex1/onnxlight              avg=148.9 ms median=121.6 ms max=207.7 ms std=38.7 ms
+    load/2filex1/onnxlight-nocopy       avg=41.5 ms median=41.2 ms max=43.4 ms std=1.2 ms
+    load/2filex4/onnxlight              avg=68.9 ms median=56.9 ms max=102.0 ms std=20.1 ms
+    load/2filex1/ort                    avg=430.1 ms median=427.3 ms max=472.2 ms std=23.1 ms
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 981-983
+.. GENERATED FROM PYTHON SOURCE LINES 994-996
 
 Results
 --------
 
-.. GENERATED FROM PYTHON SOURCE LINES 983-988
+.. GENERATED FROM PYTHON SOURCE LINES 996-1001
 
 .. code-block:: Python
 
@@ -1228,42 +1243,44 @@ Results
 
  .. code-block:: none
 
-                                         median       avg       min       max       std
-    name                                                                               
-    load/1filex1/onnx                  0.835234  0.915819  0.663422  1.314101  0.236593
-    load/1filex1/onnx-cpp              0.166582  0.248519  0.162583  0.384880  0.103145
-    load/1filex1/onnxlight             0.538289  0.618618  0.397070  1.122870  0.259467
-    load/1filex1/onnxlight-cpp         0.368118  0.471674  0.332128  0.904133  0.217701
-    load/1filex1/ort                   0.968083  0.913989  0.654556  1.043031  0.136011
-    load/1filex4/onnxlight             0.128933  0.131223  0.121060  0.150441  0.010102
-    load/1filex4/onnxlight-cpp         0.098129  0.109419  0.092714  0.157963  0.024409
-    load/2filex1/onnx                  0.329877  0.330025  0.218438  0.470815  0.101400
-    load/2filex1/onnxlight             0.211479  0.208851  0.182281  0.232224  0.020218
-    load/2filex1/onnxlight-cpp-nocopy  0.000801  0.000821  0.000785  0.000914  0.000048
-    load/2filex1/onnxlight-nocopy      0.036371  0.037656  0.036165  0.042498  0.002436
-    load/2filex1/ort                   0.422933  0.415276  0.350132  0.468515  0.039243
-    load/2filex4/onnxlight             0.083674  0.079229  0.041070  0.099679  0.020783
-    parse/nc/onnxlight                 0.000034  0.000035  0.000031  0.000041  0.000004
-    parse/ncx4/onnxlight               0.000408  0.000396  0.000326  0.000449  0.000041
-    parse/x1/onnx                      0.349276  0.365280  0.334292  0.426374  0.034948
-    parse/x1/onnxlight                 0.383158  0.407115  0.320398  0.619574  0.109446
-    parse/x4/onnxlight                 0.117817  0.167030  0.114831  0.368466  0.100725
-    save/1filex1/onnx                  2.672791  2.647199  2.077998  3.397282  0.475283
-    save/1filex1/onnxlight             0.669742  0.714234  0.622483  0.876202  0.098536
-    save/1filex1/onnxlight-cpp         0.499498  0.765802  0.459784  1.306252  0.362537
-    save/1filex4/onnxlight             0.477789  0.511000  0.404677  0.692607  0.096948
-    save/1filex4/onnxlight-cpp         0.470841  0.467317  0.401493  0.564902  0.055744
-    save/2filex1/onnx                  1.002471  1.002471  1.002471  1.002471  0.000000
-    save/2filex1/onnxlight             1.347018  1.304877  0.712495  1.884351  0.421128
-    save/2filex4/onnxlight             0.406880  0.409083  0.354820  0.454916  0.040451
-    serialize/x1/onnx                  2.142058  2.136804  2.036434  2.280276  0.082835
-    serialize/x1/onnxlight             0.936187  0.938277  0.721175  1.272821  0.201456
-    serialize/x4/onnxlight             0.714434  0.732529  0.627533  0.874124  0.080744
+                                         median       avg       min       max           std
+    name                                                                                   
+    load/1filex1/onnx                  0.902932  0.866520  0.759779  0.933300  6.788487e-02
+    load/1filex1/onnx-cpp              0.654778  0.663443  0.212401  1.003173  2.208810e-01
+    load/1filex1/onnxlight             0.464684  0.480571  0.460524  0.536442  2.853322e-02
+    load/1filex1/onnxlight-cpp         0.460649  0.479997  0.107651  1.029304  2.031650e-01
+    load/1filex1/onnxlight-ifstream    0.397469  0.398079  0.388460  0.409093  6.955375e-03
+    load/1filex1/onnxlight-mmap        0.469562  0.485299  0.446434  0.577813  4.708817e-02
+    load/1filex1/ort                   0.806588  0.832597  0.745383  1.043281  1.084458e-01
+    load/1filex4/onnxlight             0.167938  0.175196  0.164695  0.204239  1.483617e-02
+    load/1filex4/onnxlight-cpp         0.134446  0.141905  0.115265  0.219876  2.520600e-02
+    load/2filex1/onnx                  0.288981  0.271503  0.184496  0.339353  5.452905e-02
+    load/2filex1/onnxlight             0.121631  0.148940  0.114273  0.207694  3.869851e-02
+    load/2filex1/onnxlight-cpp-nocopy  0.001213  0.001216  0.000968  0.001693  2.130000e-04
+    load/2filex1/onnxlight-nocopy      0.041187  0.041542  0.040333  0.043406  1.168471e-03
+    load/2filex1/ort                   0.427269  0.430128  0.405594  0.472156  2.314122e-02
+    load/2filex4/onnxlight             0.056873  0.068879  0.051406  0.102043  2.009105e-02
+    parse/nc/onnxlight                 0.000045  0.000045  0.000044  0.000046  9.449960e-07
+    parse/ncx4/onnxlight               0.000466  0.000497  0.000429  0.000586  7.009597e-05
+    parse/x1/onnx                      0.419160  0.431033  0.407543  0.497071  3.338591e-02
+    parse/x1/onnxlight                 0.147224  0.153955  0.136211  0.184926  1.711283e-02
+    parse/x4/onnxlight                 0.064465  0.065860  0.063188  0.069832  2.585456e-03
+    save/1filex1/onnx                  2.217448  2.269612  1.959236  2.844625  3.097818e-01
+    save/1filex1/onnxlight             2.761171  2.355619  0.700777  3.291183  9.229928e-01
+    save/1filex1/onnxlight-cpp         1.402841  1.422902  0.546620  2.746881  6.662220e-01
+    save/1filex4/onnxlight             0.628178  0.688790  0.505254  0.908746  1.677869e-01
+    save/1filex4/onnxlight-cpp         0.481584  0.523938  0.436276  0.818585  1.096130e-01
+    save/2filex1/onnx                  3.253279  3.253279  3.253279  3.253279  0.000000e+00
+    save/2filex1/onnxlight             3.204132  2.799844  1.619928  4.025024  9.313954e-01
+    save/2filex4/onnxlight             0.644018  0.750003  0.583367  1.212285  2.330545e-01
+    serialize/x1/onnx                  2.288241  2.261174  2.139609  2.376718  8.472372e-02
+    serialize/x1/onnxlight             0.886831  0.894768  0.847009  0.956321  3.776545e-02
+    serialize/x4/onnxlight             0.826363  0.835158  0.796173  0.906906  3.880796e-02
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 989-996
+.. GENERATED FROM PYTHON SOURCE LINES 1002-1009
 
 Plot the results.
 The average and median are shown for each operation, with the average value
@@ -1273,7 +1290,7 @@ Bars are colored by library: blue family for ``onnx``, orange family for
 ``onnx_light``, green family for ``onnxruntime``.  Solid shades represent
 the average; lighter shades the median.
 
-.. GENERATED FROM PYTHON SOURCE LINES 996-1068
+.. GENERATED FROM PYTHON SOURCE LINES 1009-1081
 
 .. code-block:: Python
 
@@ -1361,13 +1378,13 @@ the average; lighter shades the median.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 1069-1072
+.. GENERATED FROM PYTHON SOURCE LINES 1082-1085
 
 Cleanup
 --------
 Remove all temporary files created during the benchmark.
 
-.. GENERATED FROM PYTHON SOURCE LINES 1072-1074
+.. GENERATED FROM PYTHON SOURCE LINES 1085-1087
 
 .. code-block:: Python
 
@@ -1383,7 +1400,7 @@ Remove all temporary files created during the benchmark.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 0.825 seconds)
+   **Total running time of the script:** (3 minutes 22.148 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_onnx_time.py:

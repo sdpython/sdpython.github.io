@@ -6,33 +6,63 @@ ReduceL1
 - **Domain**: ``ai.onnx``
 - **Since version**: 18
 
-Computes the L1 norm of the input tensor's elements along the provided axes. The resulting
-tensor has the same rank as the input if ``keepdims`` equals 1. If ``keepdims`` equals 0, then
-the resulting tensor has the reduced dimension pruned. Input tensors of rank zero are
-valid. Reduction over an empty set of values yields 0.
-
-
-The above behavior is similar to numpy, with the exception that numpy defaults ``keepdims``
-to ``False`` instead of ``True``.
+Computes the L1 norm of the input tensor's elements along the provided axes.
+The resulting tensor has the same rank as the input if keepdims equals 1.
+If keepdims equals 0, then the resulting tensor has the reduced dimension pruned.
+The axes are provided as an optional second input tensor. Negative axes are supported.
+If axes is not provided or is empty and noop_with_empty_axes is set to 1, the input tensor is returned unchanged.
+If axes is not provided or is empty and noop_with_empty_axes is not set, all dimensions are reduced.
+Reduction over an empty set of values yields 0.
 
 **Inputs**
 
 - **data** (*T*): An input tensor.
-- **axes** (*tensor(int64)*) (optional): Optional input list of integers, along which to reduce. The default is to reduce over empty axes. When axes is empty (either not provided or explicitly empty), behavior depends on 'noop_with_empty_axes': reduction over all axes if 'noop_with_empty_axes' is false, and reduction over the empty set of axes when 'noop_with_empty_axes' is true. Accepted range is [-r, r-1] where r = rank(data).
+- **axes** (*tensor(int64)*): Optional input list of integers, along which to reduce. The default is to reduce over all the dimensions of the input tensor if noop_with_empty_axes is false, else act as an Identity op when noop_with_empty_axes is true. Accepted range is [-r, r-1] where r = rank(data).
 
 **Outputs**
 
 - **reduced** (*T*): Reduced output tensor.
 
-**Attributes**
-
-- **keepdims** (*int*): Keep the reduced dimension or not, default 1 means keep reduced dimension.
-- **noop_with_empty_axes** (*int*): Defines behavior when axes is not provided or is empty. If false (default), reduction happens over all axes (similar to the case when ``axis=None`` in numpy). If true, reduction happens over an empty set of axes (similar to the case when ``axis=()`` in numpy). Note that reduction over an empty set of axes means that the reduction step behaves like a no-op (identity function), but composite-reduction operators will still perform the non-reduction steps as needed. Thus, ReduceLogSum returns the Log of input tensor, and ReduceSumSquare returns the Square of the input tensor, in this case.
-
 **Type Constraints**
 
-- **T**: Constrain input and output types to numeric tensors.
+- **T**: Constrain input and output types to high-precision numeric tensors.
   Allowed types: tensor(bfloat16), tensor(double), tensor(float), tensor(float16), tensor(int32), tensor(int64), tensor(uint32), tensor(uint64).
+
+Differences with previous version (13)
+--------------------------------------
+
+**SchemaDiff**: ``ReduceL1`` (domain ``'ai.onnx'``)
+
+* old version: 13
+* new version: 18
+* breaking: **yes**
+
+**Breaking reasons:**
+
+* input 'axes' (added): at position 1; option=Single; type_str='tensor(int64)'
+
+**Inputs:**
+
+* [BREAKING] added 'axes': at position 1; option=Single; type_str='tensor(int64)'
+
+**Documentation:**
+
+* line similarity: 0.62 (+3/-2 lines)
+
+.. code-block:: diff
+
+    --- ReduceL1 v13
+    +++ ReduceL1 v18
+    @@ -1,6 +1,7 @@
+     Computes the L1 norm of the input tensor's elements along the provided axes.
+     The resulting tensor has the same rank as the input if keepdims equals 1.
+     If keepdims equals 0, then the resulting tensor has the reduced dimension pruned.
+    -The axes attribute specifies which dimensions to reduce. Negative axes are supported.
+    -If axes is not provided, all dimensions are reduced.
+    +The axes are provided as an optional second input tensor. Negative axes are supported.
+    +If axes is not provided or is empty and noop_with_empty_axes is set to 1, the input tensor is returned unchanged.
+    +If axes is not provided or is empty and noop_with_empty_axes is not set, all dimensions are reduced.
+     Reduction over an empty set of values yields 0.
 
 Version History
 ---------------

@@ -5,6 +5,10 @@ Gallerie d'exemples
 ===================
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -22,6 +26,10 @@ Gallerie d'exemples
 Gallerie d'exemples sur le machine learning
 ===========================================
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -91,6 +99,10 @@ Gallerie d'exemples sur le machine learning
 Gallerie d'exemples sur la programmation
 ========================================
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html

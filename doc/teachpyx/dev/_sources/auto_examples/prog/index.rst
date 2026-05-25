@@ -7,6 +7,10 @@ Gallerie d'exemples sur la programmation
 ========================================
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

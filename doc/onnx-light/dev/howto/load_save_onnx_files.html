@@ -32,11 +32,13 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3c144e66" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
@@ -50,6 +52,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=da8d6423"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'howto/load_save_onnx_files';</script>
@@ -254,10 +257,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -445,35 +444,30 @@
                 <article class="bd-article">
                   
   <section id="how-to-load-and-save-onnx-files">
-<span id="l-howto-load-save-onnx-files"></span><h1>How to load and save ONNX files<a class="headerlink" href="#how-to-load-and-save-onnx-files" title="Link to this heading">#</a></h1>
+<h1>How to load and save ONNX files<a class="headerlink" href="#how-to-load-and-save-onnx-files" title="Link to this heading">#</a></h1>
 <p>This page aligns the most common <em>onnx-light</em> load/save recipes side by side
 for Python and C++.  Each row shows the equivalent API for one-file
 <code class="docutils literal notranslate"><span class="pre">.onnx</span></code> models, two-file models with external tensor data, split external
-data across multiple files, alignment options, and the parallel options for
+data across multiple files, alignment options, and the thread-count options for
 larger models.</p>
 <section id="common-load-save-patterns">
 <h2>Common load/save patterns<a class="headerlink" href="#common-load-save-patterns" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 40.0%" />
-<col style="width: 40.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Scenario</p></th>
-<th class="head"><p>Python</p></th>
-<th class="head"><p>C++</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Load one file</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+<section id="load-one-file">
+<h3>Load one file<a class="headerlink" href="#load-one-file" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-0">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;model.onnx&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-1">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
@@ -483,10 +477,16 @@ larger models.</p>
 <span class="n">onnx</span><span class="o">::</span><span class="n">ParseModelProtoFromStream</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>Load two files</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+</div>
+</div>
+</section>
+<section id="load-two-files">
+<h3>Load two files<a class="headerlink" href="#load-two-files" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-2">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
     <span class="s2">&quot;model.onnx&quot;</span><span class="p">,</span>
@@ -495,8 +495,11 @@ larger models.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-3">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
@@ -506,16 +509,25 @@ larger models.</p>
 <span class="n">onnx</span><span class="o">::</span><span class="n">ParseModelProtoFromStream</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-<tr class="row-even"><td><p>Save one file</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+</div>
+</div>
+</section>
+<section id="save-one-file">
+<h3>Save one file<a class="headerlink" href="#save-one-file" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-4" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-4">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">onnxl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;out.onnx&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-5">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
@@ -524,16 +536,25 @@ larger models.</p>
 <span class="n">onnx</span><span class="o">::</span><span class="n">SerializeModelProtoToStream</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>Save two files</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+</div>
+</div>
+</section>
+<section id="save-two-files">
+<h3>Save two files<a class="headerlink" href="#save-two-files" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-6" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-6">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">onnxl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;out.onnx&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;out.onnx.data&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-7" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-7">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
@@ -542,10 +563,16 @@ larger models.</p>
 <span class="n">onnx</span><span class="o">::</span><span class="n">SerializeModelProtoToStream</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-<tr class="row-even"><td><p>Load/save split external files</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+</div>
+</div>
+</section>
+<section id="load-save-split-external-files">
+<h3>Load/save split external files<a class="headerlink" href="#load-save-split-external-files" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-8" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-8">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">onnxl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
@@ -556,8 +583,11 @@ larger models.</p>
 <span class="n">model</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;out.onnx&quot;</span><span class="p">,</span> <span class="n">load_external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-9" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-9">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
@@ -574,61 +604,81 @@ larger models.</p>
 <span class="n">onnx</span><span class="o">::</span><span class="n">ParseModelProtoFromStream</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span><span class="w"> </span><span class="n">in</span><span class="p">,</span><span class="w"> </span><span class="n">parse_options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>Parallel load</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+</div>
+</div>
+</section>
+<section id="parallel-load">
+<h3>Parallel load<a class="headerlink" href="#parallel-load" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-10" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-10">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
     <span class="s2">&quot;model.onnx&quot;</span><span class="p">,</span>
-    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">num_threads</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-11" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-11">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
 <span class="n">onnx</span><span class="o">::</span><span class="n">ModelProto</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
 <span class="n">onnx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">FileStream</span><span class="w"> </span><span class="n">stream</span><span class="p">(</span><span class="s">&quot;model.onnx&quot;</span><span class="p">);</span>
 <span class="n">onnx</span><span class="o">::</span><span class="n">ParseOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
-<span class="n">options</span><span class="p">.</span><span class="n">parallel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="n">options</span><span class="p">.</span><span class="n">num_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 <span class="n">onnx</span><span class="o">::</span><span class="n">ParseModelProtoFromStream</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-<tr class="row-even"><td><p>Parallel save</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+</div>
+</div>
+</section>
+<section id="parallel-save">
+<h3>Parallel save<a class="headerlink" href="#parallel-save" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-12" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-12">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">onnxl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="s2">&quot;out.onnx&quot;</span><span class="p">,</span>
     <span class="n">location</span><span class="o">=</span><span class="s2">&quot;out.onnx.data&quot;</span><span class="p">,</span>
-    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">num_threads</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-13" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-13">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
 <span class="n">onnx</span><span class="o">::</span><span class="n">SerializeOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
-<span class="n">options</span><span class="p">.</span><span class="n">parallel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="n">options</span><span class="p">.</span><span class="n">num_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 <span class="n">onnx</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">TwoFilesWriteStream</span><span class="w"> </span><span class="n">stream</span><span class="p">(</span><span class="s">&quot;out.onnx&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;out.onnx.data&quot;</span><span class="p">);</span>
 <span class="n">onnx</span><span class="o">::</span><span class="n">SerializeModelProtoToStream</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>Load/save with aligned external data</p></td>
-<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
+</div>
+</div>
+</section>
+<section id="load-save-with-aligned-external-data">
+<h3>Load/save with aligned external data<a class="headerlink" href="#load-save-with-aligned-external-data" title="Link to this heading">#</a></h3>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-14" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="python" for="sd-tab-item-14">
+Python</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx_light.onnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onnxl</span>
 
 <span class="n">save_options</span> <span class="o">=</span> <span class="n">onnxl</span><span class="o">.</span><span class="n">SerializeOptions</span><span class="p">()</span>
 <span class="n">save_options</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="mi">4096</span>
@@ -644,8 +694,11 @@ larger models.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
+</div>
+<input id="sd-tab-item-15" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpp" for="sd-tab-item-15">
+C++</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;onnx_helper.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stream.h&quot;</span>
 
@@ -661,11 +714,9 @@ larger models.</p>
 <span class="n">onnx</span><span class="o">::</span><span class="n">ParseModelProtoFromStream</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span><span class="w"> </span><span class="n">in</span><span class="p">,</span><span class="w"> </span><span class="n">load_options</span><span class="p">);</span>
 </pre></div>
 </div>
-</td>
-</tr>
-</tbody>
-</table>
 </div>
+</div>
+</section>
 </section>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
@@ -688,7 +739,7 @@ and <code class="xref cpp cpp-class docutils literal notranslate"><span class="p
 <code class="docutils literal notranslate"><span class="pre">onnxl.save</span></code> / <code class="docutils literal notranslate"><span class="pre">onnxl.load</span></code> helper keywords.  Use a power of two such as
 <code class="docutils literal notranslate"><span class="pre">4096</span></code> when you want page-aligned external-data offsets.</p></li>
 <li><p>The same parallel options apply to one-file and two-file I/O.  In C++, set
-<code class="docutils literal notranslate"><span class="pre">parallel</span></code> and <code class="docutils literal notranslate"><span class="pre">num_threads</span></code> on <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::ParseOptions</span></code> or
+<code class="docutils literal notranslate"><span class="pre">num_threads</span></code> on <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::ParseOptions</span></code> or
 <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">onnx::SerializeOptions</span></code> before calling the helper functions.</p></li>
 </ul>
 </section>
@@ -736,35 +787,6 @@ data round-trips.</p></li>
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-load-save-patterns">Common load/save patterns</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/howto/load_save_onnx_files.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
-
-</div></div>
               
             
           </div>

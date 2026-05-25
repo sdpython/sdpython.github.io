@@ -30,18 +30,108 @@ through bilinear interpolation.
 
 - **Y** (*T1*): RoI pooled output, 4-D tensor of shape (num_rois, C, output_height, output_width). The r-th batch element Y[r-1] is a pooled feature map corresponding to the r-th RoI X[r-1].
 
-**Attributes**
-
-- **coordinate_transformation_mode** (*string*): Allowed values are 'half_pixel' and 'output_half_pixel'. Use the value 'half_pixel' to pixel shift the input coordinates by -0.5 (the recommended behavior). Use the value 'output_half_pixel' to omit the pixel shift for the input (use this for a backward-compatible behavior).
-- **mode** (*string*): The pooling method. Two modes are supported: 'avg' and 'max'. Default is 'avg'.
-- **output_height** (*int*): default 1; Pooled output Y's height.
-- **output_width** (*int*): default 1; Pooled output Y's width.
-- **sampling_ratio** (*int*): Number of sampling points in the interpolation grid used to compute the output value of each pooled output bin. If > 0, then exactly sampling_ratio x sampling_ratio grid points are used. If == 0, then an adaptive number of grid points are used (computed as ceil(roi_width / output_width), and likewise for height). Default is 0.
-- **spatial_scale** (*float*): Multiplicative spatial scale factor to translate ROI coordinates from their input spatial scale to the scale used when pooling, i.e., spatial scale of the input feature map X relative to the input image. E.g.; default is 1.0f.
-
 **Type Constraints**
 
 - **T1**: Constrain types to float tensors.
   Allowed types: tensor(bfloat16), tensor(double), tensor(float), tensor(float16).
 - **T2**: Constrain types to int tensors.
   Allowed types: tensor(int64).
+
+Examples
+--------
+
+**test_cc_roialign**
+
+.. code-block:: text
+
+    Attributes:
+      mode = "avg"
+      output_height = 5
+      output_width = 5
+      sampling_ratio = 2
+      spatial_scale = 1.0
+
+.. code-block:: text
+
+    Inputs:
+      X: shape=(1, 1, 10, 10), dtype=float32
+        [[[[0.  , 0.01, 0.02, ..., 0.07, 0.08, 0.09],
+           [0.1 , 0.11, 0.12, ..., 0.17, 0.18, 0.19],
+           [0.2 , 0.21, 0.22, ..., 0.27, 0.28, 0.29],
+           ...,
+           [0.7 , 0.71, 0.72, ..., 0.77, 0.78, 0.79],
+           [0.8 , 0.81, 0.82, ..., 0.87, 0.88, 0.89],
+           [0.9 , 0.91, 0.92, ..., 0.97, 0.98, 0.99]]]]
+      rois: shape=(2, 4), dtype=float32
+        [[0., 0., 9., 9.],
+         [2., 2., 7., 7.]]
+      batch_indices: shape=(2,), dtype=int64
+        [0, 0]
+
+    Outputs:
+      Y: shape=(2, 1, 5, 5), dtype=float32
+        [[[[0.04674999, 0.0645    , 0.0825    , 0.10049999, 0.11849999],
+           [0.22424999, 0.24199998, 0.26      , 0.278     , 0.296     ],
+           [0.40425003, 0.422     , 0.44      , 0.458     , 0.47599998],
+           [0.58425   , 0.60199994, 0.61999995, 0.63799995, 0.6559999 ],
+           [0.7642499 , 0.78199995, 0.7999999 , 0.81799996, 0.8359999 ]]],
+        
+        
+         [[[0.22      , 0.22999999, 0.24      , 0.25      , 0.26      ],
+           [0.32      , 0.32999998, 0.33999997, 0.35000002, 0.36      ],
+           [0.42      , 0.43      , 0.44      , 0.45      , 0.45999998],
+           [0.52      , 0.53      , 0.53999996, 0.5500001 , 0.56      ],
+           [0.62      , 0.63      , 0.64      , 0.65      , 0.65999997]]]]
+
+**test_cc_roialign_max**
+
+.. code-block:: text
+
+    Attributes:
+      mode = "max"
+      coordinate_transformation_mode = "output_half_pixel"
+      output_height = 5
+      output_width = 5
+      sampling_ratio = 2
+      spatial_scale = 1.0
+
+.. code-block:: text
+
+    Inputs:
+      X: shape=(1, 1, 10, 10), dtype=float32
+        [[[[0.  , 0.01, 0.02, ..., 0.07, 0.08, 0.09],
+           [0.1 , 0.11, 0.12, ..., 0.17, 0.18, 0.19],
+           [0.2 , 0.21, 0.22, ..., 0.27, 0.28, 0.29],
+           ...,
+           [0.7 , 0.71, 0.72, ..., 0.77, 0.78, 0.79],
+           [0.8 , 0.81, 0.82, ..., 0.87, 0.88, 0.89],
+           [0.9 , 0.91, 0.92, ..., 0.97, 0.98, 0.99]]]]
+      rois: shape=(2, 4), dtype=float32
+        [[0., 0., 9., 9.],
+         [2., 2., 7., 7.]]
+      batch_indices: shape=(2,), dtype=int64
+        [0, 0]
+
+    Outputs:
+      Y: shape=(2, 1, 5, 5), dtype=float32
+        [[[[0.14849998, 0.16649999, 0.18449998, 0.20249999, 0.22049998],
+           [0.32849997, 0.34649998, 0.3645    , 0.3825    , 0.40049997],
+           [0.5084999 , 0.5264999 , 0.5445    , 0.5625    , 0.5804999 ],
+           [0.6884999 , 0.7065    , 0.72449994, 0.74249995, 0.76049995],
+           [0.86849993, 0.88649994, 0.9044999 , 0.92249995, 0.9404999 ]]],
+        
+        
+         [[[0.3025    , 0.3125    , 0.3225    , 0.3325    , 0.3425    ],
+           [0.4025    , 0.4125    , 0.42249998, 0.4325    , 0.4425    ],
+           [0.50249994, 0.5125    , 0.52250004, 0.5325    , 0.5425    ],
+           [0.60249996, 0.61249995, 0.6225    , 0.6325    , 0.64250004],
+           [0.7025    , 0.7125    , 0.72249997, 0.7325    , 0.74249995]]]]
+
+Differences with previous version (10)
+--------------------------------------
+
+**SchemaDiff**: ``RoiAlign`` (domain ``'ai.onnx'``)
+
+* old version: 10
+* new version: 16
+* breaking: no

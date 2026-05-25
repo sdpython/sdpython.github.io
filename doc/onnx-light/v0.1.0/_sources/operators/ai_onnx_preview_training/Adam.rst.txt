@@ -40,7 +40,7 @@ are constants. Moreover, the corresponding output tensors are
 
 Those outputs are computed following the pseudo code below.
 
-Let "+", "-", "*", and "/" are all element-wise arithmetic operations with
+Let "+", "-", "\*", and "/" are all element-wise arithmetic operations with
 numpy-style broadcasting support. The pseudo code to compute those outputs is:
 
 .. code-block:: text
@@ -74,19 +74,11 @@ independently to each of them.
 
 - **R** (*T1*): The initial learning rate.
 - **T** (*T2*): The update count of "X". It should be a scalar.
-- **inputs** (*T3*) (variadic): The tensors to be optimized, followed by their respective gradients, followed by their respective accumulated gradients (aka momentum), followed by their respective accumulated squared gradients. For example, to optimize tensors "X_1" and "X_2,", the input list would be ["X_1", "X_2", gradient of "X_1", gradient of "X_2", accumulated gradient of "X_1", accumulated gradient of "X_2", accumulated squared gradient of "X_1", accumulated squared gradient of "X_2"].
+- **inputs** (*T3*): The tensors to be optimized, followed by their respective gradients, followed by their respective accumulated gradients (aka momentum), followed by their respective accumulated squared gradients. For example, to optimize tensors "X_1" and "X_2,", the input list would be ["X_1", "X_2", gradient of "X_1", gradient of "X_2", accumulated gradient of "X_1", accumulated gradient of "X_2", accumulated squared gradient of "X_1", accumulated squared gradient of "X_2"].
 
 **Outputs**
 
-- **outputs** (*T3*) (variadic): New values of optimized tensors, followed by their respective new accumulated gradients, followed by their respective new accumulated squared gradients. For example, if two tensors "X_1" and "X_2" are optimized, the outputs list would be [new value of "X_1", new value of "X_2", new accumulated gradient of "X_1", new accumulated gradient of "X_2", new accumulated squared gradient of "X_1", new accumulated squared gradient of "X_2"].
-
-**Attributes**
-
-- **alpha** (*float*): Coefficient of previously accumulated gradient in running average. Default to 0.9.
-- **beta** (*float*): Coefficient of previously accumulated squared-gradient in running average. Default to 0.999.
-- **epsilon** (*float*): Small scalar to avoid dividing by zero.
-- **norm_coefficient** (*float*): Regularization coefficient of 0.5 * norm_coefficient * ||X||_2^2. Default to 0, which means no regularization.
-- **norm_coefficient_post** (*float*): Regularization coefficient of 0.5 * norm_coefficient * ||X||_2^2. Default to 0, which means no regularization.
+- **outputs** (*T3*): New values of optimized tensors, followed by their respective new accumulated gradients, followed by their respective new accumulated squared gradients. For example, if two tensors "X_1" and "X_2" are optimized, the outputs list would be [new value of "X_1", new value of "X_2", new accumulated gradient of "X_1", new accumulated gradient of "X_2", new accumulated squared gradient of "X_1", new accumulated squared gradient of "X_2"].
 
 **Type Constraints**
 
@@ -96,3 +88,97 @@ independently to each of them.
   Allowed types: tensor(int64).
 - **T3**: Constrain input and output types to float tensors.
   Allowed types: tensor(double), tensor(float).
+
+Examples
+--------
+
+**test_cc_adam_multiple**
+
+.. code-block:: text
+
+    Attributes:
+      alpha = 0.8999999761581421
+      beta = 0.9990000128746033
+      epsilon = 9.999999974752427e-07
+      norm_coefficient = 0.0
+      norm_coefficient_post = 0.0
+
+.. code-block:: text
+
+    Inputs:
+      R: shape=(), dtype=float32
+        0.05
+      T: shape=(), dtype=int64
+        5
+      X1: shape=(2,), dtype=float32
+        [ 0.5, -0.5]
+      X2: shape=(2, 2), dtype=float32
+        [[1., 2.],
+         [3., 4.]]
+      G1: shape=(2,), dtype=float32
+        [ 0.1, -0.2]
+      G2: shape=(2, 2), dtype=float32
+        [[-0.5 ,  0.25],
+         [ 0.75, -1.  ]]
+      V1: shape=(2,), dtype=float32
+        [0.01, 0.02]
+      V2: shape=(2, 2), dtype=float32
+        [[ 0.05,  0.05],
+         [-0.05,  0.  ]]
+      H1: shape=(2,), dtype=float32
+        [0.001, 0.002]
+      H2: shape=(2, 2), dtype=float32
+        [[0.01, 0.02],
+         [0.03, 0.04]]
+
+    Outputs:
+      X1_new: shape=(2,), dtype=float32
+        [ 0.49484122, -0.4996179 ]
+      X2_new: shape=(2, 2), dtype=float32
+        [[1.0004262, 1.9957354],
+         [2.9985192, 4.0042615]]
+      V1_new: shape=(2,), dtype=float32
+        [ 0.019     , -0.00200001]
+      V2_new: shape=(2, 2), dtype=float32
+        [[-0.00500001,  0.07000001],
+         [ 0.03000002, -0.10000002]]
+      H1_new: shape=(2,), dtype=float32
+        [0.001009, 0.002038]
+      H2_new: shape=(2, 2), dtype=float32
+        [[0.01024   , 0.0200425 ],
+         [0.03053249, 0.04095999]]
+
+**test_cc_adam_single**
+
+.. code-block:: text
+
+    Attributes:
+      alpha = 0.949999988079071
+      beta = 0.8999999761581421
+      epsilon = 0.009999999776482582
+      norm_coefficient = 0.0010000000474974513
+      norm_coefficient_post = 0.0
+
+.. code-block:: text
+
+    Inputs:
+      R: shape=(), dtype=float32
+        0.1
+      T: shape=(), dtype=int64
+        0
+      X: shape=(3,), dtype=float32
+        [ 1.,  2., -1.]
+      G: shape=(3,), dtype=float32
+        [ 0.5 , -0.5 ,  0.25]
+      V: shape=(3,), dtype=float32
+        [0., 0., 0.]
+      H: shape=(3,), dtype=float32
+        [0., 0., 0.]
+
+    Outputs:
+      X_new: shape=(3,), dtype=float32
+        [ 0.9851274,  2.0148673, -1.0140296]
+      V_new: shape=(3,), dtype=float32
+        [ 0.02505001, -0.02490001,  0.01245   ]
+      H_new: shape=(3,), dtype=float32
+        [0.02510011, 0.02480041, 0.0062001 ]

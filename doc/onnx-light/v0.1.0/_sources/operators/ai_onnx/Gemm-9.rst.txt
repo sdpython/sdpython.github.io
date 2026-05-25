@@ -15,11 +15,10 @@ A' = transpose(A) if transA else A
 
 B' = transpose(B) if transB else B
 
-Compute Y = alpha * A' * B' + beta * C, where input tensor A has shape (M, K) or (K, M),
+Compute Y = alpha \* A' \* B' + beta \* C, where input tensor A has shape (M, K) or (K, M),
 input tensor B has shape (K, N) or (N, K), input tensor C is broadcastable to shape (M, N),
 and output tensor Y has shape (M, N). A will be transposed before doing the
 computation if attribute transA is non-zero, same for B and transB.
-This operator supports **unidirectional broadcasting** (tensor C should be unidirectional broadcastable to tensor A * B); for more details please check `the doc <Broadcasting.md>`_.
 
 **Inputs**
 
@@ -31,14 +30,20 @@ This operator supports **unidirectional broadcasting** (tensor C should be unidi
 
 - **Y** (*T*): Output tensor of shape (M, N).
 
-**Attributes**
-
-- **alpha** (*float*): Scalar multiplier for the product of input tensors A * B.
-- **beta** (*float*): Scalar multiplier for input tensor C.
-- **transA** (*int*): Whether A should be transposed
-- **transB** (*int*): Whether B should be transposed
-
 **Type Constraints**
 
 - **T**: Constrain input and output types to float/int tensors.
   Allowed types: tensor(double), tensor(float), tensor(float16), tensor(int32), tensor(int64), tensor(uint32), tensor(uint64).
+
+Differences with previous version (7)
+-------------------------------------
+
+**SchemaDiff**: ``Gemm`` (domain ``'ai.onnx'``)
+
+* old version: 7
+* new version: 9
+* breaking: no
+
+**Type constraints:**
+
+* changed 'T': added types: ['tensor(int32)', 'tensor(int64)', 'tensor(uint32)', 'tensor(uint64)']

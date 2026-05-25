@@ -290,16 +290,17 @@ you override the path stored inside the ``.onnx`` metadata.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-151
+.. GENERATED FROM PYTHON SOURCE LINES 145-152
 
 Save with parallel I/O
 -----------------------
 
 Large models benefit from writing raw-data blocks in parallel.  Pass
-``parallel=True`` and optionally ``num_threads`` to control the thread pool.
-The ``min_block_size`` parameter prevents spawning threads for tiny tensors.
+``num_threads=N > 1 or 0`` to control
+the thread pool. The ``min_block_size`` parameter prevents spawning
+threads for tiny tensors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-158
+.. GENERATED FROM PYTHON SOURCE LINES 152-159
 
 .. code-block:: Python
 
@@ -307,7 +308,7 @@ The ``min_block_size`` parameter prevents spawning threads for tiny tensors.
     ext_par_onnx = os.path.join(out_dir, "model_ext_par.onnx")
     ext_par_data = ext_par_onnx + ".data"
 
-    onnxl.save(onnxl_model, ext_par_onnx, location=ext_par_data, parallel=True, num_threads=4)
+    onnxl.save(onnxl_model, ext_par_onnx, location=ext_par_data, num_threads=4)
     print(f"Saved with parallel I/O: {ext_par_onnx!r}")
 
 
@@ -323,7 +324,7 @@ The ``min_block_size`` parameter prevents spawning threads for tiny tensors.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-167
+.. GENERATED FROM PYTHON SOURCE LINES 160-168
 
 Split external data across multiple files
 ------------------------------------------
@@ -334,7 +335,7 @@ file is opened automatically with the suffix ``.1``, ``.2``, and so on.
 When loading, only the primary location needs to be specified; the loader
 follows the split-file references stored in each tensor's metadata.
 
-.. GENERATED FROM PYTHON SOURCE LINES 167-192
+.. GENERATED FROM PYTHON SOURCE LINES 168-193
 
 .. code-block:: Python
 
@@ -379,12 +380,12 @@ follows the split-file references stored in each tensor's metadata.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-195
+.. GENERATED FROM PYTHON SOURCE LINES 194-196
 
 Cleanup
 --------
 
-.. GENERATED FROM PYTHON SOURCE LINES 195-197
+.. GENERATED FROM PYTHON SOURCE LINES 196-198
 
 .. code-block:: Python
 
@@ -400,7 +401,7 @@ Cleanup
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.090 seconds)
+   **Total running time of the script:** (0 minutes 0.112 seconds)
 
 
 .. _sphx_glr_download_auto_examples_core_plot_load_save_external.py:

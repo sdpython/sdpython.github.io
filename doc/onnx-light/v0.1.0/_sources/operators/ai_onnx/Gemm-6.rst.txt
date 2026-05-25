@@ -10,7 +10,7 @@ This page documents version **6** of operator **Gemm**. See :doc:`Gemm` for the 
 
 General Matrix multiplication:
 https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms#Level_3
-Compute Y = alpha * A * B + beta * C, where input tensor A has
+Compute Y = alpha \* A \* B + beta \* C, where input tensor A has
 dimension (M X K), input tensor B has dimension (K X N), input tensor C and
 output tensor Y have dimension (M X N).
 If attribute broadcast is non-zero, input tensor C will be broadcasted to match
@@ -27,15 +27,16 @@ if attribute transA is non-zero, same for B and transB.
 
 - **Y** (*T*): Output tensor.
 
-**Attributes**
-
-- **alpha** (*float*): Scalar multiplier for the product of input tensors A * B, the default value is 1.0.
-- **beta** (*float*): Scalar multiplier for input tensor C, the default value is 1.0.
-- **broadcast** (*int*): Whether C should be broadcasted
-- **transA** (*int*): Whether A should be transposed
-- **transB** (*int*): Whether B should be transposed
-
 **Type Constraints**
 
 - **T**: Constrain input and output types to float tensors.
   Allowed types: tensor(double), tensor(float), tensor(float16).
+
+Differences with previous version (1)
+-------------------------------------
+
+**SchemaDiff**: ``Gemm`` (domain ``'ai.onnx'``)
+
+* old version: 1
+* new version: 6
+* breaking: no

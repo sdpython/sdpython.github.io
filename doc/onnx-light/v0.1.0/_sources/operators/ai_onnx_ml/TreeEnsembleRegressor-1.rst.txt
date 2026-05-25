@@ -9,11 +9,11 @@ This page documents version **1** of operator **TreeEnsembleRegressor**. See :do
 - **Since version**: 1
 
 Tree Ensemble regressor.  Returns the regressed values for each input in N. 
-All args with nodes_ are fields of a tuple of tree nodes, and
+All args with nodes are fields of a tuple of tree nodes, and
 it is assumed they are the same length, and an index i will decode the
 tuple across these inputs.  Each node id can appear only once
 for each tree id. 
-All fields prefixed with target_ are tuples of votes at the leaves. 
+All fields prefixed with target are tuples of votes at the leaves. 
 A leaf may have multiple votes, where each vote is weighted by
 the associated target_weights index. 
 All trees must have their node ids start at 0 and increment by 1. 
@@ -26,26 +26,6 @@ Mode enum is BRANCH_LEQ, BRANCH_LT, BRANCH_GTE, BRANCH_GT, BRANCH_EQ, BRANCH_NEQ
 **Outputs**
 
 - **Y** (*tensor(float)*): N classes
-
-**Attributes**
-
-- **aggregate_function** (*string*): Defines how to aggregate leaf values within a target.  One of 'AVERAGE,' 'SUM,' 'MIN,' 'MAX.'
-- **base_values** (*float[]*): Base values for classification, added to final class score; the size must be the same as the classes or can be left unassigned (assumed 0)
-- **n_targets** (*int*): The total number of targets.
-- **nodes_falsenodeids** (*int[]*): Child node if expression is false
-- **nodes_featureids** (*int[]*): Feature id for each node.
-- **nodes_hitrates** (*float[]*): Popularity of each node, used for performance and may be omitted.
-- **nodes_missing_value_tracks_true** (*int[]*): For each node, define what to do in the presence of a NaN: use the 'true' (if the attribute value is 1) or 'false' (if the attribute value is 0) branch based on the value in this array. This attribute may be left undefined and the default value is false (0) for all nodes.
-- **nodes_modes** (*string[]*): The node kind, that is, the comparison to make at the node. There is no comparison to make at a leaf node. One of 'BRANCH_LEQ', 'BRANCH_LT', 'BRANCH_GTE', 'BRANCH_GT', 'BRANCH_EQ', 'BRANCH_NEQ', 'LEAF'
-- **nodes_nodeids** (*int[]*): Node id for each node. Node ids must restart at zero for each tree and increase sequentially.
-- **nodes_treeids** (*int[]*): Tree id for each node.
-- **nodes_truenodeids** (*int[]*): Child node if expression is true
-- **nodes_values** (*float[]*): Thresholds to do the splitting on for each node.
-- **post_transform** (*string*): Indicates the transform to apply to the score.  One of 'NONE,' 'SOFTMAX,' 'LOGISTIC,' 'SOFTMAX_ZERO,' or 'PROBIT'
-- **target_ids** (*int[]*): The index of the target that each weight is for
-- **target_nodeids** (*int[]*): The node id of each weight
-- **target_treeids** (*int[]*): The id of the tree that each node is in.
-- **target_weights** (*float[]*): The weight for each target
 
 **Type Constraints**
 
