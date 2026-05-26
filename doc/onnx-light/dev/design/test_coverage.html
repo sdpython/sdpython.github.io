@@ -32,12 +32,13 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-2.3.5/datatables.min.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3c144e66" />
   
   <!-- So that users can add custom icons -->
@@ -55,11 +56,13 @@
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script src="https://cdn.datatables.net/v/dt/dt-2.3.5/datatables.min.js"></script>
+    <script src="../_static/activate_datatables.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'design/test_coverage';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Comparison: onnx OpSchema vs onnx_light LightOpSchema" href="schema_comparison.html" />
+    <link rel="next" title="How-to" href="../howto/index.html" />
     <link rel="prev" title="Using backend tests to evaluate a runtime" href="backend_tests.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -384,15 +387,22 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Without Protobuf</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="differences.html">Differences between <code class="docutils literal notranslate"><span class="pre">onnx</span></code> and <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="protobuf_format.html">Protobuf format applied to ONNX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="expressions.html">Symbolic expression library (<code class="docutils literal notranslate"><span class="pre">onnx_light.onnx_optim.expressions</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="no_copy_ownership.html">ModelProto creation and no-copy ownership</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cplusplus_linking.html">Linking <em>onnx-light</em> in C++</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Shape Inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="schema_comparison.html">Comparison: <code class="docutils literal notranslate"><span class="pre">onnx</span></code> <code class="docutils literal notranslate"><span class="pre">OpSchema</span></code> vs <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> <code class="docutils literal notranslate"><span class="pre">LightOpSchema</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="expressions.html">Symbolic expression library (<code class="docutils literal notranslate"><span class="pre">onnx_light.onnx_optim.expressions</span></code>)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="backend_tests.html">Using backend tests to evaluate a runtime</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Backend test-case coverage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="schema_comparison.html">Comparison: <code class="docutils literal notranslate"><span class="pre">onnx</span></code> <code class="docutils literal notranslate"><span class="pre">OpSchema</span></code> vs <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> <code class="docutils literal notranslate"><span class="pre">LightOpSchema</span></code></a></li>
 </ul>
 </div>
 </nav></div>
@@ -480,6 +490,7 @@ collects every available test case (Python-registered cases from
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code> subclasses and the
 canonical C++ cases from <code class="docutils literal notranslate"><span class="pre">lib_onnx_backend_test</span></code>) and produces a
 <a class="reference internal" href="../api/python/backend/coverage.html#onnx_light.backend.coverage.CoverageReport" title="onnx_light.backend.coverage.CoverageReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoverageReport</span></code></a>:</p>
+<p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">onnx_light.backend.coverage</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_test_case_coverage</span>
 
 <span class="n">report</span> <span class="o">=</span> <span class="n">compute_test_case_coverage</span><span class="p">()</span>
@@ -488,6 +499,22 @@ canonical C++ cases from <code class="docutils literal notranslate"><span class=
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;operators with no test case: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">uncovered_operators</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">domain</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">uncovered_operators</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s2">::</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">CoverageReport</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="mi">883</span><span class="p">,</span> <span class="n">covered</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.040</span><span class="p">,</span> <span class="n">uncovered_operators</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="mf">0.040</span>
+    <span class="n">operators</span> <span class="k">with</span> <span class="n">no</span> <span class="n">test</span> <span class="n">case</span><span class="p">:</span> <span class="mi">48</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">ArgMax</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">ArgMin</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">Asin</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">Asinh</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">Cast</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">ConcatFromSequence</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">Cos</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">Cosh</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">Equal</span>
+      <span class="o">-</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="p">::</span><span class="n">GRU</span>
 </pre></div>
 </div>
 <p>The report exposes:</p>
@@ -540,11 +567,11 @@ that have zero test cases — operators partially covered (for example
       </div>
     </a>
     <a class="right-next"
-       href="schema_comparison.html"
+       href="../howto/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Comparison: <code class="docutils literal notranslate"><span class="pre">onnx</span></code> <code class="docutils literal notranslate"><span class="pre">OpSchema</span></code> vs <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> <code class="docutils literal notranslate"><span class="pre">LightOpSchema</span></code></p>
+        <p class="prev-next-title">How-to</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

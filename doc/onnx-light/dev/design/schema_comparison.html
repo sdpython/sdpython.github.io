@@ -32,12 +32,13 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-2.3.5/datatables.min.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3c144e66" />
   
   <!-- So that users can add custom icons -->
@@ -55,12 +56,14 @@
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { mermaid.initialize({startOnLoad: true}); });</script>
+    <script src="https://cdn.datatables.net/v/dt/dt-2.3.5/datatables.min.js"></script>
+    <script src="../_static/activate_datatables.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'design/schema_comparison';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="How-to" href="../howto/index.html" />
-    <link rel="prev" title="Backend test-case coverage" href="test_coverage.html" />
+    <link rel="next" title="Symbolic expression library (onnx_light.onnx_optim.expressions)" href="expressions.html" />
+    <link rel="prev" title="Linking onnx-light in C++" href="cplusplus_linking.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -384,15 +387,22 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Without Protobuf</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="differences.html">Differences between <code class="docutils literal notranslate"><span class="pre">onnx</span></code> and <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="protobuf_format.html">Protobuf format applied to ONNX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="expressions.html">Symbolic expression library (<code class="docutils literal notranslate"><span class="pre">onnx_light.onnx_optim.expressions</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="no_copy_ownership.html">ModelProto creation and no-copy ownership</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cplusplus_linking.html">Linking <em>onnx-light</em> in C++</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Shape Inference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Comparison: <code class="docutils literal notranslate"><span class="pre">onnx</span></code> <code class="docutils literal notranslate"><span class="pre">OpSchema</span></code> vs <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> <code class="docutils literal notranslate"><span class="pre">LightOpSchema</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="expressions.html">Symbolic expression library (<code class="docutils literal notranslate"><span class="pre">onnx_light.onnx_optim.expressions</span></code>)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Backend</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="backend_tests.html">Using backend tests to evaluate a runtime</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_coverage.html">Backend test-case coverage</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Comparison: <code class="docutils literal notranslate"><span class="pre">onnx</span></code> <code class="docutils literal notranslate"><span class="pre">OpSchema</span></code> vs <code class="docutils literal notranslate"><span class="pre">onnx_light</span></code> <code class="docutils literal notranslate"><span class="pre">LightOpSchema</span></code></a></li>
 </ul>
 </div>
 </nav></div>
@@ -512,11 +522,11 @@ are reported as empty / zero.</p>
 </tr>
 <tr class="row-odd"><td><p>Operators with shape inference</p></td>
 <td><p>213</p></td>
-<td><p>3</p></td>
+<td><p>6</p></td>
 </tr>
 <tr class="row-even"><td><p>Node backend tests (counted)</p></td>
 <td><p>1705</p></td>
-<td><p>37</p></td>
+<td><p>88</p></td>
 </tr>
 </tbody>
 </table>
@@ -525,7 +535,12 @@ are reported as empty / zero.</p>
 <hr class="docutils" />
 <section id="per-operator-comparison">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Per-operator comparison</a><a class="headerlink" href="#per-operator-comparison" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
+<p>The table below is rendered with the <a class="reference external" href="https://pypi.org/project/sphinx-datatables/">sphinx-datatables</a> extension,
+so it is interactive: use the search box to filter operators by any
+column (domain, name, <code class="docutils literal notranslate"><span class="pre">yes</span></code>/<code class="docutils literal notranslate"><span class="pre">no</span></code> flags, test counts) and click on a
+column header to sort the table by that column (click again to toggle
+ascending / descending order).</p>
+<div class="pst-scrollable-table-container"><table class="sphinx-datatable table">
 <colgroup>
 <col style="width: 12.0%" />
 <col style="width: 18.0%" />
@@ -562,18 +577,18 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>yes</p></td>
 <td><p>yes</p></td>
-<td><p>no</p></td>
+<td><p>yes</p></td>
 <td><p>2</p></td>
-<td><p>0</p></td>
+<td><p>1</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx</p></td>
 <td><p>Acosh</p></td>
 <td><p>yes</p></td>
 <td><p>yes</p></td>
 <td><p>yes</p></td>
-<td><p>no</p></td>
+<td><p>yes</p></td>
 <td><p>2</p></td>
-<td><p>0</p></td>
+<td><p>1</p></td>
 </tr>
 <tr class="row-odd"><td><p>ai.onnx</p></td>
 <td><p>Add</p></td>
@@ -600,7 +615,7 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>yes</p></td>
 <td><p>8</p></td>
-<td><p>2</p></td>
+<td><p>10</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx</p></td>
 <td><p>ArgMax</p></td>
@@ -670,9 +685,9 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>yes</p></td>
 <td><p>yes</p></td>
-<td><p>no</p></td>
+<td><p>yes</p></td>
 <td><p>20</p></td>
-<td><p>3</p></td>
+<td><p>11</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx</p></td>
 <td><p>BatchNormalization</p></td>
@@ -978,7 +993,7 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 <td><p>10</p></td>
-<td><p>0</p></td>
+<td><p>5</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx</p></td>
 <td><p>Dropout</p></td>
@@ -1509,7 +1524,7 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 <td><p>27</p></td>
-<td><p>0</p></td>
+<td><p>5</p></td>
 </tr>
 <tr class="row-odd"><td><p>ai.onnx</p></td>
 <td><p>Multinomial</p></td>
@@ -1608,7 +1623,7 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 <td><p>8</p></td>
-<td><p>2</p></td>
+<td><p>10</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx</p></td>
 <td><p>PRelu</p></td>
@@ -2202,7 +2217,7 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 <td><p>11</p></td>
-<td><p>0</p></td>
+<td><p>5</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx</p></td>
 <td><p>Sum</p></td>
@@ -2346,7 +2361,7 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 <td><p>8</p></td>
-<td><p>2</p></td>
+<td><p>10</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx.ml</p></td>
 <td><p>ArrayFeatureExtractor</p></td>
@@ -2544,7 +2559,7 @@ are reported as empty / zero.</p>
 <td><p>yes</p></td>
 <td><p>no</p></td>
 <td><p>2</p></td>
-<td><p>2</p></td>
+<td><p>4</p></td>
 </tr>
 <tr class="row-even"><td><p>ai.onnx.preview.training</p></td>
 <td><p>Gradient</p></td>
@@ -2589,20 +2604,20 @@ are reported as empty / zero.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="test_coverage.html"
+       href="cplusplus_linking.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Backend test-case coverage</p>
+        <p class="prev-next-title">Linking <em>onnx-light</em> in C++</p>
       </div>
     </a>
     <a class="right-next"
-       href="../howto/index.html"
+       href="expressions.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">How-to</p>
+        <p class="prev-next-title">Symbolic expression library (<code class="docutils literal notranslate"><span class="pre">onnx_light.onnx_optim.expressions</span></code>)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
